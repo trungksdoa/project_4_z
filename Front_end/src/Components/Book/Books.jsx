@@ -1,4 +1,7 @@
-const Book = ({ img, title, cate, author }) => {
+const Book = ({ id,img, title, cate, author }) => {
+    const addToCard = () => {
+
+    }
     return (
         <div className="item">
             <div className="tg-postbook">
@@ -27,7 +30,7 @@ const Book = ({ img, title, cate, author }) => {
                         <ins>$25.18</ins>
                         <del>$27.20</del>
                     </span>
-                    <a className="tg-btn tg-btnstyletwo" href="javascript:void(0);">
+                    <a className="tg-btn tg-btnstyletwo" onClick={() => addToCard(id)}>
                         <i className="fa fa-shopping-basket" />
                         <em>Add To Basket</em>
                     </a>
