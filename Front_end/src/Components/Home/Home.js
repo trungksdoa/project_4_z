@@ -35,7 +35,7 @@ const Home = () => {
         }
     }
     useEffect(() => {
-        fetchUser()
+        fetchUser();
     }, [])
 
     return (
@@ -43,7 +43,7 @@ const Home = () => {
             {/*************************************
 					Best Selling Start
 			**************************************/}
-            {<Sectionspace></Sectionspace>}
+            {<Sectionspace tesst='sdsads'></Sectionspace>}
             {/*************************************
 					Best Selling End
 			**************************************/}

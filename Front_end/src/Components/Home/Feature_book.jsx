@@ -1,5 +1,5 @@
 import React from 'react';
-import {FeatureBook} from '../Book/Books.jsx';
+import { FeatureBook } from '../Book/Books.jsx';
 import { data } from './Object';
 const featureBook = () => {
     //Logic here
