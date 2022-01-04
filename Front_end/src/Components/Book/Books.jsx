@@ -1,6 +1,6 @@
 const Book = ({ id,img, title, cate, author }) => {
-    const addToCard = () => {
-
+    const addToCard = (id) => {
+        console.log(id)
     }
     return (
         <div className="item">
