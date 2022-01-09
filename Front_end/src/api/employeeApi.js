@@ -11,7 +11,7 @@ const employeeApi = {
     },
     login:(userEmail,userPassword) =>{
         const url = 'user/login';
-        return axiosClient.post(url,{userEmail:userEmail,userPassword:userPassword});
+        return axiosClient.post(url,{adminEmail:userEmail,adminPassword:userPassword});
     }
 }
 

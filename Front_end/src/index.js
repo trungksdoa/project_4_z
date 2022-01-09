@@ -2,13 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // import {BrowserRouter} from 'react-router-dom';
 import './index.css';
-import Router_web from './Router_web';
+import User_Routes from './Router/User_Routes';
 import reportWebVitals from './reportWebVitals';
 
+import Admin_Routes from './Router/Admin_Routes'
 
-import Header from './Components/Header/Header.jsx';
-
-import Footer from './Components/Footer/Footer.jsx';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,19 +16,19 @@ ReactDOM.render(
 				Header Start
 		**************************************/}
 
-    <Header></Header>
-
     {/*************************************
 				Header End
 		**************************************/}
-    <Router_web />
+    <User_Routes />
+
+    <Admin_Routes />
 
     {/*************************************
 				Footer Start
 		**************************************/}
 
-    {<Footer></Footer>}
-    
+
+
     {/*************************************
 				Footer End
 		**************************************/}

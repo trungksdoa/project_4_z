@@ -6,7 +6,7 @@ const Pb_author = () => {
             <div className="row">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div className="tg-sectionhead">
-                        <h2><span>Some Great Books</span>Picked By Admin</h2>
+                        <h2><span>Some Great Books</span>Most favorite</h2>
                         <a className="tg-btn" href="javascript:void(0);">View All</a>
                     </div>
                 </div>

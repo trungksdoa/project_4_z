@@ -11,6 +11,10 @@ import Collection from './Collection_count.jsx';
 import PB_author from './PB_Author.jsx';
 import Testimonials from './Testimonials.jsx';
 import Index_news from './Index_news.jsx';
+
+import Header from '../Header/Header.jsx';
+
+import Footer from '../Footer/Footer.jsx';
 const Home = () => {
     const [user, setUser] = useState([]);
     const [Emails, setEmails] = useState('');
@@ -25,75 +29,72 @@ const Home = () => {
             console.log('failed to fetch employee list', error);
         }
     }
-    const handleLogin = async (e) => {
-        try {
-            e.preventDefault();
-            const response = await userApi.login(Emails, Passwords);
-            console.log('List_Employee is ', response);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+
     useEffect(() => {
         fetchUser();
     }, [])
 
     return (
-        <div id="tg-wrapper" className="tg-wrapper tg-haslayout">
-            {/*************************************
+        <>
+            <Header />
+            <div id="tg-wrapper" className="tg-wrapper tg-haslayout">
+                <title>Home</title>
+                {/*************************************
 					Best Selling Start
 			**************************************/}
-            {<Sectionspace tesst='sdsads'></Sectionspace>}
-            {/*************************************
+                {<Sectionspace tesst='sdsads'></Sectionspace>}
+                {/*************************************
 					Best Selling End
 			**************************************/}
-            {/*************************************
+                {/*************************************
 					Featured Item Start
 			**************************************/}
-            {<FeatureBook></FeatureBook>}
-            {/*************************************
+                {<FeatureBook></FeatureBook>}
+                {/*************************************
 					Featured Item End
 			**************************************/}
-            {/*************************************
+                {/*************************************
 					New Release Start
 			**************************************/}
-            {<Releases></Releases>}
-            {/*************************************
+                {<Releases></Releases>}
+                {/*************************************
 					New Release End
 			**************************************/}
-            {/*************************************
+                {/*************************************
 					Collection Count Start
 			**************************************/}
-            {<Collection></Collection>}
-            {/*************************************
+                {<Collection></Collection>}
+                {/*************************************
 					Collection Count End
 			**************************************/}
-            {/*************************************
+                {/*************************************
 					Picked By Author Start
 			**************************************/}
 
-            {<PB_author></PB_author>}
+                {<PB_author></PB_author>}
 
-            {/*************************************
+                {/*************************************
 					Picked By Author End
 			**************************************/}
-            {/*************************************
+                {/*************************************
 					Testimonials Start
 			**************************************/}
-            {<Testimonials></Testimonials>}
-            {/*************************************
+                {<Testimonials></Testimonials>}
+                {/*************************************
 					Testimonials End
 			**************************************/}
-            {/* Latest News Start */}
-            {/* **************************************/}
-            {<Index_news></Index_news>}
-            {/*************************************
+                {/* Latest News Start */}
+                {/* **************************************/}
+                {<Index_news></Index_news>}
+                {/*************************************
 					Latest News End
 			**************************************/}
-            {/*************************************
+                {/*************************************
 				Main End
 		**************************************/}
-        </div>
+            </div>
+            <Footer />
+        </>
     )
 
 }
