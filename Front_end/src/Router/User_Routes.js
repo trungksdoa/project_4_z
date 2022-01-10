@@ -14,11 +14,6 @@ import Logins from "../Components/Login_register/Logins.jsx";
 
 import Error_404 from "../Components/Error/404.jsx";
 
-import Admin_dashboard from '../Admin_Component/Dashboard/index.jsx';
-
-
-import Admin_temp from '../Admin_Component/Dashboard/index.jsx'
-
 const Roles_list = localStorage.getItem("rolse");
 
 
@@ -38,7 +33,6 @@ const Routers = () => {
           <Route path="/404" element={<Error_404></Error_404>} />
           <Route path="/author" element={<Author></Author>} />
           <Route path="/check" element={checkUser(Roles_list) ? <Navigate to="/404" /> : <Navigate to="/author" />} />
-          <Route path="/Admin" element={<Admin_temp></Admin_temp>} />
         </Routes>
        
       </Router>

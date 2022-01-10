@@ -1,38 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import {BrowserRouter} from 'react-router-dom';
-import './index.css';
+
 import User_Routes from './Router/User_Routes';
+
 import reportWebVitals from './reportWebVitals';
 
-import Admin_Routes from './Router/Admin_Routes'
+import Header from './Components/Header/Header.jsx';
 
+import Footer from './Components/Footer/Footer.jsx';
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <BrowserRouter> */}
-
-    {/*************************************
-				Header Start
-		**************************************/}
-
-    {/*************************************
-				Header End
-		**************************************/}
+    <Header />
     <User_Routes />
-
-    <Admin_Routes />
-
-    {/*************************************
-				Footer Start
-		**************************************/}
-
-
-
-    {/*************************************
-				Footer End
-		**************************************/}
-    {/* </BrowserRouter> */}
+    <Footer />
   </React.StrictMode>,
   document.getElementById('root')
 );

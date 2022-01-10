@@ -12,9 +12,6 @@ import PB_author from './PB_Author.jsx';
 import Testimonials from './Testimonials.jsx';
 import Index_news from './Index_news.jsx';
 
-import Header from '../Header/Header.jsx';
-
-import Footer from '../Footer/Footer.jsx';
 const Home = () => {
     const [user, setUser] = useState([]);
     const [Emails, setEmails] = useState('');
@@ -36,7 +33,6 @@ const Home = () => {
 
     return (
         <>
-            <Header />
             <div id="tg-wrapper" className="tg-wrapper tg-haslayout">
                 <title>Home</title>
                 {/*************************************
@@ -93,7 +89,6 @@ const Home = () => {
 				Main End
 		**************************************/}
             </div>
-            <Footer />
         </>
     )
 
