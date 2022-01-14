@@ -7,7 +7,7 @@ const Pb_author = () => {
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div className="tg-sectionhead">
                         <h2><span>Some Great Books</span>Most favorite</h2>
-                        <a className="tg-btn" href="javascript:void(0);">View All</a>
+                        <a className="tg-btn" href="#!">View All</a>
                     </div>
                 </div>
                 <div id="tg-pickedbyauthorslider" className="tg-pickedbyauthor tg-pickedbyauthorslider owl-carousel">
@@ -29,10 +29,10 @@ const Pb_author = () => {
                             </figure>
                             <div className="tg-postbookcontent">
                                 <div className="tg-booktitle">
-                                    <h3><a href="javascript:void(0);">Seven Minutes In Heaven</a></h3>
+                                    <h3><a href="#!">Seven Minutes In Heaven</a></h3>
                                 </div>
-                                <span className="tg-bookwriter">By: <a href="javascript:void(0);">Sunshine Orlando</a></span>
-                                <a className="tg-btn tg-btnstyletwo" href="javascript:void(0);">
+                                <span className="tg-bookwriter">By: <a href="#!">Sunshine Orlando</a></span>
+                                <a className="tg-btn tg-btnstyletwo" href="#!">
                                     <i className="fa fa-shopping-basket" />
                                     <em>Add To Basket</em>
                                 </a>
@@ -57,10 +57,10 @@ const Pb_author = () => {
                             </figure>
                             <div className="tg-postbookcontent">
                                 <div className="tg-booktitle">
-                                    <h3><a href="javascript:void(0);">Slow And Steady Wins The Race</a></h3>
+                                    <h3><a href="#!">Slow And Steady Wins The Race</a></h3>
                                 </div>
-                                <span className="tg-bookwriter">By: <a href="javascript:void(0);">Drusilla Glandon</a></span>
-                                <a className="tg-btn tg-btnstyletwo" href="javascript:void(0);">
+                                <span className="tg-bookwriter">By: <a href="#!">Drusilla Glandon</a></span>
+                                <a className="tg-btn tg-btnstyletwo" href="#!">
                                     <i className="fa fa-shopping-basket" />
                                     <em>Add To Basket</em>
                                 </a>
@@ -85,10 +85,10 @@ const Pb_author = () => {
                             </figure>
                             <div className="tg-postbookcontent">
                                 <div className="tg-booktitle">
-                                    <h3><a href="javascript:void(0);">There’s No Time Like The Present</a></h3>
+                                    <h3><a href="#!">There’s No Time Like The Present</a></h3>
                                 </div>
-                                <span className="tg-bookwriter">By: <a href="javascript:void(0);">Patrick Seller</a></span>
-                                <a className="tg-btn tg-btnstyletwo" href="javascript:void(0);">
+                                <span className="tg-bookwriter">By: <a href="#!">Patrick Seller</a></span>
+                                <a className="tg-btn tg-btnstyletwo" href="#!">
                                     <i className="fa fa-shopping-basket" />
                                     <em>Add To Basket</em>
                                 </a>
@@ -113,10 +113,10 @@ const Pb_author = () => {
                             </figure>
                             <div className="tg-postbookcontent">
                                 <div className="tg-booktitle">
-                                    <h3><a href="javascript:void(0);">Seven Minutes In Heaven</a></h3>
+                                    <h3><a href="#!">Seven Minutes In Heaven</a></h3>
                                 </div>
-                                <span className="tg-bookwriter">By: <a href="javascript:void(0);">Sunshine Orlando</a></span>
-                                <a className="tg-btn tg-btnstyletwo" href="javascript:void(0);">
+                                <span className="tg-bookwriter">By: <a href="#!">Sunshine Orlando</a></span>
+                                <a className="tg-btn tg-btnstyletwo" href="#!">
                                     <i className="fa fa-shopping-basket" />
                                     <em>Add To Basket</em>
                                 </a>
@@ -141,10 +141,10 @@ const Pb_author = () => {
                             </figure>
                             <div className="tg-postbookcontent">
                                 <div className="tg-booktitle">
-                                    <h3><a href="javascript:void(0);">Slow And Steady Wins The Race</a></h3>
+                                    <h3><a href="#!">Slow And Steady Wins The Race</a></h3>
                                 </div>
-                                <span className="tg-bookwriter">By: <a href="javascript:void(0);">Drusilla Glandon</a></span>
-                                <a className="tg-btn tg-btnstyletwo" href="javascript:void(0);">
+                                <span className="tg-bookwriter">By: <a href="#!">Drusilla Glandon</a></span>
+                                <a className="tg-btn tg-btnstyletwo" href="#!">
                                     <i className="fa fa-shopping-basket" />
                                     <em>Add To Basket</em>
                                 </a>

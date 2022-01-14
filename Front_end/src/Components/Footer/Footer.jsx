@@ -40,7 +40,7 @@ const footer = () => {
                         <div className="tg-threecolumns">
                             <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                                 <div className="tg-footercol">
-                                    <strong className="tg-logo"><a href="javascript:void(0);"><img src="images/flogo.png" alt="image description" /></a></strong>
+                                    <strong className="tg-logo"><a href="#!"><img src="images/flogo.png" alt="image description" /></a></strong>
                                     <ul className="tg-contactinfo">
                                         <li>
                                             <i className="icon-apartment" />
@@ -66,11 +66,11 @@ const footer = () => {
                                         </li>
                                     </ul>
                                     <ul className="tg-socialicons">
-                                        <li className="tg-facebook"><a href="javascript:void(0);"><i className="fa fa-facebook" /></a></li>
-                                        <li className="tg-twitter"><a href="javascript:void(0);"><i className="fa fa-twitter" /></a></li>
-                                        <li className="tg-linkedin"><a href="javascript:void(0);"><i className="fa fa-linkedin" /></a></li>
-                                        <li className="tg-googleplus"><a href="javascript:void(0);"><i className="fa fa-google-plus" /></a></li>
-                                        <li className="tg-rss"><a href="javascript:void(0);"><i className="fa fa-rss" /></a></li>
+                                        <li className="tg-facebook"><a href="#!"><i className="fa fa-facebook" /></a></li>
+                                        <li className="tg-twitter"><a href="#!"><i className="fa fa-twitter" /></a></li>
+                                        <li className="tg-linkedin"><a href="#!"><i className="fa fa-linkedin" /></a></li>
+                                        <li className="tg-googleplus"><a href="#!"><i className="fa fa-google-plus" /></a></li>
+                                        <li className="tg-rss"><a href="#!"><i className="fa fa-rss" /></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -81,21 +81,21 @@ const footer = () => {
                                     </div>
                                     <div className="tg-widgetcontent">
                                         <ul>
-                                            <li><a href="javascript:void(0);">Terms of Use</a></li>
-                                            <li><a href="javascript:void(0);">Terms of Sale</a></li>
-                                            <li><a href="javascript:void(0);">Returns</a></li>
-                                            <li><a href="javascript:void(0);">Privacy</a></li>
-                                            <li><a href="javascript:void(0);">Cookies</a></li>
-                                            <li><a href="javascript:void(0);">Contact Us</a></li>
-                                            <li><a href="javascript:void(0);">Our Affiliates</a></li>
-                                            <li><a href="javascript:void(0);">Vision &amp; Aim</a></li>
+                                            <li><a href="#!">Terms of Use</a></li>
+                                            <li><a href="#!">Terms of Sale</a></li>
+                                            <li><a href="#!">Returns</a></li>
+                                            <li><a href="#!">Privacy</a></li>
+                                            <li><a href="#!">Cookies</a></li>
+                                            <li><a href="#!">Contact Us</a></li>
+                                            <li><a href="#!">Our Affiliates</a></li>
+                                            <li><a href="#!">Vision &amp; Aim</a></li>
                                         </ul>
                                         <ul>
-                                            <li><a href="javascript:void(0);">Our Story</a></li>
-                                            <li><a href="javascript:void(0);">Meet Our Team</a></li>
-                                            <li><a href="javascript:void(0);">FAQ</a></li>
-                                            <li><a href="javascript:void(0);">Testimonials</a></li>
-                                            <li><a href="javascript:void(0);">Join Our Team</a></li>
+                                            <li><a href="#!">Our Story</a></li>
+                                            <li><a href="#!">Meet Our Team</a></li>
+                                            <li><a href="#!">FAQ</a></li>
+                                            <li><a href="#!">Testimonials</a></li>
+                                            <li><a href="#!">Join Our Team</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -103,29 +103,43 @@ const footer = () => {
                             <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                                 <div className="tg-footercol tg-widget tg-widgettopsellingauthors">
                                     <div className="tg-widgettitle">
-                                        <h3>Top Selling Authors</h3>
+                                        <h3>Team</h3>
                                     </div>
                                     <div className="tg-widgetcontent">
                                         <ul>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img src="images/author/imag-09.jpg" alt="image description" /></a></figure>
+                                                <figure><a href="#!"><img src="images/author/imag-11.jpg" alt="image description" /></a></figure>
                                                 <div className="tg-authornamebooks">
-                                                    <h4><a href="javascript:void(0);">Jude Morphew</a></h4>
-                                                    <p>21,658 Published Books</p>
+                                                    <h4><a href="#!">Nguyễn Khắc Quang</a></h4>
+                                                    <p>Group Leader</p>
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img src="images/author/imag-10.jpg" alt="image description" /></a></figure>
+                                                <figure><a href="#!"><img src="images/author/imag-09.jpg" alt="image description" /></a></figure>
                                                 <div className="tg-authornamebooks">
-                                                    <h4><a href="javascript:void(0);">Shaun Humes</a></h4>
-                                                    <p>20,257 Published Books</p>
+                                                    <h4><a href="#!">Võ Hoàng Trung</a></h4>
+                                                    <p>Group member</p>
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img src="images/author/imag-11.jpg" alt="image description" /></a></figure>
+                                                <figure><a href="#!"><img src="images/author/imag-10.jpg" alt="image description" /></a></figure>
                                                 <div className="tg-authornamebooks">
-                                                    <h4><a href="javascript:void(0);">Kathrine Culbertson</a></h4>
-                                                    <p>15,686 Published Books</p>
+                                                    <h4><a href="#!">Nguyễn Khắc Toàn</a></h4>
+                                                    <p>Group member</p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <figure><a href="#!"><img src="images/author/imag-11.jpg" alt="image description" /></a></figure>
+                                                <div className="tg-authornamebooks">
+                                                    <h4><a href="#!">Nguyễn Văn Đại</a></h4>
+                                                    <p>Group member</p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <figure><a href="#!"><img src="images/author/imag-11.jpg" alt="image description" /></a></figure>
+                                                <div className="tg-authornamebooks">
+                                                    <h4><a href="#!">Lê Thanh Ân</a></h4>
+                                                    <p>Group member</p>
                                                 </div>
                                             </li>
                                         </ul>
@@ -155,7 +169,7 @@ const footer = () => {
                 </div>
             </div>
             <div className="tg-footerbar">
-                <a id="tg-btnbacktotop" className="tg-btnbacktotop" href="javascript:void(0);"><i className="icon-chevron-up" /></a>
+                <a id="tg-btnbacktotop" className="tg-btnbacktotop" href="#!"><i className="icon-chevron-up" /></a>
                 <div className="container">
                     <div className="row">
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">

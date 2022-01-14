@@ -11,7 +11,7 @@ import Collection from './Collection_count.jsx';
 import PB_author from './PB_Author.jsx';
 import Testimonials from './Testimonials.jsx';
 import Index_news from './Index_news.jsx';
-
+import {data} from './arrays';
 const Home = () => {
     const [user, setUser] = useState([]);
     const [Emails, setEmails] = useState('');
@@ -38,7 +38,7 @@ const Home = () => {
                 {/*************************************
 					Best Selling Start
 			**************************************/}
-                {<Sectionspace tesst='sdsads'></Sectionspace>}
+                {<Sectionspace data={data}></Sectionspace>}
                 {/*************************************
 					Best Selling End
 			**************************************/}

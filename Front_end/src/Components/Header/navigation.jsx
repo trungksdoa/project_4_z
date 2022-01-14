@@ -1,6 +1,6 @@
 import React from 'react';
 
-
+import { Link, useSearchParams } from "react-router-dom";
 const navigationBar = () => {
     //Logic here
     return (
@@ -20,7 +20,7 @@ const navigationBar = () => {
                             <div id="tg-navigation" className="collapse navbar-collapse tg-navigation">
                                 <ul>
                                     <li className="menu-item-has-children menu-item-has-mega-menu">
-                                        <a href="javascript:void(0);">All Categories</a>
+                                        <a href="#!">All Categories</a>
                                         <div className="mega-menu">
                                             <ul className="tg-themetabnav" role="tablist">
                                                 <li role="presentation" className="active">
@@ -608,7 +608,7 @@ const navigationBar = () => {
                                         </div>
                                     </li>
                                     <li className="menu-item-has-children current-menu-item">
-                                        <a href="javascript:void(0);">Home</a>
+                                        <a href="#!">Home</a>
                                         <ul className="sub-menu">
                                             <li className="current-menu-item"><a href="index-2.html">Home V one</a></li>
                                             <li><a href="indexv2.html">Home V two</a></li>
@@ -616,16 +616,16 @@ const navigationBar = () => {
                                         </ul>
                                     </li>
                                     <li className="menu-item-has-children">
-                                        <a href="javascript:void(0);">Authors</a>
+                                        <a href="#!">Authors</a>
                                         <ul className="sub-menu">
-                                            <li><a href="authors.html">Authors</a></li>
+                                            <li><a href="/author">Authors</a></li>
                                             <li><a href="authordetail.html">Author Detail</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="products.html">Best Selling</a></li>
                                     <li><a href="products.html">Weekly Sale</a></li>
                                     <li className="menu-item-has-children">
-                                        <a href="javascript:void(0);">Latest News</a>
+                                        <a href="#!">Latest News</a>
                                         <ul className="sub-menu">
                                             <li><a href="newslist.html">News List</a></li>
                                             <li><a href="newsgrid.html">News Grid</a></li>
@@ -634,7 +634,7 @@ const navigationBar = () => {
                                     </li>
                                     <li><a href="contactus.html">Contact</a></li>
                                     <li className="menu-item-has-children current-menu-item">
-                                        <a href="javascript:void(0);"><i className="icon-menu" /></a>
+                                        <a href="#!"><i className="icon-menu" /></a>
                                         <ul className="sub-menu">
                                             <li className="menu-item-has-children">
                                                 <a href="aboutus.html">Products</a>

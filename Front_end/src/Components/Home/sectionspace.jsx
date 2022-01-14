@@ -1,7 +1,10 @@
 import React from 'react';
-import {Book} from '../Book/Books.jsx';
-import {data} from './arrays';
-const sectionspace = () => {
+import { Book } from '../Book/Books.jsx';
+import { data } from './arrays';
+import PropTypes from 'prop-types'
+
+
+const Sectionspace = (props) => {
     //Logic here
     return (
         <section className="tg-sectionspace tg-haslayout">
@@ -10,12 +13,12 @@ const sectionspace = () => {
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div className="tg-sectionhead">
                             <h2><span>People’s Choice</span>Bestselling Books</h2>
-                            <a className="tg-btn" href="javascript:void(0);">View All</a>
+                            <a className="tg-btn" href="#!">View All</a>
                         </div>
                     </div>
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div id="tg-bestsellingbooksslider" className="tg-bestsellingbooksslider tg-bestsellingbooks owl-carousel">
-                            {data.map((book, index) => {
+                            {props.data.map((book, index) => {
                                 return <Book key={book.id} {...book}></Book>;
                             })}
                         </div>
@@ -25,4 +28,7 @@ const sectionspace = () => {
         </section>
     )
 }
-export default sectionspace;
+Sectionspace.propTypes = {
+    data: PropTypes.array.isRequired,
+}
+export default Sectionspace;
