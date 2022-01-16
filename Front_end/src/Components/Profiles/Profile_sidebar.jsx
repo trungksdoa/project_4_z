@@ -1,62 +1,43 @@
 import React from "react";
-import { Link } from "react-router-dom"
-const sidebar = () => {
-    const HandleChangePage = (newPage) => {
+import { Link, NavLink } from "react-router-dom"
 
-    }
+const sidebar = () => {
     return (
-        <div className="col-md-3">
-            <div className="profile-sidebar">
-                {/* SIDEBAR USER TITLE */}
-                <div className="profile-usertitle">
-                    <div className="profile-usertitle-name">
-                        Trung
+        <>
+            <div className="col-md-3">
+                <div className="profile-sidebar">
+                    {/* SIDEBAR USER TITLE */}
+                    <div className="profile-usertitle">
+                        <div className="profile-usertitle-name">
+                            Fistname + Lastname
+                        </div>
+                        <div className="profile-phonenumber">
+                            trungksdoa@gmail.com
+                        </div>
                     </div>
-                    <div className="profile-phonenumber">
-                        003
+                    <div className="profile-usermenu">
+                        <ul className="nav profile_sidebar">
+                            <li className="active">
+                                <NavLink to='/Profile/'>
+                                    <i className="glyphicon glyphicon-home" /> Overview
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to='/Profile/Order_tracking'>
+                                    <i className="glyphicon glyphicon-user" /> Order tracking
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to='/Profile/Wishlist'>
+                                    <i className="glyphicon glyphicon-ok" /> Wishlist
+                                </NavLink>
+                            </li>
+                        </ul>
                     </div>
+                    {/* END MENU */}
                 </div>
-                {/* END SIDEBAR USER TITLE */}
-                {/* SIDEBAR BUTTONS */}
-                <div className="profile-userbuttons">
-                    <Link to='/profile/Edit'>
-                        <button type="button" className="btn btn-success btn-sm" >
-                            Edit
-                        </button>
-                    </Link>
-                    {/* <button type="button" className="btn btn-danger btn-sm">
-            Message
-        </button> */}
-                </div>
-                {/* END SIDEBAR BUTTONS */}
-                {/* SIDEBAR MENU */}
-                <div className="profile-usermenu">
-                    <ul className="nav">
-                        <li className="active">
-                            <a href="#">
-                                <i className="glyphicon glyphicon-home" /> Overview
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i className="glyphicon glyphicon-user" /> Account Settings
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" target="_blank">
-                                <i className="glyphicon glyphicon-ok" /> Tasks
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i className="glyphicon glyphicon-flag" /> Help
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                {/* END MENU */}
             </div>
-        </div>
+        </>
     )
 
 }

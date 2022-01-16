@@ -11,7 +11,8 @@ import Collection from './Collection_count.jsx';
 import PB_author from './PB_Author.jsx';
 import Testimonials from './Testimonials.jsx';
 import Index_news from './Index_news.jsx';
-import {data} from './arrays';
+import { data } from './arrays';
+import {objectData} from './Object';
 const Home = () => {
     const [user, setUser] = useState([]);
     const [Emails, setEmails] = useState('');
@@ -33,8 +34,7 @@ const Home = () => {
 
     return (
         <>
-            <div id="tg-wrapper" className="tg-wrapper tg-haslayout">
-                <title>Home</title>
+            <main id="tg-main" class="tg-main tg-haslayout">
                 {/*************************************
 					Best Selling Start
 			**************************************/}
@@ -45,14 +45,14 @@ const Home = () => {
                 {/*************************************
 					Featured Item Start
 			**************************************/}
-                {<FeatureBook></FeatureBook>}
+                {<FeatureBook lasted_book={objectData}></FeatureBook>}
                 {/*************************************
 					Featured Item End
 			**************************************/}
                 {/*************************************
 					New Release Start
 			**************************************/}
-                {<Releases></Releases>}
+                {<Releases data={data}></Releases>}
                 {/*************************************
 					New Release End
 			**************************************/}
@@ -88,7 +88,7 @@ const Home = () => {
                 {/*************************************
 				Main End
 		**************************************/}
-            </div>
+            </main>
         </>
     )
 

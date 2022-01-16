@@ -10,7 +10,7 @@ import userApi from "../../api/employeeApi";
 
 
 
-const Login_page = () => {
+const Register = () => {
     const tempData = [];
     const [adminRole, setAdminRole] = useState([]);
     const [Emails, setEmails] = useState('');
@@ -27,21 +27,9 @@ const Login_page = () => {
     //     checkLogin();
     // })
 
-    const HandleLogin = async (e) => {
+    const HandleRegister = async (e) => {
         try {
-            e.preventDefault();
-            alert("OK");
-            const response = await userApi.login(Emails, Passwords);
 
-            for (let index = 0; index < response.length; index++) {
-                const element = response[index];
-                tempData.push(element.func_name);
-                // console.log(element.func_name);
-            }
-            const emptys = localStorage.getItem("rolse");
-            localStorage.setItem('rolse', tempData);
-
-            navigate('/author')
 
         } catch (error) {
             console.log(error);
@@ -55,28 +43,43 @@ const Login_page = () => {
                     <div className="row">
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div className="tg-innerbannercontent">
-                                <h1>Login</h1>
+                                <h1>Register</h1>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <main id="tg-main" className="tg-main tg-haslayout profile_main">
-                <div className="login_form"
-                    style={{
-                        padding: "15px",
-                        margin: "2rem auto 0px auto",
-                        width: "40rem"
-                    }}>
-                    <form onSubmit={HandleLogin}>
+                <div className="login_form" style={{
+                    padding: "15px",
+                    margin: "2rem auto 0px auto",
+                    width: "40rem"
+                }}>
+                    <form>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputEmail1">First name</label>
+                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputEmail1">Last name</label>
+                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder />
+                        </div>
                         <div className="form-group">
                             <label htmlFor="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="userEmail" value={Emails} onChange={(e) => setEmails(e.target.value)} name="uname" required aria-describedby="emailHelp" placeHolder="" />
+                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder />
                             <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                         </div>
                         <div className="form-group">
                             <label htmlFor="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="userPassword" value={Passwords} onChange={(e) => setPasswords(e.target.value)} name="psw" placeHolder="Password" />
+                            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputEmail1">Phone number</label>
+                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputEmail1">Birthday</label>
+                            <input type="datetime-local" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder />
                         </div>
                         <button type="submit" className="btn btn-primary">Submit</button>
                     </form>
@@ -85,4 +88,4 @@ const Login_page = () => {
         </>
     );
 }
-export default Login_page;
+export default Register;

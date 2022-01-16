@@ -1,7 +1,21 @@
 import React from 'react';
 
 import { Link, useSearchParams } from "react-router-dom";
+import { NavLink } from 'react-router-dom'
+
 const navigationBar = () => {
+
+    const changeActive = (event) => {
+        const active = event.isActive ? 'isActive' : "";
+        // const li = event.target.parentNode;
+        // const getTag = li.tagName;
+        // const active_li = document.querySelector('ul.web_navigation > li.current-menu-item');
+        // active_li.classList.remove('current-menu-item') // Remove class "info"
+        // // document.querySelector('ul.web_navigation > li.current-menu-item').classList.remove("current-menu-item");
+        // li.classList.add("current-menu-item");
+        console.log(active)
+    }
+
     //Logic here
     return (
         <div className="tg-navigationarea">
@@ -18,7 +32,7 @@ const navigationBar = () => {
                                 </button>
                             </div>
                             <div id="tg-navigation" className="collapse navbar-collapse tg-navigation">
-                                <ul>
+                                <ul className="web_navigation">
                                     <li className="menu-item-has-children menu-item-has-mega-menu">
                                         <a href="#!">All Categories</a>
                                         <div className="mega-menu">
@@ -607,47 +621,30 @@ const navigationBar = () => {
                                             </div>
                                         </div>
                                     </li>
-                                    <li className="menu-item-has-children current-menu-item">
-                                        <a href="#!">Home</a>
-                                        <ul className="sub-menu">
-                                            <li className="current-menu-item"><a href="index-2.html">Home V one</a></li>
-                                            <li><a href="indexv2.html">Home V two</a></li>
-                                            <li><a href="indexv3.html">Home V three</a></li>
-                                        </ul>
+                                    <li>
+                                        <NavLink  to="/">Home</NavLink>
                                     </li>
+                                    <li className="author_page">
+                                        <NavLink to="/author">Authors</NavLink>
+                                        {/* <Link to="/author">Authors</Link> */}
+                                    </li>
+                                    <li><NavLink to="/Collection">Collection</NavLink></li>
+                                    <li>
+                                        <NavLink  to="/News">News</NavLink>
+                                        {/* <a href="#!">News</a> */}
+                                    </li>
+                                    <li>
+                                        <NavLink to="/Contact">Contact</NavLink>
+                                    </li>
+                                    <li><a href="contactus.html">About us</a></li>
                                     <li className="menu-item-has-children">
-                                        <a href="#!">Authors</a>
-                                        <ul className="sub-menu">
-                                            <li><a href="/author">Authors</a></li>
-                                            <li><a href="authordetail.html">Author Detail</a></li>
+                                        <a>Account</a>
+                                        <ul class="sub-menu">
+                                            <li><NavLink  to="/Login">Log in</NavLink></li>
+                                            <li><NavLink  to="/Register">Register</NavLink></li>
                                         </ul>
                                     </li>
-                                    <li><a href="products.html">Best Selling</a></li>
-                                    <li><a href="products.html">Weekly Sale</a></li>
-                                    <li className="menu-item-has-children">
-                                        <a href="#!">Latest News</a>
-                                        <ul className="sub-menu">
-                                            <li><a href="newslist.html">News List</a></li>
-                                            <li><a href="newsgrid.html">News Grid</a></li>
-                                            <li><a href="newsdetail.html">News Detail</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="contactus.html">Contact</a></li>
-                                    <li className="menu-item-has-children current-menu-item">
-                                        <a href="#!"><i className="icon-menu" /></a>
-                                        <ul className="sub-menu">
-                                            <li className="menu-item-has-children">
-                                                <a href="aboutus.html">Products</a>
-                                                <ul className="sub-menu">
-                                                    <li><a href="products.html">Products</a></li>
-                                                    <li><a href="productdetail.html">Product Detail</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="aboutus.html">About Us</a></li>
-                                            <li><a href="404error.html">404 Error</a></li>
-                                            <li><a href="comingsoon.html">Coming Soon</a></li>
-                                        </ul>
-                                    </li>
+
                                 </ul>
                             </div>
                         </nav>

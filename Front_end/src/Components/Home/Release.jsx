@@ -1,6 +1,7 @@
 import React from 'react';
-
-const Release = () => {
+import { ReleaseBook } from '../Book/Books.jsx';
+import { data } from './arrays';
+const Release = (props) => {
     return (<section className="tg-sectionspace tg-haslayout">
         <div className="container">
             <div className="row">
@@ -20,81 +21,11 @@ const Release = () => {
                     <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                         <div className="row">
                             <div className="tg-newreleasebooks">
-                                <div className="col-xs-4 col-sm-4 col-md-6 col-lg-4">
-                                    <div className="tg-postbook">
-                                        <figure className="tg-featureimg">
-                                            <div className="tg-bookimg">
-                                                <div className="tg-frontcover"><img src="images/books/img-07.jpg" alt="image description" /></div>
-                                                <div className="tg-backcover"><img src="images/books/img-07.jpg" alt="image description" /></div>
-                                            </div>
-                                            <a className="tg-btnaddtowishlist" href="#!">
-                                                <i className="icon-heart" />
-                                                <span>add to wishlist</span>
-                                            </a>
-                                        </figure>
-                                        <div className="tg-postbookcontent">
-                                            <ul className="tg-bookscategories">
-                                                <li><a href="#!">Adventure</a></li>
-                                                <li><a href="#!">Fun</a></li>
-                                            </ul>
-                                            <div className="tg-booktitle">
-                                                <h3><a href="#!">Help Me Find My Stomach</a></h3>
-                                            </div>
-                                            <span className="tg-bookwriter">By: <a href="#!">Kathrine Culbertson</a></span>
-                                            <span className="tg-stars"><span /></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xs-4 col-sm-4 col-md-6 col-lg-4">
-                                    <div className="tg-postbook">
-                                        <figure className="tg-featureimg">
-                                            <div className="tg-bookimg">
-                                                <div className="tg-frontcover"><img src="images/books/img-08.jpg" alt="image description" /></div>
-                                                <div className="tg-backcover"><img src="images/books/img-08.jpg" alt="image description" /></div>
-                                            </div>
-                                            <a className="tg-btnaddtowishlist" href="#!">
-                                                <i className="icon-heart" />
-                                                <span>add to wishlist</span>
-                                            </a>
-                                        </figure>
-                                        <div className="tg-postbookcontent">
-                                            <ul className="tg-bookscategories">
-                                                <li><a href="#!">Adventure</a></li>
-                                                <li><a href="#!">Fun</a></li>
-                                            </ul>
-                                            <div className="tg-booktitle">
-                                                <h3><a href="#!">Drive Safely, No Bumping</a></h3>
-                                            </div>
-                                            <span className="tg-bookwriter">By: <a href="#!">Sunshine Orlando</a></span>
-                                            <span className="tg-stars"><span /></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xs-4 col-sm-4 col-md-3 col-lg-4 hidden-md">
-                                    <div className="tg-postbook">
-                                        <figure className="tg-featureimg">
-                                            <div className="tg-bookimg">
-                                                <div className="tg-frontcover"><img src="images/books/img-09.jpg" alt="image description" /></div>
-                                                <div className="tg-backcover"><img src="images/books/img-09.jpg" alt="image description" /></div>
-                                            </div>
-                                            <a className="tg-btnaddtowishlist" href="#!">
-                                                <i className="icon-heart" />
-                                                <span>add to wishlist</span>
-                                            </a>
-                                        </figure>
-                                        <div className="tg-postbookcontent">
-                                            <ul className="tg-bookscategories">
-                                                <li><a href="#!">Adventure</a></li>
-                                                <li><a href="#!">Fun</a></li>
-                                            </ul>
-                                            <div className="tg-booktitle">
-                                                <h3><a href="#!">Let The Good Times Roll Up</a></h3>
-                                            </div>
-                                            <span className="tg-bookwriter">By: <a href="#!">Elisabeth Ronning</a></span>
-                                            <span className="tg-stars"><span /></span>
-                                        </div>
-                                    </div>
-                                </div>
+                                {props.data.map((book, index) => {
+                                    if (index <= 2) {
+                                        return <ReleaseBook key={book.id} {...book}></ReleaseBook>;
+                                    }
+                                })}
                             </div>
                         </div>
                     </div>

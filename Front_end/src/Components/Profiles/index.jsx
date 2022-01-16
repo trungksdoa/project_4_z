@@ -1,31 +1,34 @@
 import React from "react";
 
+import { BrowserRouter as Router, useParams } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
-import Page1 from "./page1.jsx";
-import Page2 from "./page2.jsx";
-import Page3 from "./page3.jsx";
+import Overview from "./Overview.jsx";
+import Order_tracking from "./Order_tracking.jsx";
+import Wishlist from "./Wishlist.jsx";
 import Page4 from "./page4.jsx";
 import { useNavigate } from 'react-router-dom';
 import Profile_sidebar from './Profile_sidebar.jsx'
 import { Link, useSearchParams } from "react-router-dom";
+import ButtonGroup from './button.jsx';
 
-
-const components = {
-    'page1': Page1,
-    'page2': Page2,
-    'page3': Page3,
-    'page4': Page4,
-}
 
 
 const Profile = () => {
     const navigate = useNavigate();
-    let [page, setPage] = useState('page1');
-    // const HandlePageChange = (newPage) => {
-    //     setPage(newPage);
-    // }
-    // setPage(Page3);
+    let { page } = useParams();
+    const [pages, setPages] = useState(<Overview />);
+    useEffect(() => {
+        if (page === "Order_tracking") {
+            setPages(<Order_tracking />)
+        } else if (page === "Wishlist") {
+            setPages(<Wishlist />)
+        } else {
+            setPages(<Overview />)
+        }
+    },[page])
+    const [selectedDashboard, setSelectedDashboard] = useState("overview")
     return (
         <>
             <div class="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index="-100" data-appear-top-offset="600" data-parallax="scroll" data-image-src="images/parallax/bgparallax-07.jpg">
@@ -46,18 +49,14 @@ const Profile = () => {
             <main id="tg-main" className="tg-main tg-haslayout">
                 <div className="container">
                     <div className="row profile">
-                        <Profile_sidebar/>
+                        <Profile_sidebar />
                         <div className="col-md-9">
                             <div className="profile-content">
-                                {/* <components.page/> */}
+                                {pages}
                             </div>
                         </div>
                     </div>
                 </div>
-                <center>
-                    <strong>Licence profile theme :
-                        <a href="https://bootsnipp.com/snippets/M48pA#" target="_blank">https://bootsnipp.com/snippets/M48pA#</a></strong>
-                </center>
                 <br />
                 <br />
             </main>

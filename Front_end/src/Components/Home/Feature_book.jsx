@@ -1,7 +1,8 @@
 import React from 'react';
 import { FeatureBook } from '../Book/Books.jsx';
-import { data } from './Object';
-const featureBook = () => {
+import { objectData } from './Object';
+const featureBook = (props) => {
+    const data = props.lasted_book;
     //Logic here
     return (
         <section className="tg-bglight tg-haslayout">

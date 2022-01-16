@@ -1,4 +1,4 @@
-export const data = {
+export const objectData = {
     id: 1,
     img:
         'images/img-02.png',

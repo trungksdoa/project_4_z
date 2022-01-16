@@ -100,3 +100,11 @@
     background: #fff;
     min-height: 460px;
 }
+.card {
+    background: #ffffff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 0;
+    margin-bottom: 1rem;
+  }

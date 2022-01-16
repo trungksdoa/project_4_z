@@ -1333,7 +1333,7 @@ li.menu-item-has-mega-menu { position: static; }
 .tg-headervtwo .tg-navigation{text-align:left;}
 .tg-headervtwo .tg-navigation > ul > li {padding:0 20px;}
 .tg-headervtwo .tg-navigation li.menu-item-has-mega-menu{padding:0;}
-.tg-headervtwo .tg-navigation li.current-menu-item{background: rgba(0, 0, 0, 0.05);}
+.tg-headervtwo .tg-navigation li.current-menu-item{background: rgba(125, 64, 230, 0.05);}
 .tg-headervtwo .tg-navigation li.menu-item-has-mega-menu a{padding:0 20px;}
 .tg-headervtwo .tg-navigation > ul > li > a{padding:0;}
 .tg-headervtwo .tg-navigation > ul > li a:after{
