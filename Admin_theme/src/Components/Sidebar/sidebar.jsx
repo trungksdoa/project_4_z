@@ -2,93 +2,103 @@
 
 import React from 'react';
 
+import { NavLink } from 'react-router-dom';
+
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+
+import PersonIcon from '@mui/icons-material/Person';
+
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 const sidebar = () => {
+    let body = document.getElementsByTagName("body")[0]
+        , className = "g-sidenav-pinned";
+    const ToggleSidebar = (e) => (
+        body.classList.contains(className) ? (body.classList.remove(className)) : (body.classList.add(className),
+            e.target.classList.remove("d-none"))
+    )
     return (
         <aside className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
             <div className="sidenav-header">
-                <i className="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav" />
-                <a className="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
+                <i className="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" onClick={ToggleSidebar} id="iconSidenav" />
+                <NavLink className="navbar-brand m-0" to="/admin/dashboard">
                     <img src="./assets/img/logo-ct.png" className="navbar-brand-img h-100" alt="main_logo" />
-                    <span className="ms-1 font-weight-bold text-white">Material Dashboard 2</span>
-                </a>
+                    <span className="ms-1 font-weight-bold text-white">Book online</span>
+                </NavLink>
             </div>
             <hr className="horizontal light mt-0 mb-2" />
             <div className="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <a className="nav-link text-white active bg-gradient-primary" href="./pages/dashboard.html">
+                        <NavLink className="nav-link text-white" to="/admin/dashboard">
                             <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i className="material-icons opacity-10">dashboard</i>
                             </div>
                             <span className="nav-link-text ms-1">Dashboard</span>
-                        </a>
+                        </NavLink>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-white " href="./pages/tables.html">
+                        <NavLink className="nav-link text-white " to="/admin/customer">
                             <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i className="material-icons opacity-10">table_view</i>
+                                <AssignmentIndIcon />
                             </div>
-                            <span className="nav-link-text ms-1">Tables</span>
-                        </a>
+                            <span className="nav-link-text ms-1">Customers </span>
+                        </NavLink>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-white " href="./pages/billing.html">
+                        <NavLink className="nav-link text-white " to="/owner/admin">
                             <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i className="material-icons opacity-10">receipt_long</i>
+                                <AdminPanelSettingsIcon />
                             </div>
-                            <span className="nav-link-text ms-1">Billing</span>
-                        </a>
+                            <span className="nav-link-text ms-1">Admins </span>
+                        </NavLink>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-white " href="./pages/virtual-reality.html">
+                        <NavLink className="nav-link text-white " to="/admin/banner">
                             <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i className="material-icons opacity-10">view_in_ar</i>
+                                <ViewCarouselIcon />
                             </div>
-                            <span className="nav-link-text ms-1">Virtual Reality</span>
-                        </a>
+                            <span className="nav-link-text ms-1">Banner </span>
+                        </NavLink>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-white " href="./pages/rtl.html">
+                        <NavLink className="nav-link text-white " to="/admin/order">
                             <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i className="material-icons opacity-10">format_textdirection_r_to_l</i>
+                                <ProductionQuantityLimitsIcon />
                             </div>
-                            <span className="nav-link-text ms-1">RTL</span>
-                        </a>
+                            <span className="nav-link-text ms-1">Orders </span>
+                        </NavLink>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-white " href="./pages/notifications.html">
+                        <NavLink className="nav-link text-white " to="/admin/author">
                             <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i className="material-icons opacity-10">notifications</i>
+                                <PersonIcon />
                             </div>
-                            <span className="nav-link-text ms-1">Notifications</span>
-                        </a>
-                    </li>
-                    <li className="nav-item mt-3">
-                        <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+                            <span className="nav-link-text ms-1">Authors </span>
+                        </NavLink>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-white " href="./pages/profile.html">
+                        <NavLink className="nav-link text-white " to="/admin/book">
                             <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i className="material-icons opacity-10">person</i>
+                                <MenuBookIcon />
                             </div>
-                            <span className="nav-link-text ms-1">Profile</span>
-                        </a>
+                            <span className="nav-link-text ms-1">Book </span>
+                        </NavLink>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-white " href="./pages/sign-in.html">
+                        <NavLink className="nav-link text-white " to="/admin/News">
                             <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i className="material-icons opacity-10">login</i>
+                                <NewspaperIcon />
                             </div>
-                            <span className="nav-link-text ms-1">Sign In</span>
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link text-white " href="./pages/sign-up.html">
-                            <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i className="material-icons opacity-10">assignment</i>
-                            </div>
-                            <span className="nav-link-text ms-1">Sign Up</span>
-                        </a>
+                            <span className="nav-link-text ms-1">News </span>
+                        </NavLink>
                     </li>
                 </ul>
             </div>
