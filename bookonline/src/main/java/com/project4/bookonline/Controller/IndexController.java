@@ -5,17 +5,9 @@
  */
 package com.project4.bookonline.Controller;
 
-import com.project4.bookonline.Model.Book;
-import com.project4.bookonline.Service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.List;
 
 /**
  *
