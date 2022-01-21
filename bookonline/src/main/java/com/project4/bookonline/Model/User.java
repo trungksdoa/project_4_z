@@ -33,4 +33,4 @@ public class User implements Serializable {
     private String UserCreatedDate;
     @Column(name = "User_modifieddate", nullable = false)
     private String UserModifiedDate;
-    }
+}

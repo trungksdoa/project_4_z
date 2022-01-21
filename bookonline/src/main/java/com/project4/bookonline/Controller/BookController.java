@@ -5,11 +5,14 @@
  */
 package com.project4.bookonline.Controller;
 
-import com.project4.bookonline.Model.Books;
+import com.project4.bookonline.Model.Book;
+import com.project4.bookonline.Model.User;
 import com.project4.bookonline.Service.BookService;
+import com.project4.bookonline.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,10 +41,10 @@ public class BookController {
     }
     //API ZONE
     @RequestMapping(value = "/product/api/getall",method = RequestMethod.GET)
-    public ResponseEntity<List<Books>> findAll(){
-        List<Books> Books = BookServide.findAll();
-        if(Books.isEmpty())return new ResponseEntity<List<Books>>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<List<Books>>(Books,HttpStatus.OK);
+    public ResponseEntity<List<Book>> findAll(){
+        List<Book> Books = BookServide.findAll();
+        if(Books.isEmpty())return new ResponseEntity<List<Book>>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<List<Book>>(Books,HttpStatus.OK);
     }
 
 
