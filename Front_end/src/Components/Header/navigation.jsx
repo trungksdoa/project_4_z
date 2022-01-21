@@ -2,21 +2,32 @@ import React from 'react';
 
 import { Link, useSearchParams } from "react-router-dom";
 import { NavLink } from 'react-router-dom'
+import useLocalStorage from 'react-use-localstorage';
 
-const navigationBar = () => {
-
-    const changeActive = (event) => {
-        const active = event.isActive ? 'isActive' : "";
-        // const li = event.target.parentNode;
-        // const getTag = li.tagName;
-        // const active_li = document.querySelector('ul.web_navigation > li.current-menu-item');
-        // active_li.classList.remove('current-menu-item') // Remove class "info"
-        // // document.querySelector('ul.web_navigation > li.current-menu-item').classList.remove("current-menu-item");
-        // li.classList.add("current-menu-item");
-        console.log(active)
+const NavigationBar = () => {
+    const [item, setItem] = useLocalStorage('user', null);
+    let status = true;
+    if (item == "undefined" || item == undefined) {
+        status = false;
     }
-
-    //Logic here
+    console.log(status);
+    function Account(props) {
+        const isLoggedIn = props.isLoggedIn;
+        if (isLoggedIn) {
+            return (
+                <ul className="sub-menu">
+                    <li><NavLink to="/Profile">Profile</NavLink></li>
+                    <li><a onClick={localStorage.removeItem("user")} style={{ cursor: "pointer" }}>Log out</a></li>
+                </ul>
+            );
+        }
+        return (
+            <ul className="sub-menu">
+                <li><NavLink to="/Login">Log in</NavLink></li>
+                <li><NavLink to="/Register">Register</NavLink></li>
+            </ul>
+        );
+    }
     return (
         <div className="tg-navigationarea">
             <div className="container">
@@ -622,7 +633,7 @@ const navigationBar = () => {
                                         </div>
                                     </li>
                                     <li>
-                                        <NavLink  to="/">Home</NavLink>
+                                        <NavLink to="/">Home</NavLink>
                                     </li>
                                     <li className="author_page">
                                         <NavLink to="/author">Authors</NavLink>
@@ -630,7 +641,7 @@ const navigationBar = () => {
                                     </li>
                                     <li><NavLink to="/Collection">Collection</NavLink></li>
                                     <li>
-                                        <NavLink  to="/News">News</NavLink>
+                                        <NavLink to="/News">News</NavLink>
                                         {/* <a href="#!">News</a> */}
                                     </li>
                                     <li>
@@ -639,10 +650,11 @@ const navigationBar = () => {
                                     <li><a href="contactus.html">About us</a></li>
                                     <li className="menu-item-has-children">
                                         <a>Account</a>
-                                        <ul class="sub-menu">
-                                            <li><NavLink  to="/Login">Log in</NavLink></li>
-                                            <li><NavLink  to="/Register">Register</NavLink></li>
-                                        </ul>
+                                        {/* <ul className="sub-menu">
+                                            <li><NavLink to="/Login">Log in</NavLink></li>
+                                            <li><NavLink to="/Register">Register</NavLink></li>
+                                        </ul> */}
+                                        <Account isLoggedIn={status} />
                                     </li>
 
                                 </ul>
@@ -654,4 +666,4 @@ const navigationBar = () => {
         </div>
     )
 }
-export default navigationBar;
+export default NavigationBar;

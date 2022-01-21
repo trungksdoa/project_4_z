@@ -1,12 +1,8 @@
-
-
+import React from 'react';
+import { Link, NavLink } from 'react-router-dom'
 const notfound = () => {
     return (
-
-        <div id="tg-wrapper" className="tg-wrapper tg-haslayout">
-            {/*************************************
-                  Inner Banner Start
-          **************************************/}
+        <>
             <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index={-100} data-appear-top-offset={600} data-parallax="scroll" data-image-src="images/parallax/bgparallax-07.jpg">
                 <div className="container">
                     <div className="row">
@@ -41,16 +37,9 @@ const notfound = () => {
                                         <h2>Ooops! Could Not Find It</h2>
                                         <span>404</span>
                                     </div>
-                                    <form className="tg-formtheme tg-formsearch">
-                                        <fieldset>
-                                            <input type="text" name="search" className="typeahead form-control" placeholder="Search Here" />
-                                            <button type="submit"><i className="icon-magnifier" /></button>
-                                        </fieldset>
-                                        <div className="tg-gobackhome">
-                                            <span>Or Goto</span>
-                                            <a href="javascript:void(0);">Homepage</a>
-                                        </div>
-                                    </form>
+                                    <div className="tg-gobackhome" style={{float:"none",textAlign:"center",fontSize:18,fontFamily:"fantasy"}}>
+                                        <a href='/' >Back to home</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +52,7 @@ const notfound = () => {
             {/*************************************
                   Main End
           **************************************/}
-        </div>
+        </>
     );
 }
 export default notfound;

@@ -11,7 +11,6 @@ import Page4 from "./page4.jsx";
 import { useNavigate } from 'react-router-dom';
 import Profile_sidebar from './Profile_sidebar.jsx'
 import { Link, useSearchParams } from "react-router-dom";
-import ButtonGroup from './button.jsx';
 
 
 
@@ -31,15 +30,15 @@ const Profile = () => {
     const [selectedDashboard, setSelectedDashboard] = useState("overview")
     return (
         <>
-            <div class="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index="-100" data-appear-top-offset="600" data-parallax="scroll" data-image-src="images/parallax/bgparallax-07.jpg">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="tg-innerbannercontent">
-                                <h1>Profile</h1>
-                                <ol class="tg-breadcrumb">
-                                    <li><a href="javascript:void(0);">home</a></li>
-                                    <li class="tg-active">profile</li>
+            <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index="-100" data-appear-top-offset="600" data-parallax="scroll" data-image-src="images/parallax/bgparallax-07.jpg">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div className="tg-innerbannercontent">
+                                <h1>className</h1>
+                                <ol className="tg-breadcrumb">
+                                    <li><a href="#!">home</a></li>
+                                    <li className="tg-active">profile</li>
                                 </ol>
                             </div>
                         </div>

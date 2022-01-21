@@ -18,7 +18,6 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @Column(name = "User_id", nullable = false)
     private String UserID;
     @Column(name = "first_name", nullable = false)
@@ -26,11 +25,33 @@ public class User implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String last_name;
     @Column(name = "User_email", nullable = false)
-        private String UserEmail;
+    private String UserEmail;
     @Column(name = "User_password", nullable = false)
     private String UserPassword;
+    @Column(name = "Birthday", nullable = false)
+    private String Birthday;
+    @Column(name = "Phone", nullable = false)
+    private int Phone;
+    @Column(name = "Status", nullable = false)
+    private int Status;
     @Column(name = "User_createddate", nullable = false)
     private String UserCreatedDate;
     @Column(name = "User_modifieddate", nullable = false)
     private String UserModifiedDate;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "UserID='" + UserID + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", UserEmail='" + UserEmail + '\'' +
+                ", UserPassword='" + UserPassword + '\'' +
+                ", Birthday='" + Birthday + '\'' +
+                ", Phone=" + Phone +
+                ", Status=" + Status +
+                ", UserCreatedDate='" + UserCreatedDate + '\'' +
+                ", UserModifiedDate='" + UserModifiedDate + '\'' +
+                '}';
+    }
 }

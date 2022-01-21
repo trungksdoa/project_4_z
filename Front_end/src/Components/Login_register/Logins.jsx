@@ -1,52 +1,69 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext, useMemo } from "react";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import useLocalStorage from 'react-use-localstorage';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import { store, useGlobalState } from 'state-pool';
-// import styles from './style.module.css';
-import { useNavigate } from 'react-router-dom';
 
+import Auth from "../../api/Auth";
 
-import userApi from "../../api/employeeApi";
 
 
 
 const Login_page = () => {
-    const tempData = [];
-    const [adminRole, setAdminRole] = useState([]);
-    const [Emails, setEmails] = useState('');
-    const [Passwords, setPasswords] = useState('');
-    const navigate = useNavigate();
+    const initialValues = { Emails: "", Pword: "" };
+    const [formValues, setFormValues] = useState(initialValues);
+    const [formErrors, setFormErrors] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
+    let navigate = useNavigate();
+    const Only_number = /^[0-9\b]+$/;
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        console.log(value)
+        setFormValues({ ...formValues, [name]: value });
+    };
 
-    const Roles_list = localStorage.getItem("rolse");
-    const checkLogin = () => {
-        if (Roles_list != null) {
-            navigate('/author')
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setFormErrors(validate(formValues));
+        setIsSubmit(true);
+    };
+    async function Login() {
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+            await Auth.login(formValues.Emails, formValues.Pword).then(response => {
+
+                localStorage.setItem('users', JSON.stringify(response.data));
+                alert(response.msg);
+                // navigate("/")
+            }).catch(e => {
+                alert(e.msg);
+            });
         }
     }
-    // useEffect(() => {
-    //     checkLogin();
-    // })
+    useEffect(() => {
+        Login();
+    }, [formErrors]);
 
-    const HandleLogin = async (e) => {
-        try {
-            e.preventDefault();
-            alert("OK");
-            const response = await userApi.login(Emails, Passwords);
-
-            for (let index = 0; index < response.length; index++) {
-                const element = response[index];
-                tempData.push(element.func_name);
-                // console.log(element.func_name);
-            }
-            const emptys = localStorage.getItem("rolse");
-            localStorage.setItem('rolse', tempData);
-
-            navigate('/author')
-
-        } catch (error) {
-            console.log(error);
+    const validate = (values) => {
+        const errors = {};
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+        if (!values.Emails) {
+            errors.Emails = "Email is required!";
+        } else if (!regex.test(values.Emails)) {
+            errors.Emails = "This is not a valid email format!";
+        } else if (values.Emails.trim().length <= 0) {
+            errors.Emails = "Email not be blank";
         }
-    }
+        if (!values.Pword) {
+            errors.Pword = "Password is required";
+        } else if (values.Pword.trim().length <= 0) {
+            errors.Pword = "Password not be blank";
+        }
+        return errors;
+    };
+    // var property_name = "first_name";
+    // alert(person[property_name]); //Dynamically access object property with bracket notation
     return (
         <>
             <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index="-100"
@@ -65,18 +82,19 @@ const Login_page = () => {
                 <div className="login_form"
                     style={{
                         padding: "15px",
-                        margin: "2rem auto 0px auto",
+                        margin: "2rem auto",
                         width: "40rem"
                     }}>
-                    <form onSubmit={HandleLogin}>
+                    <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="userEmail" value={Emails} onChange={(e) => setEmails(e.target.value)} name="uname" required aria-describedby="emailHelp" placeHolder="" />
-                            <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <label htmlFor="Emails">Email address</label>
+                            <input type="text" className="form-control" name="Emails" value={formValues.Emails} onChange={handleChange} aria-describedby="emailHelp" />
+                            <p style={{ color: "red" }}>{formErrors.Emails}</p>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="userPassword" value={Passwords} onChange={(e) => setPasswords(e.target.value)} name="psw" placeHolder="Password" />
+                            <label htmlFor="Pword">Password</label>
+                            <input type="password" className="form-control" name="Pword" value={formValues.Pword} onChange={handleChange} />
+                            <p style={{ color: "red" }}>{formErrors.Pword}</p>
                         </div>
                         <button type="submit" className="btn btn-primary">Submit</button>
                     </form>
