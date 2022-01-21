@@ -5,7 +5,7 @@ import './index.css';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -55,7 +55,7 @@ function Books() {
 }
 function Page404() {
   return (
-    <div className="container-fluid py-4"><h3 style={{textAlign: 'center',margin:"60px"}}>404 page Not Found</h3></div >
+    <div className="container-fluid py-4"><h3 style={{ textAlign: 'center', margin: "60px" }}>404 page Not Found</h3></div >
   )
 }
 //Đặt trong   <div className="container-fluid py-4">nội dung</div> cho nó căn giữa
@@ -67,7 +67,8 @@ ReactDOM.render(
       <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <Navbar />
         <Routes>
-          <Route path="/admin/dashboard" element={<Home />} />
+          <Route path="/" element={<Navigate to="/admin/dashboard" />} />
+          <Route exact path="/admin/dashboard" element={<Home />} />
           <Route path="/admin/customer" element={<Customers />} />
           <Route path="/admin/setting" element={<Setting />} />
           <Route path="/admin/banner" element={<Banner />} />

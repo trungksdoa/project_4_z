@@ -38,7 +38,7 @@ const Author_page = () => {
               <div className="tg-innerbannercontent">
                 <h1>Authors</h1>
                 <ol className="tg-breadcrumb">
-                  <li><a href="javascript:void(0);">home</a></li>
+                  <li><a href="#;">home</a></li>
                   <li className="tg-active">Authors</li>
                 </ol>
               </div>

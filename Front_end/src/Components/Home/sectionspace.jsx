@@ -1,10 +1,18 @@
-import React from 'react';
+import React from "react";
+import { useEffect, useState, useContext } from "react";
 import { Book } from '../Book/Books.jsx';
 import { data } from './arrays';
 import PropTypes from 'prop-types'
 
 
 const Sectionspace = (props) => {
+
+    const [reload, setReload] = useState(false);
+    
+    console.log("Reloaded")
+    useEffect(() => {
+        setReload(true);
+    }, [])
     //Logic here
     return (
         <section className="tg-sectionspace tg-haslayout">

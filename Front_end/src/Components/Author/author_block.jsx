@@ -12,11 +12,6 @@ const author_block = ({ id, img, name, number }) => {
                     <div className="tg-authorcontent">
                         <h2>{name}</h2>
                         <span>{number}</span>
-                        <ul className="tg-socialicons">
-                            <li className="tg-facebook"><a href="javascript:void(0);"><i className="fa fa-facebook" /></a></li>
-                            <li className="tg-twitter"><a href="javascript:void(0);"><i className="fa fa-twitter" /></a></li>
-                            <li className="tg-linkedin"><a href="javascript:void(0);"><i className="fa fa-linkedin" /></a></li>
-                        </ul>
                     </div>
                 </Link>
             </div>

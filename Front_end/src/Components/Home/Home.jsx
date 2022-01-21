@@ -1,8 +1,7 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 // import styles from './style.module.css';
-import userApi from "../../api/employeeApi";
-
+import userApi from '../../api/Auth';
 //Component
 import Sectionspace from './sectionspace.jsx';
 import FeatureBook from './Feature_book.jsx';
@@ -11,30 +10,13 @@ import Collection from './Collection_count.jsx';
 import PB_author from './PB_Author.jsx';
 import Testimonials from './Testimonials.jsx';
 import Index_news from './Index_news.jsx';
+
 import { data } from './arrays';
-import {objectData} from './Object';
+import { objectData } from './Object';
 const Home = () => {
-    const [user, setUser] = useState([]);
-    const [Emails, setEmails] = useState('');
-    const [Passwords, setPasswords] = useState('');
-    const fetchUser = async () => {
-        try {
-            const response = await userApi.getAll();
-            setUser(response);
-            console.log('List_Employee is ', response);
-
-        } catch (error) {
-            console.log('failed to fetch employee list', error);
-        }
-    }
-
-    useEffect(() => {
-        fetchUser();
-    }, [])
-
     return (
         <>
-            <main id="tg-main" class="tg-main tg-haslayout">
+            <main id="tg-main" className="tg-main tg-haslayout">
                 {/*************************************
 					Best Selling Start
 			**************************************/}
