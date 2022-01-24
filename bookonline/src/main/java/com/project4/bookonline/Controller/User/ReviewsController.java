@@ -38,6 +38,7 @@ public class ReviewsController {
         Message_Respones<Reviews> setMessage = new Message_Respones<Reviews>();
         setMessage.setMessage(msg);
         setMessage.setObject(reviews);
+        setMessage.setCode(Integer.valueOf(HttpStatus.OK + ""));
         return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.OK);
     }
 

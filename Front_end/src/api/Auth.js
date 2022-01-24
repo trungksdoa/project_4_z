@@ -11,9 +11,15 @@ const RequestLogin = (url, userEmail, userPassword) => {
                 resolve(object_user)
             })
             .catch((error) => {
-                object_user.status = error.response.status;
-                console.log(error.response);
-                object_user.msg = error.response.data.msg;
+                console.log(error.toJSON().message)
+                if (error.toJSON().message === 'Network Error') {
+                    object_user.status = 511;
+                    object_user.msg = "Network Authentication Required";
+                }else{
+                    object_user.status = error.response.status;
+                    console.log(error.response);
+                    object_user.msg = error.response.data.msg;
+                }
                 reject(object_user)
             })
     })
@@ -29,6 +35,7 @@ const RequestRegister = (url, props) => {
             birthday: props.birthday
         })
             .then(response => {
+                //Còn xem lại
                 object_user.status = 200;
                 object_user.msg = response.msg;
                 if (response.data_object !== undefined) {

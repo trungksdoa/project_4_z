@@ -1,7 +1,12 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom"
 
-const sidebar = () => {
+const sidebar = ({ChangePage}) => {
+    const HandleChange = (e) => {
+        const page = e.currentTarget.dataset.page;
+        ChangePage(page);
+    }
+
     return (
         <>
             <div className="col-md-3">
@@ -18,19 +23,13 @@ const sidebar = () => {
                     <div className="profile-usermenu">
                         <ul className="nav profile_sidebar">
                             <li className="active">
-                                <NavLink to='/Profile/'>
-                                    <i className="glyphicon glyphicon-home" /> Overview
-                                </NavLink>
+                                <a style={{cursor:"pointer"}} data-page="page1" onClick={HandleChange}><i className="glyphicon glyphicon-home"> Overview</i></a>
                             </li>
                             <li>
-                                <NavLink to='/Profile/Order_tracking'>
-                                    <i className="glyphicon glyphicon-user" /> Order tracking
-                                </NavLink>
+                                <a style={{cursor:"pointer"}} data-page="page2" onClick={HandleChange}><i className="glyphicon glyphicon-user"> Order tracking</i></a>
                             </li>
                             <li>
-                                <NavLink to='/Profile/Wishlist'>
-                                    <i className="glyphicon glyphicon-ok" /> Wishlist
-                                </NavLink>
+                                <a style={{cursor:"pointer"}} data-page="page3" onClick={HandleChange}><i className="glyphicon glyphicon-ok"> Wishlist</i></a>
                             </li>
                         </ul>
                     </div>

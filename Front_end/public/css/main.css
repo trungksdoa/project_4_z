@@ -1180,7 +1180,12 @@ li.menu-item-has-children:hover > .sub-menu > li.menu-item-has-children:hover > 
 li.menu-item-has-mega-menu { position: static; }
 .mega-menu {
 	opacity: 0;
-	width: 100%;
+	width: 0;
+	visibility: hidden;
+}
+.normals-menus {
+	opacity: 0;
+	width: 0;
 	visibility: hidden;
 }
 .mega-menu .tg-themetabnav {

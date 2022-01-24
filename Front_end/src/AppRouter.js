@@ -3,12 +3,10 @@ import {
     BrowserRouter,
     Routes,
     Route,
-    Link,
     Outlet,
-    Navigate,
-    HashRouter
+    Navigate
 } from 'react-router-dom';
-// import {BrowserRouter} from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import Header from './Components/Header/Header.jsx';
 
 import Footer from './Components/Footer/Footer.jsx';
@@ -40,6 +38,26 @@ import Collection from './Components/Collection/Collection.jsx';
 import News from './Components/News/News.jsx';
 
 import News_detail from './Components/News/News_detail';
+
+
+// function PrivateRoute({ children }) {
+//     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+//     const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+//     return auth ? children : <Navigate to="/" />;
+// }
+
+function ProtectLogin({ children }) {
+    const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+    return !auth ? children : <Navigate to="/" />;
+}
+
+function PrivateOutlet() {
+    const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+    return auth ? <Outlet /> : <Navigate to="/" />;
+}
+
 const AppRouter = () => {
     return (
         <div id="tg-wrapper" className="tg-wrapper tg-haslayout">
@@ -50,10 +68,18 @@ const AppRouter = () => {
                     <Route path="/*" element={<Error_404 />} />
 
                     <Route exact path="/" element={<Home />} />
-                    
-                    <Route path="/Login" element={<Login />} />
 
-                    <Route path="/Register" element={<Register />} />
+                    <Route path="/Login" element={
+                        <ProtectLogin>
+                            <Login />
+                        </ProtectLogin>
+                    } />
+
+                    <Route path="/Register" element={
+                        <ProtectLogin>
+                            <Register />
+                        </ProtectLogin>
+                    } />
 
                     <Route path="/News" element={<News />} />
 
@@ -72,11 +98,14 @@ const AppRouter = () => {
                     <Route path="/Contact" element={<Contact />} />
 
                     {/* //need protect */}
-                    <Route path="/Payment" element={<Payment />} />
+                    <Route element={<PrivateOutlet />}>
 
-                    <Route path="/Profile" element={<Profile />} />l
+                        <Route path="/Payment" element={<Payment />} />
 
-                    <Route path="/Profile/:page" element={<Profile />} />
+                        <Route path="/Profile" element={<Profile />} />l
+
+                        <Route path="/Profile/:page" element={<Profile />} />
+                    </Route>
                 </Routes>
                 <Footer />
             </BrowserRouter>

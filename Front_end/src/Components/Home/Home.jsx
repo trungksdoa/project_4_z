@@ -3,6 +3,7 @@ import { useEffect, useState, useContext } from "react";
 // import styles from './style.module.css';
 import userApi from '../../api/Auth';
 //Component
+import { Link, useLocation } from "react-router-dom";
 import Sectionspace from './sectionspace.jsx';
 import FeatureBook from './Feature_book.jsx';
 import Releases from './Release.jsx';
@@ -14,6 +15,7 @@ import Index_news from './Index_news.jsx';
 import { data } from './arrays';
 import { objectData } from './Object';
 const Home = () => {
+
     return (
         <>
             <main id="tg-main" className="tg-main tg-haslayout">

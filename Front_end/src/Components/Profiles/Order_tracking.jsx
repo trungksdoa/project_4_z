@@ -1,112 +1,114 @@
-import React from "react";
-//Bootstrap and jQuery libraries
-import "datatables.net-dt/js/dataTables.dataTables"
-import "datatables.net-dt/css/jquery.dataTables.min.css"
-import $ from 'jquery';
+import React, { useState, useEffect } from "react";
+
+import { useNavigate } from "react-router-dom";
+export const fakeOrder = [
+    {
+        id: 1,
+        status: 1,
+        dateOrder: "2022/02/24",
+        Voucher: "FREESHIP2020",
+        Address: "1494/12 address",
+        note: "10 gio 20 nhe :)))",
+        isReview: true
+    },
+    {
+        id: 2,
+        status: 1,
+        dateOrder: "2022/02/24",
+        Voucher: "FREESHIP2020",
+        Address: "1494/12 address",
+        note: "10 gio 20 nhe :)))",
+        isReview: false
+    }, {
+        id: 3,
+        status: 1,
+        dateOrder: "2022/02/24",
+        Voucher: "FREESHIP2020",
+        Address: "1494/12 address",
+        note: "10 gio 20 nhe :)))",
+        isReview: false
+    }, {
+        id: 4,
+        status: 2,
+        dateOrder: "2022/02/24",
+        Voucher: "FREESHIP2020",
+        Address: "1494/12 address",
+        note: "10 gio 20 nhe :)))",
+        isReview: false
+    }, {
+        id: 5,
+        status: 2,
+        dateOrder: "2022/02/24",
+        Voucher: "FREESHIP2020",
+        Address: "1494/12 address",
+        note: "10 gio 20 nhe :)))",
+        isReview: false
+    }, {
+        id: 6,
+        status: 3,
+        dateOrder: "2022/02/24",
+        Voucher: "FREESHIP2020",
+        Address: "1494/12 address",
+        note: "10 gio 20 nhe :)))",
+        isReview: false
+    },
+]
 const Page2 = () => {
-    $(document).ready(function () {
-        $('#example').DataTable();
-    });
+    const navigate = useNavigate();
+
+    const [list, setList] = useState([]);
+    useEffect(() => {
+        setList(fakeOrder);
+    }, []);
+
+    // const newList = [];
+    const updateConfirm = (id) => {
+        const updatedData = list.map(x => (x.id === id ? { ...x, status: 3 } : x));
+        setList(updatedData)
+    }
+
     return (
-        <table id="example" className="table table-striped table-bordered" style={{ width: '100%' }}>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Status</th>
-                    <th>Date order</th>
-                    <th>Voucher</th>
-                    <th>Delivery address</th>
-                    <th>Note</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td style={{ background: 'yellow' }}>On process</td>
-                    <td>2022/02/24</td>
-                    <td />
-                    <td>49/15 quận thủ đức, thành phố đồng nai</td>
-                    <td>
-                        Ok con dê
-                    </td>
-                    <td>
-                        <a>Chi tiết</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td style={{ background: 'yellow' }}>On process</td>
-                    <td>2022/02/24</td>
-                    <td />
-                    <td>49/15 quận thủ đức, thành phố đồng nai</td>
-                    <td>
-                        Ok con dê</td>
-                    <td>
-                        <a>Chi tiết</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td style={{ background: 'rgb(77, 255, 0)' }}>Delivered</td>
-                    <td>2022/02/24</td>
-                    <td />
-                    <td>49/15 quận thủ đức, thành phố đồng nai</td>
-                    <td>
-                        Ok con dê</td>
-                    <td>
-                        <a>Chi tiết</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td style={{ background: 'yellow' }}>On process</td>
-                    <td>2022/02/24</td>
-                    <td />
-                    <td>49/15 quận thủ đức, thành phố đồng nai</td>
-                    <td>
-                        Ok con dê</td>
-                    <td>
-                        <a>Chi tiết</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td style={{ background: 'yellow' }}>On process</td>
-                    <td>2022/02/25</td>
-                    <td>T11907M0_Project4</td>
-                    <td>49/15 quận thủ đức, thành phố đồng nai</td>
-                    <td>
-                        Ok con dê</td>
-                    <td>
-                        <a>Chi tiết</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td style={{ background: 'yellow' }}>On process</td>
-                    <td>2022/02/24</td>
-                    <td />
-                    <td>49/15 quận thủ đức, thành phố đồng nai</td>
-                    <td>
-                        Ok con dê</td>
-                    <td>
-                        <a>Chi tiết</a>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>id</th>
-                    <th>Status</th>
-                    <th>Date order</th>
-                    <th>Voucher</th>
-                    <th>Delivery address</th>
-                    <th>Note</th>
-                    <th>Action</th>
-                </tr>
-            </tfoot>
-        </table>
+        <>
+            <div className="container">
+                <div className="row">
+                    <div >
+
+                    </div>
+                </div>
+            </div>
+            <table id="example" className="table table-striped table-bordered" style={{ width: '100%' }}>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Status</th>
+                        <th>Date order</th>
+                        <th>Voucher</th>
+                        <th>Delivery address</th>
+                        <th>Note</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {list.map((value, index) => {
+                        return (<tr key={value.id}>
+                            <td>{value.id}</td>
+                            <td style={value.status === 1 ? { background: 'rgb(0 255 255)', padding: 10 } : (value.status === 2 ? { background: 'yellow', padding: 10 } : { background: '#00f800', padding: 10 })}>{value.status === 1 ? "Delivered" : (value.status === 2 ? "Undelivered" : "Confirmed")}</td>
+                            <td>{value.dateOrder}</td>
+                            <td>{value.Voucher}</td>
+                            <td>
+                                {value.Address}
+                            </td>
+                            <td>
+                                {value.note}
+                            </td>
+                            <td>
+                                <a style={{ cursor: 'pointer' }}>{value.status === 3 ? <span>Detail</span> : (value.status === 2 ? <span>Pending</span> : <span onClick={() => updateConfirm(value.id)}>Received goods</span>)}</a>
+                            </td>
+                        </tr>)
+                    })}
+                </tbody>
+            </table>
+        </>
     );
 }
 

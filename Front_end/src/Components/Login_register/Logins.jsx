@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import useLocalStorage from 'react-use-localstorage';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 
 import Auth from "../../api/Auth";
@@ -16,6 +17,7 @@ const Login_page = () => {
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
+    const [cookies, setCookie] = useCookies(['loggin']);
     let navigate = useNavigate();
     const Only_number = /^[0-9\b]+$/;
     const handleChange = (e) => {
@@ -26,17 +28,26 @@ const Login_page = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setFormErrors(validate(formValues));
-        setIsSubmit(true);
+        const vallidate = validate(formValues);
+
+        if (vallidate.status) {
+            setIsSubmit(true);
+            setFormErrors({});
+        } else {
+            setIsSubmit(false);
+            setFormErrors(vallidate);
+        }
     };
     async function Login() {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             await Auth.login(formValues.Emails, formValues.Pword).then(response => {
-
-                localStorage.setItem('users', JSON.stringify(response.data));
+                response.data.loggin = true
+                setCookie('loggin', JSON.stringify(response.data), { path: '/' });
                 alert(response.msg);
+                navigate('/')
                 // navigate("/")
             }).catch(e => {
+                console.log(e)
                 alert(e.msg);
             });
         }
@@ -48,17 +59,23 @@ const Login_page = () => {
     const validate = (values) => {
         const errors = {};
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+        errors.status = true;
         if (!values.Emails) {
             errors.Emails = "Email is required!";
+            errors.status = false;
         } else if (!regex.test(values.Emails)) {
             errors.Emails = "This is not a valid email format!";
+            errors.status = false;
         } else if (values.Emails.trim().length <= 0) {
             errors.Emails = "Email not be blank";
+            errors.status = false;
         }
         if (!values.Pword) {
             errors.Pword = "Password is required";
+            errors.status = false;
         } else if (values.Pword.trim().length <= 0) {
             errors.Pword = "Password not be blank";
+            errors.status = false;
         }
         return errors;
     };
