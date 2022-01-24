@@ -6,6 +6,7 @@
 package com.project4.bookonline.Controller.User.Admin;
 
 import com.project4.bookonline.Model.Message_Respones;
+import com.project4.bookonline.Model.Reviews;
 import com.project4.bookonline.Model.User;
 import com.project4.bookonline.Model.UsersDTO;
 import com.project4.bookonline.Service.UserService;
@@ -29,9 +30,14 @@ public class CustomerManageController {
     UserService userServide;
 
     @RequestMapping(value = "/user/findAll", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<Message_Respones<User>> findAll() {
         List<User> user = userServide.findAll();
-        return new ResponseEntity<List<User>>(user, HttpStatus.OK);
+        Message_Respones<User> setMessage = new Message_Respones<User>();
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(user);
+        setMessage.setCode(Integer.valueOf(HttpStatus.OK + ""));
+        return new ResponseEntity<Message_Respones<User>>(setMessage, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/ban/user/{id}", method = RequestMethod.GET)
