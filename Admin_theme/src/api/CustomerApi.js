@@ -12,9 +12,9 @@ const RequestAll = (url, roles) => {
     return new Promise((resolve, reject) => {
         axiosClient.get(url)
             .then(response => {
-                object_user.code = response.status;
+                object_user.code = response.code;
                 object_user.msg = response.msg;
-                object_user.data = response.data_object;
+                object_user.data = response.data_array;
                 resolve(response)
             })
             .catch((error) => {

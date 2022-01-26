@@ -107,7 +107,10 @@ public class CustomerController {
             user.setUserModifiedDate(dtf.format(now));
             user.setBirthday(dtf.format(date));
             users = userServide.Register(user);
+            UsersDTO userId = new UsersDTO();
+            userId.setUserID(users.getUserID());
             setMessage.setMessage(msg);
+            setMessage.setObject(userId);
             return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
         }
     }

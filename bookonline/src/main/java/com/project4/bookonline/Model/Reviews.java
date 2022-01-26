@@ -19,15 +19,15 @@ public class Reviews {
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Review_id", nullable = false)
-    private String Review_id;
+    private int Review_id;
     @Column(name = "Review_title", nullable = false)
     private String Review_title;
     @Column(name = "Review_content", nullable = false)
     private String Review_content;
     @Column(name = "Rating_start", nullable = false)
-    private String Rating_start;
+    private int Rating_start;
     @Column(name = "Active", nullable = false)
-    private String Active;
+    private int Active;
     @Column(name = "Created_date", nullable = false)
     private String Created_date;
     @Column(name = "User_id", nullable = false)

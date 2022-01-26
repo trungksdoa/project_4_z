@@ -36,7 +36,7 @@ public class CustomerManageController {
         String msg = "Get data success";
         setMessage.setMessage(msg);
         setMessage.setList(user);
-        setMessage.setCode(Integer.valueOf(HttpStatus.OK + ""));
+        setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<User>>(setMessage, HttpStatus.OK);
     }
 
@@ -51,13 +51,16 @@ public class CustomerManageController {
             switch (user.getStatus()) {
                 case 3:
                     msg = "The banned account cannot be banned again";
+                    //Cái này tạm chưa biết nó trạng thái gì :v
                     return new ResponseEntity<String>(msg, HttpStatus.OK);
                 case 2:
                     msg = "Unactivated accounts cannot be banned";
+                    //Cái này tạm chưa biết nó trạng thái gì :v
                     return new ResponseEntity<String>(msg, HttpStatus.OK);
                 default:
                     respone = userServide.Ban(id);
                     msg = "Banned success customers with id: \" + id";
+                    //Cái này tạm chưa biết nó trạng thái gì :v
                     return new ResponseEntity<String>(msg, HttpStatus.OK);
             }
         }

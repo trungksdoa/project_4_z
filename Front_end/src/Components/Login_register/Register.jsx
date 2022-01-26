@@ -16,6 +16,7 @@ import "./App.css";
 import Auth from '../../api/Auth'
 
 
+
 const Register = () => {
     const initialValues = { Fname: "", Lname: "", Emails: "", Pword: "", Cword: "", Pnum: "", birthday: new Date(moment().subtract(16, "years").toString()) };
     const [formValues, setFormValues] = useState(initialValues);
@@ -54,6 +55,7 @@ const Register = () => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             await Auth.register(formValues).then(response => {
                 alert(response.msg);
+                // sendEmail(response.data.userID,"vohoangtrung")
                 navigate("/login")
             }).catch(e => {
                 alert(e.msg);
@@ -117,6 +119,8 @@ const Register = () => {
         }
         return errors;
     };
+
+    //Send emails
     return (
         <>
             <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index="-100"

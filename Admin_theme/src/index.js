@@ -26,7 +26,7 @@ import Author from './Components/Author/index.jsx';
 import Create_authors_form from './Components/Author/Create_form.jsx';
 import Edit_author_form from './Components/Author/Edit_form.jsx';
 import Login from './Components/Login/Login.jsx';
-
+import Reviews from './Components/Reviews/Reviews.jsx'
 import { useCookies } from 'react-cookie';
 
 import Auth from './api/CustomerApi';
@@ -126,9 +126,6 @@ ReactDOM.render(
             <Route path="/admin/setting" element={<Setting />} />
             <Route path="/admin/banner" element={<Banner />} />
             <Route path="/admin/order" element={<Order />} />
-            <Route path="/admin/author" element={<Author />} />
-            <Route path="/admin/author/create" element={<Create_authors_form />} />
-            <Route path="/admin/author/edit" element={<Edit_author_form />} />
             <Route path="/admin/book" element={<Books />} />
             <Route path="/admin/Catagorys_book" element={<Catagorys_book />} />
             <Route path="/admin/Catagorys_news" element={<Catagorys_News />} />
@@ -144,7 +141,10 @@ ReactDOM.render(
             </ProtectLogin>
           } />
           {/* <Route path="/*" element={<Page404 />} /> */}
-          {/* <Route path="/*" element={<PermissionError />} /> */}
+          <Route path="/admin/author" element={<Author />} />
+          <Route path="/admin/author/create" element={<Create_authors_form />} />
+          <Route path="/admin/author/edit" element={<Edit_author_form />} />
+          <Route path="/Reviews" element={<Reviews />} />
         </Routes>
         <Footer />
       </main>

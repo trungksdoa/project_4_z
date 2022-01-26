@@ -39,7 +39,7 @@ import News from './Components/News/News.jsx';
 
 import News_detail from './Components/News/News_detail';
 
-
+import Sendemail from './Components/Login_register/Sendemail'
 // function PrivateRoute({ children }) {
 //     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
 //     const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
@@ -80,7 +80,7 @@ const AppRouter = () => {
                             <Register />
                         </ProtectLogin>
                     } />
-
+                    <Route path="/Sendmail/:userId/:userName" element={<Sendemail />} />
                     <Route path="/News" element={<News />} />
 
                     <Route path="/News/:id" element={<News_detail />} />

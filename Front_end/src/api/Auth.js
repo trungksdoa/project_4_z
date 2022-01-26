@@ -36,6 +36,7 @@ const RequestRegister = (url, props) => {
         })
             .then(response => {
                 //Còn xem lại
+                console.log(response)
                 object_user.status = 200;
                 object_user.msg = response.msg;
                 if (response.data_object !== undefined) {
