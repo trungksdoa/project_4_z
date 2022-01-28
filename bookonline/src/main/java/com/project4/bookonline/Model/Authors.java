@@ -4,6 +4,13 @@
  */
 package com.project4.bookonline.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -24,21 +31,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author PC
  */
 @Entity
 @Table(name = "Authors", catalog = "Project_4", schema = "dbo")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Authors.findAll", query = "SELECT a FROM Authors a"),
-    @NamedQuery(name = "Authors.findByAuthorid", query = "SELECT a FROM Authors a WHERE a.authorid = :authorid"),
-    @NamedQuery(name = "Authors.findByAuthorImage", query = "SELECT a FROM Authors a WHERE a.authorImage = :authorImage"),
-    @NamedQuery(name = "Authors.findByAuthorname", query = "SELECT a FROM Authors a WHERE a.authorname = :authorname"),
-    @NamedQuery(name = "Authors.findByNumberpublishedbooks", query = "SELECT a FROM Authors a WHERE a.numberpublishedbooks = :numberpublishedbooks"),
-    @NamedQuery(name = "Authors.findByAuthorinformation", query = "SELECT a FROM Authors a WHERE a.authorinformation = :authorinformation"),
-    @NamedQuery(name = "Authors.findByDatecreated", query = "SELECT a FROM Authors a WHERE a.datecreated = :datecreated"),
-    @NamedQuery(name = "Authors.findByModifieddate", query = "SELECT a FROM Authors a WHERE a.modifieddate = :modifieddate")})
 public class Authors implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,12 +58,12 @@ public class Authors implements Serializable {
     private String authorinformation;
     @Basic(optional = false)
     @Column(name = "Datecreated", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date datecreated;
+    private String datecreated;
     @Basic(optional = false)
     @Column(name = "Modifieddate", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifieddate;
+    private String modifieddate;
+    //    @JsonIgnore
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "authorid")
     private Collection<Books> booksCollection;
 
@@ -77,7 +74,7 @@ public class Authors implements Serializable {
         this.authorid = authorid;
     }
 
-    public Authors(Integer authorid, String authorImage, String authorname, int numberpublishedbooks, String authorinformation, Date datecreated, Date modifieddate) {
+    public Authors(Integer authorid, String authorImage, String authorname, int numberpublishedbooks, String authorinformation, String datecreated, String modifieddate) {
         this.authorid = authorid;
         this.authorImage = authorImage;
         this.authorname = authorname;
@@ -127,22 +124,23 @@ public class Authors implements Serializable {
         this.authorinformation = authorinformation;
     }
 
-    public Date getDatecreated() {
+    public String getDatecreated() {
         return datecreated;
     }
 
-    public void setDatecreated(Date datecreated) {
+    public void setDatecreated(String datecreated) {
         this.datecreated = datecreated;
     }
 
-    public Date getModifieddate() {
+    public String getModifieddate() {
         return modifieddate;
     }
 
-    public void setModifieddate(Date modifieddate) {
+    public void setModifieddate(String modifieddate) {
         this.modifieddate = modifieddate;
     }
 
+    @JsonManagedReference(value="Author_book")
     @XmlTransient
     public Collection<Books> getBooksCollection() {
         return booksCollection;
@@ -176,5 +174,4 @@ public class Authors implements Serializable {
     public String toString() {
         return "com.project4.bookonline.Model.Authors[ authorid=" + authorid + " ]";
     }
-    
 }

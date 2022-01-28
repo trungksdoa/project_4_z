@@ -4,42 +4,32 @@
  */
 package com.project4.bookonline.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author PC
  */
 @Entity
 @Table(name = "Books", catalog = "Project_4", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Books.findAll", query = "SELECT b FROM Books b"),
-    @NamedQuery(name = "Books.findByBooksid", query = "SELECT b FROM Books b WHERE b.booksid = :booksid"),
-    @NamedQuery(name = "Books.findByBookname", query = "SELECT b FROM Books b WHERE b.bookname = :bookname"),
-    @NamedQuery(name = "Books.findByBookprice", query = "SELECT b FROM Books b WHERE b.bookprice = :bookprice"),
-    @NamedQuery(name = "Books.findByBookdescription", query = "SELECT b FROM Books b WHERE b.bookdescription = :bookdescription"),
-    @NamedQuery(name = "Books.findByBookreleasedate", query = "SELECT b FROM Books b WHERE b.bookreleasedate = :bookreleasedate"),
-    @NamedQuery(name = "Books.findByBookmodifieddate", query = "SELECT b FROM Books b WHERE b.bookmodifieddate = :bookmodifieddate"),
-    @NamedQuery(name = "Books.findByBookcreateddate", query = "SELECT b FROM Books b WHERE b.bookcreateddate = :bookcreateddate"),
-    @NamedQuery(name = "Books.findByAmounts", query = "SELECT b FROM Books b WHERE b.amounts = :amounts")})
+        @NamedQuery(name = "Books.findAll", query = "SELECT b FROM Books b"),
+        @NamedQuery(name = "Books.findByBooksid", query = "SELECT b FROM Books b WHERE b.booksid = :booksid"),
+        @NamedQuery(name = "Books.findByBookname", query = "SELECT b FROM Books b WHERE b.bookname = :bookname"),
+        @NamedQuery(name = "Books.findByBookprice", query = "SELECT b FROM Books b WHERE b.bookprice = :bookprice"),
+        @NamedQuery(name = "Books.findByBookdescription", query = "SELECT b FROM Books b WHERE b.bookdescription = :bookdescription"),
+        @NamedQuery(name = "Books.findByBookreleasedate", query = "SELECT b FROM Books b WHERE b.bookreleasedate = :bookreleasedate"),
+        @NamedQuery(name = "Books.findByBookmodifieddate", query = "SELECT b FROM Books b WHERE b.bookmodifieddate = :bookmodifieddate"),
+        @NamedQuery(name = "Books.findByBookcreateddate", query = "SELECT b FROM Books b WHERE b.bookcreateddate = :bookcreateddate"),
+        @NamedQuery(name = "Books.findByAmounts", query = "SELECT b FROM Books b WHERE b.amounts = :amounts")})
 public class Books implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -70,8 +60,9 @@ public class Books implements Serializable {
     @Basic(optional = false)
     @Column(name = "Amounts", nullable = false)
     private int amounts;
-    @JoinColumn(name = "Author_id", referencedColumnName = "Author_id", nullable = false)
-    @ManyToOne(optional = false)
+
+    @ManyToOne
+    @JoinColumn(name = "Author_id", nullable = false)
     private Authors authorid;
     @JoinColumn(name = "PDetail_id", referencedColumnName = "Pdetail_id", nullable = false)
     @ManyToOne(optional = false)
@@ -160,6 +151,7 @@ public class Books implements Serializable {
         this.amounts = amounts;
     }
 
+    @JsonBackReference(value="Author_book")
     public Authors getAuthorid() {
         return authorid;
     }
@@ -168,6 +160,7 @@ public class Books implements Serializable {
         this.authorid = authorid;
     }
 
+    @JsonBackReference(value="pdetail_book")
     public PDetail getPDetailid() {
         return pDetailid;
     }
@@ -175,7 +168,6 @@ public class Books implements Serializable {
     public void setPDetailid(PDetail pDetailid) {
         this.pDetailid = pDetailid;
     }
-
     @XmlTransient
     public Collection<OrderDetail> getOrderDetailCollection() {
         return orderDetailCollection;
@@ -209,5 +201,5 @@ public class Books implements Serializable {
     public String toString() {
         return "com.project4.bookonline.Model.Books[ booksid=" + booksid + " ]";
     }
-    
+
 }

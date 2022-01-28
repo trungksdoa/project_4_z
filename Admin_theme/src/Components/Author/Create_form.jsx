@@ -1,5 +1,25 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
+import Au_API from '../../api/AuthorAPI';
 const example = () => {
+
+    const initialValues = { Fname: "", Lname: "", Emails: "", Pword: "", Cword: "", Pnum: "", birthday: new Date(moment().subtract(16, "years").toString()) };
+    const [formValues, setFormValues] = useState(initialValues);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+        // if (e.target != undefined) {
+
+        // }
+        // setFormValues({ ...formValues, birthday: e });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
+    const CreateAuthor = async (e) => {
+        e.preventDefault();
+        const res = await Au_API.Create()
+    }
     return (
         <div className="container-fluid py-4">
             <div className="row">
@@ -16,33 +36,23 @@ const example = () => {
                                     <div className="row">
                                         <div className="col-6">
                                             <label >Name</label>
-                                            <input type="text"   className="form-control" />
+                                            <input type="text" name="Au_name" className="form-control" />
                                         </div>
                                         <div className="col-6">
                                             <label >Published</label>
-                                            <input type="text"   className="form-control" />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-6">
-                                            <label >Date Created</label>
-                                            <input type="text"   className="form-control" />
-                                        </div>
-                                        <div className="col-6">
-                                            <label >Modifieddate</label>
-                                            <input type="text"   className="form-control" />
+                                            <input type="text" name="Au_Published" className="form-control" />
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="col-12">
                                             <label >Infomation</label>
-                                            <textarea type="text"  className="form-control" defaultValue={""} />
+                                            <textarea type="text" name="Au_Information"   className="form-control" defaultValue={""} />
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="col-12">
                                             <label >Image</label>
-                                            <input type="File" className="form-control" />
+                                            <input type="File" value="131231" name="Au_images"   className="form-control" />
                                         </div>
                                     </div>
                                 </div>

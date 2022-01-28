@@ -4,6 +4,8 @@
  */
 package com.project4.bookonline.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -95,6 +97,7 @@ public class OrderDetail implements Serializable {
     public void setBookid(Books bookid) {
         this.bookid = bookid;
     }
+
 
     public Orders getOrderid() {
         return orderid;

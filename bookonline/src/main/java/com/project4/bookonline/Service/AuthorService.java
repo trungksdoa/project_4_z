@@ -5,6 +5,9 @@
 package com.project4.bookonline.Service;
 
 import com.project4.bookonline.Model.Authors;
+import com.project4.bookonline.Model.Message_Respones;
+import com.project4.bookonline.Model.Respone_Book_Author;
+
 import java.util.List;
 
 /**
@@ -14,5 +17,7 @@ import java.util.List;
 public interface AuthorService {
     public List<Authors> listAll();
     public Authors Create(Authors authors);
+    public Authors Edit(int id,Authors authors);
     public void Delete(int id);
+//}
 }

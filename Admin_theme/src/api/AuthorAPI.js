@@ -30,9 +30,9 @@ const RequestAll = (url) => {
     })
 }
 
-const RequestChangeStatus = (url, id, status) => {
+const RequestEdit = (url, id) => {
     const object_user = {};
-    const requestStatus = new Promise((resolve, reject) => {
+    const RequestEditer = new Promise((resolve, reject) => {
         axiosClient.put(url)
             .then(response => {
                 console.log(response)
@@ -54,9 +54,9 @@ const RequestChangeStatus = (url, id, status) => {
                 reject(object_user)
             })
     })
-    const Actions = status === 1 ? "Review ID " + id + " has been shown" : "Review ID " + id + " has been hidden";
+    const Actions = "Author ID " + id + " has been updated"
     toast.promise(
-        requestStatus,
+        RequestEditer,
         {
             pending: 'Wating...',
             success: Actions,
@@ -98,20 +98,57 @@ const RequestDelete = (url) => {
     )
 }
 
+const RequestCreate = (url) => {
+    const object_user = {};
+    const RequestEditer = new Promise((resolve, reject) => {
+        axiosClient.put(url)
+            .then(response => {
+                console.log(response)
+                object_user.code = response.code;
+                object_user.msg = response.msg;
+                object_user.data = response.data_object;
+                resolve(object_user)
+            })
+            .catch((error) => {
+                console.log(error.response);
+                if (error.toJSON().message === 'Network Error') {
+                    object_user.status = 511;
+                    object_user.msg = "Network Authentication Required";
+                } else {
+                    object_user.status = error.response.status;
+                    console.log(error.response);
+                    object_user.msg = error.response.data.msg;
+                }
+                reject(object_user)
+            })
+    })
+    toast.promise(
+        RequestEditer,
+        {
+            pending: 'Wating...',
+            success: "Registed new author success",
+            error: 'Change fails 🤯'
+        }
+    )
+}
 
-const ReviewsAPI = {
+const AuthorAPI = {
     getAll: () => {
-        const url = 'reviews/findAll';
+        const url = 'authors/findAll';
         return RequestAll(url);
     },
-    ChangeStatus: (id, status) => {
-        const url = "reviews/status/" + id + "/" + status + "";
-        return RequestChangeStatus(url, id, status)
+    Edit: (id) => {
+        const url = "authors/update/" + id;
+        return RequestEdit(url, id)
     },
     Delete: (id) => {
-        const url = "reviews/delete/" + id;
+        const url = "authors/delete/" + id;
         return RequestDelete(url)
+    },
+    Create: (id) => {
+        const url = "authors";
+        return RequestCreate(url)
     }
 }
 
-export default ReviewsAPI
+export default AuthorAPI

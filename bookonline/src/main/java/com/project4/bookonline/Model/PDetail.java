@@ -4,6 +4,8 @@
  */
 package com.project4.bookonline.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -21,21 +23,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author PC
  */
 @Entity
 @Table(name = "PDetail", catalog = "Project_4", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PDetail.findAll", query = "SELECT p FROM PDetail p"),
-    @NamedQuery(name = "PDetail.findByPdetailid", query = "SELECT p FROM PDetail p WHERE p.pdetailid = :pdetailid"),
-    @NamedQuery(name = "PDetail.findByImageLink", query = "SELECT p FROM PDetail p WHERE p.imageLink = :imageLink"),
-    @NamedQuery(name = "PDetail.findByFormat", query = "SELECT p FROM PDetail p WHERE p.format = :format"),
-    @NamedQuery(name = "PDetail.findByPages", query = "SELECT p FROM PDetail p WHERE p.pages = :pages"),
-    @NamedQuery(name = "PDetail.findByDimensions", query = "SELECT p FROM PDetail p WHERE p.dimensions = :dimensions"),
-    @NamedQuery(name = "PDetail.findByLanguage", query = "SELECT p FROM PDetail p WHERE p.language = :language"),
-    @NamedQuery(name = "PDetail.findByIllustrationsnote", query = "SELECT p FROM PDetail p WHERE p.illustrationsnote = :illustrationsnote")})
+        @NamedQuery(name = "PDetail.findAll", query = "SELECT p FROM PDetail p"),
+        @NamedQuery(name = "PDetail.findByPdetailid", query = "SELECT p FROM PDetail p WHERE p.pdetailid = :pdetailid"),
+        @NamedQuery(name = "PDetail.findByImageLink", query = "SELECT p FROM PDetail p WHERE p.imageLink = :imageLink"),
+        @NamedQuery(name = "PDetail.findByFormat", query = "SELECT p FROM PDetail p WHERE p.format = :format"),
+        @NamedQuery(name = "PDetail.findByPages", query = "SELECT p FROM PDetail p WHERE p.pages = :pages"),
+        @NamedQuery(name = "PDetail.findByDimensions", query = "SELECT p FROM PDetail p WHERE p.dimensions = :dimensions"),
+        @NamedQuery(name = "PDetail.findByLanguage", query = "SELECT p FROM PDetail p WHERE p.language = :language"),
+        @NamedQuery(name = "PDetail.findByIllustrationsnote", query = "SELECT p FROM PDetail p WHERE p.illustrationsnote = :illustrationsnote")})
 public class PDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -122,6 +123,7 @@ public class PDetail implements Serializable {
         this.illustrationsnote = illustrationsnote;
     }
 
+    @JsonManagedReference(value = "pdetail_book")
     @XmlTransient
     public Collection<Books> getBooksCollection() {
         return booksCollection;
@@ -155,5 +157,5 @@ public class PDetail implements Serializable {
     public String toString() {
         return "com.project4.bookonline.Model.PDetail[ pdetailid=" + pdetailid + " ]";
     }
-    
+
 }
