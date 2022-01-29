@@ -3,8 +3,11 @@ import Fab from '@mui/material/Fab';
 import CachedIcon from '@mui/icons-material/Cached';
 import AuthorAPI from '../../api/AuthorAPI';
 import Author_table from './author_table.jsx';
+import { useNavigate } from 'react-router-dom';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 const Author = () => {
     const [author_list, setAuthor_list] = useState([]);
+    const navigate = useNavigate();
     async function FetchData() {
         const res = await AuthorAPI.getAll();
         setAuthor_list(res.data);
@@ -23,6 +26,9 @@ const Author = () => {
     function handleView(index) {
 
     }
+    function GotoCreatePage() {
+        navigate("/admin/author/create")
+    }
     useEffect(() => {
         FetchData();
     }, [])
@@ -30,7 +36,7 @@ const Author = () => {
         <div className="container-fluid py-4">
             <div className="row">
                 <div className="col-12">
-                    <a><i className="fa fa-plus-square" /></a>
+                    <a style={{ cursor: 'pointer' }} onClick={GotoCreatePage}><AddCircleIcon fontSize="large" /></a>
                     <div className="card my-4">
                         <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">

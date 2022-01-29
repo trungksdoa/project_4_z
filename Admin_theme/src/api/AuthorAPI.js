@@ -98,15 +98,17 @@ const RequestDelete = (url) => {
     )
 }
 
-const RequestCreate = (url) => {
+const RequestCreate = (url, props) => {
     const object_user = {};
-    const RequestEditer = new Promise((resolve, reject) => {
-        axiosClient.put(url)
+
+    const RequestCreate = new Promise((resolve, reject) => {
+        axiosClient.post(url, { authorname: props.Au_name, numberpublishedbooks: props.Au_Published, authorinformation: props.Au_Information, authorImage: props.Au_images })
             .then(response => {
                 console.log(response)
                 object_user.code = response.code;
                 object_user.msg = response.msg;
                 object_user.data = response.data_object;
+                console.log(object_user)
                 resolve(object_user)
             })
             .catch((error) => {
@@ -123,11 +125,11 @@ const RequestCreate = (url) => {
             })
     })
     toast.promise(
-        RequestEditer,
+        RequestCreate,
         {
             pending: 'Wating...',
-            success: "Registed new author success",
-            error: 'Change fails 🤯'
+            success: 'Delete successfully',
+            error: 'Delete fails 🤯'
         }
     )
 }
@@ -145,9 +147,9 @@ const AuthorAPI = {
         const url = "authors/delete/" + id;
         return RequestDelete(url)
     },
-    Create: (id) => {
+    Create: (props) => {
         const url = "authors";
-        return RequestCreate(url)
+        return RequestCreate(url, props)
     }
 }
 

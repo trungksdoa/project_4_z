@@ -4,6 +4,8 @@
  */
 package com.project4.bookonline.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;

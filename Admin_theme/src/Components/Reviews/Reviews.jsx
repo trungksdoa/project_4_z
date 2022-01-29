@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ReviewTable from './ReviewTable.jsx'
 import ReviewAPI from '../../api/ReviewAPI'
@@ -129,7 +128,6 @@ const Reviews = () => {
                             </div>
                         </div>
                         <ReviewTable reviews={filtered} onChange={handleChange} onDelete={handleDelete} />
-                        <ToastContainer />
                     </div>
                 </div>
             </div>

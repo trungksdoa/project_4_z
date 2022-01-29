@@ -15,15 +15,17 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-const Form_Edit = (props) => {
+const Form_Create = (props) => {
 
-    const { OnKeyPress, Error, values } = props;
+    const { OnKeyPress, Error, values, resetFile, Image } = props;
 
     function OnChange(e) {
         if (OnKeyPress) {
             OnKeyPress(e);
         }
     }
+
+    console.log(values.Au_name);
     return (
         <Box
             sx={{
@@ -61,16 +63,17 @@ const Form_Edit = (props) => {
                         <p style={{ color: "red" }}>{Error.Au_Published}</p>
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField
-                            required
-                            fullWidth
-                            value={values.Au_images}
-                            name="Au_images"
-                            label="Image"
-                            id="Au_images"
-                            onChange={OnChange}
-                        />
-                         <p style={{ color: "red" }}>{Error.Au_images}</p>
+                        <div class="mb-3">
+                            <label for="avatar" style={{ color: "black", fontSize: 18, fontWeight: 400 }}>Select avartar author (PNG,JPEG only)</label>
+                            <input type='file' ref={resetFile} id="avatar" style={{ display: "none" }} onChange={OnChange} name="Au_images" />
+                        </div>
+                        <p style={{ color: "black" }}>{values.Au_images.name}</p>
+                        <div style={{width:"30rem",height: "auto",margin:"auto"}}>
+                            <img style={{
+                                width: "100%"
+                            }} src={Image} />
+                        </div>
+                        <p style={{ color: "red" ,maxWidth: "30rem",maxHeight:"340px"}}>{Error.Au_images}</p>
                     </Grid>
                 </Grid>
                 {/* <Button
@@ -85,15 +88,20 @@ const Form_Edit = (props) => {
         </Box>
     )
 }
-Form_Edit.propTypes = {
+Form_Create.propTypes = {
     OnKeyPress: PropTypes.func,
     Error: PropTypes.object,
     values: PropTypes.object,
+    resetFile: PropTypes.any,
+    Image: PropTypes.any
 };
 
-Form_Edit.defaultProps = {
+Form_Create.defaultProps = {
     OnKeyPress: null,
     Error: {},
-    values: { Au_name: "", Au_Published: "", Au_Information: "", Au_images: "" }
+    values: { Au_name: "", Au_Published: "", Au_Information: "", Au_images: "" },
+    resetFile: null,
+    Image: null
+
 };
-export default Form_Edit;
+export default Form_Create;

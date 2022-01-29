@@ -5,6 +5,8 @@ import './index.css';
 
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 
+import { ToastContainer, toast } from 'react-toastify';
+
 
 import reportWebVitals from './reportWebVitals';
 
@@ -23,11 +25,12 @@ import Admin from "./Components/Admin/index.jsx";
 import Order from './Components/Order/index.jsx';
 
 import Author from './Components/Author/index.jsx';
-import Create_authors_form from './Components/Author/Create_form.jsx';
-import Edit_author_form from './Components/Author/Edit_form.jsx';
+import Create_authors_form from './Components/Author/Form_create_page.jsx';
+import Edit_author_form from './Components/Author/Form_edit_page.jsx';
 import Login from './Components/Login/Login.jsx';
 import Reviews from './Components/Reviews/Reviews.jsx'
 import { useCookies } from 'react-cookie';
+
 
 import Auth from './api/CustomerApi';
 
@@ -147,6 +150,7 @@ ReactDOM.render(
           <Route path="/Reviews" element={<Reviews />} />
         </Routes>
         <Footer />
+        <ToastContainer />
       </main>
     </Router>
   </React.StrictMode >, document.getElementById('root')

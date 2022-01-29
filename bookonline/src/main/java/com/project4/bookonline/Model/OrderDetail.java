@@ -98,7 +98,6 @@ public class OrderDetail implements Serializable {
         this.bookid = bookid;
     }
 
-
     public Orders getOrderid() {
         return orderid;
     }

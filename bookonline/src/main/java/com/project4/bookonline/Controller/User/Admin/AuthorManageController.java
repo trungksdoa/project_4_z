@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -48,7 +50,7 @@ public class AuthorManageController {
     }
 
     @RequestMapping(value = "/authors/update/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Message_Respones<Authors>> findAll(@PathVariable int id, @RequestBody Authors authors) {
+    public ResponseEntity<Message_Respones<Authors>> Update(@PathVariable int id, @RequestBody Authors authors) {
         Authors authors1 = authorService.Edit(id, authors);
         String msg = "Update success";
         setMessage.setMessage(msg);
@@ -59,6 +61,10 @@ public class AuthorManageController {
 
     @RequestMapping(value = "/authors", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Message_Respones<Authors>> Save(@RequestBody Authors authors) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        authors.setDatecreated(dtf.format(now));
+        authors.setModifieddate(dtf.format(now));
         Authors authors1 = authorService.Create(authors);
         String msg = "Update success";
         setMessage.setMessage(msg);
