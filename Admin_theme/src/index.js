@@ -149,9 +149,10 @@ ReactDOM.render(
           <Route path="/admin/author/edit/:id" element={<Edit_author_form />} />
           <Route path="/Reviews" element={<Reviews />} />
         </Routes>
-        <Footer />
         <ToastContainer />
+        <Footer />
       </main>
+
     </Router>
   </React.StrictMode >, document.getElementById('root')
 );

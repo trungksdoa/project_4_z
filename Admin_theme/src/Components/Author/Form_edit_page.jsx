@@ -7,7 +7,7 @@ import Fab from '@mui/material/Fab';
 import EditIcon from '@mui/icons-material/Edit';
 import Ck_editor from './CK_Editor';
 import Au_API from '../../api/AuthorAPI'
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const FormPage = () => {
     // ----------------------------------------------------------------
@@ -192,7 +192,8 @@ const FormPage = () => {
             formData.append("author_String", JSON.stringify(author));
             // // // API CALL
             await Au_API.Edit(author_id, formData).then(res => {
-                toast(res)
+                alert("Success")
+                toast("Ok")
             }).catch((e) => {
                 alert(e.msg)
             });
@@ -318,7 +319,9 @@ const FormPage = () => {
                         </>)}
                 </form>
             </div >
+            {/* <ToastContainer /> */}
         </div >
+
     )
 };
 export default FormPage
