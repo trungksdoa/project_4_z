@@ -5,7 +5,8 @@ import AuthorAPI from '../../api/AuthorAPI';
 import Author_table from './author_table.jsx';
 import { useNavigate } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-const Author = () => {
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; const Author = () => {
     const [author_list, setAuthor_list] = useState([]);
     const navigate = useNavigate();
     async function FetchData() {
@@ -15,16 +16,22 @@ const Author = () => {
     }
     const handleDelete = async (index) => {
         let newArr = [...author_list]; // copying the old datas array
-        newArr.splice(index, 1);
-        setAuthor_list(newArr)
-        console.table(newArr)
-        // await ReviewAPI.ChangeStatus(newArr[index].review_id, value);
+        console.table(newArr[index].authorid)
+        const id = newArr[index].authorid;
+        await AuthorAPI.Delete(id).then((res) => {
+            newArr.splice(index, 1);
+            setAuthor_list(newArr)
+            toast(res.msg);
+        }).catch((err) => {
+            alert(err.msg)
+        });
+
+
     };
-    function handleEdit(index) {
-
-    }
     function handleView(index) {
-
+        const newArray = [...author_list];
+        const id = newArray[index].authorid;
+        navigate("/admin/author/edit/" + id)
     }
     function GotoCreatePage() {
         navigate("/admin/author/create")
@@ -55,7 +62,7 @@ const Author = () => {
                         </div>
                         <div className="card-body px-0 pb-2">
                             <div className="table-responsive p-0">
-                                <Author_table authors={author_list} onDelete={handleDelete} />
+                                <Author_table authors={author_list} onViewDetail={handleView} onDelete={handleDelete} />
                             </div>
                         </div>
                     </div>

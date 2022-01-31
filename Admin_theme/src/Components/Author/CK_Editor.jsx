@@ -25,7 +25,7 @@ const Ck_editor = (props) => {
         >
             <CKEditor
                 editor={ClassicEditor}
-                data={values.Au_Information}
+                data={values.authorinformation}
                 onReady={editor => {
                     // You can store the "editor" and use when it is needed.
                     console.log('Editor is ready to use!', editor);
@@ -38,7 +38,7 @@ const Ck_editor = (props) => {
                     console.log('Focus.', editor);
                 }}
             />
-            <p style={{ color: "red" }}>{Error.Au_Information}</p>
+            <p style={{ color: "red" }}>{Error.authorinformation}</p>
         </Box>
     )
 }

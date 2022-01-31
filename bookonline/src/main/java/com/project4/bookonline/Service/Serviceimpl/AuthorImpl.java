@@ -36,18 +36,25 @@ public class AuthorImpl implements AuthorService {
     }
 
     @Override
+    public Authors findOne(int id) {
+        Optional<Authors> optional = AuthorRepository.findById(id);
+        Authors au = optional.get();
+        return au;
+    }
+
+    @Override
     public Authors Edit(int id, Authors authors) {
         Optional<Authors> optional = AuthorRepository.findById(id);
         Authors au = optional.get();
         Authors newObject = new Authors(null);
         if (au != null) {
-            newObject.setAuthorid(au.getAuthorid());
-            newObject.setAuthorImage(au.getAuthorImage());
-            newObject.setAuthorname(au.getAuthorname());
-            newObject.setAuthorinformation(au.getAuthorinformation());
+            newObject.setAuthorid(authors.getAuthorid());
+            newObject.setAuthorImage(authors.getAuthorImage());
+            newObject.setAuthorname(authors.getAuthorname());
+            newObject.setAuthorinformation(authors.getAuthorinformation());
             newObject.setDatecreated(au.getDatecreated());
-            newObject.setModifieddate(au.getModifieddate());
-            newObject.setNumberpublishedbooks(au.getNumberpublishedbooks());
+            newObject.setModifieddate(authors.getModifieddate());
+            newObject.setNumberpublishedbooks(authors.getNumberpublishedbooks());
         }
         return AuthorRepository.save(newObject);
     }

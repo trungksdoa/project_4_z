@@ -23,35 +23,32 @@ import 'react-toastify/dist/ReactToastify.css';
 const steps = ['First information', 'Writing information'];
 
 const FormPage = () => {
+    // ---------------------
     const initialValues = {
-        Au_name: "", Au_Published: "", Au_Information: "", Au_images: {
-            lastModified: 0,
-            lastModifiedDate: new Date(),
-            name: "",
-            size: 0,
-            type: ""
-        }
+        authorname: "", numberpublishedbooks: 0, authorinformation: ""
     };
     const { ...initValue } = initialValues;
+    const [selectedFile, setSelectedFile] = useState(null);
     const [formValues, setFormValues] = useState(initValue);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
     const [fromStep, setFromStep] = useState(0);
-    const ref = useRef();
-    const navigate = useNavigate();
-
-
+    const [imgData, setImgData] = useState(null);
     // ---------------------
     // Step
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [skipped, setSkipped] = React.useState(new Set());
+    const [activeStep, setActiveStep] = useState(0);
+    const [skipped, setSkipped] = useState(new Set());
     const Only_number = /^[0-9\b]+$/;
-
-    const [imgData, setImgData] = useState(null);
+    // End step
+    // ---------------------
+    const ref = useRef();
+    const navigate = useNavigate();
+    // ---------------------
+    // Handle----------------
     const handleChange = (e) => {
         var file = {}
         const { name, value, files } = e.target;
-        if (name === "Au_images") {
+        if (name === "authorImage") {
             if (files[0].type === "image/png" || files[0].type === "image/jpeg") {
                 for (let index = 0; index < files.length; index++) {
                     const element = files[index];
@@ -61,20 +58,17 @@ const FormPage = () => {
                     file.size = element.size
                     file.type = element.type
                 }
-                setFormValues(preValue => ({
-                    ...preValue,
-                    Au_images: { ...preValue.Au_images, name: file.name, lastModified: file.lastModified, lastModifiedDate: file.lastModifiedDate, size: file.size, type: file.type }
-                }));
                 const reader = new FileReader();
                 reader.addEventListener("load", () => {
-                  setImgData(reader.result);
+                    setImgData(reader.result);
                 });
                 reader.readAsDataURL(files[0]);
+                setSelectedFile(files[0])
             } else {
                 alert("Invalid type");
                 ref.current.value = "";
             }
-        } else if (name === "Au_Published") {
+        } else if (name === "numberpublishedbooks") {
             if (Only_number.test(value)) {
                 if (value.length < 999999)
                     setFormValues({ ...formValues, [name]: value });
@@ -86,8 +80,7 @@ const FormPage = () => {
     };
     const handleChangeCKEditor = (event, editor) => {
         const data = editor.getData();
-        console.log(data);
-        setFormValues({ ...formValues, "Au_Information": data });
+        setFormValues({ ...formValues, "authorinformation": data });
     }
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -97,53 +90,67 @@ const FormPage = () => {
         setIsSubmit(true);
     };
 
-    async function CreateAuthor() {
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
-            await Au_API.Create(formValues)
-        } else {
-            setActiveStep(fromStep)
-        }
-    }
-    useEffect(() => {
-        CreateAuthor();
-    }, [formErrors]);
-
+    //Validate form
     const validate = (values) => {
+        //Object error to return error when error founded
         const errors = {};
+
+        //Step where have error
         const froms = {};
-        if (!values.Au_name) {
-            errors.Au_name = "Author name is required!";
+        if (!values.authorname) {
+            errors.authorname = "Author name is required!";
             froms.step = 0;
         }
-        else if (values.Au_name.trim().length <= 0) {
-            errors.Au_name = "Author name not be blank";
+        else if (values.authorname.trim().length <= 0) {
+            errors.authorname = "Author name not be blank";
             froms.step = 0;
-        } else if (values.Au_name.trim().length <= 3) {
-            errors.Au_name = "Author name not be blank";
-            froms.step = 0;
-        }
-        if (!values.Au_Published) {
-            errors.Au_Published = "Number of pulished book is required!";
-            froms.step = 0;
-        } else if (values.Au_Published.trim().length <= 0) {
-            errors.Au_Published = "Number of pulished book not be blank";
+        } else if (values.authorname.trim().length <= 3) {
+            errors.authorname = "String lenght not less than 3";
             froms.step = 0;
         }
-        if (!values.Au_Information) {
-            errors.Au_Information = "Author information is required!";
+        if (!values.numberpublishedbooks) {
+            errors.numberpublishedbooks = "Number of pulished book is required!";
+            froms.step = 0;
+        }
+        if (!values.authorinformation) {
+            errors.authorinformation = "Author information is required!";
             froms.step = 1;
-        } else if (values.Au_Information.trim().length <= 0) {
-            errors.Au_Information = "Author information not be blank";
+        } else if (values.authorinformation.trim().length <= 0) {
+            errors.authorinformation = "Author information not be blank";
             froms.step = 1;
         }
 
         return { errors, froms };
     };
+    // End-Handle----------------
 
+    // Action----------------
+    //Function create new
+    async function CreateAuthor() {
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+
+            //Register initialize Form Data
+            const formData = new FormData();
+            //Append data
+            formData.append("file", selectedFile);
+            formData.append("author_String", JSON.stringify(formValues));
+            // API CALL
+            await Au_API.Create(formData)
+            navigate("/admin/author")
+
+        } else {
+            setActiveStep(fromStep)
+        }
+    }
+    //UseEffect use to perform function when formError have change
+    useEffect(() => {
+        CreateAuthor();
+    }, [formErrors]);
+
+    // End-Action----------------
 
     // ---------------------
-    // Step
-
+    // Other
     const isStepOptional = (step) => {
         return step === 1;
     };
@@ -175,6 +182,8 @@ const FormPage = () => {
     const BackToPrevious = () => {
         navigate("/admin/author")
     }
+    // ---------------------
+    // End-Other
     return (
         <div className="container-fluid py-4">
             <div className="row">

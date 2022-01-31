@@ -1,208 +1,257 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import Box from '@mui/material/Box';
-import Au_API from '../../api/AuthorAPI';
-import Container from '@mui/material/Container';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-
-import Create_Form from './Form_Create.jsx';
-
-import CK_editor from './CK_Editor.jsx';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
-const steps = ['First information', 'Writing information'];
-
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import AuthorAPI from '../../api/AuthorAPI';
+import parse from 'html-react-parser';
+import ShowMoreText from "react-show-more-text";
+import Fab from '@mui/material/Fab';
+import EditIcon from '@mui/icons-material/Edit';
+import Ck_editor from './CK_Editor';
+import Au_API from '../../api/AuthorAPI'
 const FormPage = () => {
-    const initialValues = { Au_name: "", Au_Published: "", Au_Information: "", Au_images: "21312312" };
-    const [formValues, setFormValues] = useState(initialValues);
+    const [author, setAuthor] = useState({ authorname: "", numberpublishedbooks: 0, authorinformation: "" });
     const [formErrors, setFormErrors] = useState({});
+    const [author_image, setAuthorImage] = useState();
+    const [author_id, setAuthorId] = useState()
+
+    const [action, setAction] = useState("view");
+    const [imgData, setImgData] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
-    const [fromStep, setFromStep] = useState(0);
+
+    const ref = useRef();
+
     const navigate = useNavigate();
-
-
-    // ---------------------
-    // Step
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [skipped, setSkipped] = React.useState(new Set());
+    const { id } = useParams();
+    async function findOne(id) {
+        await AuthorAPI.FindOne(id).then(result => {
+            setAuthor({ ...author, authorname: result.data.authorname, numberpublishedbooks: parseInt(result.data.numberpublishedbooks), authorinformation: result.data.authorinformation });
+            setAuthorImage(result.data.authorImage);
+            setAuthorId(result.data.authorid)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+    const Only_number = /^[0-9\b]+$/;
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
-    };
-    const handleCKEditor = (event, editor) => {
-        const data = editor.getData();
-        console.log(data);
-        setFormValues({ ...formValues, "Au_Information": data });
+        var file = {}
+        const { name, value, files } = e.target;
+        if (name === "authorImage") {
+            if (files[0].type === "image/png" || files[0].type === "image/jpeg") {
+                for (let index = 0; index < files.length; index++) {
+                    const element = files[index];
+                    file.lastModified = element.lastModified
+                    file.lastModifiedDate = element.lastModifiedDate
+                    file.name = element.name
+                    file.size = element.size
+                    file.type = element.type
+                }
+                const reader = new FileReader();
+                reader.addEventListener("load", () => {
+                    setImgData(reader.result);
+                });
+                reader.readAsDataURL(files[0]);
+                setSelectedFile(files[0])
+            } else {
+                alert("Invalid type");
+                ref.current.value = "";
+            }
+        } else if (name === "numberpublishedbooks") {
+            if (Only_number.test(value)) {
+                if (value.length >= 0 && value.length <= 1000000)
+                    setAuthor({ ...author, [name]: value });
+            }
+        } else {
+            setAuthor({ ...author, [name]: value })
+        }
     }
+    const handleChangeCKEditor = (event, editor) => {
+        const data = editor.getData();
+        setAuthor({ ...author, "authorinformation": data });
+    }
+    const handleAction = () => {
+        const actions = action == "view" ? "edit" : "view";
+        setAction(actions);
+        console.log(actions)
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const { errors, froms } = validate(formValues);
-        setFromStep(froms.step)
+        const errors = validate(author, selectedFile);
         setFormErrors(errors);
-        setIsSubmit(true);
+        setIsSubmit(true)
     };
 
+    //Validate form
+    const validate = (values, file) => {
+        //Object error to return error when error founded
+        const errors = {};
+        if (!values.authorname) {
+            errors.authorname = "Author name is required!";
+
+        }
+        else if (values.authorname.trim().length <= 0) {
+            errors.authorname = "Author name not be blank";
+
+        } else if (values.authorname.trim().length <= 3) {
+            errors.authorname = "String lenght not less than 3";
+
+        }
+        if (!values.numberpublishedbooks) {
+            errors.numberpublishedbooks = "Number of pulished book is required!";
+
+        } else if (values.numberpublishedbooks.length <= 0) {
+            errors.numberpublishedbooks = "Number of pulished book not be blank";
+
+        }
+        if (!values.authorinformation) {
+            errors.authorinformation = "Author information is required!";
+
+        } else if (values.authorinformation.trim().length <= 0) {
+            errors.authorinformation = "Author information not be blank";
+
+        }
+
+        return errors;
+    };
     async function EditAuthor() {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-            alert("isOk")
-            handleReset();
-            // await Au_API.Create().then(response => {
-            //     alert(response.msg);
-            //     // sendEmail(response.data.userID,"vohoangtrung")
-            //     // navigate("/login")
-            // }).catch(e => {
-            //     alert(e.msg);
-            // });
-        } else {
-            setActiveStep(fromStep)
+            const formData = new FormData();
+            const uploadInput = document.getElementById('authorImage');
+
+            //Append data
+            formData.append("file", uploadInput.files[0]);
+            formData.append("author_String", JSON.stringify(author));
+            // // // API CALL
+            await Au_API.Edit(author_id, formData).then(res => {
+                setAuthorImage(res.data.authorImage);
+            }).catch((e) => {
+                alert(e.msg)
+            });
+
+            setAction("view")
         }
     }
     useEffect(() => {
+        findOne(id)
+    }, [])
+    useEffect(() => {
         EditAuthor();
-    }, [formErrors]);
-
-    const validate = (values) => {
-        const errors = {};
-        const froms = {};
-        if (!values.Au_name) {
-            errors.Au_name = "Author name is required!";
-            froms.step = 0;
-        }
-        else if (values.Au_name.trim().length <= 0) {
-            errors.Au_name = "Author name not be blank";
-            froms.step = 0;
-        } else if (values.Au_name.trim().length <= 3) {
-            errors.Au_name = "Author name not be blank";
-            froms.step = 0;
-        }
-        if (!values.Au_Published) {
-            errors.Au_Published = "Number of pulished book is required!";
-            froms.step = 0;
-        } else if (values.Au_Published.trim().length <= 0) {
-            errors.Au_Published = "Number of pulished book not be blank";
-            froms.step = 0;
-        }
-        if (!values.Au_Information) {
-            errors.Au_Information = "Author information is required!";
-            froms.step = 1;
-        } else if (values.Au_Information.trim().length <= 0) {
-            errors.Au_Information = "Author information not be blank";
-            froms.step = 1;
-        }
-
-        return { errors, froms };
-    };
-
-
-    // ---------------------
-    // Step
-
-    const isStepOptional = (step) => {
-        return step === 1;
-    };
-
-    const isStepSkipped = (step) => {
-        return skipped.has(step);
-    };
-
-    const handleNext = () => {
-        let newSkipped = skipped;
-        if (isStepSkipped(activeStep)) {
-            newSkipped = new Set(newSkipped.values());
-            newSkipped.delete(activeStep);
-        }
-
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped(newSkipped);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
-    const BackToPrevious = () => {
-        navigate("/admin/author")
+    }, [formErrors])
+    const BackToTable = () => {
+        navigate('/admin/author')
     }
     return (
         <div className="container-fluid py-4">
-            <div className="row">
-                <div className="col-12">
-                    <a style={{ cursor: 'pointer' }} onClick={BackToPrevious}><ArrowBackIcon fontSize="large" /></a>
-                    <div className="card my-4">
-                        <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                                <h6 className="text-white text-capitalize ps-3">Edit Authors</h6>
-                            </div>
+            <div className="container">
+                <pre>{JSON.stringify(author, undefined, 2)}</pre>
+                <pre>{JSON.stringify(formErrors, undefined, 2)}</pre>
+                <a style={{ marginLeft: 15, cursor: 'pointer' }}
+                    onClick={handleAction}
+                >
+                    <EditIcon />
+                </a>
+                <form onSubmit={handleSubmit}>
+                    <div className="row">
+                        <div className="col">
+                            <label htmlFor="sda">Name</label>
                         </div>
-                        <div className="card-body px-0 pb-2">
-                            <Container component="main" maxWidth="xl">
-                                <Box sx={{ width: '100%' }}>
-                                    <Stepper activeStep={activeStep}>
-                                        {steps.map((label, index) => {
-                                            const stepProps = {};
-                                            const labelProps = {};
-                                            if (isStepOptional(index)) {
-                                                labelProps.optional = (
-                                                    <Typography variant="caption">Optional</Typography>
-                                                );
-                                            }
-                                            if (isStepSkipped(index)) {
-                                                stepProps.completed = false;
-                                            }
-                                            return (
-                                                <Step key={label} {...stepProps}>
-                                                    <StepLabel {...labelProps}>{label}</StepLabel>
-                                                </Step>
-                                            );
-                                        })}
-                                    </Stepper>
-                                    <React.Fragment>
-                                        <Box component="form" onSubmit={handleSubmit}>
-                                            {activeStep === 0 ? (
-                                                <Create_Form OnKeyPress={handleChange} Error={formErrors} values={formValues} />
-                                            ) : <CK_editor OnKeyPress={handleCKEditor} Error={formErrors} values={formValues} />}
-                                            {activeStep === steps.length ? (
-                                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                                                    <Box sx={{ flex: '1 1 auto' }} />
-                                                    <Button type="submit">
-                                                        Complete
-                                                    </Button>
-                                                </Box>
-                                            ) : (
-                                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                                                    <Button
-                                                        color="inherit"
-                                                        disabled={activeStep === 0}
-                                                        onClick={handleBack}
-                                                        sx={{ mr: 1 }}
-                                                    >
-                                                        Back
-                                                    </Button>
-                                                    <Box sx={{ flex: '1 1 auto' }} />
-                                                    <Button type="button" onClick={handleNext}>
-                                                        Next
-                                                    </Button>
-                                                </Box>
-                                            )}
-                                        </Box>
-                                    </React.Fragment>
-                                </Box>
-                            </Container>
+                        <div className="col">
+                            {action == "view" ? (
+                                <>
+                                    {author.authorname}
+                                </>
+                            ) : (
+                                <input type='text' name="authorname" value={author.authorname} onChange={handleChange} />
+                            )}
                         </div>
                     </div>
-                </div>
-            </div>
+                    <div className="row">
+                        <div className="col">
+                            <label htmlFor="sda">Published</label>
+                        </div>
+                        <div className="col">
+                            {action == "view" ? (
+                                <>
+                                    {author.numberpublishedbooks} books
+                                </>
+                            ) : (
+                                <>
+                                    <input type='text' name="numberpublishedbooks" value={author.numberpublishedbooks} onChange={handleChange} />
+
+                                    <p style={{ color: "red" }}>{formErrors.numberpublishedbooks}</p>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            <label htmlFor="sda">Infomation</label>
+                        </div>
+                        <div className="col">
+                            {action == "view" ? (
+                                <>
+                                    <ShowMoreText
+                                        /* Default options */
+                                        lines={5}
+                                        more="Show more"
+                                        less="Show less"
+                                        className="content-css"
+                                        anchorClass="my-anchor-css-class"
+                                        // onClick={this.executeOnClick}
+                                        expanded={false}
+                                        width={600}
+                                        truncatedEndingComponent={"... "}
+                                    >
+                                        <span style={{fontWeight:600,lineHeight:3,color:"black"}}>
+                                            {parse(author.authorinformation)}
+                                        </span>
+                                    </ShowMoreText>
+                                </>
+                            ) : (
+                                <>
+                                    <Ck_editor
+                                        OnKeyPress={handleChangeCKEditor}
+                                        values={author}
+                                    />
+                                    <p style={{ color: "red" }}>{formErrors.authorinformation}</p>
+                                </>
+
+
+
+                            )}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            <label htmlFor="sda">Image</label>
+                        </div>
+                        <div className="col">
+                            {action === "view" ? (
+                                <>
+                                    <img src={"http://localhost:9999/image/" + author_image} alt="" width="400px" />
+                                </>
+                            ) : (
+                                <>
+                                    <input type="file" ref={ref} name="authorImage" id="authorImage" onChange={handleChange} />
+
+                                    <img src={imgData} alt="" width="400px" />
+
+                                    <p style={{ color: "red" }}>{formErrors.imageSize}</p>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                    {action == "view" ? (
+                        <>
+                            <a onClick={BackToTable} className="btn btn-vimeo">Back List Authors</a>
+                        </>
+                    ) : (
+                        <>
+                            <button type="submit" className="btn btn-vimeo">Submit</button>
+                        </>)}
+                </form>
+            </div >
         </div >
     );
 }

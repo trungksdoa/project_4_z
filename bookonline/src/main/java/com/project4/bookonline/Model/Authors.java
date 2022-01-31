@@ -52,7 +52,7 @@ public class Authors implements Serializable {
     private String authorname;
     @Basic(optional = false)
     @Column(name = "Number_published_books", nullable = false)
-    private int numberpublishedbooks;
+    private Integer numberpublishedbooks;
     @Basic(optional = false)
     @Column(name = "Author_information", nullable = false, length = 2147483647)
     private String authorinformation;

@@ -24,8 +24,6 @@ const Form_Create = (props) => {
             OnKeyPress(e);
         }
     }
-
-    console.log(values.Au_name);
     return (
         <Box
             sx={{
@@ -39,41 +37,40 @@ const Form_Create = (props) => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            name="Au_name"
+                            name="authorname"
                             required
                             fullWidth
-                            id="Au_name"
-                            value={values.Au_name}
+                            id="authorname"
+                            value={values.authorname}
                             label="Author Name"
                             onChange={OnChange}
                             autoFocus
                         />
-                        <p style={{ color: "red" }}>{Error.Au_name}</p>
+                        <p style={{ color: "red" }}>{Error.authorname}</p>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
                             required
                             fullWidth
-                            id="Au_Published"
-                            value={values.Au_Published}
+                            id="numberpublishedbooks"
+                            value={values.numberpublishedbooks}
                             label="Number publish book"
-                            name="Au_Published"
+                            name="numberpublishedbooks"
                             onChange={OnChange}
                         />
-                        <p style={{ color: "red" }}>{Error.Au_Published}</p>
+                        <p style={{ color: "red" }}>{Error.numberpublishedbooks}</p>
                     </Grid>
                     <Grid item xs={12}>
-                        <div class="mb-3">
-                            <label for="avatar" style={{ color: "black", fontSize: 18, fontWeight: 400 }}>Select avartar author (PNG,JPEG only)</label>
-                            <input type='file' ref={resetFile} id="avatar" style={{ display: "none" }} onChange={OnChange} name="Au_images" />
+                        <div className="mb-3">
+                            <label htmlFor="avatar" style={{ color: "black", fontSize: 18, fontWeight: 400 }}>Select avartar author (PNG,JPEG only)</label>
+                            <input type='file' ref={resetFile} id="avatar" style={{ display: "none" }} onChange={OnChange} name="authorImage" />
                         </div>
-                        <p style={{ color: "black" }}>{values.Au_images.name}</p>
                         <div style={{width:"30rem",height: "auto",margin:"auto"}}>
                             <img style={{
                                 width: "100%"
                             }} src={Image} />
                         </div>
-                        <p style={{ color: "red" ,maxWidth: "30rem",maxHeight:"340px"}}>{Error.Au_images}</p>
+                      
                     </Grid>
                 </Grid>
                 {/* <Button
@@ -99,7 +96,7 @@ Form_Create.propTypes = {
 Form_Create.defaultProps = {
     OnKeyPress: null,
     Error: {},
-    values: { Au_name: "", Au_Published: "", Au_Information: "", Au_images: "" },
+    values: { authorname: "", Au_Published: "", Au_Information: "", Au_images: "" },
     resetFile: null,
     Image: null
 

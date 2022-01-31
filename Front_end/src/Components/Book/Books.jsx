@@ -72,14 +72,14 @@ const FeatureBook = ({ id, img, title, cate, author }) => {
     );
 };
 
-const FeatureBook_Author = ({ id, img, title, cate, author }) => {
+const FeatureBook_Author = ({ booksid, pdetailid, bookname, cate, author }) => {
     return (
         <div className="col-xs-6 col-sm-6 col-md-4 col-lg-3">
             <div className="tg-postbook">
                 <figure className="tg-featureimg">
                     <div className="tg-bookimg">
-                        <div className="tg-frontcover"><img src={img} alt="image description" /></div>
-                        <div className="tg-backcover"><img src={img} alt="image description" /></div>
+                        <div className="tg-frontcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink} alt="image description" /></div>
+                        <div className="tg-backcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink} alt="image description" /></div>
                     </div>
                     <a className="tg-btnaddtowishlist" href="javascript:void(0);">
                         <i className="icon-heart" />
@@ -92,7 +92,7 @@ const FeatureBook_Author = ({ id, img, title, cate, author }) => {
                     </ul>
                     <div className="tg-themetagbox"><span className="tg-themetag">sale</span></div>
                     <div className="tg-booktitle">
-                        <h3><Link to={"/Book/" + id}>{title}</Link></h3>
+                        <h3><Link to={"/Book/" + booksid}>{bookname}</Link></h3>
                     </div>
                     <span className="tg-bookwriter">By: <a href="javascript:void(0);">{author}</a></span>
                     <span className="tg-stars"><span /></span>

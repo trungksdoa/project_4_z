@@ -146,7 +146,7 @@ ReactDOM.render(
           {/* <Route path="/*" element={<Page404 />} /> */}
           <Route path="/admin/author" element={<Author />} />
           <Route path="/admin/author/create" element={<Create_authors_form />} />
-          <Route path="/admin/author/edit" element={<Edit_author_form />} />
+          <Route path="/admin/author/edit/:id" element={<Edit_author_form />} />
           <Route path="/Reviews" element={<Reviews />} />
         </Routes>
         <Footer />

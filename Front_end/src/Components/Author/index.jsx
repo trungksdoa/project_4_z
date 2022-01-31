@@ -9,20 +9,27 @@ import Tesminal from '../Home/Testimonials.jsx'
 
 import { useEffect, useState } from "react";
 
-
+import AuthorAPU from '../../api/Author';
 
 import { store, useGlobalState } from 'state-pool';
 
 const Author_page = () => {
-
+  const [data, setData] = useState([]);
   const Roles_list = localStorage.getItem("rolse");
 
   // const params = window.location.pathname;
+  async function Fetchdata() {
+    await AuthorAPU.FindALl().then(result => {
+      setData(result.data)
+      console.log(result.data)
+    }).catch(err => {
+      alert(err.msg)
+    })
+  }
   // const [AuthorsPage, setAuthorsPage] = useState("/author");
-  // useEffect(() => {
-  //   setAuthorsPage(params);
-  //   console.log(AuthorsPage);
-  // }, [AuthorsPage])
+  useEffect(() => {
+    Fetchdata();
+  }, [])
 
   return (
     <>
@@ -56,19 +63,9 @@ const Author_page = () => {
         {/* ************************************
                      Authors Start
              **************************************/}
-        {<Author_dom></Author_dom>}
+        {<Author_dom data={data}></Author_dom>}
         {/*************************************
                      Authors End
-             **************************************/}
-        {/*************************************
-                     Testimonials Start
-             **************************************/}
-        {<Tesminal></Tesminal>}
-        {/*************************************
-                     Testimonials End
-             **************************************/}
-        {/*************************************
-                     Picked By Author Start
              **************************************/}
       </main>
       {/*************************************

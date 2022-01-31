@@ -4,21 +4,12 @@
  */
 package com.project4.bookonline.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -57,8 +48,8 @@ public class PDetail implements Serializable {
     private String language;
     @Column(name = "Illustrations_note", length = 50)
     private String illustrationsnote;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pDetailid")
-    private Collection<Books> booksCollection;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pDetailid")
+    private Books book;
 
     public PDetail() {
     }
@@ -123,14 +114,14 @@ public class PDetail implements Serializable {
         this.illustrationsnote = illustrationsnote;
     }
 
-    @JsonManagedReference(value = "pdetail_book")
+    @JsonBackReference(value = "pdetail_book")
     @XmlTransient
-    public Collection<Books> getBooksCollection() {
-        return booksCollection;
+    public Books getBook() {
+        return book;
     }
 
-    public void setBooksCollection(Collection<Books> booksCollection) {
-        this.booksCollection = booksCollection;
+    public void setBook(Books book) {
+        this.book = book;
     }
 
     @Override

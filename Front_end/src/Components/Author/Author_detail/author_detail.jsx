@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { FeatureBook_Author } from '../../Book/Books.jsx';
 import { data } from '../../Home/arrays';
-const authors_detail = () => {
-    function GetParam() {
-        let { authorId } = useParams();
+import AuthorAPU from '../../../api/Author';
 
-        console.log(authorId);
+const Authors_detail = () => {
+    const [author, setAuthor] = useState({ authorid: 0, authorImage: "", authorinformation: "", authorname: "", numberpublishedbooks: 0 });
+    const [books, setBooks] = useState({
+        booksid: "", bookname: "", bookprice: "", pdetailid: {
+            imageLink: "",
+        }
+    });
+    let { authorId } = useParams();
+    async function Fetch(id) {
+        await AuthorAPU.FindOne(id).then(result => {
+            setAuthor(result.data)
+            setBooks(result.data.booksCollection);
+        }).catch(err => {
+            alert(err.msg)
+        })
     }
-    GetParam();
+    console.table(books)
+    console.table(author)
+    useEffect(() => {
+        Fetch(authorId);
+    }, [])
     return (
         <>
             <title>Author</title>
@@ -70,7 +86,7 @@ const authors_detail = () => {
                                                 <h2>Books of Scarlet</h2>
                                             </div>
                                             <div className="row">
-                                                {data.map((book, index) => {
+                                                {books.map((book, index) => {
                                                     return <FeatureBook_Author key={book.id} {...book}></FeatureBook_Author>;
                                                 })}
                                             </div>
@@ -91,4 +107,4 @@ const authors_detail = () => {
         </>
     );
 }
-export default authors_detail
+export default Authors_detail

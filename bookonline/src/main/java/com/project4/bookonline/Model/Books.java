@@ -65,7 +65,7 @@ public class Books implements Serializable {
     @JoinColumn(name = "Author_id", nullable = false)
     private Authors authorid;
     @JoinColumn(name = "PDetail_id", referencedColumnName = "Pdetail_id", nullable = false)
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private PDetail pDetailid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookid")
     private Collection<OrderDetail> orderDetailCollection;
@@ -151,7 +151,7 @@ public class Books implements Serializable {
         this.amounts = amounts;
     }
 
-    @JsonBackReference(value="Author_book")
+    @JsonBackReference(value = "Author_book")
     public Authors getAuthorid() {
         return authorid;
     }
@@ -160,7 +160,7 @@ public class Books implements Serializable {
         this.authorid = authorid;
     }
 
-    @JsonBackReference(value="pdetail_book")
+    @JsonManagedReference(value = "pdetail_book")
     public PDetail getPDetailid() {
         return pDetailid;
     }
@@ -168,6 +168,7 @@ public class Books implements Serializable {
     public void setPDetailid(PDetail pDetailid) {
         this.pDetailid = pDetailid;
     }
+
     @XmlTransient
     public Collection<OrderDetail> getOrderDetailCollection() {
         return orderDetailCollection;

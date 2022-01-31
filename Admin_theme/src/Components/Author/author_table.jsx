@@ -33,7 +33,7 @@ const Author_table = (props) => {
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Published
                     </th>
-                    <th className="text-center opacity-7" />
+                    <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Modifieddate</th>
                     <th className="text-center opacity-7" />
                     <th className="text-center opacity-7" />
                 </tr>
@@ -49,7 +49,7 @@ const Author_table = (props) => {
                             <td>
                                 <div className="d-flex px-2 py-1">
                                     <div>
-                                        <img src={author.authorImage} className="avatar avatar-sm me-3 border-radius-lg" alt="user1" />
+                                        <img src={"http://localhost:9999/image/" + author.authorImage} className="avatar avatar-sm me-3 border-radius-lg" alt="user1" />
                                     </div>
                                     <div className="d-flex flex-column justify-content-center">
                                         <h6 className="mb-0 text-sm">{author.authorname}</h6>
@@ -59,8 +59,8 @@ const Author_table = (props) => {
                             <td>
                                 <p className="text-xs font-weight-bold mb-0">{author.numberpublishedbooks} books</p>
                             </td>
-                            <td className="align-middle" style={{ textAlign: 'right' }}>
-                                <a style={{ cursor: 'pointer' }} onClick={() => OnEdit(index)}><ModeEditOutlineIcon /></a>
+                            <td>
+                                {author.modifieddate}
                             </td>
                             <td className="align-middle text-center">
                                 <a style={{ cursor: 'pointer' }} onClick={() => OnDelete(index)}>

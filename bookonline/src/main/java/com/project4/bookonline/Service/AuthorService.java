@@ -17,6 +17,7 @@ import java.util.List;
 public interface AuthorService {
     public List<Authors> listAll();
     public Authors Create(Authors authors);
+    public Authors findOne(int id);
     public Authors Edit(int id,Authors authors);
     public void Delete(int id);
 //}
