@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useLayoutEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AuthorAPI from '../../api/AuthorAPI';
 import parse from 'html-react-parser';
@@ -7,37 +7,70 @@ import Fab from '@mui/material/Fab';
 import EditIcon from '@mui/icons-material/Edit';
 import Ck_editor from './CK_Editor';
 import Au_API from '../../api/AuthorAPI'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const FormPage = () => {
+    // ----------------------------------------------------------------
+
+    // UseState
+
+    // ----------------------------------------------------------------
     const [author, setAuthor] = useState({ authorname: "", numberpublishedbooks: 0, authorinformation: "" });
     const [formErrors, setFormErrors] = useState({});
     const [author_image, setAuthorImage] = useState();
     const [author_id, setAuthorId] = useState()
-
     const [action, setAction] = useState("view");
     const [imgData, setImgData] = useState(null);
-    const [selectedFile, setSelectedFile] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
+    // ----------------------------------------------------------------
 
+    // Use(From Reacts)
+
+    // ----------------------------------------------------------------
     const ref = useRef();
-
     const navigate = useNavigate();
     const { id } = useParams();
+    const Only_number = /^[0-9\b]+$/;
+    // ----------------------------------------------------------------
+
+    // UseEffect
+
+    // ----------------------------------------------------------------
+    useLayoutEffect(() => {
+        findOne(id)
+    }, [])
+    useLayoutEffect(() => {
+        EditAuthor();
+    }, [formErrors])
+    // ----------------------------------------------------------------
+
     async function findOne(id) {
         await AuthorAPI.FindOne(id).then(result => {
             setAuthor({ ...author, authorname: result.data.authorname, numberpublishedbooks: parseInt(result.data.numberpublishedbooks), authorinformation: result.data.authorinformation });
-            setAuthorImage(result.data.authorImage);
+            setAuthorImage("http://localhost:9999/image/" + result.data.authorImage);
             setAuthorId(result.data.authorid)
         }).catch(err => {
             console.log(err)
         })
     }
-    const Only_number = /^[0-9\b]+$/;
 
-    const handleChange = (e) => {
+    // ----------------------------------------------------------------
+
+    // File upload
+
+    // ----------------------------------------------------------------
+    async function imageUpload(id, formData) {
+        await Au_API.Update_Image(id, formData);
+    }
+    const HandleImageChange = (e) => {
         var file = {}
         const { name, value, files } = e.target;
-        if (name === "authorImage") {
-            if (files[0].type === "image/png" || files[0].type === "image/jpeg") {
+        if (files[0].type === "image/png" || files[0].type === "image/jpeg") {
+            console.log(files[0].size)
+
+            if (files[0].size > 5120000) {
+                alert("Invalid size , must be < 5 mb")
+            } else {
                 for (let index = 0; index < files.length; index++) {
                     const element = files[index];
                     file.lastModified = element.lastModified
@@ -51,12 +84,30 @@ const FormPage = () => {
                     setImgData(reader.result);
                 });
                 reader.readAsDataURL(files[0]);
-                setSelectedFile(files[0])
-            } else {
-                alert("Invalid type");
-                ref.current.value = "";
+                //Upload image
+
+
+                const formData = new FormData();
+
+                //Append data
+                formData.append("file", files[0]);
+
+                imageUpload(author_id, formData);
             }
-        } else if (name === "numberpublishedbooks") {
+        } else {
+            alert("Invalid type");
+            ref.current.value = "";
+        }
+    }
+    // ----------------------------------------------------------------
+
+    // Handle change
+
+    // ----------------------------------------------------------------
+    const HandleChange = (e) => {
+        var file = {}
+        const { name, value, files } = e.target;
+        if (name === "numberpublishedbooks") {
             if (Only_number.test(value)) {
                 if (value.length >= 0 && value.length <= 1000000)
                     setAuthor({ ...author, [name]: value });
@@ -65,24 +116,40 @@ const FormPage = () => {
             setAuthor({ ...author, [name]: value })
         }
     }
-    const handleChangeCKEditor = (event, editor) => {
+    // ----------------------------------------------------------------
+
+    // Handle ckEditor change
+
+    // ----------------------------------------------------------------
+    const HandleChangeCKEditor = (event, editor) => {
         const data = editor.getData();
         setAuthor({ ...author, "authorinformation": data });
     }
-    const handleAction = () => {
+    // ----------------------------------------------------------------
+
+    // Handle Action change between view or edit
+
+    // ----------------------------------------------------------------
+    const HandleAction = () => {
         const actions = action == "view" ? "edit" : "view";
         setAction(actions);
-        console.log(actions)
     }
+    // ----------------------------------------------------------------
 
+    // Handle submit when click submit
+
+    // ----------------------------------------------------------------
     const handleSubmit = (e) => {
         e.preventDefault();
-        const errors = validate(author, selectedFile);
+        const errors = validate(author);
         setFormErrors(errors);
         setIsSubmit(true)
     };
+    // ----------------------------------------------------------------
 
-    //Validate form
+    // Handle validate
+
+    // ----------------------------------------------------------------
     const validate = (values, file) => {
         //Object error to return error when error founded
         const errors = {};
@@ -114,40 +181,44 @@ const FormPage = () => {
 
         return errors;
     };
+    // ----------------------------------------------------------------
+
+    // Request APi
+
+    // ----------------------------------------------------------------
     async function EditAuthor() {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             const formData = new FormData();
-            const uploadInput = document.getElementById('authorImage');
-
-            //Append data
-            formData.append("file", uploadInput.files[0]);
             formData.append("author_String", JSON.stringify(author));
             // // // API CALL
             await Au_API.Edit(author_id, formData).then(res => {
-                setAuthorImage(res.data.authorImage);
+                toast(res)
             }).catch((e) => {
                 alert(e.msg)
             });
-
             setAction("view")
         }
     }
-    useEffect(() => {
-        findOne(id)
-    }, [])
-    useEffect(() => {
-        EditAuthor();
-    }, [formErrors])
+    // ----------------------------------------------------------------
+
+    // Redirect to list
+
+    // ----------------------------------------------------------------
     const BackToTable = () => {
         navigate('/admin/author')
     }
+    // ----------------------------------------------------------------
+
+    // Return
+
+    // ----------------------------------------------------------------
     return (
         <div className="container-fluid py-4">
             <div className="container">
                 <pre>{JSON.stringify(author, undefined, 2)}</pre>
                 <pre>{JSON.stringify(formErrors, undefined, 2)}</pre>
                 <a style={{ marginLeft: 15, cursor: 'pointer' }}
-                    onClick={handleAction}
+                    onClick={HandleAction}
                 >
                     <EditIcon />
                 </a>
@@ -162,7 +233,7 @@ const FormPage = () => {
                                     {author.authorname}
                                 </>
                             ) : (
-                                <input type='text' name="authorname" value={author.authorname} onChange={handleChange} />
+                                <input type='text' name="authorname" value={author.authorname} onChange={HandleChange} />
                             )}
                         </div>
                     </div>
@@ -177,7 +248,7 @@ const FormPage = () => {
                                 </>
                             ) : (
                                 <>
-                                    <input type='text' name="numberpublishedbooks" value={author.numberpublishedbooks} onChange={handleChange} />
+                                    <input type='text' name="numberpublishedbooks" value={author.numberpublishedbooks} onChange={HandleChange} />
 
                                     <p style={{ color: "red" }}>{formErrors.numberpublishedbooks}</p>
                                 </>
@@ -203,7 +274,7 @@ const FormPage = () => {
                                         width={600}
                                         truncatedEndingComponent={"... "}
                                     >
-                                        <span style={{fontWeight:600,lineHeight:3,color:"black"}}>
+                                        <span style={{ fontWeight: 600, lineHeight: 3, color: "black" }}>
                                             {parse(author.authorinformation)}
                                         </span>
                                     </ShowMoreText>
@@ -211,7 +282,7 @@ const FormPage = () => {
                             ) : (
                                 <>
                                     <Ck_editor
-                                        OnKeyPress={handleChangeCKEditor}
+                                        OnKeyPress={HandleChangeCKEditor}
                                         values={author}
                                     />
                                     <p style={{ color: "red" }}>{formErrors.authorinformation}</p>
@@ -227,19 +298,14 @@ const FormPage = () => {
                             <label htmlFor="sda">Image</label>
                         </div>
                         <div className="col">
-                            {action === "view" ? (
-                                <>
-                                    <img src={"http://localhost:9999/image/" + author_image} alt="" width="400px" />
-                                </>
-                            ) : (
-                                <>
-                                    <input type="file" ref={ref} name="authorImage" id="authorImage" onChange={handleChange} />
-
-                                    <img src={imgData} alt="" width="400px" />
-
-                                    <p style={{ color: "red" }}>{formErrors.imageSize}</p>
-                                </>
-                            )}
+                            <>
+                                <input type='file' name="authorImage" onChange={(e) => HandleImageChange(e)} />
+                                {imgData == null ? (
+                                    <img src={author_image} alt="" width="400px" height="400px" />
+                                ) : (
+                                    <img src={imgData} alt="" width="400px" height="400px" />
+                                )}
+                            </>
                         </div>
                     </div>
                     {action == "view" ? (
@@ -253,6 +319,6 @@ const FormPage = () => {
                 </form>
             </div >
         </div >
-    );
-}
+    )
+};
 export default FormPage

@@ -61,6 +61,38 @@ const RequestEdit = (url, formdata) => {
     })
 }
 
+const RequestImageUpdate = (url, formdata) => {
+    const object_user = {};
+
+    return new Promise((resolve, reject) => {
+        axiosClient.put(url, formdata, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+            .then(response => {
+                object_user.code = response.code;
+                object_user.msg = response.msg;
+                object_user.data = response.data_object;
+                resolve(object_user)
+            })
+            .catch((error) => {
+                console.log(error.response);
+                if (error.toJSON().message === 'Network Error') {
+                    object_user.status = 511;
+                    object_user.msg = "Network Authentication Required";
+                } else {
+                    object_user.status = error.response.status;
+                    console.log(error.response);
+                    object_user.msg = error.response.data.msg;
+                }
+                reject(object_user)
+            })
+    })
+}
+
+
 const RequestDelete = (url) => {
     const object_user = {};
     return new Promise((resolve, reject) => {
@@ -169,6 +201,10 @@ const AuthorAPI = {
     FindOne: (id) => {
         const url = "authors/find/" + id;
         return RequestfindOne(url);
+    },
+    Update_Image:(id,formdata)=>{
+        const url = "authors/image/update/" + id;
+        return RequestImageUpdate(url,formdata)
     }
 }
 

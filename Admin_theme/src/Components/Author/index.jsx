@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import Fab from '@mui/material/Fab';
 import CachedIcon from '@mui/icons-material/Cached';
 import AuthorAPI from '../../api/AuthorAPI';
@@ -6,7 +6,8 @@ import Author_table from './author_table.jsx';
 import { useNavigate } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; const Author = () => {
+import 'react-toastify/dist/ReactToastify.css';
+const Author = () => {
     const [author_list, setAuthor_list] = useState([]);
     const navigate = useNavigate();
     async function FetchData() {
@@ -36,7 +37,7 @@ import 'react-toastify/dist/ReactToastify.css'; const Author = () => {
     function GotoCreatePage() {
         navigate("/admin/author/create")
     }
-    useEffect(() => {
+    useLayoutEffect(() => {
         FetchData();
     }, [])
     return (

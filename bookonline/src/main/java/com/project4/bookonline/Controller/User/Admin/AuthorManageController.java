@@ -82,33 +82,44 @@ public class AuthorManageController {
     }
 
     @CrossOrigin(origins = "http://localhost:3006")
-    @RequestMapping(value = "/authors/update/{id}", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
-    public ResponseEntity<Message_Respones<Authors>> Update(@PathVariable String id, String author_String, MultipartFile file) {
-//        System.out.println(file);
+    @RequestMapping(value = "/authors/image/update/{id}", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
+    public ResponseEntity<Message_Respones<Authors>> UploadImage(@PathVariable String id, @RequestParam("file") MultipartFile file) {
+        String fileName = "";
+        author = new Authors();
+        author = authorService.findOne(Integer.valueOf(id));
+        fileName = fileStorageService.storePreNameFile(file,author.getAuthorImage());
+        author.setAuthorname(author.getAuthorname());
+        author.setNumberpublishedbooks(author.getNumberpublishedbooks());
+        author.setAuthorinformation(author.getAuthorinformation());
+        author.setAuthorImage(fileName);
 
+        System.out.println(dtf.format(now));
+        author.setModifieddate(dtf.format(now));
+        author.setAuthorid(author.getAuthorid());
+        author.setDatecreated(author.getDatecreated());
+        Authors authors = authorService.Edit(Integer.valueOf(id), author);
+        setMessage.setMessage("Update success");
+        setMessage.setObject(authors);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Authors>>(setMessage, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3006")
+    @RequestMapping(value = "/authors/update/{id}", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
+    public ResponseEntity<Message_Respones<Authors>> Update(@PathVariable String id, String author_String) {
         author = new Authors();
         AuthorDTO audt = null;
 
         try {
             audt = new ObjectMapper().readValue(author_String, AuthorDTO.class);
 
-            String fileName = "";
             author = authorService.findOne(Integer.valueOf(id));
             String msg = "Update success";
             if (author != null) {
-                if(file == null) {
-                    fileName = author.getAuthorImage();
-                }
-                else{
-                    fileName = fileStorageService.storePreNameFile(file,author.getAuthorImage());
-                }
-
                 author.setAuthorname(audt.getAuthorname());
                 author.setNumberpublishedbooks(audt.getNumberpublishedbooks());
                 author.setAuthorinformation(audt.getAuthorinformation());
-                author.setAuthorImage(fileName);
-
-                System.out.println(dtf.format(now));
+                author.setAuthorImage(author.getAuthorImage());
                 author.setModifieddate(dtf.format(now));
                 author.setAuthorid(author.getAuthorid());
                 author.setDatecreated(author.getDatecreated());
