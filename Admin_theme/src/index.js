@@ -89,6 +89,12 @@ function Books() {
     <div className="container-fluid py-4"><h3>Books</h3></div >
   )
 }
+function Voucher() {
+  return (
+    <div className="container-fluid py-4"><h3>Voucher</h3></div >
+  )
+
+}
 function Page404() {
   return (
     <div className="container-fluid py-4"><h3 style={{ textAlign: 'center', margin: "60px" }}>404 page Not Found</h3></div >
@@ -117,12 +123,101 @@ function PrivateOutlet() {
   return auth ? <Outlet /> : <Navigate to="/dashboard/login" />;
 }
 
-function RoleAOutlet() {
+function RoleOwnerOutlet() {
   const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
   const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
   let isAdminA;
   if (auth) {
     const RoleA_Require_admin = ["owner"];
+    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+  }
+  if (isAdminA) {
+    return <Outlet />;
+  } else {
+    return <PermissionError />;
+  }
+}
+function RolesProductOutlet() {
+  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  let isAdminA;
+  if (auth) {
+    const RoleA_Require_admin = ["Product Management", "owner"];
+    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+  }
+  if (isAdminA) {
+    return <Outlet />;
+  } else {
+    return <PermissionError />;
+  }
+}
+
+function RolesOrderOutlet() {
+  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  let isAdminA;
+  if (auth) {
+    const RoleA_Require_admin = ["Order Management", "Customers Management", "owner"];
+    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+  }
+  if (isAdminA) {
+    return <Outlet />;
+  } else {
+    return <PermissionError />;
+  }
+}
+
+function RolesBannerOutlet() {
+  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  let isAdminA;
+  if (auth) {
+    const RoleA_Require_admin = ["Banner Management", "owner"];
+    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+  }
+  if (isAdminA) {
+    return <Outlet />;
+  } else {
+    return <PermissionError />;
+  }
+}
+
+function RolesAuthorOutlet() {
+  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  let isAdminA;
+  if (auth) {
+    const RoleA_Require_admin = ["Author Management", "owner"];
+    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+  }
+  if (isAdminA) {
+    return <Outlet />;
+  } else {
+    return <PermissionError />;
+  }
+}
+
+function RolesCustomersOutlet() {
+  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  let isAdminA;
+  if (auth) {
+    const RoleA_Require_admin = ["Customers Management", "owner"];
+    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+  }
+  if (isAdminA) {
+    return <Outlet />;
+  } else {
+    return <PermissionError />;
+  }
+}
+
+function RolesReviewsOutlet() {
+  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  let isAdminA;
+  if (auth) {
+    const RoleA_Require_admin = ["Reviews Management", "Customers Management", "owner"];
     isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
   }
   if (isAdminA) {
@@ -142,27 +237,47 @@ ReactDOM.render(
           <Route element={<PrivateOutlet />}>
             <Route path="/" element={<Navigate to="/admin/dashboard" />} />
             <Route exact path="/admin/dashboard" element={<Home />} />
-            <Route path="/admin/customer" element={<Customers />} />
-            <Route path="/admin/customer/:id" element={<Customer_detail />} />
-            <Route path="/admin/setting" element={<Setting />} />
-            <Route path="/admin/banner" element={<Banner />} />
-            <Route path="/admin/order" element={<Order />} />
-            <Route path="/admin/book" element={<Books />} />
-            <Route path="/admin/Catagorys_book" element={<Catagorys_book />} />
+            {/* //Roles customer */}
+            <Route element={<RolesCustomersOutlet />}>
+              <Route path="/admin/customer" element={<Customers />} />
+              <Route path="/admin/wishlist/:id" element={<Wishlist />} />
+            </Route>
+
+            <Route element={<RolesBannerOutlet />}>
+              <Route path="/admin/banner" element={<Banner />} />
+            </Route>
+
+            <Route element={<RolesOrderOutlet />}>
+              <Route path="/admin/order" element={<Order />} />
+              <Route path="/admin/Voucher" element={<Voucher />} />
+            </Route>
+
+            <Route element={<RolesProductOutlet />}>
+              <Route path="/admin/book" element={<Books />} />
+              <Route path="/admin/Catagorys_book" element={<Catagorys_book />} />
+            </Route>
+
             <Route path="/admin/Catagorys_news" element={<Catagorys_News />} />
             <Route path="/admin/News" element={<News />} />
-            <Route path="/admin/wishlist/:id" element={<Wishlist />} />
-            <Route element={<RoleAOutlet />}>
+
+            <Route element={<RolesAuthorOutlet />}>
+              <Route path="/admin/author" element={<Author />} />
+              <Route path="/admin/author/create" element={<Create_authors_form />} />
+              <Route path="/admin/author/edit/:id" element={<Edit_author_form />} />
+            </Route>
+
+            <Route element={<RolesReviewsOutlet />}>
+              <Route path="/admin/Reviews" element={<Reviews />} />
+              <Route path="/admin/Reviews/reply/:id" element={<Reply />} />
+            </Route>
+
+            {/* //Roles owner */}
+            <Route element={<RoleOwnerOutlet />}>
               <Route path="/owner/admin" element={<Admin />} />
               <Route path="/owner/admin/create/" element={<Admin_Create_form />} />
               <Route path="/owner/admin/:id" element={<Admin_edit_form />} />
+              <Route path="/admin/setting" element={<Setting />} />
             </Route>
-
-            <Route path="/admin/author" element={<Author />} />
-            <Route path="/admin/author/create" element={<Create_authors_form />} />
-            <Route path="/admin/author/edit/:id" element={<Edit_author_form />} />
-            <Route path="/admin/Reviews" element={<Reviews />} />
-            <Route path="/admin/Reviews/reply/:id" element={<Reply />} />
           </Route>
           <Route path="/dashboard/login" element={
             <ProtectLogin>

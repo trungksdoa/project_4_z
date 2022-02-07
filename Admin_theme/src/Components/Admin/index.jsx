@@ -6,6 +6,8 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { toast } from 'react-toastify';
 import AdminTable from './Admin_table';
 import AdminAPI from '../../api/AdminAPI';
+import Pagination from '../Pagination/pagination';
+
 const Admins = () => {
     const [adminList, setAdminList] = useState([]);
     const [filtered, setFiltered] = useState([]);
@@ -42,6 +44,21 @@ const Admins = () => {
             alert(err.msg);
         });
     }
+    // /////////////////////////////////////
+    // // ---------------------------------
+    // /////////////////////////////////////
+    // // We start with an empty list of items.
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const itemsPerPage = 3;
+
+    const itemOfLast = currentPage * itemsPerPage;
+    const itemOfFirst = itemOfLast - itemsPerPage;
+    const currentItem = filtered.slice(itemOfFirst, itemOfLast)
+
+    const paginate = page => {
+        setCurrentPage(page)
+    }
     return (
         <div className="container-fluid py-4">
             <div className="row">
@@ -56,6 +73,7 @@ const Admins = () => {
                         <div className="card-body px-0 pb-2">
                             <div className="table-responsive p-0">
                                 <AdminTable data={filtered} onDelete={handleDelete} />
+                                {/* <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} /> */}
                             </div>
                         </div>
                     </div>

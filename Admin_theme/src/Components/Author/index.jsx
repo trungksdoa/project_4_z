@@ -25,11 +25,11 @@ const Author = () => {
                 alert(e.msg)
             });
         }
-        FetchData();
-        // const interval = setInterval(() => {
-        //     FetchData();
-        // }, 1000)
-        // return () => clearInterval(interval)
+
+        const interval = setInterval(() => {
+            FetchData();
+        }, 1000)
+        return () => clearInterval(interval)
     }, [])
     useEffect(() => {
         setFiltered(

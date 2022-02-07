@@ -6,12 +6,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
+import Pagination from '../Pagination/pagination';
 
 import { toast } from 'react-toastify';
 const Customers = () => {
     const [Listcustomer, setListCustomer] = useState([]);
     const [searchByNameOrEmail, setSearchByNameOrEmail] = useState("");
-    const [searchByPhone, setSearchByPhone] = useState("");
     const [filtered, setFiltered] = useState([]);
     // $('#customers').DataTable();
     const fetchCustomers = async () => {
@@ -62,10 +62,25 @@ const Customers = () => {
     useEffect(() => {
         setFiltered(
             Listcustomer.filter((customer) =>
-                fullname(customer).toLowerCase().includes(searchByNameOrEmail.toLowerCase()) &&
-                customer.phone.includes(searchByPhone)
+                fullname(customer).toLowerCase().includes(searchByNameOrEmail.toLowerCase())
             ))
-    }, [searchByNameOrEmail, searchByPhone, Listcustomer])
+    }, [searchByNameOrEmail, Listcustomer])
+
+      // /////////////////////////////////////
+    // // ---------------------------------
+    // /////////////////////////////////////
+    // // We start with an empty list of items.
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const itemsPerPage = 3;
+
+    const itemOfLast = currentPage * itemsPerPage;
+    const itemOfFirst = itemOfLast - itemsPerPage;
+    const currentItem = filtered.slice(itemOfFirst, itemOfLast)
+
+    const paginate = page => {
+        setCurrentPage(page)
+    }
     return (
         <div className="container-fluid py-4">
             <div className="row">
@@ -94,22 +109,13 @@ const Customers = () => {
                                                     </FormControl>
 
                                                 </div>
-                                                <div className="col-3">
-                                                    <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-                                                        <TextField
-                                                            id="filled-search"
-                                                            label="Search by phone"
-                                                            type="search"
-                                                            onChange={(e) => setSearchByPhone(e.target.value)}
-                                                            variant="filled"
-                                                        />
-                                                    </FormControl>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <Customer_table Ban={banAction} UnBan={unBanAction} data={filtered} />
+                                <Customer_table Ban={banAction} UnBan={unBanAction} data={currentItem} />
+                                <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} />
+
                             </div>
                         </div>
                     </div>
