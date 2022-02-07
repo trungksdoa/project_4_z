@@ -7,7 +7,7 @@ package com.project4.bookonline.Controller.User.Admin;
 
 import com.project4.bookonline.Model.Message_Respones;
 import com.project4.bookonline.Model.Reviews;
-import com.project4.bookonline.Model.User;
+import com.project4.bookonline.Model.Users;
 import com.project4.bookonline.Service.ReviewsService;
 import com.project4.bookonline.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +39,26 @@ public class ReviewsManageController {
         return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/reviews/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Reviews>> findOne(@PathVariable String id) {
+        Message_Respones<Reviews> setMessage = new Message_Respones<Reviews>();
+        Reviews review2 = reviewServide.findOne(Integer.valueOf(id));
+        if (review2 == null) {
+            setMessage.setMessage("Get data fails");
+            setMessage.setCode(404);
+            return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.NOT_FOUND);
+        } else {
+            setMessage.setMessage("Get data success");
+            setMessage.setObject(review2);
+            setMessage.setCode(200);
+            return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.OK);
+        }
+    }
+
     @RequestMapping(value = "/reviews/status/{id}/{status}", method = RequestMethod.PUT)
-    public ResponseEntity<Message_Respones<Reviews>> changeStatus(@PathVariable int id, @PathVariable int status) {
+    public ResponseEntity<Message_Respones<Reviews>> changeStatus(@PathVariable String id, @PathVariable int status) {
         String msg = "";
-        Reviews reviews = reviewServide.changeStatusReview(id, status);
+        Reviews reviews = reviewServide.changeStatusReview(Integer.valueOf(id), status);
         Message_Respones<Reviews> setMessage = new Message_Respones<Reviews>();
         if (reviews == null) {
             msg = "No reviews has been found";
@@ -62,10 +78,17 @@ public class ReviewsManageController {
     @RequestMapping(value = "/reviews/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Message_Respones<Reviews>> Delete(@PathVariable int id) {
         String msg = "Delete success";
-        reviewServide.Delete(id);
+        String message = reviewServide.Delete(id);
         Message_Respones<Reviews> setMessage = new Message_Respones<Reviews>();
-        setMessage.setMessage(msg);
-        setMessage.setCode(200);
-        return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.OK);
+        if ("Success" == message) {
+            setMessage.setMessage(msg);
+            setMessage.setCode(200);
+            return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.OK);
+        }else{
+            setMessage.setMessage(message);
+            setMessage.setCode(500);
+            return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

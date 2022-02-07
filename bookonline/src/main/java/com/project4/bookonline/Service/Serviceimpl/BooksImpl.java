@@ -34,4 +34,9 @@ public class BooksImpl implements com.project4.bookonline.Service.BooksService{
     public void Delete(String id) {
         bookRepository.deleteById(id);
     }
+
+    @Override
+    public void DeleteAllBy(List<String> id) {
+        bookRepository.deleteAllById(id);
+    }
 }

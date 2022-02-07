@@ -1,13 +1,13 @@
 package com.project4.bookonline.Service.Serviceimpl;
 
-import com.project4.bookonline.Model.Admin_roles;
-import com.project4.bookonline.Model.Admins;
-import com.project4.bookonline.Model.User;
+import com.project4.bookonline.Model.Users;
 import com.project4.bookonline.Repository.UserRepository;
 import com.project4.bookonline.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -17,43 +17,50 @@ public class UserImpl implements UserService {
     @Autowired
     UserRepository userService;
 
-    private User entity(User user) {
-        User entity = new User();
-        entity.setUserID(user.getUserID());
-        entity.setUserEmail(user.getUserEmail());
-        entity.setFirst_name(user.getFirst_name());
-        entity.setLast_name(user.getLast_name());
-        entity.setUserPassword(user.getUserPassword());
+    private Users entity(Users user, Users preData) {
+        Users entity = new Users();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        //Update data
+        entity.setFirstName(user.getFirstName());
+        entity.setLastName(user.getLastName());
+        entity.setUserpassword(user.getUserpassword());
         entity.setBirthday(user.getBirthday());
         entity.setPhone(user.getPhone());
-        entity.setStatus(user.getStatus());
-        entity.setUserCreatedDate(user.getUserCreatedDate());
-        entity.setUserModifiedDate(user.getUserModifiedDate());
+        entity.setUsermodifieddate(dtf.format(now));
+        //Previous data
+        entity.setUserid(preData.getUserid());
+        entity.setUseremail(preData.getUseremail());
+        entity.setStatus(preData.getStatus());
+        entity.setUsercreateddate(preData.getUsercreateddate());
         return entity;
     }
 
     @Override
-    public List<User> findAll() {
+    public List<Users> findAll() {
         return userService.findAll();
     }
 
     @Override
-    public User findOne(String id) {
-        Optional<User> option = userService.findById(id);
-        User user = option.get();
-        return user;
+    public Users findOne(String id) {
+        try {
+            Optional<Users> option = userService.findById(id);
+            Users user = option.get();
+            return user;
+        } catch (java.util.NoSuchElementException ex) {
+            return null;
+        }
     }
 
     @Override
-    public User findByMail(String email) {
+    public Users findByMail(String email) {
         return userService.checkMail(email);
     }
-
     @Override
     public String Active(String id) {
         try {
-            Optional<User> option = userService.findById(id);
-            User user = option.get();
+            Optional<Users> option = userService.findById(id);
+            Users user = option.get();
             user.setStatus(1);
             userService.save(user);
             return "Success";
@@ -65,9 +72,22 @@ public class UserImpl implements UserService {
     @Override
     public String Ban(String id) {
         try {
-            Optional<User> option = userService.findById(id);
-            User user = option.get();
+            Optional<Users> option = userService.findById(id);
+            Users user = option.get();
             user.setStatus(3);
+            userService.save(user);
+            return "Success";
+        } catch (Exception ex) {
+            return "Fail";
+        }
+    }
+
+    @Override
+    public String UnBan(String id) {
+        try {
+            Optional<Users> option = userService.findById(id);
+            Users user = option.get();
+            user.setStatus(1);
             userService.save(user);
             return "Success";
         } catch (Exception ex) {
@@ -77,11 +97,12 @@ public class UserImpl implements UserService {
 
 
     @Override
-    public User Update(String id, User paramUser) {
+    public Users Update(String id, Users paramUser) {
         try {
-            Optional<User> option = userService.findById(id);
-            User users = option.get();
-            User respone = userService.save(entity(users));
+            Optional<Users> option = userService.findById(id);
+            Users user2 = option.get();
+            Users user3 = entity(paramUser, user2);
+            Users respone = userService.save(user3);
             return respone;
         } catch (NullPointerException ex) {
             return null;
@@ -89,13 +110,12 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public User Login(String email, String password) {
+    public Users Login(String email, String password) {
         return userService.login(email, password);
     }
 
     @Override
-    public User Register(User user) {
-        user.setStatus(2);
+    public Users Register(Users user) {
         return userService.save(user);
     }
 }

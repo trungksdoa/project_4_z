@@ -9,6 +9,9 @@
     <class>com.project4.bookonline.Model.Authors</class>
     <class>com.project4.bookonline.Model.OrderDetail</class>
     <class>com.project4.bookonline.Model.Voucher</class>
+    <class>com.project4.bookonline.Model.Admins</class>
+    <class>com.project4.bookonline.Model.Users</class>
+    <class>com.project4.bookonline.Model.Reviews</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=Project_4"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

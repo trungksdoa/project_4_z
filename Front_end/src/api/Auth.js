@@ -1,9 +1,12 @@
 import axiosClient from "./axiosClient";
+import axios from 'axios';
 let url = "";
 const object_user = {};
 const RequestLogin = (url, userEmail, userPassword) => {
     return new Promise((resolve, reject) => {
-        axiosClient.post(url, { userEmail: userEmail, userPassword: userPassword })
+        axiosClient.post(url, {
+            user_email: userEmail, password: userPassword
+        })
             .then(response => {
                 object_user.status = 200;
                 object_user.msg = response.msg;
@@ -15,7 +18,7 @@ const RequestLogin = (url, userEmail, userPassword) => {
                 if (error.toJSON().message === 'Network Error') {
                     object_user.status = 511;
                     object_user.msg = "Network Authentication Required";
-                }else{
+                } else {
                     object_user.status = error.response.status;
                     console.log(error.response);
                     object_user.msg = error.response.data.msg;
@@ -29,8 +32,8 @@ const RequestRegister = (url, props) => {
         axiosClient.post(url, {
             first_name: props.Fname,
             last_name: props.Lname,
-            userEmail: props.Emails,
-            userPassword: props.Pword,
+            user_email: props.Emails,
+            password: props.Pword,
             phone: props.Pnum,
             birthday: props.birthday
         })
@@ -39,9 +42,7 @@ const RequestRegister = (url, props) => {
                 console.log(response)
                 object_user.status = 200;
                 object_user.msg = response.msg;
-                if (response.data_object !== undefined) {
-                    object_user.data = response.data_object;
-                }
+                object_user.data = response.data_object;
                 resolve(object_user)
             })
             .catch((error) => {
@@ -52,6 +53,28 @@ const RequestRegister = (url, props) => {
             })
     })
 }
+const RequestForget_pass = (url, user_email) => {
+    return new Promise((resolve, reject) => {
+        axiosClient.post(url, {
+            user_email: user_email,
+        })
+            .then(response => {
+                //Còn xem lại
+                console.log(response)
+                object_user.status = 200;
+                object_user.msg = response.msg;
+                object_user.data = response.data_object;
+                resolve(object_user)
+            })
+            .catch((error) => {
+                object_user.status = error.response.status;
+                console.log(error.response);
+                object_user.msg = error.response.data.msg;
+                reject(object_user)
+            })
+    })
+}
+
 const Auths = {
     login: async (userEmail, userPassword) => {
         url = 'user/login';
@@ -59,23 +82,11 @@ const Auths = {
     },
     register: async (props) => {
         url = 'user/register';
-        // const res = await axiosClient.post(url, {
-        //     first_name: props.Fname,
-        //     last_name: props.Lname,
-        //     userEmail: props.Emails,
-        //     userPassword: props.Pword,
-        //     phone: props.Pnum,
-        //     birthday: props.birthday
-        // });
-        // console.log(res);
         return RequestRegister(url, props);
     },
-    setActive: async (id) => {
-        url = 'user/setActive/' + id;
-
-        const res = await axiosClient.get(url, {});
-
-        return res;
+    findByEmail: async (emails) => {
+        url = 'user/forgetpassword/';
+        return RequestForget_pass(url, emails);
     }
 }
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -27,7 +28,7 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class CustomerController {
     UsersDTO udto;
-    User users;
+    Users users;
     String msg;
     String respone;
     Message_Respones<UsersDTO> setMessage;
@@ -37,8 +38,8 @@ public class CustomerController {
     UserService userServide;
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Message_Respones<UsersDTO>> Login(@RequestBody User user) {
-        users = userServide.Login(user.getUserEmail(), user.getUserPassword());
+    public ResponseEntity<Message_Respones<UsersDTO>> Login(@RequestBody UsersDTO user) {
+        users = userServide.Login(user.getUser_email(), user.getPassword());
         setMessage = new Message_Respones<UsersDTO>();
         if (users == null) {
             msg = "No account has been found";
@@ -57,9 +58,9 @@ public class CustomerController {
                     return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.UNAUTHORIZED);
                 default:
                     udto = new UsersDTO();
-                    udto.setUserID(users.getUserID());
-                    udto.setLast_name(users.getLast_name());
-                    udto.setUserEmail(users.getUserEmail());
+                    udto.setUserID(users.getUserid());
+                    udto.setLast_name(users.getLastName());
+                    udto.setUser_email(users.getUseremail());
                     setMessage.setObject(udto);
                     setMessage.setMessage(msg);
                     return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
@@ -67,19 +68,20 @@ public class CustomerController {
         }
     }
 
-    public UsersDTO getUserDTO(User users) {
+    public UsersDTO getUserDTO(Users users) {
         udto = new UsersDTO();
-        udto.setUserID(users.getUserID());
-        udto.setLast_name(users.getLast_name());
-        udto.setUserEmail(users.getUserEmail());
-        udto.setFirst_name(users.getFirst_name());
+        udto.setUserID(users.getUserid());
+        udto.setLast_name(users.getLastName());
+        udto.setUser_email(users.getUseremail());
+        udto.setFirst_name(users.getFirstName());
         udto.setPhone(users.getPhone());
+        udto.setPassword(users.getUserpassword());
         udto.setBirthday(users.getBirthday());
         return udto;
     }
 
     @RequestMapping(value = "/user/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Message_Respones<UsersDTO>> Register(@RequestBody User user) {
+    public ResponseEntity<Message_Respones<UsersDTO>> Register(@RequestBody UsersDTO user) {
         uuid = UUID.randomUUID();
         uid = uuid.toString();
         setMessage = new Message_Respones<UsersDTO>();
@@ -94,21 +96,36 @@ public class CustomerController {
 //
 //        ----End-----
         msg = "Sign Up Success";
-        User userExists = userServide.findByMail(user.getUserEmail());
+        Users userExists = userServide.findByMail(user.getUser_email());
         if (userExists != null) {
             msg = "Emails have been exists";
             setMessage.setMessage(msg);
+            setMessage.setCode(409);
             return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.CONFLICT);
         } else {
-            user.setUserID(uid);
-            user.setUserCreatedDate(dtf.format(now));
-            user.setUserModifiedDate(dtf.format(now));
-            user.setBirthday(dtf.format(date));
-            users = userServide.Register(user);
-            UsersDTO userId = new UsersDTO();
-            userId.setUserID(users.getUserID());
+            Users create = new Users();
+            create.setUserid(uid);
+            create.setFirstName(user.getFirst_name());
+            create.setLastName(user.getLast_name());
+            create.setUseremail(user.getUser_email());
+            create.setUserpassword(user.getPassword());
+            create.setBirthday(dtf.format(date));
+            create.setPhone(user.getPhone());
+            create.setStatus(2);
+            //Auto
+            create.setUsercreateddate(dtf.format(now));
+            create.setUsermodifieddate(dtf.format(now));
+            //Do register
+            users = userServide.Register(create);
+            //End
+            udto = new UsersDTO();
+            udto.setUserID(users.getUserid());
+            udto.setLast_name(users.getLastName());
+            udto.setUser_email(users.getUseremail());
             setMessage.setMessage(msg);
-            setMessage.setObject(userId);
+            setMessage.setObject(udto);
+            setMessage.setCode(200);
+
             return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
         }
     }
@@ -128,12 +145,34 @@ public class CustomerController {
         return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @RequestMapping(value = "/user/forgetpassword/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Message_Respones<UsersDTO>> findByEmail(@RequestBody UsersDTO user) {
+        users = userServide.findByMail(user.getUser_email());
+        setMessage = new Message_Respones<UsersDTO>();
+        msg = "Account has been found";
+        if (users == null) {
+            msg = "No account has been found";
+            setMessage.setMessage(msg);
+            return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
+        }
+        users.setUserpassword(getSaltString());
+        users = userServide.Register(users);
+        setMessage.setObject(getUserDTO(users));
+        setMessage.setCode(200);
+        setMessage.setMessage(msg);
+        return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/user/update/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Message_Respones<UsersDTO>> Update(@PathVariable String id, @RequestBody User user) {
-        users = userServide.Update(id, user);
+    public ResponseEntity<Message_Respones<UsersDTO>> Update(@PathVariable String id, @RequestBody UsersDTO user) {
+
+        Users convert = user.convert_update(user);
+        users = userServide.Update(id, convert);
         msg = "Update Success";
         setMessage = new Message_Respones<UsersDTO>();
         setMessage.setMessage(msg);
+        setMessage.setCode(200);
         setMessage.setObject(getUserDTO(users));
         return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
     }
@@ -141,12 +180,34 @@ public class CustomerController {
 
     @RequestMapping(value = "/user/setActive/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> setActive(@PathVariable String id) {
-        respone = userServide.Active(id);
-        String msg = "Your account has been activated";
-        if (respone == "Fail") {
+        users = userServide.findOne(id);
+        String msg = "";
+        if (users != null) {
+            if (users.getStatus() == 3) {
+                msg = "Your account has been banned";
+            } else if (users.getStatus() == 1) {
+                msg = "Your account has been activated";
+            } else {
+                userServide.Active(id);
+                msg = "Account activation successful";
+            }
+            return new ResponseEntity<String>(msg, HttpStatus.OK);
+        } else {
             msg = "No account has been found";
             return new ResponseEntity<String>(msg, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<String>(msg, HttpStatus.OK);
+    }
+
+    protected String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 19) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
     }
 }

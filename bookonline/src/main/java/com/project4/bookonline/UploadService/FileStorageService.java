@@ -39,7 +39,9 @@ public class FileStorageService {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
+
         fileName = fileName.replaceAll("\\s+", "_");
+
 
         try {
             // Check if the file's name contains invalid characters

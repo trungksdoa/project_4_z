@@ -7,7 +7,7 @@ const author_block = ({ authorid, authorImage, authorname, numberpublishedbooks 
             <div className="tg-author">
                 <Link to={'/author/' + authorid}
                 >
-                    <figure><img src={"http://localhost:9999/image/" + authorImage} alt="image description" style={{maxHeight:165}}/></figure>
+                    <figure><img src={"http://localhost:9999/image/" + authorImage + "?v" +new Date().getTime()} class="img_author_avatar" alt="img toolmber" width="100%" height="165px" /></figure>
                     <div className="tg-authorcontent">
                         <h2>{authorname}</h2>
                         <span>{numberpublishedbooks} books</span>

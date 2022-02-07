@@ -17,6 +17,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
+
+import StarIcon from '@mui/icons-material/Star';
 const sidebar = () => {
     let body = document.getElementsByTagName("body")[0]
         , className = "g-sidenav-pinned";
@@ -90,6 +92,14 @@ const sidebar = () => {
                                 <MenuBookIcon />
                             </div>
                             <span className="nav-link-text ms-1">Book </span>
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link text-white " to="/admin/Reviews">
+                            <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <StarIcon />
+                            </div>
+                            <span className="nav-link-text ms-1">Reviews </span>
                         </NavLink>
                     </li>
                     <li className="nav-item">

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project4.bookonline.Model.*;
 import com.project4.bookonline.Service.AuthorService;
+import com.project4.bookonline.Service.BooksService;
 import com.project4.bookonline.Service.ReviewsService;
 import com.project4.bookonline.UploadService.FileStorageService;
 import com.project4.bookonline.dto.AuthorDTO;
@@ -45,12 +46,19 @@ public class AuthorManageController {
     AuthorService authorService;
 
     @Autowired
+    BooksService bookService;
+
+    @Autowired
+    ReviewsService reviewService;
+
+    @Autowired
     private FileStorageService fileStorageService;
 
-    Message_Respones<Authors> setMessage = new Message_Respones<Authors>();
+    Message_Respones<Authors> setMessage;
 
     @RequestMapping(value = "/authors/findAll", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Authors>> findAll() {
+        setMessage  = new Message_Respones<Authors>();
         authors = new ArrayList<>();
         authors = authorService.listAll();
         String msg = "Get data success";
@@ -62,6 +70,7 @@ public class AuthorManageController {
 
     @RequestMapping(value = "/authors/find/{id}", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Authors>> findOne(@PathVariable int id) {
+        setMessage =   new Message_Respones<Authors>();
         author = new Authors();
         author = authorService.findOne(id);
         String msg = "Found data";
@@ -74,7 +83,23 @@ public class AuthorManageController {
 
     @RequestMapping(value = "/authors/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Message_Respones<Authors>> Delete(@PathVariable int id) {
-        authorService.Delete(id);
+        setMessage  = new Message_Respones<Authors>();
+
+        Authors authors = authorService.findOne(id);
+//
+        List<String> bookIds = authorService.getBookIds(authors.getAuthorid());
+
+        if(bookIds != null){
+            for (int i = 0; i < bookIds.size(); i++) {
+                reviewService.DeleteByBookId(bookIds.get(i));
+            }
+            authorService.Delete(authors.getAuthorid());
+            bookService.DeleteAllBy(bookIds);
+        }else{
+            authorService.Delete(authors.getAuthorid());
+            System.out.println("BooksID is null");
+        }
+
         String msg = "Delete success";
         setMessage.setMessage(msg);
         setMessage.setCode(200);
@@ -84,29 +109,26 @@ public class AuthorManageController {
     @CrossOrigin(origins = "http://localhost:3006")
     @RequestMapping(value = "/authors/image/update/{id}", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
     public ResponseEntity<Message_Respones<Authors>> UploadImage(@PathVariable String id, @RequestParam("file") MultipartFile file) {
+        setMessage = new Message_Respones<Authors>();
         String fileName = "";
         author = new Authors();
         author = authorService.findOne(Integer.valueOf(id));
         fileName = fileStorageService.storePreNameFile(file,author.getAuthorImage());
-        author.setAuthorname(author.getAuthorname());
-        author.setNumberpublishedbooks(author.getNumberpublishedbooks());
-        author.setAuthorinformation(author.getAuthorinformation());
         author.setAuthorImage(fileName);
-
-        System.out.println(dtf.format(now));
         author.setModifieddate(dtf.format(now));
-        author.setAuthorid(author.getAuthorid());
-        author.setDatecreated(author.getDatecreated());
-        Authors authors = authorService.Edit(Integer.valueOf(id), author);
+        Authors authors = authorService.Create(author);
         setMessage.setMessage("Update success");
         setMessage.setObject(authors);
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Authors>>(setMessage, HttpStatus.OK);
     }
 
+
+
     @CrossOrigin(origins = "http://localhost:3006")
     @RequestMapping(value = "/authors/update/{id}", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
     public ResponseEntity<Message_Respones<Authors>> Update(@PathVariable String id, String author_String) {
+        setMessage   = new Message_Respones<Authors>();
         author = new Authors();
         AuthorDTO audt = null;
 
@@ -119,11 +141,8 @@ public class AuthorManageController {
                 author.setAuthorname(audt.getAuthorname());
                 author.setNumberpublishedbooks(audt.getNumberpublishedbooks());
                 author.setAuthorinformation(audt.getAuthorinformation());
-                author.setAuthorImage(author.getAuthorImage());
                 author.setModifieddate(dtf.format(now));
-                author.setAuthorid(author.getAuthorid());
-                author.setDatecreated(author.getDatecreated());
-                Authors authors = authorService.Edit(Integer.valueOf(id), author);
+                Authors authors = authorService.Create(author);
                 setMessage.setMessage(msg);
                 setMessage.setObject(authors);
                 setMessage.setCode(200);
@@ -140,6 +159,7 @@ public class AuthorManageController {
 
     @RequestMapping(value = "/authors", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     public ResponseEntity<Message_Respones<Authors>> Save(@RequestParam("file") MultipartFile file, String author_String) {
+        setMessage  = new Message_Respones<Authors>();
         author = new Authors();
         AuthorDTO audt = null;
         try {

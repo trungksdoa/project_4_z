@@ -13,23 +13,17 @@ const NavigationBar = () => {
         redirect('/')
         // alert("Ok")
     };
-    // useEffect(() => {
-
-    //     return () => {
-    //         cleanup
-    //     };
-    // }, []);
     function HandleLogin() {
-        setCookie('loggin', JSON.stringify({
-            first_name: null,
-            last_name: "trung",
-            userEmail: "trungksdoa@gmail.com",
-            birthday: null,
-            phone: 0,
-            userID: "e581d6d8-360d-4ebf-a527-38114140c271",
-            loggin: true
-        }), { path: '/' });
-        redirect('/')
+        // setCookie('loggin', JSON.stringify({
+        //     first_name: null,
+        //     last_name: "trung",
+        //     user_email: "trungksdoa@gmail.com",
+        //     birthday: null,
+        //     phone: 0,
+        //     userID: "89efd255-afde-4d4e-a0e5-aa14e7bea315",
+        //     loggin: true
+        // }), { path: '/' });
+        redirect('/Login')
     }
     return (
         <div className="tg-navigationarea">
@@ -118,12 +112,15 @@ const NavigationBar = () => {
                                                     cursor: 'pointer',
                                                     color: "#000"
                                                 }} onClick={HandleLogin}>Log in</a>
+
                                             )
                                         }
-
-
                                     </li>
-
+                                    <li>
+                                        {auth && (
+                                            <NavLink to={"/Profile/" + cookies.loggin.userID}>Profile</NavLink>
+                                        )}
+                                    </li>
                                 </ul>
                             </div>
                         </nav>

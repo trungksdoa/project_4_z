@@ -5,6 +5,7 @@
 package com.project4.bookonline.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
@@ -68,7 +69,11 @@ public class Books implements Serializable {
     @OneToOne(optional = false)
     private PDetail pDetailid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookid")
+    @JsonIgnore
     private Collection<OrderDetail> orderDetailCollection;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "BooksId")
+    private Collection<Reviews> reviews;
 
     public Books() {
     }
@@ -167,6 +172,15 @@ public class Books implements Serializable {
 
     public void setPDetailid(PDetail pDetailid) {
         this.pDetailid = pDetailid;
+    }
+
+    @JsonBackReference(value="ReviewID")
+    public Collection<Reviews> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Collection<Reviews> reviews) {
+        this.reviews = reviews;
     }
 
     @XmlTransient

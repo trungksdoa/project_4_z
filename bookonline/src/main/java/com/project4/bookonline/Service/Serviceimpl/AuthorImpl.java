@@ -43,6 +43,11 @@ public class AuthorImpl implements AuthorService {
     }
 
     @Override
+    public List<String> getBookIds(int id) {
+        return AuthorRepository.getId(id);
+    }
+
+    @Override
     public Authors Edit(int id, Authors authors) {
         Optional<Authors> optional = AuthorRepository.findById(id);
         Authors au = optional.get();

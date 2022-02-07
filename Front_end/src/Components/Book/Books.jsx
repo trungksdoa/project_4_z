@@ -9,8 +9,8 @@ const Book = ({ id, img, title, cate, author }) => {
             <div className="tg-postbook">
                 <figure className="tg-featureimg">
                     <div className="tg-bookimg">
-                        <div className="tg-frontcover"><img src={img} alt="image description" /></div>
-                        <div className="tg-backcover"><img src={img} alt="image description" /></div>
+                        <div className="tg-frontcover"><img src={img + "?v" +new Date().getTime()} alt="image description" /></div>
+                        <div className="tg-backcover"><img src={img + "?v" +new Date().getTime()} alt="image description" /></div>
                     </div>
                     <a className="tg-btnaddtowishlist" href="#!">
                         <i className="icon-heart" />
@@ -46,7 +46,7 @@ const FeatureBook = ({ id, img, title, cate, author }) => {
     return (
         <div className="tg-featureditm">
             <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 hidden-sm hidden-xs">
-                <figure><img src={img} alt="image description" /></figure>
+                <figure><img src={img + "?v" +new Date().getTime()} alt="image description" /></figure>
             </div>
             <div className="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                 <div className="tg-featureditmcontent">
@@ -78,8 +78,8 @@ const FeatureBook_Author = ({ booksid, pdetailid, bookname, cate, author }) => {
             <div className="tg-postbook">
                 <figure className="tg-featureimg">
                     <div className="tg-bookimg">
-                        <div className="tg-frontcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink} alt="image description" /></div>
-                        <div className="tg-backcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink} alt="image description" /></div>
+                        <div className="tg-frontcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink + "?v" +new Date().getTime()} alt="image description" /></div>
+                        <div className="tg-backcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink + "?v" +new Date().getTime()} alt="image description" /></div>
                     </div>
                     <a className="tg-btnaddtowishlist" href="javascript:void(0);">
                         <i className="icon-heart" />

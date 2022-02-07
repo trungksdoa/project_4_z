@@ -6,7 +6,7 @@ import './index.css';
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 
 import { ToastContainer, toast } from 'react-toastify';
-
+import 'react-toastify/dist/ReactToastify.css';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -18,17 +18,30 @@ import Footer from './Components/Footer/Footer.jsx'
 
 import Customers from './Components/Customer/index.jsx';
 
+import Customer_detail from './Components/Customer/Customer_detail.jsx'
+
 import Home from "./Components/Dashboard/dashboard.jsx";
 
 import Admin from "./Components/Admin/index.jsx";
 
+import Admin_Create_form from "./Components/Admin/Create_page.jsx";
+
+import Admin_edit_form from "./Components/Admin/Edit_page.jsx";
+
 import Order from './Components/Order/index.jsx';
 
 import Author from './Components/Author/index.jsx';
+
 import Create_authors_form from './Components/Author/Form_create_page.jsx';
+
 import Edit_author_form from './Components/Author/Form_edit_page.jsx';
+
 import Login from './Components/Login/Login.jsx';
+
 import Reviews from './Components/Reviews/Reviews.jsx'
+
+import Reply from './Components/Reviews/Reply.jsx';
+
 import { useCookies } from 'react-cookie';
 
 
@@ -106,8 +119,12 @@ function PrivateOutlet() {
 
 function RoleAOutlet() {
   const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const RoleA_Require_admin = ["owner"];
-  const isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  let isAdminA;
+  if (auth) {
+    const RoleA_Require_admin = ["owner"];
+    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+  }
   if (isAdminA) {
     return <Outlet />;
   } else {
@@ -126,6 +143,7 @@ ReactDOM.render(
             <Route path="/" element={<Navigate to="/admin/dashboard" />} />
             <Route exact path="/admin/dashboard" element={<Home />} />
             <Route path="/admin/customer" element={<Customers />} />
+            <Route path="/admin/customer/:id" element={<Customer_detail />} />
             <Route path="/admin/setting" element={<Setting />} />
             <Route path="/admin/banner" element={<Banner />} />
             <Route path="/admin/order" element={<Order />} />
@@ -136,18 +154,22 @@ ReactDOM.render(
             <Route path="/admin/wishlist/:id" element={<Wishlist />} />
             <Route element={<RoleAOutlet />}>
               <Route path="/owner/admin" element={<Admin />} />
+              <Route path="/owner/admin/create/" element={<Admin_Create_form />} />
+              <Route path="/owner/admin/:id" element={<Admin_edit_form />} />
             </Route>
+
+            <Route path="/admin/author" element={<Author />} />
+            <Route path="/admin/author/create" element={<Create_authors_form />} />
+            <Route path="/admin/author/edit/:id" element={<Edit_author_form />} />
+            <Route path="/admin/Reviews" element={<Reviews />} />
+            <Route path="/admin/Reviews/reply/:id" element={<Reply />} />
           </Route>
           <Route path="/dashboard/login" element={
             <ProtectLogin>
               <Login />
             </ProtectLogin>
           } />
-          {/* <Route path="/*" element={<Page404 />} /> */}
-          <Route path="/admin/author" element={<Author />} />
-          <Route path="/admin/author/create" element={<Create_authors_form />} />
-          <Route path="/admin/author/edit/:id" element={<Edit_author_form />} />
-          <Route path="/Reviews" element={<Reviews />} />
+          <Route path="/*" element={<Page404 />} />
         </Routes>
         <ToastContainer />
         <Footer />

@@ -1,27 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FeatureBook_Author } from '../../Book/Books.jsx';
-import { data } from '../../Home/arrays';
 import AuthorAPU from '../../../api/Author';
+import parse from 'html-react-parser';
 
 const Authors_detail = () => {
     const [author, setAuthor] = useState({ authorid: 0, authorImage: "", authorinformation: "", authorname: "", numberpublishedbooks: 0 });
-    const [books, setBooks] = useState({
-        booksid: "", bookname: "", bookprice: "", pdetailid: {
-            imageLink: "",
-        }
-    });
+    const [books, setBooks] = useState([
+    ]);
+    const [isEmptyList, setisEmptyList] = useState(false);
     let { authorId } = useParams();
+    const navigate = useNavigate();
     async function Fetch(id) {
         await AuthorAPU.FindOne(id).then(result => {
             setAuthor(result.data)
-            setBooks(result.data.booksCollection);
+            console.log(result.data)
+            if (result.data.booksCollection == null) {
+                setisEmptyList(true);
+            } else {
+                setBooks(result.data.booksCollection);
+                setisEmptyList(false);
+            }
+
         }).catch(err => {
             alert(err.msg)
+            if (500 === err.status) {
+                navigate("/")
+            }
         })
     }
-    console.table(books)
-    console.table(author)
     useEffect(() => {
         Fetch(authorId);
     }, [])
@@ -63,33 +70,25 @@ const Authors_detail = () => {
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div className="tg-authordetail">
                                     <figure className="tg-authorimg">
-                                        <img src="images/author/imag-25.jpg" alt="image description" />
+                                        <img src="http://hopamchuan.com/node/get_artist_image/nguyen_du" style={{ width: "max(230px/1/0.9)" }} alt="image description" />
                                     </figure>
                                     <div className="tg-authorcontentdetail">
                                         <div className="tg-sectionhead">
-                                            <h2><span>15,686 Published Books</span>Scarlet Hawthorne</h2>
-                                            <ul className="tg-socialicons">
-                                                <li className="tg-facebook"><a href="javascript:void(0);"><i className="fa fa-facebook" /></a></li>
-                                                <li className="tg-twitter"><a href="javascript:void(0);"><i className="fa fa-twitter" /></a></li>
-                                                <li className="tg-linkedin"><a href="javascript:void(0);"><i className="fa fa-linkedin" /></a></li>
-                                                <li className="tg-googleplus"><a href="javascript:void(0);"><i className="fa fa-google-plus" /></a></li>
-                                                <li className="tg-rss"><a href="javascript:void(0);"><i className="fa fa-rss" /></a></li>
-                                            </ul>
+                                            <h2><span>{author.numberpublishedbooks} Published Books</span>{author.authorname}</h2>
                                         </div>
                                         <div className="tg-description">
-                                            <p>Consectetur adipisicing elit sed do eiusmod tempor incididunt labore toloregna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamcoiars nisiuip commodo consequat aute irure dolor in aprehenderit aveli esseati cillum dolor fugiat nulla pariatur cepteur sint occaecat cupidatat.</p>
-                                            <p>Caanon proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnisate natus error sit voluptatem accusantium doloremque totam rem aperiam, eaque ipsa quae abillo inventoe veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia.</p>
-                                            <p>Voluptas sit asapernatur aut odit aut fugit, sed quia consequuntur magni dolores eos quistan ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                                            <div style={{ fontSize: "20px" }} dangerouslySetInnerHTML={{ __html: author.authorinformation }} />
                                         </div>
                                         <div className="tg-booksfromauthor">
                                             <div className="tg-sectionhead">
                                                 <h2>Books of Scarlet</h2>
                                             </div>
                                             <div className="row">
-                                                {books.map((book, index) => {
+                                                {books.length !== 0 && books.map((book, index) => {
                                                     return <FeatureBook_Author key={book.id} {...book}></FeatureBook_Author>;
                                                 })}
                                             </div>
+                                            {books.length === 0 && <p style={{color: "red",fontSize: 30}}>Not found any books</p>}
                                         </div>
                                     </div>
                                 </div>

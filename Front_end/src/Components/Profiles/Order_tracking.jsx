@@ -85,7 +85,6 @@ const Page2 = () => {
                         <th>Voucher</th>
                         <th>Delivery address</th>
                         <th>Note</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -100,9 +99,6 @@ const Page2 = () => {
                             </td>
                             <td>
                                 {value.note}
-                            </td>
-                            <td>
-                                <a style={{ cursor: 'pointer' }}>{value.status === 3 ? <span>Detail</span> : (value.status === 2 ? <span>Pending</span> : <span onClick={() => updateConfirm(value.id)}>Received goods</span>)}</a>
                             </td>
                         </tr>)
                     })}

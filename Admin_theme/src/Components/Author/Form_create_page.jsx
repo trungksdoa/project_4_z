@@ -39,12 +39,26 @@ const FormPage = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
     const Only_number = /^[0-9\b]+$/;
+    const character_only = /^[a-z\sA-Z]+$/g;
+
     // End step
     // ---------------------
     const ref = useRef();
     const navigate = useNavigate();
     // ---------------------
     // Handle----------------
+    function removeLeadingZeros(str) {
+        // Regex to remove leading
+        // zeros from a string
+        const regex = new RegExp("^0+(?!$)", 'g');
+
+        // Replaces the matched
+        // value with given string
+        str = str.replaceAll(regex, "");
+
+        return str;
+    }
+
     const handleChange = (e) => {
         var file = {}
         const { name, value, files } = e.target;
@@ -69,9 +83,13 @@ const FormPage = () => {
                 ref.current.value = "";
             }
         } else if (name === "numberpublishedbooks") {
+            const regex = new RegExp("^0+(?!$)", 'g');
             if (Only_number.test(value)) {
-                if (value.length < 999999)
-                    setFormValues({ ...formValues, [name]: value });
+                setFormValues({ ...formValues, [name]: removeLeadingZeros(value) });
+            }
+        } else if (name == "authorname") {
+            if (character_only.test(value.trim())) {
+                setFormValues({ ...formValues, [name]: value })
             }
         } else {
             setFormValues({ ...formValues, [name]: value });

@@ -1,51 +1,82 @@
 import React from "react";
 import { useEffect, useState } from "react";
 
+import ProfileAPI from '../../api/profileAPI';
 import PropTypes from 'prop-types'
 import moment from "moment";
+import { toast } from 'react-toastify';
+
 import Datepicker from "react-datepicker";
-
-import Auth from '../../api/Auth'
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import "react-datepicker/dist/react-datepicker.css";
 
 import "./App.css";
-const Page1 = () => {
-  const initialValues = { Fname: "", Lname: "", Pword: "", Pnum: "", birthday: new Date(moment().subtract(16, "years").toString()) };
-  const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
-  const Only_number = /^[0-9\b]+$/;
-  const handleChange = (e) => {
+const Page1 = ({ data }) => {
 
+  //Show Hide password
+  const [showOrHide, setShowOrHide] = useState("hide");
+  //Check error
+  const [formErrors, setFormErrors] = useState({});
+  //Check is Submit
+  const [isSubmit, setIsSubmit] = useState(false);
+  //Pattern number
+  const Only_number = /^[0-9\b]+$/;
+  //Form data
+  const [formData, setFormData] = useState({
+    birthday: new Date(),
+    first_name: "",
+    last_name: "",
+    phone: "",
+    password: "",
+    user_email: "",
+    userID: ""
+  });
+
+  useEffect(() => {
+    setFormData(data)
+
+    return (() => setFormData({}))
+  }, [data])
+
+
+  //Show hide function
+  const showHide = () => {
+    const action = showOrHide === "show" ? "hide" : "show";
+    setShowOrHide(action);
+  }
+  //Change function
+  const handleChange = (e) => {
     if (e.target === undefined) {
       const parse = new Date(e);
-      console.log(parse.toLocaleDateString())
-      setFormValues({ ...formValues, birthday: e });
+      setFormData({ ...formData, birthday: e });
     } else {
       const { name, value } = e.target;
-      if (name == "Pnum") {
+      if (name == "phone") {
         if (Only_number.test(value)) {
-          setFormValues({ ...formValues, [name]: value });
+          setFormData({ ...formData, [name]: value });
         }
       } else {
-        setFormValues({ ...formValues, [name]: value });
+        setFormData({ ...formData, [name]: value });
       }
     }
-    // if (e.target != undefined) {
-
-    // }
-    // setFormValues({ ...formValues, birthday: e });
   };
-
+  //Submit function
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues));
+    setFormErrors(validate(formData));
     setIsSubmit(true);
   };
+  //Update_ request function
   async function Update_profile() {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValues);
+      await ProfileAPI.Edit(formData.userID, formData).then(res => {
+        toast(res.msg);
+        setFormData(res.data)
+      }).catch(error => {
+        alert(error.msg)
+      });
+      // console.log(formData);
     }
   }
   useEffect(() => {
@@ -56,32 +87,32 @@ const Page1 = () => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     const phone_regex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
-    if (!values.Fname) {
-      errors.Fname = "Firstname is required!";
+    if (!values.first_name) {
+      errors.first_name = "Firstname is required!";
     }
-    else if (values.Fname.trim().length <= 0) {
-      errors.Fname = "Firstname not be blank";
+    else if (values.first_name.trim().length <= 0) {
+      errors.first_name = "Firstname not be blank";
     }
-    if (!values.Lname) {
-      errors.Lname = "Lastname is required!";
-    } else if (values.Lname.trim().length <= 0) {
-      errors.Lname = "Lastname not be blank";
+    if (!values.last_name) {
+      errors.last_name = "Lastname is required!";
+    } else if (values.last_name.trim().length <= 0) {
+      errors.last_name = "Lastname not be blank";
     }
-    if (!values.Pnum) {
-      errors.Pnum = "Phonenumber is required!";
-    } else if (!phone_regex.test(values.Pnum)) {
-      errors.Pnum = "Invalid phone number";
-    } else if (values.Pnum.trim().length <= 0) {
-      errors.Pnum = "Phonenumber not be blank";
+    if (!values.phone) {
+      errors.phone = "Phonenumber is required!";
+    } else if (!phone_regex.test(values.phone)) {
+      errors.phone = "Invalid phone number";
+    } else if (values.phone.trim().length <= 0) {
+      errors.phone = "Phonenumber not be blank";
     }
-    if (!values.Pword) {
-      errors.Pword = "Password is required";
-    } else if (values.Pword.length < 12) {
-      errors.Pword = "Password must be more than 12 characters";
-    } else if (values.Pword.length > 20) {
-      errors.Pword = "Password cannot exceed more than 20 characters";
-    } else if (values.Pword.trim().length <= 0) {
-      errors.Pword = "Password not be blank";
+    if (!values.password) {
+      errors.password = "Password is required";
+    } else if (values.password.length < 12) {
+      errors.password = "Password must be more than 12 characters";
+    } else if (values.password.length > 20) {
+      errors.password = "Password cannot exceed more than 20 characters";
+    } else if (values.password.trim().length <= 0) {
+      errors.password = "Password not be blank";
     }
     if (!values.birthday) {
       errors.birthday = "Birthday is required!";
@@ -97,49 +128,51 @@ const Page1 = () => {
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div className="form-group">
                   <label>Result:</label>
-                  {Object.keys(formErrors).length === 0 && isSubmit ? (
-                    <div className="ui message success">Update successfully</div>
-                  ) : (
-                    <pre>{JSON.stringify(formValues, undefined, 2)}</pre>
-                  )}
+                  <pre>{JSON.stringify(formData, undefined, 2)}</pre>
                   <label>Error:</label>
                   <pre>{JSON.stringify(formErrors, undefined, 2)}</pre>
                 </div>
-              </div>
-              <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div className="form-group">
-                  <label htmlFor="Fname">First name</label>
-                  <input type="text" className="form-control" name="Fname" value={formValues.Fname} onChange={handleChange} />
-                  <p style={{ color: "red" }}>{formErrors.Fname}</p>
+                  <label htmlFor="first_name">First name</label>
+                  <input type="text" className="form-control" name="first_name" value={formData.first_name} onChange={handleChange} />
+                  <p style={{ color: "red" }}>{formErrors.first_name}</p>
                 </div>
               </div>
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div className="form-group">
-                  <label htmlFor="Lname">Last name</label>
-                  <input type="text" className="form-control" name="Lname" value={formValues.Lname} onChange={handleChange} />
-                  <p style={{ color: "red" }}>{formErrors.Lname}</p>
+                  <label htmlFor="last_name">Last name</label>
+                  <input type="text" className="form-control" name="last_name" value={formData.last_name} onChange={handleChange} />
+                  <p style={{ color: "red" }}>{formErrors.last_name}</p>
                 </div>
               </div>
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="Pword">Password</label>
-                  <input type="password" className="form-control" name="Pword" value={formValues.Pword} onChange={handleChange} />
-                  <p style={{ color: "red" }}>{formErrors.Pword}</p>
+                <label htmlFor="password">Password</label>
+                <div className="input-group">
+                  <input type={showOrHide === "show" ? "text" : "password"} className="form-control" id="password" name="password" value={formData.password} onChange={handleChange} />
+                  <span className="input-group-addon" style={{ cursor: 'pointer' }} onClick={showHide}>
+                    {showOrHide === "show" && (
+                      <VisibilityOffIcon />
+                    )}
+                    {showOrHide === "hide" && (
+                      <VisibilityIcon />
+                    )}
+                  </span>
                 </div>
+                <p style={{ color: "red" }}>{formErrors.password}</p>
               </div>
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div className="form-group">
-                  <label htmlFor="Pnum">Phone number</label>
-                  <input type="text" className="form-control" name="Pnum" value={formValues.Pnum} onChange={handleChange} />
-                  <p style={{ color: "red" }}>{formErrors.Pnum}</p>
+                  <label htmlFor="phone">Phone number</label>
+                  <input type="text" className="form-control" name="phone" value={formData.phone} onChange={handleChange} />
+                  <p style={{ color: "red" }}>{formErrors.phone}</p>
                 </div>
               </div>
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div className="form-group">
                   <label htmlFor="Bday">Birthday</label>
                   <Datepicker className='form-control'
-                    selected={formValues.birthday}
-
+                    dateFormat="yyyy/MM/dd HH:mm:ss"
+                    selected={new Date(formData.birthday)}
                     minDate={new Date(moment().subtract(100, "years"))}
                     maxDate={new Date(moment().subtract(16, "years"))}
                     // customInput={<ExampleCustomInput />}
@@ -159,18 +192,17 @@ const Page1 = () => {
               </div>
             </form>
           </div>
-          {/* <div className="row gutters">
-            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-              <div className="text-right">
-                <button type="button" id="submit" name="submit" className="btn btn-primary">Update</button>
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
     </>
 
   );
 }
+Page1.propTypes = {
+  data: PropTypes.object
+};
 
+Page1.defaultProps = {
+  data: {}
+};
 export default Page1

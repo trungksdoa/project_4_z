@@ -1,28 +1,28 @@
 package com.project4.bookonline.Service;
 
-import com.project4.bookonline.Model.Admin_roles;
-import com.project4.bookonline.Model.Admins;
-import com.project4.bookonline.Model.User;
+import com.project4.bookonline.Model.Users;
 
 import java.util.List;
 
 
 public interface UserService {
-    public List<User> findAll();
+    public List<Users> findAll();
 
-    public User Login(String email, String password);
+    public Users Login(String email, String password);
 
-    public User Register(User user);
+    public Users Register(Users user);
 
     public String Active(String id);
 
     public String Ban(String id);
 
-    public User findOne(String id);
+    public String UnBan(String id);
 
-    public User findByMail(String email);
+    public Users findOne(String id);
 
-    public User Update(String id, User user);
+    public Users findByMail(String email);
+
+    public Users Update(String id, Users user);
 
 
 }

@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import useLocalStorage from 'react-use-localstorage';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-
+import { NavLink } from 'react-router-dom'
 
 import Auth from "../../api/Auth";
 
@@ -22,10 +22,15 @@ const Login_page = () => {
     const Only_number = /^[0-9\b]+$/;
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log(value)
-        setFormValues({ ...formValues, [name]: value });
-    };
 
+        if (name == "Pword") {
+            setFormValues({ ...formValues, [name]: value.trim() });
+        } else {
+            setFormValues({ ...formValues, [name]: value });
+        }
+
+    };
+    console.log(formValues)
     const handleSubmit = (e) => {
         e.preventDefault();
         const vallidate = validate(formValues);
@@ -43,7 +48,6 @@ const Login_page = () => {
             await Auth.login(formValues.Emails, formValues.Pword).then(response => {
                 response.data.loggin = true
                 setCookie('loggin', JSON.stringify(response.data), { path: '/' });
-                alert(response.msg);
                 navigate('/')
                 // navigate("/")
             }).catch(e => {
@@ -109,9 +113,15 @@ const Login_page = () => {
                             <p style={{ color: "red" }}>{formErrors.Emails}</p>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="Pword">Password</label>
+                            <label htmlFor="Pword">Password (not allow whitespace in password)</label>
                             <input type="password" className="form-control" name="Pword" value={formValues.Pword} onChange={handleChange} />
                             <p style={{ color: "red" }}>{formErrors.Pword}</p>
+                        </div>
+                        <div className="form-group">
+                            <NavLink to="/Register">Don't have account ?</NavLink>
+                        </div>
+                        <div className="form-group">
+                            <NavLink to="/Forgetpassword">Forget password ?</NavLink>
                         </div>
                         <button type="submit" className="btn btn-primary">Submit</button>
                     </form>

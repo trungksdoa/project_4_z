@@ -31,6 +31,8 @@ const FormPage = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const Only_number = /^[0-9\b]+$/;
+    const character_only = /^[a-zA-Z]+$/g;
+
     // ----------------------------------------------------------------
 
     // UseEffect
@@ -50,7 +52,7 @@ const FormPage = () => {
             setAuthorImage("http://localhost:9999/image/" + result.data.authorImage);
             setAuthorId(result.data.authorid)
         }).catch(err => {
-            console.log(err)
+            alert(err.status)
         })
     }
 
@@ -112,7 +114,12 @@ const FormPage = () => {
                 if (value.length >= 0 && value.length <= 1000000)
                     setAuthor({ ...author, [name]: value });
             }
+        } else if (name === "authorname") {
+            if (character_only.test(value.trim().toLowerCase())) {
+                setAuthor({ ...author, [name]: value });
+            }
         } else {
+
             setAuthor({ ...author, [name]: value })
         }
     }
@@ -162,15 +169,17 @@ const FormPage = () => {
 
         } else if (values.authorname.trim().length <= 3) {
             errors.authorname = "String lenght not less than 3";
-
         }
+        // Không nhập số author name 
+        // Không ký tự đặt biệt author name
         if (!values.numberpublishedbooks) {
             errors.numberpublishedbooks = "Number of pulished book is required!";
 
         } else if (values.numberpublishedbooks.length <= 0) {
             errors.numberpublishedbooks = "Number of pulished book not be blank";
-
         }
+        //0000000000
+
         if (!values.authorinformation) {
             errors.authorinformation = "Author information is required!";
 
@@ -192,8 +201,8 @@ const FormPage = () => {
             formData.append("author_String", JSON.stringify(author));
             // // // API CALL
             await Au_API.Edit(author_id, formData).then(res => {
-                alert("Success")
-                toast("Ok")
+                toast(res.msg)
+                navigate("/admin/author")
             }).catch((e) => {
                 alert(e.msg)
             });
@@ -300,7 +309,7 @@ const FormPage = () => {
                         </div>
                         <div className="col">
                             <>
-                                <input type='file' name="authorImage" onChange={(e) => HandleImageChange(e)} />
+                                <input type='file' ref={ref}  name="authorImage" onChange={(e) => HandleImageChange(e)} />
                                 {imgData == null ? (
                                     <img src={author_image} alt="" width="400px" height="400px" />
                                 ) : (

@@ -11,7 +11,6 @@ const header = (props) => {
     //Logic here
     return (
         <header id="tg-header" className="tg-header tg-haslayout">
-            {<Topbar />}
             {<MiddleBar />}
             {<NavigationBar />}
         </header>

@@ -1,7 +1,7 @@
 package com.project4.bookonline.Service.Serviceimpl;
 
 import com.project4.bookonline.Model.Reviews;
-import com.project4.bookonline.Model.User;
+import com.project4.bookonline.Model.Users;
 import com.project4.bookonline.Repository.ReviewRepository;
 import com.project4.bookonline.Service.ReviewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,19 @@ public class ReviewsImpl implements ReviewsService {
     @Override
     public Reviews post_reviews(Reviews reviews) {
         return reviewService.save(reviews);
+    }
+
+
+    @Override
+    public Reviews findOne(int id) {
+        try {
+            Optional<Reviews> op = reviewService.findById(id);
+            Reviews reviews = op.get();
+            return reviews;
+        }catch(NoSuchElementException ex){
+            return null;
+        }
+
     }
 
     @Override
@@ -47,6 +60,16 @@ public class ReviewsImpl implements ReviewsService {
     public String Delete(int id) {
         try {
             reviewService.Delete(id);
+            return "Success";
+        }catch (Exception ex){
+            return ex.getMessage();
+        }
+    }
+
+    @Override
+    public String DeleteByBookId(String bookId) {
+        try {
+            reviewService.DeleteByBookId(bookId);
             return "Success";
         }catch (Exception ex){
             return ex.getMessage();

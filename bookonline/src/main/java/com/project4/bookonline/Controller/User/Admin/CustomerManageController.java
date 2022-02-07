@@ -6,7 +6,7 @@
 package com.project4.bookonline.Controller.User.Admin;
 
 import com.project4.bookonline.Model.Message_Respones;
-import com.project4.bookonline.Model.User;
+import com.project4.bookonline.Model.Users;
 import com.project4.bookonline.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,38 +27,71 @@ public class CustomerManageController {
     UserService userServide;
 
     @RequestMapping(value = "/user/findAll", method = RequestMethod.GET)
-    public ResponseEntity<Message_Respones<User>> findAll() {
-        List<User> user = userServide.findAll();
-        Message_Respones<User> setMessage = new Message_Respones<User>();
+    public ResponseEntity<Message_Respones<Users>> findAll() {
+        List<Users> user = userServide.findAll();
+        Message_Respones<Users> setMessage = new Message_Respones<Users>();
         String msg = "Get data success";
         setMessage.setMessage(msg);
         setMessage.setList(user);
         setMessage.setCode(200);
-        return new ResponseEntity<Message_Respones<User>>(setMessage, HttpStatus.OK);
+        return new ResponseEntity<Message_Respones<Users>>(setMessage, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/ban/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<String> setBan(@PathVariable String id) {
+    public ResponseEntity<Message_Respones<String>> setBan(@PathVariable String id) {
         String msg = "";
-        User user = userServide.findOne(id);
+        Users user = userServide.findOne(id);
+        Message_Respones<String> message = new Message_Respones<String>();
         if (user == null) {
             msg = "No account has been found";
-            return new ResponseEntity<String>(msg, HttpStatus.NOT_FOUND);
+            message.setMessage(msg);
+            message.setCode(404);
+            return new ResponseEntity<Message_Respones<String>>(message, HttpStatus.NOT_FOUND);
         } else {
             switch (user.getStatus()) {
-                case 3:
-                    msg = "The banned account cannot be banned again";
-                    //Cái này tạm chưa biết nó trạng thái gì :v
-                    return new ResponseEntity<String>(msg, HttpStatus.OK);
                 case 2:
                     msg = "Unactivated accounts cannot be banned";
                     //Cái này tạm chưa biết nó trạng thái gì :v
-                    return new ResponseEntity<String>(msg, HttpStatus.OK);
+                    message.setMessage(msg);
+                    message.setCode(204);
+                    return new ResponseEntity<Message_Respones<String>>(message, HttpStatus.OK);
                 default:
                     respone = userServide.Ban(id);
-                    msg = "Banned success customers with id: \" + id";
+                    msg = "Banned success customers with id: "+id;
                     //Cái này tạm chưa biết nó trạng thái gì :v
-                    return new ResponseEntity<String>(msg, HttpStatus.OK);
+                    message.setMessage(msg);
+                    message.setCode(200);
+                    return new ResponseEntity<Message_Respones<String>>(message, HttpStatus.OK);
+            }
+        }
+    }
+    @RequestMapping(value = "/Unban/user/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<String>> unBan(@PathVariable String id) {
+        String msg = "";
+        Users user = userServide.findOne(id);
+        Message_Respones<String> message = new Message_Respones<String>();
+        if (user == null) {
+            msg = "No account has been found";
+            message.setMessage(msg);
+            message.setCode(404);
+            return new ResponseEntity<Message_Respones<String>>(message, HttpStatus.NOT_FOUND);
+        } else {
+            //UnBan là nếu status == 3 thì unban
+            // nếu status == 1 thì không
+            switch (user.getStatus()) {
+                case 2:
+                    msg = "Unactivated accounts cannot be banned or unBanned";
+                    //Cái này tạm chưa biết nó trạng thái gì :v
+                    message.setMessage(msg);
+                    message.setCode(204);
+                    return new ResponseEntity<Message_Respones<String>>(message, HttpStatus.OK);
+                default:
+                    respone = userServide.UnBan(id);
+                    msg = "UnBanned success customers with id: " +id;
+                    //Cái này tạm chưa biết nó trạng thái gì :v
+                    message.setMessage(msg);
+                    message.setCode(200);
+                    return new ResponseEntity<Message_Respones<String>>(message, HttpStatus.OK);
             }
         }
     }

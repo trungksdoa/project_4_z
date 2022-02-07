@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
-import Auth from '../../api/CustomerApi';
+import Auth from '../../api/AdminAPI';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import FormControl from '@mui/material/FormControl';
 const Login = () => {
-    const initialValues = { Emails: "", Pword: "" };
+    const initialValues = { adminemail: "", adminpassword: "" };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -12,48 +15,52 @@ const Login = () => {
     const Only_number = /^[0-9\b]+$/;
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log(value)
         setFormValues({ ...formValues, [name]: value });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const vallidate = validate(formValues);
-
-        setIsSubmit(false);
-        setFormErrors(vallidate);
+        console.log("submit")
+        setIsSubmit(true);
+        setFormErrors(validate(formValues));
     };
     async function Login() {
-        // setCookie('loggin', JSON.stringify({
-        //     roles: ["admin"],
-        //     loggin: true
-        // }), { path: '/' });
-      
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+            // console.log("Log in success")
+            const cookie_data = {
+                adminemail: "",
+                roles: [],
+                loggin: true
+            }
+            await Auth.Login(formValues).then(response => {
+          
+                cookie_data.adminemail = response.data.adminemail
+                cookie_data.roles.push(response.data.roles)
+                console.log(cookie_data)
+                setCookie('loggin', JSON.stringify(cookie_data), { path: '/' });
+            }).catch(err => alert(err.msg));
+        } else {
+            setIsSubmit(false);
+        }
     }
     useEffect(() => {
-        // Login();
+        Login();
     }, [formErrors]);
 
     const validate = (values) => {
         const errors = {};
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-        errors.status = true;
-        if (!values.Emails) {
-            errors.Emails = "Email is required!";
-            errors.status = false;
-        } else if (!regex.test(values.Emails)) {
-            errors.Emails = "This is not a valid email format!";
-            errors.status = false;
-        } else if (values.Emails.trim().length <= 0) {
-            errors.Emails = "Email not be blank";
-            errors.status = false;
+        if (!values.adminemail) {
+            errors.adminemail = "Email is required!";
+        } else if (!regex.test(values.adminemail)) {
+            errors.adminemail = "This is not a valid email format!";
+        } else if (values.adminemail.trim().length <= 0) {
+            errors.adminemail = "Email not be blank";
         }
-        if (!values.Pword) {
-            errors.Pword = "Password is required";
-            errors.status = false;
-        } else if (values.Pword.trim().length <= 0) {
-            errors.Pword = "Password not be blank";
-            errors.status = false;
+        if (!values.adminpassword) {
+            errors.adminpassword = "Password is required";
+        } else if (values.adminpassword.trim().length <= 0) {
+            errors.adminpassword = "Password not be blank";
         }
         return errors;
     };
@@ -74,21 +81,31 @@ const Login = () => {
                                     <div className="card-body">
                                         <form role="form" onSubmit={handleSubmit} className="text-start">
                                             <div className="input-group input-group-outline my-3">
-                                                <label className="form-label">Email</label>
-                                                <input type="email" name="Emails" className="form-control" />
-                                            </div>
-                                            <div>
-                                                <p style={{ color: "red" }}>{formErrors.Emails}</p>
+                                                <TextField
+                                                    name="adminemail"
+                                                    fullWidth
+                                                    id="adminemail"
+                                                    label="Email"
+                                                    value={formValues.adminemail}
+                                                    onChange={handleChange}
+                                                    autoFocus
+                                                />
+                                                <p style={{ color: "red" }}>{formErrors.adminemail}</p>
                                             </div>
                                             <div className="input-group input-group-outline mb-3">
-                                                <label className="form-label">Password</label>
-                                                <input type="password" name="Pword" className="form-control" />
-                                            </div>
-                                            <div>
-                                                <p style={{ color: "red" }}>{formErrors.Pword}</p>
+                                                <TextField
+                                                    name="adminpassword"
+                                                    fullWidth
+                                                    id="adminpassword"
+                                                    label="Passoword"
+                                                    value={formValues.adminpassword}
+                                                    onChange={handleChange}
+                                                    autoFocus
+                                                />
+                                                <p style={{ color: "red" }}>{formErrors.adminpassword}</p>
                                             </div>
                                             <div className="text-center">
-                                                <button type="button" onClick={Login} className="btn bg-gradient-primary w-100 my-4 mb-2">Sign in</button>
+                                                <button type="submit" className="btn bg-gradient-primary w-100 my-4 mb-2">Sign in</button>
                                             </div>
                                         </form>
                                     </div>
@@ -96,36 +113,6 @@ const Login = () => {
                             </div>
                         </div>
                     </div>
-                    <footer className="footer position-absolute bottom-2 py-2 w-100">
-                        <div className="container">
-                            <div className="row align-items-center justify-content-lg-between">
-                                <div className="col-12 col-md-6 my-auto">
-                                    <div className="copyright text-center text-sm text-white text-lg-start">
-                                        © ,
-                                        made with <i className="fa fa-heart" aria-hidden="true" /> by
-                                        <a href="https://www.creative-tim.com" className="font-weight-bold text-white" target="_blank">Creative Tim</a>
-                                        for a better web.
-                                    </div>
-                                </div>
-                                <div className="col-12 col-md-6">
-                                    <ul className="nav nav-footer justify-content-center justify-content-lg-end">
-                                        <li className="nav-item">
-                                            <a href="https://www.creative-tim.com" className="nav-link text-white" target="_blank">Creative Tim</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a href="https://www.creative-tim.com/presentation" className="nav-link text-white" target="_blank">About Us</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a href="https://www.creative-tim.com/blog" className="nav-link text-white" target="_blank">Blog</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a href="https://www.creative-tim.com/license" className="nav-link pe-0 text-white" target="_blank">License</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
                 </div>
             </main>
         </div>

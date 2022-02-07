@@ -1,13 +1,30 @@
 
 import React from 'react';
+import { useCookies } from 'react-cookie';
+import { NavLink, useNavigate } from 'react-router-dom'
 
-const navbar = (props) => {
+const Navbar = (props) => {
+    const [cookies, setCookie, removeCookie] = useCookies(['loggin'])
+    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+
+    const redirect = useNavigate();
     let body = document.getElementsByTagName("body")[0]
         , className = "g-sidenav-pinned";
     const ToggleSidebar = (e) => (
         body.classList.contains(className) ? (body.classList.remove(className)) : (body.classList.add(className),
             e.target.classList.remove("d-none"))
     )
+    const HandleLogout = () => {
+        // store the user in localStorage
+        removeCookie('loggin', { expires: "Thu, 01 Jan 1970 00:00:00 UTC", path: '/' });
+        redirect('/dashboard/login')
+        // alert("Ok")
+    };
+    const HandleLogin = () => {
+        // store the user in localStorage
+        redirect('/dashboard/login')
+        // alert("Ok")
+    };
     return (
 
         <nav className="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
@@ -27,7 +44,7 @@ const navbar = (props) => {
                     </div>
                     <ul className="navbar-nav  justify-content-end">
                         <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
-                            <a style={{cursor:"pointer"}} className="nav-link text-body p-0" onClick={ToggleSidebar} id="iconNavbarSidenav">
+                            <a style={{ cursor: "pointer" }} className="nav-link text-body p-0" onClick={ToggleSidebar} id="iconNavbarSidenav">
                                 <div className="sidenav-toggler-inner">
                                     <i className="sidenav-toggler-line" />
                                     <i className="sidenav-toggler-line" />
@@ -40,10 +57,17 @@ const navbar = (props) => {
                                 <i className="fa fa-cog fixed-plugin-button-nav cursor-pointer" />
                             </a>
                         </li>
+                        <li className="nav-item px-3 d-flex align-items-center">
+                            {auth && (
+                                <a style={{ cursor: 'pointer' }} onClick={HandleLogout} className="nav-link text-body p-0">
+                                    Log out
+                                </a>
+                            )}
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     );
 }
-export default navbar;
+export default Navbar;

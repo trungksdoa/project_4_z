@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import {
     BrowserRouter,
     Routes,
@@ -37,14 +37,13 @@ import Collection from './Components/Collection/Collection.jsx';
 
 import News from './Components/News/News.jsx';
 
-import News_detail from './Components/News/News_detail';
+import News_detail from './Components/News/News_detail.jsx';
 
-import Sendemail from './Components/Login_register/Sendemail'
-// function PrivateRoute({ children }) {
-//     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-//     const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
-//     return auth ? children : <Navigate to="/" />;
-// }
+import ForgetPassword from './Components/Login_register/Forget_password.jsx'
+
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function ProtectLogin({ children }) {
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
@@ -80,14 +79,13 @@ const AppRouter = () => {
                             <Register />
                         </ProtectLogin>
                     } />
-                    <Route path="/Sendmail/:userId/:userName" element={<Sendemail />} />
                     <Route path="/News" element={<News />} />
 
                     <Route path="/News/:id" element={<News_detail />} />
 
                     <Route path="/author" element={<Author />} />
 
-                    <Route path="/author/:authorId/" element={<Author_detail />} />
+                    <Route path="/author/:authorId" element={<Author_detail />} />
 
                     <Route path="/Book/:id" element={<Book_detail />} />
 
@@ -97,16 +95,17 @@ const AppRouter = () => {
 
                     <Route path="/Contact" element={<Contact />} />
 
+                    <Route path="/Forgetpassword" element={<ForgetPassword />} />
+
                     {/* //need protect */}
                     <Route element={<PrivateOutlet />}>
 
                         <Route path="/Payment" element={<Payment />} />
 
-                        <Route path="/Profile" element={<Profile />} />l
-
-                        <Route path="/Profile/:page" element={<Profile />} />
+                        <Route path="/Profile/:id" element={<Profile />} />l
                     </Route>
                 </Routes>
+                <ToastContainer />
                 <Footer />
             </BrowserRouter>
         </div>

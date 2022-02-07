@@ -36,8 +36,6 @@ public class AuthorController {
     @Autowired
     AuthorService authorService;
 
-    @Autowired
-    private FileStorageService fileStorageService;
 
     Message_Respones<Authors> setMessage = new Message_Respones<Authors>();
 
@@ -56,6 +54,7 @@ public class AuthorController {
     public ResponseEntity<Message_Respones<Authors>> findOne(@PathVariable int id) {
         author = new Authors();
         author = authorService.findOne(id);
+        System.out.println("Ij");
         String msg = "Found data";
         setMessage.setMessage(msg);
         setMessage.setObject(author);

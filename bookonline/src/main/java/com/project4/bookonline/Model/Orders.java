@@ -71,7 +71,7 @@ public class Orders implements Serializable {
     private String ordernote;
     @JoinColumn(name = "User_id", referencedColumnName = "User_id", nullable = false)
     @ManyToOne(optional = false)
-    private User userid;
+    private Users userid;
     @JoinColumn(name = "Order_voucher", referencedColumnName = "Voucher_id")
     @ManyToOne
     private Voucher ordervoucher;
@@ -150,11 +150,11 @@ public class Orders implements Serializable {
         this.ordernote = ordernote;
     }
 
-    public User getUserid() {
+    public Users getUserid() {
         return userid;
     }
 
-    public void setUserid(User userid) {
+    public void setUserid(Users userid) {
         this.userid = userid;
     }
 

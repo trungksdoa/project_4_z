@@ -3,36 +3,36 @@ import 'react-toastify/dist/ReactToastify.css';
 import ReviewTable from './ReviewTable.jsx'
 import ReviewAPI from '../../api/ReviewAPI'
 
+import { useNavigate } from 'react-router-dom'
 
 // ----------------------------------------------------------------
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
 import InputLabel from '@mui/material/InputLabel';
-import Fab from '@mui/material/Fab';
-import CachedIcon from '@mui/icons-material/Cached';
 
 const Reviews = () => {
-    const [Reviews_list, setReviews_list] = useState([]);
+    const [Reviews_list, setReviews_list] = useState([
+    ]);
     const [searchByBook, setSearchBook] = useState("");
     const [searchBySearchCustomer, setSearchCustomer] = useState("");
     const [searchByStatus, setSearchStatus] = useState("");
+    const [searchByRating, setSearchRating] = useState("");
     const [filtered, setFiltered] = useState([]);
-
+    const navigate = useNavigate();
     const handleChange = async (index, value) => {
         let newArr = [...Reviews_list]; // copying the old datas array
         newArr[index].active = value;
         setTimeout(setReviews_list(newArr), 10000);
-        await ReviewAPI.ChangeStatus(newArr[index].review_id, value);
+        await ReviewAPI.ChangeStatus(newArr[index].reviewid, value);
     };
 
     const handleDelete = async (index, value) => {
         // window.confirm returns a boolean, true or false, based on whether the user pressed 'Ok' (which will result in true) or 'Cancel' (which will result in false)
         if (window.confirm("This is a dangerous action do you want to continue?")) {
             const newReviews = [...Reviews_list];
-            await ReviewAPI.Delete(newReviews[index].review_id);
+            await ReviewAPI.Delete(newReviews[index].reviewid);
             newReviews.splice(index, 1);
             setReviews_list(newReviews)
         } else {
@@ -40,23 +40,35 @@ const Reviews = () => {
         }
     };
 
-    const RefreshData = () => {
-        fetchData();
+    async function fetchData() {
+        await ReviewAPI.getAll().then(res => {
+            setReviews_list(res.data);
+        }).catch(e => {
+            alert(e.msg)
+        });
     }
 
-    async function fetchData() {
-        const res = await ReviewAPI.getAll();
-        setReviews_list(res.data);
-    }
     useEffect(() => {
-        fetchData();
+        // fetchCustomers();
+        const interval = setInterval(() => {
+            fetchData();
+        }, 1000)
+        return () => clearInterval(interval)
     }, [])
+    function fullname(review) {
+        const fullname = review.userid.firstName + " " + review.userid.lastName;
+        return fullname;
+    }
+    function gotoReply(id) {
+        navigate('/admin/Reviews/reply/' + id);
+    }
     useEffect(() => {
         setFiltered(
             Reviews_list.filter((review) =>
-                review.book_id.toLowerCase().includes(searchByBook.toLowerCase()) &&
-                review.user_id.toLowerCase().includes(searchBySearchCustomer.toLowerCase()) &&
-                review.active.toString().includes(searchByStatus)
+                review.booksId.bookname.toLowerCase().includes(searchByBook.toLowerCase()) &&
+                fullname(review).toLowerCase().includes(searchBySearchCustomer.toLowerCase()) &&
+                review.active.toString().includes(searchByStatus) &&
+                review.ratingstart.toString().includes(searchByRating)
             ))
     }, [searchByBook, searchBySearchCustomer, searchByStatus, Reviews_list])
     return (
@@ -66,7 +78,7 @@ const Reviews = () => {
                 <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 className="text-white text-capitalize ps-3">Reviews list
-                            <span>
+                            {/* <span>
                                 <a style={{ position: 'absolute', top: "0.5rem", right: "2rem", cursor: 'pointer' }}
                                     onClick={RefreshData}
                                 >
@@ -74,8 +86,7 @@ const Reviews = () => {
                                         <CachedIcon />
                                     </Fab>
                                 </a>
-                            </span>
-
+                            </span> */}
                         </h6>
                     </div>
                 </div>
@@ -108,7 +119,7 @@ const Reviews = () => {
                                                 />
                                             </FormControl>
                                         </div>
-                                        <div className="col-3">
+                                        <div className="col-2">
                                             <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
                                                 <InputLabel id="demo-simple-select-filled-label">Status</InputLabel>
                                                 <Select
@@ -123,11 +134,29 @@ const Reviews = () => {
                                                 </Select>
                                             </FormControl>
                                         </div>
+                                        <div className="col-2">
+                                            <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+                                                <InputLabel id="demo-simple-select-filled-label">Rating</InputLabel>
+                                                <Select
+                                                    labelId="demo-simple-select-filled-label"
+                                                    id="demo-simple-select-filled"
+                                                    value={searchByRating}
+                                                    onChange={(e) => setSearchRating(e.target.value)}
+                                                >
+                                                    <MenuItem value={""}>All</MenuItem>
+                                                    <MenuItem value={1}>1</MenuItem>
+                                                    <MenuItem value={2}>2</MenuItem>
+                                                    <MenuItem value={3}>3</MenuItem>
+                                                    <MenuItem value={4}>4</MenuItem>
+                                                    <MenuItem value={5}>5</MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <ReviewTable reviews={filtered} onChange={handleChange} onDelete={handleDelete} />
+                        <ReviewTable reviews={filtered} onReply={(id)=>gotoReply(id)} onChange={handleChange} onDelete={handleDelete} />
                     </div>
                 </div>
             </div>
