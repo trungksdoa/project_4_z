@@ -16,6 +16,7 @@ import com.project4.bookonline.Service.WebService;
 import com.project4.bookonline.UploadService.FileStorageService;
 import com.project4.bookonline.dto.AdminDTO;
 import com.project4.bookonline.dto.AuthorDTO;
+import com.project4.bookonline.dto.UsersDTO;
 import com.project4.bookonline.dto.WebDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,32 +78,25 @@ public class WebManageController {
     }
 
     @CrossOrigin(origins = "http://localhost:3006")
-    @RequestMapping(value = "/web/update/{id}", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
-    public ResponseEntity<Message_Respones<Web_information>> Update(@PathVariable String id, String web_string) {
+    @RequestMapping(value = "/web/update/", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Message_Respones<Web_information>> Update(@RequestBody WebDTO web_string) {
         Web_information webif = new Web_information();
-        WebDTO webdto = null;
-        try {
-            webdto = new ObjectMapper().readValue(web_string, WebDTO.class);
+        webif = service.findOne(1);
+        String msg = "Update success";
+        if (webif != null) {
+            webif.setEmail(web_string.getEmail());
+            webif.setPhonenum(web_string.getPhonenum());
+            webif.setAddress(web_string.getAddress());
+            webif.setTimeservice(web_string.getTimeservice());
 
-            webif = service.findOne(Integer.valueOf(id));
-            String msg = "Update success";
-            if (webif != null) {
-                webif.setEmail(webdto.getEmail());
-                webif.setPhonenum(webdto.getPhonenum());
-                webif.setAddress(webdto.getAddress());
-                webif.setTimeservice(webdto.getTimeservice());
-
-                Web_information web = service.save(webif);
-                setMessage.setMessage(msg);
-                setMessage.setObject(webif);
-                setMessage.setCode(200);
-            } else {
-                msg = "Not found";
-                setMessage.setMessage(msg);
-                setMessage.setCode(404);
-            }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            Web_information web = service.save(webif);
+            setMessage.setMessage(msg);
+            setMessage.setObject(webif);
+            setMessage.setCode(200);
+        } else {
+            msg = "Not found";
+            setMessage.setMessage(msg);
+            setMessage.setCode(404);
         }
         return new ResponseEntity<Message_Respones<Web_information>>(setMessage, HttpStatus.OK);
     }

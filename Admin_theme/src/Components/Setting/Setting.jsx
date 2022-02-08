@@ -5,6 +5,8 @@ import TimePicker from 'react-time-picker';
 import { toast } from 'react-toastify'
 const Setting = () => {
     const [setting, setSetting] = useState({ address: "", email: "", id: "", phonenum: "", timeservice: "" });
+    const [formError, setformError] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
     const [image, setImage] = useState(null);
     const [imgData, setImgData] = useState(null);
 
@@ -16,6 +18,24 @@ const Setting = () => {
 
     const upload = () => {
         fileUploader.current.click();
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setformError(vaildate(setting));
+        setIsSubmit(true);
+        // await AdminAPI.Create(formvalue);
+    }
+
+    async function submitAction() {
+        if (Object.keys(formError).length === 0 && isSubmit) {
+            console.log(setting)
+            await settingAPi.save(setting).then(res => {
+                toast(res.msg)
+            }).catch(err => alert(err.msg));
+        } else {
+            setIsSubmit(false);
+        }
     }
     const uploadRequest = async (id, form) => {
         await settingAPi.upload(id, form).then(res => {
@@ -73,6 +93,35 @@ const Setting = () => {
         }
         getSetting();
     }, [])
+
+    useEffect(() => {
+        submitAction();
+    }, [formError])
+
+    const vaildate = (value) => {
+        const error = {};
+        if (!value.address) {
+            error.address = "address is required";
+        } else if (value.address.trim().length <= 0) {
+            error.address = "address can not be blank";
+        }
+        if (!value.email) {
+            error.email = "email is required";
+        } else if (value.email.trim().length <= 0) {
+            error.email = "email can not be blank";
+        }
+        if (!value.phonenum) {
+            error.phonenum = "phonenum is required";
+        } else if (value.phonenum.trim().length <= 0) {
+            error.phonenum = "phonenum can not be blank";
+        }
+        if (!value.timeservice) {
+            error.timeservice = "timeservice is required";
+        } else if (value.timeservice.trim().length <= 0) {
+            error.timeservice = "timeservice can not be blank";
+        }
+        return error;
+    }
     return (
 
         <div className="container-fluid px-2 px-md-4">
@@ -85,10 +134,10 @@ const Setting = () => {
                     <div className="col-auto my-auto">
                         <div className="h-100">
                             <h5 className="mb-1">
-                                Võ Hoàng Trung
+                                Setting
                             </h5>
                             <p className="mb-0 font-weight-normal text-sm">
-                                CEO / Co-Founder
+                                Website
                             </p>
                         </div>
                     </div>
@@ -130,7 +179,7 @@ const Setting = () => {
                                     </div>
                                 </div>
                                 <div className="card-body p-3">
-                                    <form>
+                                    <form onSubmit={handleSubmit}>
                                         {/* Form Group (Address)*/}
                                         <div className="mb-3">
                                             <TextField
@@ -142,6 +191,7 @@ const Setting = () => {
                                                 label="Address contact"
                                                 autoFocus
                                             />
+                                            <p style={{ color: "red" }}>{formError.address}</p>
                                         </div>
                                         {/* Form Row*/}
                                         {/* Form Row        */}
@@ -156,6 +206,7 @@ const Setting = () => {
                                                 label="Phone contact"
                                                 autoFocus
                                             />
+                                            <p style={{ color: "red" }}>{formError.phonenum}</p>
                                             {/* Form Group (Timeservices)*/}
                                         </div>
                                         {/* Form Group (email address)*/}
@@ -169,6 +220,7 @@ const Setting = () => {
                                                 label="Email contact"
                                                 autoFocus
                                             />
+                                            <p style={{ color: "red" }}>{formError.email}</p>
                                         </div>
                                         <div className="mb-3">
                                             <TextField
@@ -180,10 +232,11 @@ const Setting = () => {
                                                 label="Time contact"
                                                 autoFocus
                                             />
+                                            <p style={{ color: "red" }}>{formError.timeservice}</p>
                                         </div>
                                         {/* Form Row*/}
                                         {/* Save changes button*/}
-                                        <button className="btn btn-primary" type="button">Save changes</button>
+                                        <button className="btn btn-primary" type="submit">Save changes</button>
                                     </form>
                                 </div>
                             </div>

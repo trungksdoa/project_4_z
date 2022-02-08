@@ -78,6 +78,10 @@ const Edit_form = () => {
         } else if (value.adminpassword.trim().length <= 10) {
             error.adminpassword = "Password length needs to be at least 10 characters";
         }
+
+        if(!value.roles){
+            error.roles = "Roles is required";
+        }
         return error;
     }
     return (

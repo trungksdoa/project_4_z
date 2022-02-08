@@ -75,6 +75,9 @@ public class Books implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "BooksId")
     private Collection<Reviews> reviews;
 
+    @Column(name = "status")
+    private int status;
+
     public Books() {
     }
 
@@ -90,6 +93,14 @@ public class Books implements Serializable {
         this.bookmodifieddate = bookmodifieddate;
         this.bookcreateddate = bookcreateddate;
         this.amounts = amounts;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getBooksid() {

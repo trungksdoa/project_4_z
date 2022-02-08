@@ -62,6 +62,9 @@ public class Authors implements Serializable {
     @Basic(optional = false)
     @Column(name = "Modifieddate", nullable = false)
     private String modifieddate;
+
+    @Column(name = "status")
+    private int status;
     //    @JsonIgnore
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "authorid")
