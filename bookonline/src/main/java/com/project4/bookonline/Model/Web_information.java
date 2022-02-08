@@ -19,7 +19,7 @@ public class Web_information {
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private String id;
+    private int id;
     @Column(name = "Logo_name_path")
     private String Logo_name_path;
     @Column(name = "address")

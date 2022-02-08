@@ -42,6 +42,7 @@ import Reviews from './Components/Reviews/Reviews.jsx'
 
 import Reply from './Components/Reviews/Reply.jsx';
 
+import Setting from './Components/Setting/Setting.jsx';
 import { useCookies } from 'react-cookie';
 
 
@@ -69,9 +70,7 @@ function Banner() {
     </>
   )
 }
-function Setting() {
-  return (<h3>setting page</h3>)
-}
+
 function Wishlist() {
   return (<h3>Wishlist page</h3>)
 }
@@ -202,7 +201,7 @@ function RolesCustomersOutlet() {
   const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
   let isAdminA;
   if (auth) {
-    const RoleA_Require_admin = ["Customers Management", "owner"];
+    const RoleA_Require_admin = ["Customers Management", "Reviews Management", "owner"];
     isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
   }
   if (isAdminA) {
@@ -219,10 +218,13 @@ function RolesReviewsOutlet() {
   if (auth) {
     const RoleA_Require_admin = ["Reviews Management", "Customers Management", "owner"];
     isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+    console.log(cookies.loggin.roles, isAdminA)
   }
   if (isAdminA) {
+    console.log("true")
     return <Outlet />;
   } else {
+    console.log("false")
     return <PermissionError />;
   }
 }

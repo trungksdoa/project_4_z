@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
+import Pagination from '../Pagination/pagination';
 
 const Reviews = () => {
     const [Reviews_list, setReviews_list] = useState([
@@ -71,6 +72,18 @@ const Reviews = () => {
                 review.ratingstart.toString().includes(searchByRating)
             ))
     }, [searchByBook, searchBySearchCustomer, searchByStatus, Reviews_list])
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const itemsPerPage = 3;
+
+    const itemOfLast = currentPage * itemsPerPage;
+    const itemOfFirst = itemOfLast - itemsPerPage;
+    const currentItem = filtered.slice(itemOfFirst, itemOfLast)
+
+    const paginate = page => {
+        setCurrentPage(page)
+    }
     return (
 
         <div className="col-12">
@@ -156,7 +169,8 @@ const Reviews = () => {
                                 </div>
                             </div>
                         </div>
-                        <ReviewTable reviews={filtered} onReply={(id)=>gotoReply(id)} onChange={handleChange} onDelete={handleDelete} />
+                        <ReviewTable reviews={currentItem} onReply={(id) => gotoReply(id)} onChange={handleChange} onDelete={handleDelete} />
+                        <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} />
                     </div>
                 </div>
             </div>

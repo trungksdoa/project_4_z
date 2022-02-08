@@ -1,5 +1,24 @@
-import React from 'react';
-const footer = () => {
+import React, { useState, useEffect } from 'react';
+import settingAPi from '../../api/SettingAPI';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import ListSubheader from '@mui/material/ListSubheader';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+
+const Footer = () => {
+    const [setting, setSetting] = useState({ address: "", email: "", id: "", phonenum: "", timeservice: "", logo_name_path: "" });
+    useEffect(() => {
+        const getSetting = async () => {
+            await settingAPi.getSetting().then((setting) => {
+                setSetting(setting.data)
+            }).catch((error) => {
+                alert(error.msg);
+            });
+        }
+        getSetting();
+    }, [])
     return (
         <footer id="tg-footer" className="tg-footer tg-haslayout">
             <div className="tg-footerarea">
@@ -44,24 +63,22 @@ const footer = () => {
                                     <ul className="tg-contactinfo">
                                         <li>
                                             <i className="icon-apartment" />
-                                            <address>Suit # 07, Rose world Building, Street # 02, AT246T Manchester</address>
+                                            <address>{setting.address}</address>
                                         </li>
                                         <li>
                                             <i className="icon-phone-handset" />
                                             <span>
-                                                <em>0800 12345 - 678 - 89</em>
-                                                <em>+4 1234 - 4567 - 67</em>
+                                                <em>{setting.phonenum}</em>
                                             </span>
                                         </li>
                                         <li>
                                             <i className="icon-clock" />
-                                            <span>Serving 7 Days A Week From 9am - 5pm</span>
+                                            <span>{setting.timeservice}</span>
                                         </li>
                                         <li>
                                             <i className="icon-envelope" />
                                             <span>
-                                                <em><a href="mailto:support@domain.com">support@domain.com</a></em>
-                                                <em><a href="mailto:info@domain.com">info@domain.com</a></em>
+                                                <em><a href={"mailto:" + setting.email}>{setting.email}</a></em>
                                             </span>
                                         </li>
                                     </ul>
@@ -74,75 +91,29 @@ const footer = () => {
                                     </ul>
                                 </div>
                             </div>
-                            <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                <div className="tg-footercol tg-widget tg-widgetnavigation">
-                                    <div className="tg-widgettitle">
-                                        <h3>Shipping And Help Information</h3>
-                                    </div>
-                                    <div className="tg-widgetcontent">
-                                        <ul>
-                                            <li><a href="#!">Terms of Use</a></li>
-                                            <li><a href="#!">Terms of Sale</a></li>
-                                            <li><a href="#!">Returns</a></li>
-                                            <li><a href="#!">Privacy</a></li>
-                                            <li><a href="#!">Cookies</a></li>
-                                            <li><a href="#!">Contact Us</a></li>
-                                            <li><a href="#!">Our Affiliates</a></li>
-                                            <li><a href="#!">Vision &amp; Aim</a></li>
-                                        </ul>
-                                        <ul>
-                                            <li><a href="#!">Our Story</a></li>
-                                            <li><a href="#!">Meet Our Team</a></li>
-                                            <li><a href="#!">FAQ</a></li>
-                                            <li><a href="#!">Testimonials</a></li>
-                                            <li><a href="#!">Join Our Team</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <div className="col-xs-12 col-sm-12 col-md-4 col-lg-5">
                                 <div className="tg-footercol tg-widget tg-widgettopsellingauthors">
                                     <div className="tg-widgettitle">
                                         <h3>Team</h3>
                                     </div>
                                     <div className="tg-widgetcontent">
-                                        <ul>
-                                            <li>
-                                                <figure><a href="#!"><img src="images/author/imag-11.jpg" alt="image description" /></a></figure>
-                                                <div className="tg-authornamebooks">
-                                                    <h4><a href="#!">Nguyễn Khắc Quang</a></h4>
-                                                    <p>Group Leader</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <figure><a href="#!"><img src="images/author/imag-09.jpg" alt="image description" /></a></figure>
-                                                <div className="tg-authornamebooks">
-                                                    <h4><a href="#!">Võ Hoàng Trung</a></h4>
-                                                    <p>Group member</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <figure><a href="#!"><img src="images/author/imag-10.jpg" alt="image description" /></a></figure>
-                                                <div className="tg-authornamebooks">
-                                                    <h4><a href="#!">Nguyễn Khắc Toàn</a></h4>
-                                                    <p>Group member</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <figure><a href="#!"><img src="images/author/imag-11.jpg" alt="image description" /></a></figure>
-                                                <div className="tg-authornamebooks">
-                                                    <h4><a href="#!">Nguyễn Văn Đại</a></h4>
-                                                    <p>Group member</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <figure><a href="#!"><img src="images/author/imag-11.jpg" alt="image description" /></a></figure>
-                                                <div className="tg-authornamebooks">
-                                                    <h4><a href="#!">Lê Thanh Ân</a></h4>
-                                                    <p>Group member</p>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                        <ImageList sx={{ width: 500, height: 450,fontSize:30 }}>
+                                            {itemData.map((item) => (
+                                                <ImageListItem key={item.img}>
+                                                    <img
+                                                        src={`${item.img}?w=248&fit=crop&auto=format`}
+                                                        srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                                                        alt={item.title}
+                                                        loading="lazy"
+                                                    />
+                                                    <ImageListItemBar
+                                                        title={item.title}
+                                                        style={{fontSize:60}}
+                                                        subtitle={item.work}
+                                                    />
+                                                </ImageListItem>
+                                            ))}
+                                        </ImageList>
                                     </div>
                                 </div>
                             </div>
@@ -182,4 +153,36 @@ const footer = () => {
         </footer>
     )
 }
-export default footer;
+const itemData = [
+    {
+        img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+        title: 'Nguyễn Khắc Quang',
+        work: '@Leader',
+        rows: 2,
+        cols: 2,
+        featured: true,
+    },
+    {
+        img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+        title: 'Võ Hoàng Trung',
+        work: '@member',
+    },
+    {
+        img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+        title: 'Nguyễn Khắc Toàn',
+        work: '@member',
+    },
+    {
+        img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+        title: 'Nguyễn Văn Đại',
+        work: '@member',
+        cols: 2,
+    },
+    {
+        img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+        title: 'Lê Thanh Ân',
+        work: '@member',
+        cols: 2,
+    }
+];
+export default Footer;

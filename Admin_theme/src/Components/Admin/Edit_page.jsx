@@ -49,6 +49,7 @@ const Edit_form = () => {
             console.log(formvalue)
             await AdminAPI.Edit(id, formvalue).then(res => {
                 toast(res.msg)
+                navigate("/owner/admin")
             }).catch(err => alert(err.msg));
         } else {
             setIsSubmit(false);
