@@ -49,25 +49,25 @@ public class Books implements Serializable {
     @Basic(optional = false)
     @Column(name = "Book_releasedate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date bookreleasedate;
+    private String bookreleasedate;
     @Basic(optional = false)
     @Column(name = "Book_modifieddate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date bookmodifieddate;
+    private String bookmodifieddate;
     @Basic(optional = false)
     @Column(name = "Book_createddate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date bookcreateddate;
+    private String bookcreateddate;
     @Basic(optional = false)
     @Column(name = "Amounts", nullable = false)
     private int amounts;
 
     @ManyToOne
     @JoinColumn(name = "Author_id", nullable = false)
-    private Authors authorid;
+    private int authorid;
     @JoinColumn(name = "PDetail_id", referencedColumnName = "Pdetail_id", nullable = false)
     @OneToOne(optional = false)
-    private PDetail pDetailid;
+    private int pDetailid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookid")
     @JsonIgnore
     private Collection<OrderDetail> orderDetailCollection;
@@ -88,7 +88,7 @@ public class Books implements Serializable {
         this.booksid = booksid;
     }
 
-    public Books(String booksid, String bookname, int bookprice, Date bookreleasedate, Date bookmodifieddate, Date bookcreateddate, int amounts) {
+    public Books(String booksid, String bookname, int bookprice, String bookreleasedate, String bookmodifieddate, String bookcreateddate, int amounts) {
         this.booksid = booksid;
         this.bookname = bookname;
         this.bookprice = bookprice;
@@ -148,27 +148,27 @@ public class Books implements Serializable {
         this.bookdescription = bookdescription;
     }
 
-    public Date getBookreleasedate() {
+    public String getBookreleasedate() {
         return bookreleasedate;
     }
 
-    public void setBookreleasedate(Date bookreleasedate) {
+    public void setBookreleasedate(String bookreleasedate) {
         this.bookreleasedate = bookreleasedate;
     }
 
-    public Date getBookmodifieddate() {
+    public String getBookmodifieddate() {
         return bookmodifieddate;
     }
 
-    public void setBookmodifieddate(Date bookmodifieddate) {
+    public void setBookmodifieddate(String bookmodifieddate) {
         this.bookmodifieddate = bookmodifieddate;
     }
 
-    public Date getBookcreateddate() {
+    public String getBookcreateddate() {
         return bookcreateddate;
     }
 
-    public void setBookcreateddate(Date bookcreateddate) {
+    public void setBookcreateddate(String bookcreateddate) {
         this.bookcreateddate = bookcreateddate;
     }
 
@@ -181,20 +181,20 @@ public class Books implements Serializable {
     }
 
     @JsonBackReference(value = "Author_book")
-    public Authors getAuthorid() {
+    public int getAuthorid() {
         return authorid;
     }
 
-    public void setAuthorid(Authors authorid) {
+    public void setAuthorid(int authorid) {
         this.authorid = authorid;
     }
 
     @JsonManagedReference(value = "pdetail_book")
-    public PDetail getPDetailid() {
+    public int getPDetailid() {
         return pDetailid;
     }
 
-    public void setPDetailid(PDetail pDetailid) {
+    public void setPDetailid(int pDetailid) {
         this.pDetailid = pDetailid;
     }
 

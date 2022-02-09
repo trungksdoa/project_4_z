@@ -16,4 +16,5 @@ public interface CategorysService {
     public List<Catagorys> List_categorys();
     public Catagorys Create(Catagorys catagorys);
     public void Delete(int id);
+    public Catagorys findOne(int id);
 }

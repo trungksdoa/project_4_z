@@ -13,5 +13,4 @@ import com.project4.bookonline.Model.PDetail;
 public interface PDetailService {
     public PDetail Create(PDetail pDetail);
     public PDetail findOne(int id);
-   
 }
