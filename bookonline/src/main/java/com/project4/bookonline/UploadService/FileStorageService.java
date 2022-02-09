@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.project4.bookonline.UploadException.FileStorageException;
 import com.project4.bookonline.UploadException.FileNotFoundException;
 import com.project4.bookonline.UploadProperty.FileStorageProperties;
+import net.bytebuddy.utility.RandomString;
 
 @Service
 public class FileStorageService {
@@ -39,9 +40,7 @@ public class FileStorageService {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-
         fileName = fileName.replaceAll("\\s+", "_");
-
 
         try {
             // Check if the file's name contains invalid characters
@@ -62,6 +61,26 @@ public class FileStorageService {
     public String storePreNameFile(MultipartFile file, String preName) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(preName);
+
+        try {
+            // Check if the file's name contains invalid characters
+            if (fileName.contains("..")) {
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
+
+            // Copy file to the target location (Replacing existing file with the same name)
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            return fileName;
+        } catch (IOException ex) {
+            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+        }
+    }
+    public String storeBookNameFile(MultipartFile file) {
+        // Normalize file name
+        RandomString a = new RandomString();
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename()+a);
 
         try {
             // Check if the file's name contains invalid characters

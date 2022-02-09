@@ -50,11 +50,11 @@ public class Catagorys implements Serializable {
     @Basic(optional = false)
     @Column(name = "Catagory_createddate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date catagorycreateddate;
+    private String catagorycreateddate;
     @Basic(optional = false)
     @Column(name = "Catagory_modifieddate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date catagorymodifieddate;
+    private String catagorymodifieddate;
 
     public Catagorys() {
     }
@@ -63,7 +63,7 @@ public class Catagorys implements Serializable {
         this.catagoryid = catagoryid;
     }
 
-    public Catagorys(Integer catagoryid, String catagoryname, String catagorydescription, Date catagorycreateddate, Date catagorymodifieddate) {
+    public Catagorys(Integer catagoryid, String catagoryname, String catagorydescription, String catagorycreateddate, String catagorymodifieddate) {
         this.catagoryid = catagoryid;
         this.catagoryname = catagoryname;
         this.catagorydescription = catagorydescription;
@@ -95,19 +95,19 @@ public class Catagorys implements Serializable {
         this.catagorydescription = catagorydescription;
     }
 
-    public Date getCatagorycreateddate() {
+    public String getCatagorycreateddate() {
         return catagorycreateddate;
     }
 
-    public void setCatagorycreateddate(Date catagorycreateddate) {
+    public void setCatagorycreateddate(String catagorycreateddate) {
         this.catagorycreateddate = catagorycreateddate;
     }
 
-    public Date getCatagorymodifieddate() {
+    public String getCatagorymodifieddate() {
         return catagorymodifieddate;
     }
 
-    public void setCatagorymodifieddate(Date catagorymodifieddate) {
+    public void setCatagorymodifieddate(String catagorymodifieddate) {
         this.catagorymodifieddate = catagorymodifieddate;
     }
 

@@ -14,7 +14,6 @@ import java.util.List;
 public interface BooksService {
     public List<Books> ListBook();
     public Books Create(Books books);
-    public void Delete(String id);
-
+    public void Delete(String id);   
     public void DeleteAllBy(List<String> id);
 }
