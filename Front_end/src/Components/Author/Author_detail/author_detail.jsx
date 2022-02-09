@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { FeatureBook_Author } from '../../Book/Books.jsx';
 import AuthorAPU from '../../../api/Author';
+import './author.css'
 import parse from 'html-react-parser';
 
 const Authors_detail = () => {
@@ -77,7 +78,7 @@ const Authors_detail = () => {
                                             <h2><span>{author.numberpublishedbooks} Published Books</span>{author.authorname}</h2>
                                         </div>
                                         <div className="tg-description">
-                                            <div style={{ fontSize: "20px" }} dangerouslySetInnerHTML={{ __html: author.authorinformation }} />
+                                            <div class="author_information" dangerouslySetInnerHTML={{ __html: author.authorinformation }} />
                                         </div>
                                         <div className="tg-booksfromauthor">
                                             <div className="tg-sectionhead">

@@ -31,9 +31,8 @@ public class Wishlist implements Serializable {
     @Basic(optional = false)
     @Column(name = "Wishlist_id")
     private Integer Wishlist_id;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "Book_id", nullable = false)
-
     private Books booksId;
     @ManyToOne
     @JoinColumn(name = "User_id", nullable = false)
@@ -43,7 +42,7 @@ public class Wishlist implements Serializable {
     @Column(name = "Wishlist_createddate")
     private String Wishlist_createddate;
 
-    @JsonManagedReference(value = "wishlist_book")
+    @JsonBackReference(value = "wishlist_book")
     public Books getBooksId() {
         return booksId;
     }

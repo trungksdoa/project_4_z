@@ -74,10 +74,6 @@ const NavigationBar = () => {
                                     </li>
                                     <li><a href="/Collection">Collection</a></li>
                                     <li>
-                                        <a href="/News">News</a>
-                                        {/* <a href="#!">News</a> */}
-                                    </li>
-                                    <li>
                                         <a href="/Contact">Contact</a>
                                     </li>
                                     <li><a href="contactus.html">About us</a></li>

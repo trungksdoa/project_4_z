@@ -20,7 +20,6 @@ const Author = () => {
         async function FetchData() {
             await AuthorAPI.getAll().then(res => {
                 setAuthor_list(res.data);
-                console.log(res.data)
             }).catch(e => {
                 alert(e.msg)
             });
@@ -47,11 +46,13 @@ const Author = () => {
             toast(res.msg);
         });
     };
+
     function handleView(index) {
         const newArray = [...author_list];
-        const id = newArray[index].authorid;
-        navigate("/admin/author/edit/" + id)
+        const object = newArray.find(obj => obj.authorid === index);
+        navigate("/admin/author/edit/" + object.authorid)
     }
+
     function GotoCreatePage() {
         navigate("/admin/author/create")
     }
@@ -62,14 +63,16 @@ const Author = () => {
     // // We start with an empty list of items.
     const [currentPage, setCurrentPage] = useState(1);
 
-    const itemsPerPage = 3;
+    const itemsPerPage = 5;
 
     const itemOfLast = currentPage * itemsPerPage;
     const itemOfFirst = itemOfLast - itemsPerPage;
     const currentItem = filtered.slice(itemOfFirst, itemOfLast)
 
+
     const paginate = page => {
         setCurrentPage(page)
+        console.log(currentItem)
     }
 
     return (

@@ -215,7 +215,6 @@ const FormPage = () => {
                         </div>
                         <div className="card-body px-0 pb-2">
                             <Container component="main" maxWidth="xl">
-                                <pre>{JSON.stringify(formValues, undefined, 2)}</pre>
                                 <Box sx={{ width: '100%' }}>
                                     <Stepper activeStep={activeStep}>
                                         {steps.map((label, index) => {

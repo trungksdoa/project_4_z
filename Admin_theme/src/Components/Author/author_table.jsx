@@ -10,7 +10,6 @@ const Author_table = (props) => {
         }
     }
     function OnDelete(index) {
-        console.log(index)
         if (onDelete) {
             onDelete(index)
         }
@@ -69,7 +68,7 @@ const Author_table = (props) => {
                                     </a>
                                 </td>
                                 <td className="align-middle" style={{ textAlign: 'left' }}>
-                                    <a style={{ cursor: 'pointer' }} onClick={() => OnViewDetail(index)}><i className="fa fa-eye" /></a>
+                                    <a style={{ cursor: 'pointer' }} onClick={() => OnViewDetail(author.authorid)}><i className="fa fa-eye" /></a>
                                 </td>
                             </tr>
                         )

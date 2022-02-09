@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:3006")
 @RestController
 @RequestMapping("/admin/api")
-public class VoucherController {
+public class VoucherManagerController {
 
     @Autowired
     VoucherService voucherService;

@@ -34,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin(origins = "http://localhost:3006")
 @RestController
 @RequestMapping("/admin/api")
-public class CategoryController {
+public class CategoryManagerController {
 
     Message_Respones<Catagorys> setMessage;
 

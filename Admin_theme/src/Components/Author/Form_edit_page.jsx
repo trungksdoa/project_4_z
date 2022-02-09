@@ -225,8 +225,6 @@ const FormPage = () => {
     return (
         <div className="container-fluid py-4">
             <div className="container">
-                <pre>{JSON.stringify(author, undefined, 2)}</pre>
-                <pre>{JSON.stringify(formErrors, undefined, 2)}</pre>
                 <a style={{ marginLeft: 15, cursor: 'pointer' }}
                     onClick={HandleAction}
                 >

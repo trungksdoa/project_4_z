@@ -15,12 +15,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author PC
  */
-
+@RequestMapping(value="/api")
+@RestController
 public class CategoryController {
     String respone;
     Catagorys catagorys;
@@ -29,7 +31,7 @@ public class CategoryController {
     CategorysService categorysService;
     Message_Respones<Catagorys> setMessage = new Message_Respones<Catagorys>();
 
-    @RequestMapping(value = "/api/category/findAll", method = RequestMethod.GET)
+    @RequestMapping(value = "/category/findAll", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Catagorys>> findAll() {
         catagoryses = new ArrayList<>();
         catagoryses = categorysService.List_categorys();
@@ -40,7 +42,7 @@ public class CategoryController {
         return new ResponseEntity<Message_Respones<Catagorys>>(setMessage, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/category/find/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/category/find/{id}", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Catagorys>> findOne(@PathVariable int id) {
         catagorys = new Catagorys();
         catagorys  = categorysService.findOne(id);
