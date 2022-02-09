@@ -49,11 +49,9 @@ public class Catagorys implements Serializable {
     private String catagorydescription;
     @Basic(optional = false)
     @Column(name = "Catagory_createddate", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private String catagorycreateddate;
     @Basic(optional = false)
     @Column(name = "Catagory_modifieddate", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private String catagorymodifieddate;
 
     public Catagorys() {

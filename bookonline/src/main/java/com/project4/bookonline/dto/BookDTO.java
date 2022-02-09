@@ -10,7 +10,6 @@ package com.project4.bookonline.dto;
  */
 public class BookDTO {
     // Pdetail
-    private String imageLink;
     private String format;
     private Integer pages;
     private String dimensions;
@@ -28,11 +27,12 @@ public class BookDTO {
     private int pDetailid;
     private int status;
 
+
+
     public BookDTO() {
     }
 
-    public BookDTO(String imageLink, String format, Integer pages, String dimensions, String language, String illustrationsnote, String bookname, int bookprice, String bookdescription, String bookreleasedate, String bookmodifieddate, String bookcreateddate, int amounts, int authorid, int pDetailid, int status) {
-        this.imageLink = imageLink;
+    public BookDTO( String format, Integer pages, String dimensions, String language, String illustrationsnote, String bookname, int bookprice, String bookdescription, String bookreleasedate, String bookmodifieddate, String bookcreateddate, int amounts, int authorid, int pDetailid, int status) {
         this.format = format;
         this.pages = pages;
         this.dimensions = dimensions;
@@ -49,21 +49,6 @@ public class BookDTO {
         this.pDetailid = pDetailid;
         this.status = status;
     }
-
-    /**
-     * @return the imageLink
-     */
-    public String getImageLink() {
-        return imageLink;
-    }
-
-    /**
-     * @param imageLink the imageLink to set
-     */
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
-    }
-
     /**
      * @return the format
      */

@@ -6,6 +6,7 @@ package com.project4.bookonline.Controller.User.Admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project4.bookonline.Model.Authors;
 import com.project4.bookonline.Model.Books;
 import com.project4.bookonline.Model.Message_Respones;
 import com.project4.bookonline.Model.PDetail;
@@ -13,10 +14,12 @@ import com.project4.bookonline.Service.BooksService;
 import com.project4.bookonline.Service.PDetailService;
 import com.project4.bookonline.UploadService.FileStorageService;
 import com.project4.bookonline.dto.BookDTO;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,13 +33,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
  * @author PC
  */
 @CrossOrigin(origins = "http://localhost:3006")
 @RestController
 @RequestMapping("/admin/api")
-public class BookController {
+public class BookManagerController {
 
     BookDTO bdto;
     String msg;
@@ -96,15 +98,19 @@ public class BookController {
         PDetail crep = pDetailService.Create(p);
         // end insert//
         // insert book//
+        Authors authors = new Authors();
+        PDetail pdetail = new PDetail();
         Books b = new Books();
+        authors.setAuthorid(bookdto.getAuthorid());
+        pdetail.setPdetailid(crep.getPdetailid());
         b.setBooksid(bid);
         b.setAmounts(bookdto.getAmounts());
-        b.setAuthorid(bookdto.getAuthorid());
+        b.setAuthorid(authors);
         b.setBookname(bookdto.getBookname());
         b.setBookprice(bookdto.getBookprice());
         b.setBookdescription(bookdto.getBookdescription());
         b.setBookreleasedate(bookdto.getBookreleasedate());
-        b.setPDetailid(crep.getPdetailid());
+        b.setPDetailid(pdetail);
         b.setStatus(bookdto.getStatus());
         b.setBookcreateddate(dtf.format(now));
         b.setBookmodifieddate(dtf.format(now));
