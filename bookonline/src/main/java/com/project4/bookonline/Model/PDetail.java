@@ -30,9 +30,6 @@ import javax.xml.bind.annotation.XmlTransient;
         @NamedQuery(name = "PDetail.findByIllustrationsnote", query = "SELECT p FROM PDetail p WHERE p.illustrationsnote = :illustrationsnote")})
 public class PDetail implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pDetailid")
-    private Collection<Books> booksCollection;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +48,7 @@ public class PDetail implements Serializable {
     private String language;
     @Column(name = "Illustrations_note", length = 50)
     private String illustrationsnote;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pDetailid")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "PDetailId")
     private Books book;
 
     public PDetail() {
@@ -150,15 +147,6 @@ public class PDetail implements Serializable {
     @Override
     public String toString() {
         return "com.project4.bookonline.Model.PDetail[ pdetailid=" + pdetailid + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Books> getBooksCollection() {
-        return booksCollection;
-    }
-
-    public void setBooksCollection(Collection<Books> booksCollection) {
-        this.booksCollection = booksCollection;
     }
 
 }

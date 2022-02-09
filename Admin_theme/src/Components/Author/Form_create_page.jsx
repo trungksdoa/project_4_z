@@ -13,7 +13,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import CK_editor from './CK_Editor.jsx';
+import CkEditor from '../Pagination/CK_Editor.jsx';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-toastify/dist/ReactToastify.css';
 // ----------------End Material---------------
@@ -245,10 +245,10 @@ const FormPage = () => {
                                                     values={formValues}
                                                     Image={imgData}
                                                 />
-                                            ) : <CK_editor
+                                            ) : <CkEditor
                                                 OnKeyPress={handleChangeCKEditor}
                                                 Error={formErrors}
-                                                values={formValues}
+                                                values={formValues.authorinformation}
                                             />}
                                             {activeStep === steps.length ? (
                                                 <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>

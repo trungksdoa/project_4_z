@@ -43,33 +43,23 @@ import Reviews from './Components/Reviews/Reviews.jsx'
 import Reply from './Components/Reviews/Reply.jsx';
 
 import Setting from './Components/Setting/Setting.jsx';
+
+import Banner from './Components/banner/index.jsx'
+
+import BannerEdit from './Components/banner/Form_edit_page.jsx'
+
+import BannerCreate from './Components/banner/Form_create_page.jsx'
+
+import BookCreate from './Components/Books/Form_create_page.jsx'
+
+
 import { useCookies } from 'react-cookie';
 
 
 import Auth from './api/CustomerApi';
 
 import './index.css'
-function Banner() {
-  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const HandleDelete = async () => {
-    const res = await Auth.getAll(cookies.loggin.roles);
-    console.log(res);
-    if (res.code !== 200) {
-      alert(res.msg);
-    } else {
-      //
-      alert("Deleted");
-    }
-  }
-  // return (<PermissionError/>)
-  return (
-    <>
-      <h3>Banner page</h3>
 
-      <button onClick={HandleDelete}>delete</button>
-    </>
-  )
-}
 
 function Wishlist() {
   return (<h3>Wishlist page</h3>)
@@ -111,24 +101,24 @@ const findOne = (haystack, arr) => {
 };
 
 function ProtectLogin({ children }) {
-  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  const [cookies, setCookie, removeCookie] = useCookies(['admin_loggin']);
+  const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
   return !auth ? children : <Navigate to="/" />;
 }
 
 function PrivateOutlet() {
-  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  const [cookies, setCookie, removeCookie] = useCookies(['admin_loggin']);
+  const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
   return auth ? <Outlet /> : <Navigate to="/dashboard/login" />;
 }
 
 function RoleOwnerOutlet() {
-  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  const [cookies, setCookie, removeCookie] = useCookies(['admin_loggin']);
+  const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
   let isAdminA;
   if (auth) {
     const RoleA_Require_admin = ["owner"];
-    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+    isAdminA = findOne(RoleA_Require_admin, cookies.admin_loggin.roles);
   }
   if (isAdminA) {
     return <Outlet />;
@@ -137,12 +127,12 @@ function RoleOwnerOutlet() {
   }
 }
 function RolesProductOutlet() {
-  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  const [cookies, setCookie, removeCookie] = useCookies(['admin_loggin']);
+  const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
   let isAdminA;
   if (auth) {
     const RoleA_Require_admin = ["Product Management", "owner"];
-    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+    isAdminA = findOne(RoleA_Require_admin, cookies.admin_loggin.roles);
   }
   if (isAdminA) {
     return <Outlet />;
@@ -152,12 +142,12 @@ function RolesProductOutlet() {
 }
 
 function RolesOrderOutlet() {
-  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  const [cookies, setCookie, removeCookie] = useCookies(['admin_loggin']);
+  const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
   let isAdminA;
   if (auth) {
     const RoleA_Require_admin = ["Order Management", "Customers Management", "owner"];
-    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+    isAdminA = findOne(RoleA_Require_admin, cookies.admin_loggin.roles);
   }
   if (isAdminA) {
     return <Outlet />;
@@ -167,12 +157,12 @@ function RolesOrderOutlet() {
 }
 
 function RolesBannerOutlet() {
-  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  const [cookies, setCookie, removeCookie] = useCookies(['admin_loggin']);
+  const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
   let isAdminA;
   if (auth) {
     const RoleA_Require_admin = ["Banner Management", "owner"];
-    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+    isAdminA = findOne(RoleA_Require_admin, cookies.admin_loggin.roles);
   }
   if (isAdminA) {
     return <Outlet />;
@@ -182,12 +172,12 @@ function RolesBannerOutlet() {
 }
 
 function RolesAuthorOutlet() {
-  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  const [cookies, setCookie, removeCookie] = useCookies(['admin_loggin']);
+  const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
   let isAdminA;
   if (auth) {
     const RoleA_Require_admin = ["Author Management", "owner"];
-    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+    isAdminA = findOne(RoleA_Require_admin, cookies.admin_loggin.roles);
   }
   if (isAdminA) {
     return <Outlet />;
@@ -197,12 +187,12 @@ function RolesAuthorOutlet() {
 }
 
 function RolesCustomersOutlet() {
-  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  const [cookies, setCookie, removeCookie] = useCookies(['admin_loggin']);
+  const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
   let isAdminA;
   if (auth) {
     const RoleA_Require_admin = ["Customers Management", "Reviews Management", "owner"];
-    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
+    isAdminA = findOne(RoleA_Require_admin, cookies.admin_loggin.roles);
   }
   if (isAdminA) {
     return <Outlet />;
@@ -212,13 +202,13 @@ function RolesCustomersOutlet() {
 }
 
 function RolesReviewsOutlet() {
-  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+  const [cookies, setCookie, removeCookie] = useCookies(['admin_loggin']);
+  const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
   let isAdminA;
   if (auth) {
     const RoleA_Require_admin = ["Reviews Management", "Customers Management", "owner"];
-    isAdminA = findOne(RoleA_Require_admin, cookies.loggin.roles);
-    console.log(cookies.loggin.roles, isAdminA)
+    isAdminA = findOne(RoleA_Require_admin, cookies.admin_loggin.roles);
+    console.log(cookies.admin_loggin.roles, isAdminA)
   }
   if (isAdminA) {
     console.log("true")
@@ -247,6 +237,8 @@ ReactDOM.render(
 
             <Route element={<RolesBannerOutlet />}>
               <Route path="/admin/banner" element={<Banner />} />
+              <Route path="/admin/banner/:id" element={<BannerEdit />} />
+              <Route path="/admin/banner/create" element={<BannerCreate />} />
             </Route>
 
             <Route element={<RolesOrderOutlet />}>
@@ -256,6 +248,7 @@ ReactDOM.render(
 
             <Route element={<RolesProductOutlet />}>
               <Route path="/admin/book" element={<Books />} />
+              <Route path="/admin/book/create" element={<BookCreate />} />
               <Route path="/admin/Catagorys_book" element={<Catagorys_book />} />
             </Route>
 

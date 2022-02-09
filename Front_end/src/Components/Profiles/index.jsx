@@ -58,6 +58,7 @@ const Profile = () => {
         if (auth) {
             // console.log(cookies.loggin.userID)
             fetchData(cookies.loggin.userID).then(response => {
+                console.log(response)
                 setFormData(response.data)
             }).catch(error => {
                 alert(error)

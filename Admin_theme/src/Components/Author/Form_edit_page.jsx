@@ -5,11 +5,10 @@ import parse from 'html-react-parser';
 import ShowMoreText from "react-show-more-text";
 import Fab from '@mui/material/Fab';
 import EditIcon from '@mui/icons-material/Edit';
-import Ck_editor from './CK_Editor';
+import Ck_editor from '../Pagination/CK_Editor.jsx';
 import Au_API from '../../api/AuthorAPI'
 import { toast } from 'react-toastify';
 import TextField from '@mui/material/TextField';
-import 'react-toastify/dist/ReactToastify.css';
 const FormPage = () => {
     // ----------------------------------------------------------------
 
@@ -314,7 +313,7 @@ const FormPage = () => {
                                 <>
                                     <Ck_editor
                                         OnKeyPress={HandleChangeCKEditor}
-                                        values={author}
+                                        values={author.authorinformation}
                                     />
                                     <p style={{ color: "red" }}>{formErrors.authorinformation}</p>
                                 </>

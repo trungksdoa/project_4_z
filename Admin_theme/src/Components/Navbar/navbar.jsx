@@ -4,8 +4,8 @@ import { useCookies } from 'react-cookie';
 import { NavLink, useNavigate } from 'react-router-dom'
 
 const Navbar = (props) => {
-    const [cookies, setCookie, removeCookie] = useCookies(['loggin'])
-    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+    const [cookies, setCookie, removeCookie] = useCookies(['admin_loggin'])
+    const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
 
     const redirect = useNavigate();
     let body = document.getElementsByTagName("body")[0]
@@ -16,7 +16,7 @@ const Navbar = (props) => {
     )
     const HandleLogout = () => {
         // store the user in localStorage
-        removeCookie('loggin', { expires: "Thu, 01 Jan 1970 00:00:00 UTC", path: '/' });
+        removeCookie('admin_loggin', { expires: "Thu, 01 Jan 1970 00:00:00 UTC", path: '/' });
         redirect('/dashboard/login')
         // alert("Ok")
     };

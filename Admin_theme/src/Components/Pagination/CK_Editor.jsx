@@ -6,7 +6,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
 
 const Ck_editor = (props) => {
-    const { OnKeyPress, values,Error } = props;
+    const { OnKeyPress, values, Error } = props;
     const OnChange = (event, editor) => {
         if (OnKeyPress) {
             OnKeyPress(event, editor);
@@ -25,7 +25,7 @@ const Ck_editor = (props) => {
         >
             <CKEditor
                 editor={ClassicEditor}
-                data={values.authorinformation}
+                data={values}
                 onReady={editor => {
                     // You can store the "editor" and use when it is needed.
                     console.log('Editor is ready to use!', editor);
@@ -46,12 +46,12 @@ const Ck_editor = (props) => {
 Ck_editor.propTypes = {
     OnKeyPress: PropTypes.func,
     Error: PropTypes.object,
-    values: PropTypes.object,
+    values: PropTypes.string,
 };
 
 Ck_editor.defaultProps = {
     OnKeyPress: null,
     Error: {},
-    values: { Au_name: "", Au_Published: "", Au_Information: "", Au_images: "" }
+    values: ""
 };
 export default Ck_editor;

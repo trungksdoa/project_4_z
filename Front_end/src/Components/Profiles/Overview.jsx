@@ -127,12 +127,6 @@ const Page1 = ({ data }) => {
             <form onSubmit={handleSubmit}>
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div className="form-group">
-                  <label>Result:</label>
-                  <pre>{JSON.stringify(formData, undefined, 2)}</pre>
-                  <label>Error:</label>
-                  <pre>{JSON.stringify(formErrors, undefined, 2)}</pre>
-                </div>
-                <div className="form-group">
                   <label htmlFor="first_name">First name</label>
                   <input type="text" className="form-control" name="first_name" value={formData.first_name} onChange={handleChange} />
                   <p style={{ color: "red" }}>{formErrors.first_name}</p>

@@ -38,7 +38,7 @@ public class FileStorageService {
 
     public String storeFileBanner(MultipartFile file) {
         // Normalize file name
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename() + "banner_");
+        String fileName = StringUtils.cleanPath("banner_" + file.getOriginalFilename());
 
 
         fileName = fileName.replaceAll("\\s+", "_");
@@ -101,10 +101,11 @@ public class FileStorageService {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
+
     public String storeBookNameFile(MultipartFile file) {
         // Normalize file name
         RandomString a = new RandomString();
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename()+"Books_");
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename() + "Books_");
 
         try {
             // Check if the file's name contains invalid characters

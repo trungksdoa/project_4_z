@@ -62,9 +62,11 @@ public class Books implements Serializable {
     @ManyToOne
     @JoinColumn(name = "Author_id", nullable = false)
     private Authors authorid;
+
     @JoinColumn(name = "PDetail_id", referencedColumnName = "Pdetail_id", nullable = false)
     @OneToOne(optional = false)
-    private PDetail pDetailid;
+    private PDetail PDetailId;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookid")
     @JsonIgnore
     private Collection<OrderDetail> orderDetailCollection;
@@ -188,11 +190,11 @@ public class Books implements Serializable {
 
     @JsonManagedReference(value = "pdetail_book")
     public PDetail getPDetailid() {
-        return pDetailid;
+        return PDetailId;
     }
 
     public void setPDetailid(PDetail pDetailid) {
-        this.pDetailid = pDetailid;
+        this.PDetailId = pDetailid;
     }
 
     @JsonBackReference(value = "ReviewID")

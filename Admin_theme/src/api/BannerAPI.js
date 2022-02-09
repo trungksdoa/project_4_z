@@ -1,12 +1,12 @@
 import axiosClient from "./axiosClient";
-const RequestWishlist = (url) => {
+const RequestBanner = (url, type) => {
     const object_user = {};
     return new Promise((resolve, reject) => {
         axiosClient.get(url)
             .then(response => {
                 object_user.code = response.code;
                 object_user.msg = response.msg;
-                object_user.data = response.data_object == undefined ? null : response.data_object;
+                object_user.data = type == "arr" ? response.data_array : response.data_object;
                 resolve(object_user)
             })
             .catch((error) => {
@@ -21,14 +21,15 @@ const RequestWishlist = (url) => {
             })
     })
 }
-const RequestWishlists = (url) => {
+
+const RequestSave = (url, body) => {
     const object_user = {};
     return new Promise((resolve, reject) => {
-        axiosClient.get(url)
+        axiosClient.put(url, body)
             .then(response => {
                 object_user.code = response.code;
                 object_user.msg = response.msg;
-                object_user.data = response.data_array;
+                object_user.data = response.data_object;
                 resolve(object_user)
             })
             .catch((error) => {
@@ -43,11 +44,43 @@ const RequestWishlists = (url) => {
             })
     })
 }
-const RequestSaveWishlish = (url, formdata) => {
+const RequestSaveFormData = (url, body) => {
+    const object_user = {};
+    return new Promise((resolve, reject) => {
+        axiosClient.post(url, body, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+            .then(response => {
+                object_user.code = response.code;
+                object_user.msg = response.msg;
+                object_user.data = response.data_object;
+                resolve(object_user)
+            })
+            .catch((error) => {
+                if (error.toJSON().message === 'Network Error') {
+                    object_user.status = 511;
+                    object_user.msg = "Network Authentication Required";
+                } else {
+                    object_user.status = error.response.status;
+                    object_user.msg = error.response.data.msg;
+                }
+                reject(object_user)
+            })
+    })
+}
+const RequestImageUpdate = (url, formdata) => {
     const object_user = {};
 
     return new Promise((resolve, reject) => {
-        axiosClient.post(url, formdata)
+        axiosClient.put(url, formdata, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
             .then(response => {
                 object_user.code = response.code;
                 object_user.msg = response.msg;
@@ -68,57 +101,32 @@ const RequestSaveWishlish = (url, formdata) => {
             })
     })
 }
-
-const RequestDelete = (url) => {
-    const object_user = {};
-
-    return new Promise((resolve, reject) => {
-        axiosClient.delete(url)
-            .then(response => {
-                object_user.code = response.code;
-                object_user.msg = response.msg;
-                object_user.data = response.data_object;
-                resolve(object_user)
-            })
-            .catch((error) => {
-                console.log(error.response);
-                if (error.toJSON().message === 'Network Error') {
-                    object_user.status = 511;
-                    object_user.msg = "Network Authentication Required";
-                } else {
-                    object_user.status = error.response.status;
-                    console.log(error.response);
-                    object_user.msg = error.response.data.msg;
-                }
-                reject(object_user)
-            })
-    })
-}
-const WishlistAPI = {
-    getAll: (id) => {
-        const url = 'wishlist/findAll/' + id;
-        return RequestWishlists(url);
+const BannerAPi = {
+    getBanner: () => {
+        const url = 'banners';
+        return RequestBanner(url, "arr");
     },
-    findALlBook: (id) => {
-        const url = 'book/findAll/';
-        return RequestWishlists(url);
+    getBannerById: (id) => {
+        const url = 'banners/' + id;
+        return RequestBanner(url, "obj");
     },
-    getByBookId: (userId, bookId) => {
-        const url = 'wishlist/findAll/' + userId + '/' + bookId + '/';
-        return RequestWishlist(url);
+    upload: (id, form) => {
+        const url = 'banners/image/update/' + id;
+        return RequestImageUpdate(url, form);
     },
-    Save: (userId,bookId) => {
-        const url = 'wishlist/';
-        const body = {
-            "booksId":bookId,
-            "userId":userId
+    save: (form, id) => {
+        const url = 'banners/' + id;
+        const requestBody = {
+            bannerImage: form.bannerImage,
+            bannerTitle: form.bannerTitle,
+            bannerContent: form.bannerContent
         }
-        return RequestSaveWishlish(url,body);
+        return RequestSave(url, requestBody);
     },
-    DeleteByBook: (wishlistId) => {
-        const url = 'wishlist/delete/'+wishlistId;
-        return RequestDelete(url);
-    },
+    SaveFormData: (form, id) => {
+        const url = 'banners/';
+        return RequestSaveFormData(url, form);
+    }
 }
 
-export default WishlistAPI
+export default BannerAPi

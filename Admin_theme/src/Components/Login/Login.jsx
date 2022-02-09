@@ -10,7 +10,7 @@ const Login = () => {
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
-    const [cookies, setCookie] = useCookies(['loggin']);
+    const [cookies, setCookie] = useCookies(['admin_loggin']);
     let navigate = useNavigate();
     const Only_number = /^[0-9\b]+$/;
     const handleChange = (e) => {
@@ -30,14 +30,13 @@ const Login = () => {
             const cookie_data = {
                 adminemail: "",
                 roles: [],
-                loggin: true
+                admin_loggin: true
             }
             await Auth.Login(formValues).then(response => {
           
                 cookie_data.adminemail = response.data.adminemail
                 cookie_data.roles.push(response.data.roles)
-                console.log(cookie_data)
-                setCookie('loggin', JSON.stringify(cookie_data), { path: '/' });
+                setCookie('admin_loggin', JSON.stringify(cookie_data), { path: '/' });
             }).catch(err => alert(err.msg));
         } else {
             setIsSubmit(false);

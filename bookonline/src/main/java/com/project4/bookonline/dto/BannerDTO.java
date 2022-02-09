@@ -11,7 +11,7 @@ import javax.persistence.Column;
 @Setter
 @NoArgsConstructor
 public class BannerDTO {
-    private String Banner_Image;
-    private String Banner_title;
-    private String Banner_content;
+    private String bannerImage;
+    private String bannerTitle;
+    private String bannerContent;
 }
