@@ -78,6 +78,10 @@ public class Users implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
     private Collection<Reviews> reviewCollection;
 
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "User_id")
+    private Collection<Wishlist> wishlistCollection;
+
     public Users(String userid) {
         this.userid = userid;
     }
@@ -89,6 +93,15 @@ public class Users implements Serializable {
 
     public void setReviewCollection(Collection<Reviews> reviewCollection) {
         this.reviewCollection = reviewCollection;
+    }
+
+    @JsonBackReference(value = "user_wishlist")
+    public Collection<Wishlist> getWishlistCollection() {
+        return wishlistCollection;
+    }
+
+    public void setWishlistCollection(Collection<Wishlist> wishlistCollection) {
+        this.wishlistCollection = wishlistCollection;
     }
 
     @Override

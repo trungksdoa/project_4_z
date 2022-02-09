@@ -1,14 +1,25 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
+import settingAPi from '../../api/SettingAPI';
 
-
-const middleBar = () => {
+const MiddleBar = () => {
+    const [setting, setSetting] = useState({ address: "", email: "", id: "", phonenum: "", timeservice: "", logo_name_path: "" });
+    useEffect(() => {
+      const getSetting = async () => {
+        await settingAPi.getSetting().then((setting) => {
+          setSetting(setting.data)
+        }).catch((error) => {
+          alert(error.msg);
+        });
+      }
+      getSetting();
+    }, [])
     //Logic here
     return (
         <div className="tg-middlecontainer">
             <div className="container">
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <strong className="tg-logo"><a href="index-2.html"><img src="images/logo.png" alt="company name here" /></a></strong>
+                        <strong className="tg-logo"><a href="index-2.html"><img src="images/logo.png" width="218" height="46" alt="company name here" /></a></strong>
                         <div className="tg-wishlistandcart">
                             <div className="dropdown tg-themedropdown tg-wishlistdropdown">
                                 <a href="#!" id="tg-wishlisst" className="tg-btnthemedropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -85,4 +96,4 @@ const middleBar = () => {
         </div>
     )
 }
-export default middleBar;
+export default MiddleBar;

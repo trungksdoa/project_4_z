@@ -1,19 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import settingAPi from '../../api/SettingAPI';
-import emailjs from '@emailjs/browser';
-const sendEmail = (newPasword, name, emails) => {
-  return emailjs.send("service_xt5ybrk", "template_fikzmsk", {
-      to_name: name,
-      password: newPasword,
-      to_email: emails
-  },
-      'user_1UXaoGqhOPJSi33AX5vWr')
-      .then((result) => {
-          console.log(result.text);
-      }, (error) => {
-          console.log(error.text);
-      });
-};
 
 const Contacts = () => {
   const [setting, setSetting] = useState({ address: "", email: "", id: "", phonenum: "", timeservice: "", logo_name_path: "" });

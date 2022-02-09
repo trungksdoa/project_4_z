@@ -14,15 +14,32 @@ import Index_news from './Index_news.jsx';
 
 import { data } from './arrays';
 import { objectData } from './Object';
+import WishlistAPI from '../../api/WishlistAPI.js';
+import { useCookies } from 'react-cookie';
+import {toast } from 'react-toastify'
 const Home = () => {
-
+    const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+    const [action,setAction] = useState("");
+    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+    async function handleAddWishlist(value) {
+        if(auth){
+            await WishlistAPI.Save(cookies.loggin.userID,value).then((wishlist) => {
+                toast(wishlist.msg)
+                setAction(new Date().toString());
+            }).catch((error) => {
+                alert(error.msg);
+            })
+        }else{
+            alert("You are not logged in")
+        }
+    }
     return (
         <>
             <main id="tg-main" className="tg-main tg-haslayout">
                 {/*************************************
 					Best Selling Start
 			**************************************/}
-                {<Sectionspace data={data}></Sectionspace>}
+                {<Sectionspace handleAddWishlist={handleAddWishlist} action={action} data={data}></Sectionspace>}
                 {/*************************************
 					Best Selling End
 			**************************************/}

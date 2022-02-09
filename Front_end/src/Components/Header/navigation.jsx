@@ -10,21 +10,9 @@ const NavigationBar = () => {
     const HandleLogout = () => {
         // store the user in localStorage
         removeCookie('loggin', { expires: "Thu, 01 Jan 1970 00:00:00 UTC", path: '/' });
-        redirect('/')
+        // redirect('/')
         // alert("Ok")
     };
-    function HandleLogin() {
-        // setCookie('loggin', JSON.stringify({
-        //     first_name: null,
-        //     last_name: "trung",
-        //     user_email: "trungksdoa@gmail.com",
-        //     birthday: null,
-        //     phone: 0,
-        //     userID: "89efd255-afde-4d4e-a0e5-aa14e7bea315",
-        //     loggin: true
-        // }), { path: '/' });
-        redirect('/Login')
-    }
     return (
         <div className="tg-navigationarea">
             <div className="container">
@@ -78,19 +66,19 @@ const NavigationBar = () => {
                                         </div>
                                     </li>
                                     <li>
-                                        <NavLink to="/">Home</NavLink>
+                                        <a href="/">Home</a>
                                     </li>
                                     <li className="author_page">
-                                        <NavLink to="/author">Authors</NavLink>
+                                        <a href="/author">Authors</a>
                                         {/* <Link to="/author">Authors</Link> */}
                                     </li>
-                                    <li><NavLink to="/Collection">Collection</NavLink></li>
+                                    <li><a href="/Collection">Collection</a></li>
                                     <li>
-                                        <NavLink to="/News">News</NavLink>
+                                        <a href="/News">News</a>
                                         {/* <a href="#!">News</a> */}
                                     </li>
                                     <li>
-                                        <NavLink to="/Contact">Contact</NavLink>
+                                        <a href="/Contact">Contact</a>
                                     </li>
                                     <li><a href="contactus.html">About us</a></li>
                                     {/* <li className="menu-item-has-children"> */}
@@ -106,19 +94,19 @@ const NavigationBar = () => {
                                                     cursor: 'pointer',
                                                     background: '#66ff66',
                                                     color: "#000"
-                                                }} onClick={HandleLogout}>Log out</a>
+                                                }} href={'/Login'} onClick={HandleLogout}>Log out</a>
                                             ) : (
                                                 <a style={{
                                                     cursor: 'pointer',
                                                     color: "#000"
-                                                }} onClick={HandleLogin}>Log in</a>
+                                                }} href="/Login">Log in</a>
 
                                             )
                                         }
                                     </li>
                                     <li>
                                         {auth && (
-                                            <NavLink to={"/Profile/" + cookies.loggin.userID}>Profile</NavLink>
+                                            <a href={"/Profile/" + cookies.loggin.userID}>Profile</a>
                                         )}
                                     </li>
                                 </ul>

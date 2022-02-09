@@ -53,9 +53,9 @@ const Navbar = (props) => {
                             </a>
                         </li>
                         <li className="nav-item px-3 d-flex align-items-center">
-                            <a href="#;" className="nav-link text-body p-0">
+                            <NavLink to="/admin/setting" className="nav-link text-body p-0">
                                 <i className="fa fa-cog fixed-plugin-button-nav cursor-pointer" />
-                            </a>
+                            </NavLink>
                         </li>
                         <li className="nav-item px-3 d-flex align-items-center">
                             {auth && (

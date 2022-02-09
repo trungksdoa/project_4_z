@@ -48,7 +48,7 @@ const Login_page = () => {
             await Auth.login(formValues.Emails, formValues.Pword).then(response => {
                 response.data.loggin = true
                 setCookie('loggin', JSON.stringify(response.data), { path: '/' });
-                navigate('/')
+                window.location.href = '/'
                 // navigate("/")
             }).catch(e => {
                 console.log(e)
@@ -88,7 +88,7 @@ const Login_page = () => {
     return (
         <>
             <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index="-100"
-                data-appear-top-offset="600" data-parallax="scroll" data-image-src="images/parallax/bgparallax-07.jpg">
+                data-appear-top-offset="600" data-parallax="scroll" data-image-src="/images/parallax/bgparallax-07.jpg">
                 <div className="container">
                     <div className="row">
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">

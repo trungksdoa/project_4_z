@@ -1,68 +1,46 @@
 
 export const data = [
     {
-        id: 1,
+        id: "Book1",
         img:
             'images/books/img-01.jpg',
-        title: 'Our Class is a Family',
+        title: 'Book1',
         cate: ['Avanture,fun'],
         author: 'Shannon Olsen'
     }, {
-        id: 2,
+        id: "Book2",
         img:
             'images/books/img-02.jpg',
-        title: 'Our Class is a Family',
+        title: 'Book2',
         cate: ['Avanture,fun'],
         author: 'Shannon Olsen'
-    },
-    {
-        id: 3,
+    }, {
+        id: "Book3",
         img:
-            'images/books/img-03.jpg',
-        title: 'Our Class is a Family',
+            'images/books/img-02.jpg',
+        title: 'Book3',
         cate: ['Avanture,fun'],
         author: 'Shannon Olsen'
-    },
-    {
-        id: 4,
+    }, {
+        id: "Book4",
         img:
-            'images/books/img-04.jpg',
-        title: 'Our Class is a Family',
+            'images/books/img-02.jpg',
+        title: 'Book4',
         cate: ['Avanture,fun'],
         author: 'Shannon Olsen'
-    },
-    {
-        id: 5,
+    }, {
+        id: "Book5",
         img:
-            'images/books/img-05.jpg',
-        title: 'Our Class is a Family',
+            'images/books/img-02.jpg',
+        title: 'Book5',
         cate: ['Avanture,fun'],
         author: 'Shannon Olsen'
-    },
-    {
-        id: 6,
+    }, {
+        id: "Book6",
         img:
-            'images/books/img-06.jpg',
-        title: 'Our Class is a Family',
+            'images/books/img-02.jpg',
+        title: 'Book6',
         cate: ['Avanture,fun'],
         author: 'Shannon Olsen'
-    },
-    {
-        id: 7,
-        img:
-            'images/books/img-07.jpg',
-        title: 'Our Class is a Family',
-        cate: ['Avanture,fun'],
-        author: 'Shannon Olsen'
-    },
-    {
-        id: 8,
-        img:
-            'images/books/img-08.jpg',
-        title: 'Our Class is a Family',
-        cate: ['Avanture,fun'],
-        author: 'Shannon Olsen'
-    },
-
-
+    }
 ]

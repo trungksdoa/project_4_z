@@ -187,7 +187,7 @@ const Page1 = ({ data }) => {
               </div>
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div className="form-group">
-                  <button style={{ width: "100%", position: "relative", top: "3rem", padding: "10px" }} type="submit" id="button" name="submit" className="btn btn-primary">Update</button>
+                  <button style={{ width: "100%", position: "relative", top: "3rem", padding: "10px" }} type="submit" id="button" name="submit" className="btn btn-primary">Save</button>
                 </div>
               </div>
             </form>

@@ -70,7 +70,7 @@ const Authors_detail = () => {
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div className="tg-authordetail">
                                     <figure className="tg-authorimg">
-                                        <img src="http://hopamchuan.com/node/get_artist_image/nguyen_du" style={{ width: "max(230px/1/0.9)" }} alt="image description" />
+                                        <img src={"http://localhost:9999/image/" + author.authorImage + "?v=" +new Date().getTime()} style={{ width: "max(230px/1/0.9)" }} alt="image description" />
                                     </figure>
                                     <div className="tg-authorcontentdetail">
                                         <div className="tg-sectionhead">

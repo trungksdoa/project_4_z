@@ -1,19 +1,9 @@
 import React from "react";
 import { useEffect, useState, useContext } from "react";
 import { Book } from '../Book/Books.jsx';
-import { data } from './arrays';
 import PropTypes from 'prop-types'
 
-
-const Sectionspace = (props) => {
-
-    const [reload, setReload] = useState(false);
-    
-    console.log("Reloaded")
-    useEffect(() => {
-        setReload(true);
-    }, [])
-    //Logic here
+const Sectionspace = ({ handleAddWishlist, data, action }) => {
     return (
         <section className="tg-sectionspace tg-haslayout">
             <div className="container">
@@ -26,8 +16,10 @@ const Sectionspace = (props) => {
                     </div>
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div id="tg-bestsellingbooksslider" className="tg-bestsellingbooksslider tg-bestsellingbooks owl-carousel">
-                            {props.data.map((book, index) => {
-                                return <Book key={book.id} {...book}></Book>;
+                            {data.map((book, index) => {
+                                if (data.length !== index) {
+                                    return <Book addWishlist={handleAddWishlist} changeAction={action} key={book.id} {...book}></Book>;
+                                }
                             })}
                         </div>
                     </div>
@@ -38,5 +30,10 @@ const Sectionspace = (props) => {
 }
 Sectionspace.propTypes = {
     data: PropTypes.array.isRequired,
+    handleAddWishlist: PropTypes.func,
+}
+Sectionspace.defaultProps = {
+    data: [],
+    handleAddWishlist: null
 }
 export default Sectionspace;

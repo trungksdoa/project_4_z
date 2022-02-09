@@ -2,6 +2,7 @@ package com.project4.bookonline.dto;
 
 import com.project4.bookonline.Model.Reviews;
 import com.project4.bookonline.Model.Users;
+import com.project4.bookonline.Model.Wishlist;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,8 @@ import lombok.Setter;
 import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter

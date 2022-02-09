@@ -53,6 +53,7 @@ public class AdminManageController {
         if (isRequestOwner) {
             msg = "Not found";
             setMessage.setMessage(msg);
+            setMessage.setCode(404);
             return new ResponseEntity<Message_Respones<Admins>>(setMessage, HttpStatus.NOT_FOUND);
         }
         Admins admin = adminServide.findOne(Integer.valueOf(id));

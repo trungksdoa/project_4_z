@@ -50,7 +50,6 @@ jQuery(document).on('ready', function() {
 	var _tg_bestsellingbooksslider = jQuery('#tg-bestsellingbooksslider');
 	_tg_bestsellingbooksslider.owlCarousel({
 		nav: true,
-		loop: true,
 		margin: 30,
 		dots: true,
 		navText: [

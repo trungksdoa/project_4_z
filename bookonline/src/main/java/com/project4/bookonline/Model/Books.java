@@ -75,6 +75,9 @@ public class Books implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "BooksId")
     private Collection<Reviews> reviews;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "booksId")
+    private Collection<Wishlist> wishlists;
+
     @Column(name = "status")
     private int status;
 
@@ -102,6 +105,16 @@ public class Books implements Serializable {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    @JsonBackReference(value = "wishlist_book")
+    public Collection<Wishlist> getWishlists() {
+        return wishlists;
+    }
+
+    public void setWishlists(Collection<Wishlist> wishlists) {
+        this.wishlists = wishlists;
+    }
+
 
     public String getBooksid() {
         return booksid;
@@ -185,7 +198,7 @@ public class Books implements Serializable {
         this.pDetailid = pDetailid;
     }
 
-    @JsonBackReference(value="ReviewID")
+    @JsonBackReference(value = "ReviewID")
     public Collection<Reviews> getReviews() {
         return reviews;
     }

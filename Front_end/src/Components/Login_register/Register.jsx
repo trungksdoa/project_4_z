@@ -105,11 +105,11 @@ const Register = () => {
             errors.Lname = "Lastname not be blank";
         }
         if (!values.Pnum) {
-            errors.Pnum = "Phonenumber is required!";
+            errors.Pnum = "Phone is required!";
         } else if (!phone_regex.test(values.Pnum)) {
             errors.Pnum = "Invalid phone number";
         } else if (values.Pnum.trim().length <= 0) {
-            errors.Pnum = "Phonenumber not be blank";
+            errors.Pnum = "Phone not be blank";
         }
         if (!values.Emails) {
             errors.Emails = "Email is required!";
@@ -134,7 +134,7 @@ const Register = () => {
                 errors.Cword = "Confirm password don't match password.";
             }
         } else if (values.Cword.trim().length <= 0) {
-            errors.Cword = "Confirm password not be blank";
+            errors.Cword = "Confirm Password cannot be blank";
         }
 
         if (!values.birthday) {
@@ -147,7 +147,7 @@ const Register = () => {
     return (
         <>
             <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index="-100"
-                data-appear-top-offset="600" data-parallax="scroll" data-image-src="images/parallax/bgparallax-07.jpg">
+                data-appear-top-offset="600" data-parallax="scroll" data-image-src="/images/parallax/bgparallax-07.jpg">
                 <div className="container">
                     <div className="row">
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const collection = () => {
-    return (<section className="tg-parallax tg-bgcollectioncount tg-haslayout" data-z-index={-100} data-appear-top-offset={600} data-parallax="scroll" data-image-src="images/parallax/bgparallax-04.jpg">
+    return (<section className="tg-parallax tg-bgcollectioncount tg-haslayout" data-z-index={-100} data-appear-top-offset={600} data-parallax="scroll" data-image-src={'images/parallax/bgparallax-04.jpg?v=' + new Date().getTime()}>
         <div className="tg-sectionspace tg-collectioncount tg-haslayout">
             <div className="container">
                 <div className="row">
