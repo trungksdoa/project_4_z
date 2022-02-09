@@ -7,7 +7,8 @@ import Fab from '@mui/material/Fab';
 import EditIcon from '@mui/icons-material/Edit';
 import Ck_editor from './CK_Editor';
 import Au_API from '../../api/AuthorAPI'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import TextField from '@mui/material/TextField';
 import 'react-toastify/dist/ReactToastify.css';
 const FormPage = () => {
     // ----------------------------------------------------------------
@@ -241,7 +242,20 @@ const FormPage = () => {
                                     {author.authorname}
                                 </>
                             ) : (
-                                <input type='text' name="authorname" value={author.authorname} onChange={HandleChange} />
+                                <>
+                                    <TextField
+                                        name="authorname"
+                                        required
+                                        className="form-control"
+                                        fullWidth
+                                        id="authorname"
+                                        value={author.authorname}
+                                        label="Author Name"
+                                        onChange={HandleChange}
+                                        autoFocus
+                                    />
+                                    <p style={{ color: "red" }}>{formErrors.authorname}</p>
+                                </>
                             )}
                         </div>
                     </div>
@@ -256,8 +270,17 @@ const FormPage = () => {
                                 </>
                             ) : (
                                 <>
-                                    <input type='text' name="numberpublishedbooks" value={author.numberpublishedbooks} onChange={HandleChange} />
-
+                                    <TextField
+                                        name="numberpublishedbooks"
+                                        required
+                                        className="form-control"
+                                        fullWidth
+                                        id="numberpublishedbooks"
+                                        value={author.numberpublishedbooks}
+                                        label="Pulished book number"
+                                        onChange={HandleChange}
+                                        autoFocus
+                                    />
                                     <p style={{ color: "red" }}>{formErrors.numberpublishedbooks}</p>
                                 </>
                             )}
@@ -307,7 +330,7 @@ const FormPage = () => {
                         </div>
                         <div className="col">
                             <>
-                                <input type='file' ref={ref}  name="authorImage" onChange={(e) => HandleImageChange(e)} />
+                                <input type='file' ref={ref} name="authorImage" onChange={(e) => HandleImageChange(e)} />
                                 {imgData == null ? (
                                     <img src={author_image} alt="" width="400px" height="400px" />
                                 ) : (
