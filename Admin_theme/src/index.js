@@ -208,7 +208,6 @@ function RolesReviewsOutlet() {
   if (auth) {
     const RoleA_Require_admin = ["Reviews Management", "Customers Management", "owner"];
     isAdminA = findOne(RoleA_Require_admin, cookies.admin_loggin.roles);
-    console.log(cookies.admin_loggin.roles, isAdminA)
   }
   if (isAdminA) {
     console.log("true")

@@ -35,7 +35,7 @@ public class VoucherManagerController {
         String msg = "Get data success";
         setMessage.setMessage(msg);
         setMessage.setList(v);
-        setMessage.setCode(Integer.valueOf(HttpStatus.OK + ""));
+        setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Voucher>>(setMessage, HttpStatus.OK);
     }
 }

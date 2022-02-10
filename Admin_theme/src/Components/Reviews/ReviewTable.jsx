@@ -95,7 +95,7 @@ const Review_Table = (props) => {
                                         <Select
                                             labelId="Select-filled-label"
                                             id="simple-select-filled"
-                                            onChange={(e) => OnStatusChange(index, e.target.value)}
+                                            onChange={(e) => OnStatusChange(review.reviewid, e.target.value)}
                                             value={review.active}
                                             inputProps={{ 'aria-label': 'Without label' }}
                                             autoWidth

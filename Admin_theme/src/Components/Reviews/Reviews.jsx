@@ -22,11 +22,12 @@ const Reviews = () => {
     const [searchByRating, setSearchRating] = useState("");
     const [filtered, setFiltered] = useState([]);
     const navigate = useNavigate();
-    const handleChange = async (index, value) => {
+    const handleChange = async (reviewId, value) => {
         let newArr = [...Reviews_list]; // copying the old datas array
+        const index = newArr.findIndex(item => item.reviewid === reviewId);
         newArr[index].active = value;
         setTimeout(setReviews_list(newArr), 10000);
-        await ReviewAPI.ChangeStatus(newArr[index].reviewid, value);
+        await ReviewAPI.ChangeStatus(reviewId, value);
     };
 
     const handleDelete = async (index, value) => {

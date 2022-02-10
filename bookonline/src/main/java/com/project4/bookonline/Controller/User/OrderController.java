@@ -43,15 +43,5 @@ public class OrderController {
          return new ResponseEntity<Object>(1, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/order/update/{id}", method = RequestMethod.POST)
-    public ResponseEntity<Object> update(@RequestBody Orders orders) {
-        Orders or = orderService.findOne(orders.getOrderid());
-        if(or!=null) {
-            return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
-        }else {
-            orderService.Create(orders);
-            return new ResponseEntity<Object>(orders, HttpStatus.OK);
-        }
-    }
 
 }
