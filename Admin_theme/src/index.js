@@ -83,24 +83,12 @@ function Catagorys_News() {
 function News() {
   return (<h3>News</h3>)
 }
-<<<<<<< HEAD
 // function Books() {
 //   return (
 //     <div className="container-fluid py-4"><h3>Books</h3></div >
 //   )
 // }
-function Voucher() {
-  return (
-    <div className="container-fluid py-4"><h3>Voucher</h3></div >
-  )
 
-=======
-function Books() {
-  return (
-    <div className="container-fluid py-4"><h3>Books</h3></div >
-  )
->>>>>>> b18fdef82bdd4d35983882fb0ade98a9f2a30e8b
-}
 function Page404() {
   return (
     <div className="container-fluid py-4"><h3 style={{ textAlign: 'center', margin: "60px" }}>404 page Not Found</h3></div >

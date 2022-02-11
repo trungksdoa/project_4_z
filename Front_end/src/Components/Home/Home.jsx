@@ -5,14 +5,13 @@ import userApi from '../../api/Auth';
 //Component
 import { Link, useLocation } from "react-router-dom";
 import Sectionspace from './sectionspace.jsx';
-import FeatureBook from './Feature_book.jsx';
 import Releases from './Release.jsx';
 import Collection from './Collection_count.jsx';
 import PB_author from './PB_Author.jsx';
 import Testimonials from './Testimonials.jsx';
 import Index_news from './Index_news.jsx';
 
-
+import BookAPI from '../../api/BookAPI.js';
 import { data } from './arrays';
 import WishlistAPI from '../../api/WishlistAPI.js';
 import BannerAPI from '../../api/BannerAPI.js';
@@ -22,6 +21,7 @@ const Home = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
     const [action, setAction] = useState("");
     const [banner_list, setBanner_list] = useState([]);
+    const [book_list, setbook_list] = useState([]);
     const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
     async function handleAddWishlist(value) {
         if (auth) {
@@ -44,6 +44,17 @@ const Home = () => {
     }
     useEffect(() => {
         Fetch();
+    }, [])
+    async function BFetch() {
+        await BookAPI.FindALl().then((book) => {
+            setbook_list(book.data);
+            console.log(book.data);
+        }).catch((error) => {
+            alert(error.msg);
+        })
+    }
+    useEffect(() => {
+        BFetch();
     }, [])
     return (
         <>
@@ -135,14 +146,16 @@ const Home = () => {
                 {/*************************************
 					Best Selling Start
 			**************************************/}
-                {<Sectionspace handleAddWishlist={handleAddWishlist} action={action} data={data}></Sectionspace>}
+                
+                {<Sectionspace handleAddWishlist={handleAddWishlist} action={action} data={book_list}></Sectionspace>}
                 {/*************************************
+                 * 
 					Best Selling End
 			**************************************/}
                 {/*************************************
 					New Release Start
 			**************************************/}
-                {<Releases data={data}></Releases>}
+                {<Releases data={book_list}></Releases>}
                 {/*************************************
 					New Release End
 			**************************************/}
