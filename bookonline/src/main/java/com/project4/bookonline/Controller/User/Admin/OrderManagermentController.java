@@ -47,7 +47,6 @@ public class OrderManagermentController {
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Orders>>(setMessage, HttpStatus.OK);
     }
-
     @RequestMapping(value = "/order/update/{id}/{status}", method = RequestMethod.PUT)
     public ResponseEntity<Message_Respones<Orders>> UpdateStatus(@PathVariable String id, @PathVariable String status) {
         Orders or = orderService.findOne(Integer.valueOf(id));

@@ -45,9 +45,11 @@ public class WishlistImpl implements WishlistService {
     @Override
     public boolean removeWishlistItem(Wishlist wl) {
         try {
-            service.delete(wl);
+            service.deleteById(wl.getWishlist_id());
+//            System.out.println(wl.getBooksId());
             return true;
         } catch (Exception ex) {
+            ex.printStackTrace();
             return false;
         }
     }
