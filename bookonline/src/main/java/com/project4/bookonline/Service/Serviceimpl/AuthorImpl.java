@@ -7,6 +7,7 @@ package com.project4.bookonline.Service.Serviceimpl;
 import com.project4.bookonline.Model.Authors;
 import com.project4.bookonline.Model.Message_Respones;
 import com.project4.bookonline.Model.Respone_Book_Author;
+import com.project4.bookonline.Model.Voucher;
 import com.project4.bookonline.Repository.AuthorRepository;
 import com.project4.bookonline.Service.AuthorService;
 
@@ -65,8 +66,10 @@ public class AuthorImpl implements AuthorService {
     }
 
     @Override
-    public void Delete(int id) {
-        AuthorRepository.deleteById(id);
+    public boolean Delete(int id) {
+        Authors findAuthor = AuthorRepository.findById(id).get();
+        findAuthor.setStatus(2);
+        return AuthorRepository.save(findAuthor) != null ? true : false;
     }
 
 //    @Override

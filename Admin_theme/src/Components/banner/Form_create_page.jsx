@@ -30,12 +30,6 @@ const FormPage = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     }
-
-    const HandleChangeCKEditor = (event, editor) => {
-        const data = editor.getData();
-        setFormData({ ...formData, "banner_content": data });
-    }
-
     const handleClick = async (e) => {
         e.preventDefault();
         const validateResult = validate(formData);
@@ -149,7 +143,15 @@ const FormPage = () => {
                                     <p style={{ color: "red" }}>{formError.banner_title}</p>
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
-                                    <CKEditor OnKeyPress={HandleChangeCKEditor} values={formData.banner_content} />
+                                     <TextField
+                                        name="banner_content"
+                                        fullWidth
+                                        value={formData.banner_content}
+                                        onChange={handleChange}
+                                        id="banner_content"
+                                        label="Banner Content"
+                                        autoFocus
+                                    />
                                     <p style={{ color: "red" }}>{formError.banner_content}</p>
                                 </Grid>
                                 <Grid item xs={12} sm={12}>

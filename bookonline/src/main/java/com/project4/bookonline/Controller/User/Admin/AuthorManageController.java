@@ -69,10 +69,10 @@ public class AuthorManageController {
     }
 
     @RequestMapping(value = "/authors/find/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Message_Respones<Authors>> findOne(@PathVariable int id) {
+    public ResponseEntity<Message_Respones<Authors>> findOne(@PathVariable String id) {
         setMessage =   new Message_Respones<Authors>();
         author = new Authors();
-        author = authorService.findOne(id);
+        author = authorService.findOne(Integer.valueOf(id));
         String msg = "Found data";
         setMessage.setMessage(msg);
         setMessage.setObject(author);
@@ -82,24 +82,9 @@ public class AuthorManageController {
 
 
     @RequestMapping(value = "/authors/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Message_Respones<Authors>> Delete(@PathVariable int id) {
+    public ResponseEntity<Message_Respones<Authors>> Delete(@PathVariable String id) {
         setMessage  = new Message_Respones<Authors>();
-
-        Authors authors = authorService.findOne(id);
-//
-        List<String> bookIds = authorService.getBookIds(authors.getAuthorid());
-
-        if(bookIds != null){
-            for (int i = 0; i < bookIds.size(); i++) {
-                reviewService.DeleteByBookId(bookIds.get(i));
-            }
-            authorService.Delete(authors.getAuthorid());
-            bookService.DeleteAllBy(bookIds);
-        }else{
-            authorService.Delete(authors.getAuthorid());
-            System.out.println("BooksID is null");
-        }
-
+        authorService.Delete(Integer.valueOf(id));
         String msg = "Delete success";
         setMessage.setMessage(msg);
         setMessage.setCode(200);
@@ -171,6 +156,7 @@ public class AuthorManageController {
         author.setAuthorname(audt.getAuthorname());
         author.setNumberpublishedbooks(audt.getNumberpublishedbooks());
         author.setAuthorinformation(audt.getAuthorinformation());
+        author.setStatus(1);
         author.setAuthorImage(fileName);
         author.setDatecreated(dtf.format(now));
         author.setModifieddate(dtf.format(now));

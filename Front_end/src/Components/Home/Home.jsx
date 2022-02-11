@@ -67,18 +67,31 @@ const Home = () => {
                             if (index === 0) {
                                 return (
                                     <div className="item active">
-                                        <img src="https://f24-zpc.zdn.vn/4464342945787128752/f95523de4fdd8383dacc.jpg" alt="Sunset over beach" />
-                                        <div className="carousel-caption">
-                                            <h3>Boracay</h3>
-                                            <p>White Sand Beach.</p>
+                                        <img src={"http://localhost:9999/image/" + banner.banner_Image + "?v=" + new Date().getTime()} alt="Sunset over beach" />
+                                        <div className="carousel-caption"
+                                            style={{
+                                                backgroundColor: "rgba(0,0,0, 0.4) !important",
+                                                color: "yellow",
+                                                fontWeight: "bold",
+                                                border: "3px solid #f1f1f1"
+                                            }}
+                                        >
+                                            <h3 >{banner.banner_title}</h3>
+                                            <p>{banner.banner_content}</p>
                                         </div>
                                     </div>
                                 )
                             } else {
                                 return (
                                     <div className="item">
-                                        <img src={"http://localhost:9999/image/" + banner.banner_Image + "?v=" +new Date().getTime()} alt="Sunset over beach" />
-                                        <div className="carousel-caption">
+                                        <img src={"http://localhost:9999/image/" + banner.banner_Image + "?v=" + new Date().getTime()} alt="Sunset over beach" />
+                                        <div className="carousel-caption"
+                                            style={{
+                                                backgroundColor: "rgba(0,0,0, 0.4) !important",
+                                                color: "yellow",
+                                                fontWeight: "bold",
+                                                border: "3px solid #f1f1f1"
+                                            }}>
                                             <h3>{banner.banner_title}</h3>
                                             <p>{banner.banner_content}</p>
                                         </div>

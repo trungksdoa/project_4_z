@@ -165,16 +165,6 @@ const Register = () => {
                     width: "40rem"
                 }}>
                     <form onSubmit={handleSubmit}>
-                        {/* <div className="form-group">
-                            <label>Result:</label>
-                            {Object.keys(formErrors).length === 0 && isSubmit ? (
-                                <div className="ui message success">Signed in successfully</div>
-                            ) : (
-                                <pre>{JSON.stringify(formValues, undefined, 2)}</pre>
-                            )}
-                            <label>Error:</label>
-                            <pre>{JSON.stringify(formErrors, undefined, 2)}</pre>
-                        </div> */}
                         <div className="form-group">
                             <label htmlFor="Fname">First name</label>
                             <input type="text" className="form-control" name="Fname" value={formValues.Fname} onChange={handleChange} />

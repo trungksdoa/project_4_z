@@ -31,7 +31,7 @@ const style = {
     p: 4,
 };
 
-const Reviews = () => {
+const Orders = () => {
     const [Order_list, setOrder_list] = useState([
     ]);
     const [searchBySearchCustomer, setSearchCustomer] = useState("");
@@ -204,4 +204,4 @@ const Reviews = () => {
         </div >
     );
 }
-export default Reviews;
+export default Orders;

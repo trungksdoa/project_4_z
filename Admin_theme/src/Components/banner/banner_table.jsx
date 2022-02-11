@@ -9,9 +9,9 @@ const Banner_table = (props) => {
             onViewDetail(index)
         }
     }
-    function OnDelete(index) {
+    function OnDelete(bannerId) {
         if (onDelete) {
-            onDelete(index)
+            onDelete(bannerId)
         }
     }
     function OnEdit(index) {
@@ -71,7 +71,7 @@ const Banner_table = (props) => {
                                     {author.banner_modifieddate}
                                 </td>
                                 <td className="align-middle text-center">
-                                    <a style={{ cursor: 'pointer' }} onClick={() => OnDelete(index)}>
+                                    <a style={{ cursor: 'pointer' }} onClick={() => OnDelete(author.banner_id)}>
                                         <span style={{ fontSize: "0.6em", color: "red" }}>
                                             <i className="fas fa-trash-alt fa-2x" />
                                         </span>

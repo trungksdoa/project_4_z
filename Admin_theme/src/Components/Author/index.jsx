@@ -37,14 +37,14 @@ const Author = () => {
             ))
     }, [SearchByName, author_list])
 
-    const handleDelete = async (index) => {
-        let newArr = [...author_list]; // copying the old datas array
-        const id = newArr[index].authorid;
-        await AuthorAPI.Delete(id).then((res) => {
-            newArr.splice(index, 1);
-            setAuthor_list(newArr)
-            toast(res.msg);
-        });
+    const handleDelete = async (authorsId) => {
+        if (window.confirm("Are you sure you want to delete")) {
+            await AuthorAPI.Delete(authorsId).then((res) => {
+                toast(res.msg);
+            }).then(err => console.log(err));
+        }else{
+
+        }
     };
 
     function handleView(index) {
@@ -109,7 +109,7 @@ const Author = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <Author_table authors={currentItem} onViewDetail={handleView} />
+                                <Author_table authors={currentItem} onViewDetail={handleView} onDelete={handleDelete} />
                                 <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} />
                             </div>
                         </div>

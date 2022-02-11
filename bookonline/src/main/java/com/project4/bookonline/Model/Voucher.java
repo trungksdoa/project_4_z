@@ -60,8 +60,11 @@ public class Voucher implements Serializable {
     @Column(name = "Voucher_status", nullable = false)
     private int voucherstatus;
     @Basic(optional = false)
+    @Column(name = "Voucher_value", nullable = false)
+    private int vouchervalue;
+    @Basic(optional = false)
     @Column(name = "Voucher_from", nullable = false)
-    private Date voucherfrom;
+    private String voucherfrom;
     @Basic(optional = false)
     @Column(name = "Voucher_to", nullable = false)
     private String voucherto;

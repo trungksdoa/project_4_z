@@ -6,6 +6,9 @@ import './index.css';
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 
 import { ToastContainer, toast } from 'react-toastify';
+
+import "react-datepicker/dist/react-datepicker.css";
+
 import 'react-toastify/dist/ReactToastify.css';
 
 import reportWebVitals from './reportWebVitals';
@@ -44,6 +47,8 @@ import Reply from './Components/Reviews/Reply.jsx';
 
 import Setting from './Components/Setting/Setting.jsx';
 
+import Voucher from './Components/Voucher/index.jsx'
+
 import Banner from './Components/banner/index.jsx'
 
 import BannerEdit from './Components/banner/Form_edit_page.jsx'
@@ -77,12 +82,6 @@ function Books() {
   return (
     <div className="container-fluid py-4"><h3>Books</h3></div >
   )
-}
-function Voucher() {
-  return (
-    <div className="container-fluid py-4"><h3>Voucher</h3></div >
-  )
-
 }
 function Page404() {
   return (

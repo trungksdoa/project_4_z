@@ -9,7 +9,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 import {currency} from'./index.jsx';
 
-const order_Table = (props) => {
+const Order_Table = (props) => {
     const { Order, onChange, onDelete, onViewDetail } = props;
 
     function OnStatusChange(orderId, status) {
@@ -127,17 +127,17 @@ const order_Table = (props) => {
         </table>
     )
 }
-order_Table.propTypes = {
+Order_Table.propTypes = {
     orders: PropTypes.array,
     onChange: PropTypes.func,
     onViewDetail: PropTypes.func,
     onDelete: PropTypes.func
 };
 
-order_Table.defaultProps = {
+Order_Table.defaultProps = {
     orders: [],
     onChange: null,
     onViewDetail: null,
     onDelete: null
 };
-export default order_Table;
+export default Order_Table;

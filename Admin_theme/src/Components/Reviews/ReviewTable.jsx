@@ -111,7 +111,7 @@ const Review_Table = (props) => {
                                 <span className="text-secondary text-xs font-weight-bold">{review.createddate}</span>
                             </td>
                             <td className="align-middle">
-                                <a style={{ cursor: 'pointer' }} onClick={() => OnReviewDelete(index)} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                <a style={{ cursor: 'pointer' }} onClick={() => OnReviewDelete(review.reviewid)} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                     <span style={{ fontSize: "1em", color: "red" }}>
                                         <i className="fas fa-trash-alt fa-2x" />
                                     </span>

@@ -32,7 +32,10 @@ const Banner = () => {
         })
     }
     useEffect(() => {
-        fetchData()
+        const interval = setInterval(() => {
+            fetchData()
+        }, 1000)
+        return () => clearInterval(interval)
     }, [])
 
     useEffect(() => {
@@ -49,8 +52,17 @@ const Banner = () => {
         const object = newArray.find(obj => obj.banner_id === index);
         navigate("/admin/banner/" + object.banner_id)
     }
-    const ViewEdit = async (id) => {
-        // await BannerAPI.getBannerById(id)
+    const handleDelete = async (id) => {
+        if(window.confirm("Are you sure you want to delete!")){
+            await BannerAPI.delete(id).then((res) => {
+                toast(res.msg)
+            }).catch((error) => {
+                alert(error.msg);
+            })
+        }else{
+            
+        }
+      
     }
 
     // /////////////////////////////////////
@@ -106,7 +118,7 @@ const Banner = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <Banner_table banners={currentItem} onViewDetail={handleView} />
+                                <Banner_table banners={currentItem} onViewDetail={handleView} onDelete={handleDelete}/>
                                 <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} />
                             </div>
                         </div>

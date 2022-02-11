@@ -87,6 +87,15 @@ public class Authors implements Serializable {
         this.modifieddate = modifieddate;
     }
 
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public Integer getAuthorid() {
         return authorid;
     }
