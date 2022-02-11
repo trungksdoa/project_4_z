@@ -19,6 +19,10 @@ import Navbar from './Components/Navbar/navbar.jsx';
 
 import Footer from './Components/Footer/Footer.jsx'
 
+import Books from './Components/Books/index.jsx';
+
+import Category from './Components/Category/index.jsx';
+
 import Customers from './Components/Customer/index.jsx';
 
 import Customer_detail from './Components/Customer/Customer_detail.jsx'
@@ -57,6 +61,7 @@ import BannerCreate from './Components/banner/Form_create_page.jsx'
 
 import BookCreate from './Components/Books/Form_create_page.jsx'
 
+import CategoryCreate from './Components/Category/Form_create_page.jsx'
 
 import { useCookies } from 'react-cookie';
 
@@ -78,11 +83,12 @@ function Catagorys_News() {
 function News() {
   return (<h3>News</h3>)
 }
-function Books() {
-  return (
-    <div className="container-fluid py-4"><h3>Books</h3></div >
-  )
-}
+// function Books() {
+//   return (
+//     <div className="container-fluid py-4"><h3>Books</h3></div >
+//   )
+// }
+
 function Page404() {
   return (
     <div className="container-fluid py-4"><h3 style={{ textAlign: 'center', margin: "60px" }}>404 page Not Found</h3></div >
@@ -247,7 +253,8 @@ ReactDOM.render(
             <Route element={<RolesProductOutlet />}>
               <Route path="/admin/book" element={<Books />} />
               <Route path="/admin/book/create" element={<BookCreate />} />
-              <Route path="/admin/Catagorys_book" element={<Catagorys_book />} />
+              <Route path="/admin/Category" element={<Category/>} />
+              <Route path="/admin/category/create" element={<CategoryCreate />} />
             </Route>
 
             <Route path="/admin/Catagorys_news" element={<Catagorys_News />} />
