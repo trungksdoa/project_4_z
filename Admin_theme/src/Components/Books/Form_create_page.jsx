@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import BannerAPI from '../../api/BannerAPI';
+import BookAPI from '../../api/BookAPI';
 import Grid from '@mui/material/Grid';
 import { toast } from 'react-toastify';
 import TextField from '@mui/material/TextField';
@@ -77,7 +77,7 @@ const FormPage = () => {
 
     const HandleChangeCKEditor = (event, editor) => {
         const data = editor.getData();
-        setFormData({ ...formData, "banner_content": data });
+        setFormData({ ...formData, "illustrationsnote": data });
     }
 
     const handleClick = async (e) => {
@@ -90,14 +90,22 @@ const FormPage = () => {
         if (Object.keys(formError).length === 0 && isSubmit) {
             formDataBody.append("file", selectedFile);
             const formbody = {
-                bannerImage: selectedFile.name,
-                bannerTitle: formData.banner_title,
-                bannerContent: formData.banner_content
+                bookImage: selectedFile.name,
+                bookprice: formData.bookprice,
+                bookdescription: formData.bookdescription,
+                amounts:formData.amounts,
+                language:formData.language,
+                pages:formData.pages,
+                status:formData.status,
+                illustrationsnote:formData.illustrationsnote,
+                dimensions:formData.dimensions,
+
+
             }
-            formDataBody.append("banner_string", JSON.stringify(formbody));
-            await BannerAPI.SaveFormData(formDataBody).then(res => {
+            formDataBody.append("book_string", JSON.stringify(formbody));
+            await BookAPI.Create(formDataBody).then(res => {
                 toast(res.msg)
-                navigator('/admin/banner')
+                navigator('/admin/book')
             }).catch(err => {
                 alert(err.msg)
             })
@@ -107,19 +115,19 @@ const FormPage = () => {
     }
     const validate = (value) => {
         const error = {};
-        if (!value.banner_title) {
-            error.banner_title = "Title is required";
-        } else if (value.banner_title.trim().length <= 10) {
-            error.banner_title = "Title length must be at max 10 characters";
-        } else if (value.banner_title.trim().length <= 0) {
-            error.banner_title = "Title can not blank";
+        if (!value.book_name) {
+            error.book_name = "Name is required";
+        } else if (value.book_name.trim().length <= 10) {
+            error.book_name = "Name length must be at max 10 characters";
+        } else if (value.book_name.trim().length <= 0) {
+            error.book_name = "Name can not blank";
         }
-        if (!value.banner_content) {
-            error.banner_content = "Title is required";
-        } else if (value.banner_content.trim().length <= 10) {
-            error.banner_content = "Content length must be at max 10 characters";
-        } else if (value.banner_content.trim().length <= 0) {
-            error.banner_content = "Content can not blank";
+        if (!value.bookdescription) {
+            error.bookdescription = "Description is required";
+        } else if (value.bookdescription.trim().length <= 10) {
+            error.bookdescription = "Description length must be at max 10 characters";
+        } else if (value.bookdescription.trim().length <= 0) {
+            error.bookdescription = "Description can not blank";
         }
         if (selectedFile == null) {
             error.file = "Image is required";
@@ -169,7 +177,7 @@ const FormPage = () => {
         }
     }
     const goBackList = () => {
-        navigator('/admin/banner')
+        navigator('/admin/book')
     }
     return (
         <div className="container">
@@ -183,101 +191,113 @@ const FormPage = () => {
                                 <div className="col-lg-6">
                                     <Grid item xs={8} sm={12}>
                                         <TextField
-                                            name="banner_title"
+                                            name="book_name"
                                             fullWidth
-                                            value={formData.banner_title}
+                                            value={formData.book_name}
                                             onChange={handleChange}
-                                            id="banner_title"
-                                            label="Banner title"
+                                            id="book_name"
+                                            label="Book Name"
                                             autoFocus
                                         />
-                                        <p style={{ color: "red" }}>{formError.banner_title}</p>
-                                    </Grid>
-                                    <Grid item xs={8} sm={12}>
-                                        <TextField
-                                            name="banner_title"
-                                            fullWidth
-                                            value={formData.banner_title}
-                                            onChange={handleChange}
-                                            id="banner_title"
-                                            label="Banner title"
-                                            autoFocus
-                                        />
-                                        <p style={{ color: "red" }}>{formError.banner_title}</p>
-                                    </Grid>
-                                    <Grid item xs={8} sm={12}>
-                                        <TextField
-                                            name="banner_title"
-                                            fullWidth
-                                            value={formData.banner_title}
-                                            onChange={handleChange}
-                                            id="banner_title"
-                                            label="Banner title"
-                                            autoFocus
-                                        />
-                                        <p style={{ color: "red" }}>{formError.banner_title}</p>
-                                    </Grid>
-                                    <Grid item xs={8} sm={12}>
-                                        <TextField
-                                            name="banner_title"
-                                            fullWidth
-                                            value={formData.banner_title}
-                                            onChange={handleChange}
-                                            id="banner_title"
-                                            label="Banner title"
-                                            autoFocus
-                                        />
-                                        <p style={{ color: "red" }}>{formError.banner_title}</p>
+                                        <p style={{ color: "red" }}>{formError.book_name}</p>
                                     </Grid>
                                 </div>
                                 <div className="col-lg-6">
                                     <Grid item xs={8} sm={12}>
                                         <TextField
-                                            name="banner_title"
+                                            name="bookprice"
                                             fullWidth
-                                            value={formData.banner_title}
+                                            value={formData.bookprice}
                                             onChange={handleChange}
-                                            id="banner_title"
-                                            label="Banner title"
+                                            id="bookprice"
+                                            label="Price"
                                             autoFocus
                                         />
-                                        <p style={{ color: "red" }}>{formError.banner_title}</p>
+                                        <p style={{ color: "red" }}>{formError.bookprice}</p>
                                     </Grid>
+                                </div>
+                                <div className="col-lg-6">
                                     <Grid item xs={8} sm={12}>
                                         <TextField
-                                            name="banner_title"
+                                            name="bookdescription"
                                             fullWidth
-                                            value={formData.banner_title}
+                                            value={formData.bookdescription}
                                             onChange={handleChange}
-                                            id="banner_title"
-                                            label="Banner title"
+                                            id="bookdescription"
+                                            label="Description"
                                             autoFocus
                                         />
-                                        <p style={{ color: "red" }}>{formError.banner_title}</p>
+                                        <p style={{ color: "red" }}>{formError.bookdescription}</p>
                                     </Grid>
+                                </div>
+                                <div className="col-lg-6">
                                     <Grid item xs={8} sm={12}>
                                         <TextField
-                                            name="banner_title"
+                                            name="amounts"
                                             fullWidth
-                                            value={formData.banner_title}
+                                            value={formData.amounts}
                                             onChange={handleChange}
-                                            id="banner_title"
-                                            label="Banner title"
+                                            id="amounts"
+                                            label="Amounts"
                                             autoFocus
                                         />
-                                        <p style={{ color: "red" }}>{formError.banner_title}</p>
+                                        <p style={{ color: "red" }}>{formError.amounts}</p>
                                     </Grid>
+                                </div>
+                                <div className="col-lg-6">
                                     <Grid item xs={8} sm={12}>
                                         <TextField
-                                            name="banner_title"
+                                            name="dimensions"
                                             fullWidth
-                                            value={formData.banner_title}
+                                            value={formData.dimensions}
                                             onChange={handleChange}
-                                            id="banner_title"
-                                            label="Banner title"
+                                            id="dimensions"
+                                            label="Dimensions"
                                             autoFocus
                                         />
-                                        <p style={{ color: "red" }}>{formError.banner_title}</p>
+                                        <p style={{ color: "red" }}>{formError.dimensions}</p>
+                                    </Grid>
+                                </div>
+                                <div className="col-lg-6">
+                                    <Grid item xs={8} sm={12}>
+                                        <TextField
+                                            name="language"
+                                            fullWidth
+                                            value={formData.language}
+                                            onChange={handleChange}
+                                            id="language"
+                                            label="Language"
+                                            autoFocus
+                                        />
+                                        <p style={{ color: "red" }}>{formError.language}</p>
+                                    </Grid>
+                                </div>
+                                <div className="col-lg-6">
+                                    <Grid item xs={8} sm={12}>
+                                        <TextField
+                                            name="pages"
+                                            fullWidth
+                                            value={formData.pages}
+                                            onChange={handleChange}
+                                            id="pages"
+                                            label="Pages"
+                                            autoFocus
+                                        />
+                                        <p style={{ color: "red" }}>{formError.pages}</p>
+                                    </Grid>
+                                </div>
+                                <div className="col-lg-6">
+                                    <Grid item xs={8} sm={12}>
+                                        <TextField
+                                            name="status"
+                                            fullWidth
+                                            value={formData.status}
+                                            onChange={handleChange}
+                                            id="status"
+                                            label="Status"
+                                            autoFocus
+                                        />
+                                        <p style={{ color: "red" }}>{formError.status}</p>
                                     </Grid>
                                 </div>
                                 <div className="col-lg-12">
@@ -303,9 +323,9 @@ const FormPage = () => {
                                     </FormControl>
                                 </div>
                                 <div className="col-lg-12">
-                                    <label>Description: </label>
-                                    <CKEditor OnKeyPress={HandleChangeCKEditor} values={formData.banner_content} />
-                                    <p style={{ color: "red" }}>{formError.banner_content}</p>
+                                    <label>illustrations note: </label>
+                                    <CKEditor OnKeyPress={HandleChangeCKEditor} values={formData.illustrationsnote} />
+                                    <p style={{ color: "red" }}>{formError.bookdescription}</p>
                                 </div>
                                 <div className="col-lg-12 text-center">
                                     {imgData !== null && (

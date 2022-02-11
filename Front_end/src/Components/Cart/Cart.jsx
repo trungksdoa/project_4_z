@@ -1,6 +1,7 @@
 import React from 'react';
 import "./Cart.css"
 const Cart = () => {
+    
     return (
         <>
             <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index={-100} data-appear-top-offset={600} data-parallax="scroll" data-image-src="images/parallax/bgparallax-07.jpg">

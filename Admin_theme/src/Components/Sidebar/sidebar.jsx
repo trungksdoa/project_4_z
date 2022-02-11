@@ -95,6 +95,14 @@ const sidebar = () => {
                         </NavLink>
                     </li>
                     <li className="nav-item">
+                        <NavLink className="nav-link text-white " to="/admin/Category">
+                            <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <MenuBookIcon />
+                            </div>
+                            <span className="nav-link-text ms-1">Category </span>
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
                         <NavLink className="nav-link text-white " to="/admin/Reviews">
                             <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <StarIcon />

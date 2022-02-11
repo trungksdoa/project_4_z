@@ -69,7 +69,7 @@ public class CategoryManagerController {
             e.printStackTrace();
         }
         catagorys.setCatagoryname(audt.getCategory_name());
-        catagorys.setCatagorydescription(audt.getCatagory_description());
+        catagorys.setCatagorydescription(audt.getCategory_description());
 
         catagorys.setCatagorycreateddate(dtf.format(now));
         catagorys.setCatagorymodifieddate(dtf.format(now));
@@ -120,7 +120,7 @@ public class CategoryManagerController {
             String msg = "Update success";
             if (catagorys != null) {
                 catagorys.setCatagoryname(audt.getCategory_name());
-                catagorys.setCatagorydescription(audt.getCatagory_description());
+                catagorys.setCatagorydescription(audt.getCategory_description());
                 catagorys.setCatagorymodifieddate(dtf.format(now));
                 Catagorys catagoryss1 = categorysService.Create(catagorys);
                 setMessage.setMessage(msg);
