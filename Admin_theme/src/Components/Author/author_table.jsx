@@ -61,7 +61,7 @@ const Author_table = (props) => {
                                     {author.modifieddate}
                                 </td>
                                 <td className="align-middle text-center">
-                                    <a style={{ cursor: 'pointer' }} onClick={() => OnDelete(index)}>
+                                    <a style={{ cursor: 'pointer' }} onClick={() => OnDelete(author.authorid)}>
                                         <span style={{ fontSize: "0.6em", color: "red" }}>
                                             <i className="fas fa-trash-alt fa-2x" />
                                         </span>

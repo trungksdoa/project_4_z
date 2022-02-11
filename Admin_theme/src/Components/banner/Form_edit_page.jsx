@@ -26,8 +26,6 @@ const FormPage = () => {
     const fetchData = async () => {
         await BannerAPI.getBannerById(id).then((banner) => {
             setFormData(banner.data);
-            setCkValue(banner.data.bannerContent)
-            console.log(banner.data);
         }).catch((err) => alert(err.msg));
     }
 
@@ -35,12 +33,6 @@ const FormPage = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     }
-
-    const HandleChangeCKEditor = (event, editor) => {
-        const data = editor.getData();
-        setFormData({ ...formData, "bannerContent": data });
-    }
-
     const handleClick = async (e) => {
         e.preventDefault();
         const validateResult = validate(formData);
@@ -157,7 +149,15 @@ const FormPage = () => {
                                     <p style={{ color: "red" }}>{formError.bannerTitle}</p>
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
-                                    <CKEditor OnKeyPress={HandleChangeCKEditor} values={ckValue} />
+                                    <TextField
+                                        name="bannerContent"
+                                        fullWidth
+                                        value={formData.bannerContent}
+                                        onChange={handleChange}
+                                        id="bannerContent"
+                                        label="Banner Content"
+                                        autoFocus
+                                    />
                                     <p style={{ color: "red" }}>{formError.bannerContent}</p>
                                 </Grid>
                                 <Grid item xs={12} sm={12}>

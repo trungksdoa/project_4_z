@@ -102,7 +102,7 @@ const NavigationBar = () => {
                                     </li>
                                     <li>
                                         {auth && (
-                                            <a href={"/Profile/" + cookies.loggin.userID}>Profile</a>
+                                            <a href={"/Profile/"}>Profile</a>
                                         )}
                                     </li>
                                 </ul>

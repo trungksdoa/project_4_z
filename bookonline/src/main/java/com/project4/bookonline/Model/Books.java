@@ -206,6 +206,8 @@ public class Books implements Serializable {
         this.reviews = reviews;
     }
 
+
+    @JsonBackReference(value="book_order")
     @XmlTransient
     public Collection<OrderDetail> getOrderDetailCollection() {
         return orderDetailCollection;

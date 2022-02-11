@@ -4,7 +4,8 @@
  */
 package com.project4.bookonline.Repository;
 
-import com.project4.bookonline.Model.Voucher;
+import com.project4.bookonline.Model.Books;
+import com.project4.bookonline.dto.VWishlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author PC
  */
 @Repository
-public interface VoucherRepository extends JpaRepository<Voucher, String> {
-    @Query(value = "select * from Voucher where Voucher_status=1", nativeQuery = true)
-    public List<Voucher> findAll();
+public interface VWishlistRepository extends JpaRepository<VWishlist, Integer> {
+    @Query(value = "SELECT * FROM VWishlist WHERE User_id = :UserId", nativeQuery = true)
+    public List<VWishlist> viewList(String UserId);
 }

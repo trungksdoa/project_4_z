@@ -5,6 +5,7 @@
 package com.project4.bookonline.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -90,6 +91,7 @@ public class OrderDetail implements Serializable {
         this.total = total;
     }
 
+    @JsonManagedReference(value="book_order")
     public Books getBookid() {
         return bookid;
     }
@@ -98,6 +100,7 @@ public class OrderDetail implements Serializable {
         this.bookid = bookid;
     }
 
+    @JsonBackReference(value="detail_order")
     public Orders getOrderid() {
         return orderid;
     }

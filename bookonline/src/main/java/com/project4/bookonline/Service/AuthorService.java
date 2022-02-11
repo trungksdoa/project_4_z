@@ -20,6 +20,6 @@ public interface AuthorService {
     public Authors findOne(int id);
     public List<String> getBookIds(int id);
     public Authors Edit(int id,Authors authors);
-    public void Delete(int id);
+    public boolean Delete(int id);
 //}
 }

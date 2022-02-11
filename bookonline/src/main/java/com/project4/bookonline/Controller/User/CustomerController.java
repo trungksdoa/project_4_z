@@ -76,7 +76,6 @@ public class CustomerController {
         udto.setFirst_name(users.getFirstName());
         udto.setPhone(users.getPhone());
         udto.setPassword(users.getUserpassword());
-        udto.setBirthday(users.getBirthday());
         return udto;
     }
 
@@ -90,9 +89,6 @@ public class CustomerController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.000'Z'")
-                .withZone(ZoneId.of("UTC"));
-        LocalDateTime date = LocalDateTime.parse(user.getBirthday(), formatter);
 //
 //        ----End-----
         msg = "Sign Up Success";
@@ -109,7 +105,6 @@ public class CustomerController {
             create.setLastName(user.getLast_name());
             create.setUseremail(user.getUser_email());
             create.setUserpassword(user.getPassword());
-            create.setBirthday(dtf.format(date));
             create.setPhone(user.getPhone());
             create.setStatus(2);
             //Auto

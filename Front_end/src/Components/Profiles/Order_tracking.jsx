@@ -1,71 +1,37 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useLayoutEffect, useState } from "react";
+import profileAPI from '../../api/profileAPI';
 import { useNavigate } from "react-router-dom";
-export const fakeOrder = [
-    {
-        id: 1,
-        status: 1,
-        dateOrder: "2022/02/24",
-        Voucher: "FREESHIP2020",
-        Address: "1494/12 address",
-        note: "10 gio 20 nhe :)))",
-        isReview: true
-    },
-    {
-        id: 2,
-        status: 1,
-        dateOrder: "2022/02/24",
-        Voucher: "FREESHIP2020",
-        Address: "1494/12 address",
-        note: "10 gio 20 nhe :)))",
-        isReview: false
-    }, {
-        id: 3,
-        status: 1,
-        dateOrder: "2022/02/24",
-        Voucher: "FREESHIP2020",
-        Address: "1494/12 address",
-        note: "10 gio 20 nhe :)))",
-        isReview: false
-    }, {
-        id: 4,
-        status: 2,
-        dateOrder: "2022/02/24",
-        Voucher: "FREESHIP2020",
-        Address: "1494/12 address",
-        note: "10 gio 20 nhe :)))",
-        isReview: false
-    }, {
-        id: 5,
-        status: 2,
-        dateOrder: "2022/02/24",
-        Voucher: "FREESHIP2020",
-        Address: "1494/12 address",
-        note: "10 gio 20 nhe :)))",
-        isReview: false
-    }, {
-        id: 6,
-        status: 3,
-        dateOrder: "2022/02/24",
-        Voucher: "FREESHIP2020",
-        Address: "1494/12 address",
-        note: "10 gio 20 nhe :)))",
-        isReview: false
-    },
-]
 const Page2 = () => {
     const navigate = useNavigate();
 
-    const [list, setList] = useState([]);
-    useEffect(() => {
-        setList(fakeOrder);
+    const datasd = {
+        orderaddress: "dsdsadsa",
+        ordercity: "sadsadsa",
+        ordercreateddate: "2022-02-01T17:00:00.000+00:00",
+        orderdistrict: "sdasdsa",
+        orderid: 3,
+        ordernote: "asdsa",
+        orderstatus: 1,
+        ordervoucher: {},
+        userid: {}
+    }
+    const [list, setList] = useState([datasd]);
+
+    async function fetchData() {
+        await profileAPI.OrderList().then(res => {
+            setList(res.data)
+        }).catch(err => alert(err.msg))
+    }
+    useLayoutEffect(() => {
+        // fetchData()
+        const interval = setInterval(() => {
+            fetchData()
+        }, 2000)
+        return (() => {
+            clearInterval(interval)
+        })
     }, []);
 
-    // const newList = [];
-    const updateConfirm = (id) => {
-        const updatedData = list.map(x => (x.id === id ? { ...x, status: 3 } : x));
-        setList(updatedData)
-    }
 
     return (
         <>
@@ -88,20 +54,27 @@ const Page2 = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {list.map((value, index) => {
-                        return (<tr key={value.id}>
-                            <td>{value.id}</td>
-                            <td style={value.status === 1 ? { background: 'rgb(0 255 255)', padding: 10 } : (value.status === 2 ? { background: 'yellow', padding: 10 } : { background: '#00f800', padding: 10 })}>{value.status === 1 ? "Delivered" : (value.status === 2 ? "Undelivered" : "Confirmed")}</td>
-                            <td>{value.dateOrder}</td>
-                            <td>{value.Voucher}</td>
-                            <td>
-                                {value.Address}
-                            </td>
-                            <td>
-                                {value.note}
-                            </td>
-                        </tr>)
-                    })}
+                    {list.length !== 0 ? list.map((value, index) => {
+                        const status = value.orderstatus === 1 ? "Confirm" : (value.orderstatus === 2 ? "Pending" : "Cancel")
+                        return (
+                            <tr key={value.orderid}>
+                                <td>{value.orderid}</td>
+                                <td style={{ padding: 10 }}><span style={status === "Confirm" ? {color:'green'} : (status === "Pending" ? {color:'black'} : {color: "red" })}>{status}</span></td>
+                                <td>{new Date(value.ordercreateddate).toString()}</td>
+                                <td>{value.ordervoucher.vouchertitle}</td>
+                                <td>
+                                    {value.orderaddress + ", " + value.ordercity + ", " + value.orderdistrict}
+                                </td>
+                                <td>
+                                    {value.ordernote}
+                                </td>
+                            </tr>
+                        )
+                    }) : (
+                        <tr>
+                            <td colSpan="9999" style={{ textAlign: "center" }}>No data found</td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
         </>

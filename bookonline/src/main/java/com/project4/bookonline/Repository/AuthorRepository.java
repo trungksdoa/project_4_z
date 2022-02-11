@@ -22,4 +22,8 @@ import java.util.List;
 public interface AuthorRepository extends JpaRepository<Authors, Integer> {
     @Query(value = "select b.Books_id from Books b  where b.Author_id in (select a.Author_id  from Authors a where a.Author_id = :authodId)", nativeQuery = true)
     public List<String> getId(@Param("authodId") int authodId);
+
+
+    @Query(value = "select *  from Authors  where status = 1", nativeQuery = true)
+    public List<Authors> findAll();
 }

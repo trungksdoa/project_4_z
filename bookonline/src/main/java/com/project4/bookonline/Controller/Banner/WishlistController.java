@@ -10,6 +10,7 @@ import com.project4.bookonline.Service.AuthorService;
 import com.project4.bookonline.Service.BooksService;
 import com.project4.bookonline.Service.WishlistService;
 import com.project4.bookonline.dto.UsersDTO;
+import com.project4.bookonline.dto.VWishlist;
 import com.project4.bookonline.dto.WishlistDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author trung
  */
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(value = "/api")
 @RestController
 public class WishlistController {
     String respone;
@@ -35,25 +37,27 @@ public class WishlistController {
     @Autowired
     BooksService bookService;
 
-    Message_Respones<Wishlist> setMessage = new Message_Respones<Wishlist>();
+    Message_Respones<Wishlist> setMessage;
+
+    Message_Respones<VWishlist> setVMessage;
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/api/wishlist/findAll/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Message_Respones<Wishlist>> findAll(@PathVariable String id) {
-        wishlists = new ArrayList<>();
-        Users userId = new Users();
-        userId.setUserid(id);
-        wishlists = wishlistService.getList(userId);
+    @RequestMapping(value = "/wishlist/findAll/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<VWishlist>> findAll(@PathVariable String id) {
+        setVMessage = new Message_Respones<VWishlist>();
+        List<VWishlist> Vwishlists = new ArrayList<>();
+        Vwishlists = wishlistService.getVList(id);
         String msg = "Get data success";
-        setMessage.setMessage(msg);
-        setMessage.setList(wishlists);
-        setMessage.setCode(200);
-        return new ResponseEntity<Message_Respones<Wishlist>>(setMessage, HttpStatus.OK);
+        setVMessage.setMessage(msg);
+        setVMessage.setList(Vwishlists);
+        setVMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<VWishlist>>(setVMessage, HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/api/wishlist/findAll/{userId}/{bookId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/wishlist/findAll/{userId}/{bookId}", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Wishlist>> findAllByBookId(@PathVariable String userId, @PathVariable String bookId) {
+        setMessage = new Message_Respones<Wishlist>();
         wishlist = new Wishlist();
         Users user_id = new Users();
         Books book_id = new Books();
@@ -66,18 +70,37 @@ public class WishlistController {
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Wishlist>>(setMessage, HttpStatus.OK);
     }
+
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/api/wishlist/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Message_Respones<Wishlist>> RemoveWishlistByBook(@PathVariable String id) {
+    @RequestMapping(value = "/wishlist/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Message_Respones<Wishlist>> RemoveWishlist(@PathVariable String id) {
+        setMessage = new Message_Respones<Wishlist>();
         wishlists = new ArrayList<>();
-        wishlistService.delete(Integer.valueOf(id));
-        String msg = "Delete success";
-        setMessage.setMessage(msg);
-        setMessage.setCode(200);
-        return new ResponseEntity<Message_Respones<Wishlist>>(setMessage, HttpStatus.OK);
+        try {
+            Wishlist found = wishlistService.findOne(Integer.valueOf(id));
+            boolean isDeleted = wishlistService.removeWishlistItem(found);
+            if (isDeleted) {
+                String msg = "Delete success";
+                setMessage.setMessage(msg);
+                setMessage.setCode(200);
+                return new ResponseEntity<Message_Respones<Wishlist>>(setMessage, HttpStatus.OK);
+            } else {
+                String msg = "Delete fail";
+                setMessage.setMessage(msg);
+                setMessage.setCode(200);
+                return new ResponseEntity<Message_Respones<Wishlist>>(setMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }catch(Exception exists){
+            String msg = exists.getMessage();
+            setMessage.setMessage(msg);
+            setMessage.setCode(200);
+            return new ResponseEntity<Message_Respones<Wishlist>>(setMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
     }
 
-    @RequestMapping(value = "/api/wishlist/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/wishlist/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Message_Respones<Wishlist>> save(@RequestBody WishlistDTO wishlistDTO) {
         wishlists = new ArrayList<>();
         Wishlist converter = wishlistDTO.Convert(wishlistDTO);

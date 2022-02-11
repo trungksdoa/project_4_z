@@ -4,6 +4,7 @@
  */
 package com.project4.bookonline.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
@@ -149,7 +150,7 @@ public class Orders implements Serializable {
     public void setOrdernote(String ordernote) {
         this.ordernote = ordernote;
     }
-
+    @JsonManagedReference(value="user_order")
     public Users getUserid() {
         return userid;
     }
@@ -157,7 +158,7 @@ public class Orders implements Serializable {
     public void setUserid(Users userid) {
         this.userid = userid;
     }
-
+    @JsonManagedReference(value="voucher_order")
     public Voucher getOrdervoucher() {
         return ordervoucher;
     }
@@ -166,6 +167,7 @@ public class Orders implements Serializable {
         this.ordervoucher = ordervoucher;
     }
 
+    @JsonManagedReference(value="detail_order")
     @XmlTransient
     public Collection<OrderDetail> getOrderDetailCollection() {
         return orderDetailCollection;

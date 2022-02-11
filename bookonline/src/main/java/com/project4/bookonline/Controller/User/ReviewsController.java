@@ -55,6 +55,7 @@ public class ReviewsController {
         review2.setReviewtitle(review1.getReviewtitle());
         review2.setReviewcontent(review1.getReviewcontent());
         review2.setRatingstart(review1.getRatingstart());
+        review2.setActive(2);
         review2.setCreateddate(review1.getCreateddate());
 
         review2 = reviewService.post_reviews(review2);

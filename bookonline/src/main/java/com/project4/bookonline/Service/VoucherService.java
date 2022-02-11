@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface VoucherService {
     public List<Voucher> listVorcher();
+    public boolean findOne(String id);
+    public Voucher findById(String id);
     public Voucher Create(Voucher voucher);
-    public void Delete(String id);
+    public boolean Delete(String id);
 }

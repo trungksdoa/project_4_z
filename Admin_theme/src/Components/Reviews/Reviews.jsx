@@ -22,17 +22,20 @@ const Reviews = () => {
     const [searchByRating, setSearchRating] = useState("");
     const [filtered, setFiltered] = useState([]);
     const navigate = useNavigate();
-    const handleChange = async (index, value) => {
+    
+    const handleChange = async (reviewId, value) => {
         let newArr = [...Reviews_list]; // copying the old datas array
+        const index = newArr.findIndex(item => item.reviewid === reviewId);
         newArr[index].active = value;
         setTimeout(setReviews_list(newArr), 10000);
-        await ReviewAPI.ChangeStatus(newArr[index].reviewid, value);
+        await ReviewAPI.ChangeStatus(reviewId, value);
     };
 
-    const handleDelete = async (index, value) => {
+    const handleDelete = async (reviewID) => {
+        const newReviews = [...Reviews_list];
+        const index = newReviews.findIndex(item => item.reviewid === reviewID);
         // window.confirm returns a boolean, true or false, based on whether the user pressed 'Ok' (which will result in true) or 'Cancel' (which will result in false)
-        if (window.confirm("This is a dangerous action do you want to continue?")) {
-            const newReviews = [...Reviews_list];
+        if (window.confirm("This is a dangerous action do you want to continue? Review:" + newReviews[index].reviewid)) {
             await ReviewAPI.Delete(newReviews[index].reviewid);
             newReviews.splice(index, 1);
             setReviews_list(newReviews)

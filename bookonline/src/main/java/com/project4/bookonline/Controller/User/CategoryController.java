@@ -46,7 +46,6 @@ public class CategoryController {
     public ResponseEntity<Message_Respones<Catagorys>> findOne(@PathVariable int id) {
         catagorys = new Catagorys();
         catagorys  = categorysService.findOne(id);
-        System.out.println("Ij");
         String msg = "Found data";
         setMessage.setMessage(msg);
         setMessage.setObject(catagorys);

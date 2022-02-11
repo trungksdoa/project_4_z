@@ -6,6 +6,9 @@ import './index.css';
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 
 import { ToastContainer, toast } from 'react-toastify';
+
+import "react-datepicker/dist/react-datepicker.css";
+
 import 'react-toastify/dist/ReactToastify.css';
 
 import reportWebVitals from './reportWebVitals';
@@ -48,6 +51,8 @@ import Reply from './Components/Reviews/Reply.jsx';
 
 import Setting from './Components/Setting/Setting.jsx';
 
+import Voucher from './Components/Voucher/index.jsx'
+
 import Banner from './Components/banner/index.jsx'
 
 import BannerEdit from './Components/banner/Form_edit_page.jsx'
@@ -78,6 +83,7 @@ function Catagorys_News() {
 function News() {
   return (<h3>News</h3>)
 }
+<<<<<<< HEAD
 // function Books() {
 //   return (
 //     <div className="container-fluid py-4"><h3>Books</h3></div >
@@ -88,6 +94,12 @@ function Voucher() {
     <div className="container-fluid py-4"><h3>Voucher</h3></div >
   )
 
+=======
+function Books() {
+  return (
+    <div className="container-fluid py-4"><h3>Books</h3></div >
+  )
+>>>>>>> b18fdef82bdd4d35983882fb0ade98a9f2a30e8b
 }
 function Page404() {
   return (
@@ -213,7 +225,6 @@ function RolesReviewsOutlet() {
   if (auth) {
     const RoleA_Require_admin = ["Reviews Management", "Customers Management", "owner"];
     isAdminA = findOne(RoleA_Require_admin, cookies.admin_loggin.roles);
-    console.log(cookies.admin_loggin.roles, isAdminA)
   }
   if (isAdminA) {
     console.log("true")

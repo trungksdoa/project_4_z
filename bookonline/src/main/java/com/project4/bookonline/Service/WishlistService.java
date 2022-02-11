@@ -3,6 +3,7 @@ package com.project4.bookonline.Service;
 import com.project4.bookonline.Model.Books;
 import com.project4.bookonline.Model.Users;
 import com.project4.bookonline.Model.Wishlist;
+import com.project4.bookonline.dto.VWishlist;
 
 import java.util.List;
 
@@ -13,8 +14,9 @@ public interface WishlistService {
 
     public Wishlist save(Wishlist wishlist);
 
-    public boolean delete(int id);
+    public Wishlist findOne(int wishlistID);
 
-    public boolean deleteByBook(String bookid);
+    public boolean removeWishlistItem(Wishlist wl);
 
+    public List<VWishlist> getVList(String userId);
 }

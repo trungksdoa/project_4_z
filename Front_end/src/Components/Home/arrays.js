@@ -1,45 +1,31 @@
 
 export const data = [
     {
-        id: "Book1",
+        id: "Book13",
         img:
             'images/books/img-01.jpg',
-        title: 'Book1',
+        title: 'Book13',
         cate: ['Avanture,fun'],
         author: 'Shannon Olsen'
     }, {
-        id: "Book2",
+        id: "Book14",
         img:
             'images/books/img-02.jpg',
-        title: 'Book2',
+        title: 'Book14',
         cate: ['Avanture,fun'],
         author: 'Shannon Olsen'
     }, {
-        id: "Book3",
+        id: "Book15",
         img:
             'images/books/img-02.jpg',
-        title: 'Book3',
+        title: 'Book15',
         cate: ['Avanture,fun'],
         author: 'Shannon Olsen'
     }, {
-        id: "Book4",
+        id: "Book16",
         img:
             'images/books/img-02.jpg',
-        title: 'Book4',
-        cate: ['Avanture,fun'],
-        author: 'Shannon Olsen'
-    }, {
-        id: "Book5",
-        img:
-            'images/books/img-02.jpg',
-        title: 'Book5',
-        cate: ['Avanture,fun'],
-        author: 'Shannon Olsen'
-    }, {
-        id: "Book6",
-        img:
-            'images/books/img-02.jpg',
-        title: 'Book6',
+        title: 'Book16',
         cate: ['Avanture,fun'],
         author: 'Shannon Olsen'
     }

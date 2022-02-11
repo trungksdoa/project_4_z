@@ -61,9 +61,6 @@ public class Users implements Serializable {
     @Column(name = "User_password")
     private String userpassword;
     @Basic(optional = false)
-    @Column(name = "Birthday")
-    private String birthday;
-    @Basic(optional = false)
     @Column(name = "Phone")
     private String phone;
     @Basic(optional = false)
@@ -77,7 +74,14 @@ public class Users implements Serializable {
     private String usermodifieddate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
     private Collection<Reviews> reviewCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
+    private Collection<Orders> orderCollection;
 
+
+    @JsonBackReference(value="user_order")
+    public Collection<Orders> getOrderCollection() {
+        return orderCollection;
+    }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "User_id")
     private Collection<Wishlist> wishlistCollection;
