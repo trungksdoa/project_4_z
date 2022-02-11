@@ -33,29 +33,22 @@ const sendEmail = (id, name, emails) => {
 };
 
 const Register = () => {
-    const initialValues = { Fname: "", Lname: "", Emails: "", Pword: "", Cword: "", Pnum: "", birthday: new Date(moment().subtract(16, "years").toString()) };
+    const initialValues = { Fname: "", Lname: "", Emails: "", Pword: "", Cword: "", Pnum: ""};
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
     let navigate = useNavigate();
     const Only_number = /^[0-9\b]+$/;
     const handleChange = (e) => {
-
-        if (e.target === undefined) {
-            const parse = new Date(e);
-            console.log(parse.toLocaleDateString())
-            setFormValues({ ...formValues, birthday: e });
-        } else {
-            const { name, value } = e.target;
-            if (name == "Pnum") {
-                if (Only_number.test(value)) {
-                    setFormValues({ ...formValues, [name]: value });
-                }
-            } else if (name == "Pword") {
-                setFormValues({ ...formValues, [name]: value.trim() });
-            } else {
+        const { name, value } = e.target;
+        if (name == "Pnum") {
+            if (Only_number.test(value)) {
                 setFormValues({ ...formValues, [name]: value });
             }
+        } else if (name == "Pword") {
+            setFormValues({ ...formValues, [name]: value.trim() });
+        } else {
+            setFormValues({ ...formValues, [name]: value });
         }
         // if (e.target != undefined) {
 
@@ -63,7 +56,6 @@ const Register = () => {
         // setFormValues({ ...formValues, birthday: e });
     };
 
-    console.table(formValues)
     const handleSubmit = (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues));
@@ -136,10 +128,6 @@ const Register = () => {
         } else if (values.Cword.trim().length <= 0) {
             errors.Cword = "Confirm Password cannot be blank";
         }
-
-        if (!values.birthday) {
-            errors.birthday = "Birthday is required!";
-        }
         return errors;
     };
 
@@ -194,23 +182,6 @@ const Register = () => {
                             <label htmlFor="Pnum">Phone number</label>
                             <input type="text" className="form-control" name="Pnum" value={formValues.Pnum} onChange={handleChange} />
                             <p style={{ color: "red" }}>{formErrors.Pnum}</p>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="Bday">Birthday</label>
-                            <Datepicker className='form-control'
-                                selected={formValues.birthday}
-
-                                // minDate={new Date(moment().subtract(100, "years"))}
-                                // maxDate={new Date(moment().subtract(16, "years"))}
-                                // customInput={<ExampleCustomInput />}
-                                maxDate={new Date()}
-                                withPortal
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                placeholderText="Click to select a your birthday"
-                                onChange={(date) => handleChange(date)} />
                         </div>
                         <div className="form-group">
                             <NavLink to="/Login">Have account ? Want log in ?</NavLink>

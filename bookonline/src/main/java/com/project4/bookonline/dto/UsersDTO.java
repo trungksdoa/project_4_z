@@ -21,18 +21,14 @@ public class UsersDTO {
     private String first_name;
     private String last_name;
     private String user_email;
-    private String birthday;
     private String password;
     private String phone;
 
     public Users convert_update(UsersDTO dto) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
         Users users = new Users();
         users.setLastName(dto.getLast_name());
         users.setFirstName(dto.getFirst_name());
         users.setUserpassword(dto.getPassword());
-        users.setBirthday(dtf.format(now));
         users.setPhone(dto.getPhone());
         return users;
     }

@@ -6,10 +6,8 @@ import PropTypes from 'prop-types'
 import moment from "moment";
 import { toast } from 'react-toastify';
 
-import Datepicker from "react-datepicker";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import "react-datepicker/dist/react-datepicker.css";
 
 import "./App.css";
 const Page1 = ({ data }) => {
@@ -24,7 +22,6 @@ const Page1 = ({ data }) => {
   const Only_number = /^[0-9\b]+$/;
   //Form data
   const [formData, setFormData] = useState({
-    birthday: new Date(),
     first_name: "",
     last_name: "",
     phone: "",
@@ -47,18 +44,13 @@ const Page1 = ({ data }) => {
   }
   //Change function
   const handleChange = (e) => {
-    if (e.target === undefined) {
-      const parse = new Date(e);
-      setFormData({ ...formData, birthday: e });
-    } else {
-      const { name, value } = e.target;
-      if (name == "phone") {
-        if (Only_number.test(value)) {
-          setFormData({ ...formData, [name]: value });
-        }
-      } else {
+    const { name, value } = e.target;
+    if (name == "phone") {
+      if (Only_number.test(value)) {
         setFormData({ ...formData, [name]: value });
       }
+    } else {
+      setFormData({ ...formData, [name]: value });
     }
   };
   //Submit function
@@ -114,9 +106,6 @@ const Page1 = ({ data }) => {
     } else if (values.password.trim().length <= 0) {
       errors.password = "Password not be blank";
     }
-    if (!values.birthday) {
-      errors.birthday = "Birthday is required!";
-    }
     return errors;
   };
   return (
@@ -159,24 +148,6 @@ const Page1 = ({ data }) => {
                   <label htmlFor="phone">Phone number</label>
                   <input type="text" className="form-control" name="phone" value={formData.phone} onChange={handleChange} />
                   <p style={{ color: "red" }}>{formErrors.phone}</p>
-                </div>
-              </div>
-              <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="Bday">Birthday</label>
-                  <Datepicker className='form-control'
-                    dateFormat="yyyy/MM/dd HH:mm:ss"
-                    selected={new Date(formData.birthday)}
-                    minDate={new Date(moment().subtract(100, "years"))}
-                    maxDate={new Date(moment().subtract(16, "years"))}
-                    // customInput={<ExampleCustomInput />}
-                    withPortal
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    placeholderText="Click to select a your birthday"
-                    onChange={(date) => handleChange(date)} />
                 </div>
               </div>
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">

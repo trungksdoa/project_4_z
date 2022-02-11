@@ -15,10 +15,6 @@ const topbar = () => {
                                 </a>
                             </li>
                         </ul>
-                        <div className="tg-userlogin">
-                            <figure><a href="#!"><img src="images/users/img-01.jpg" alt="image description" /></a></figure>
-                            <span>Hi, boss</span>
-                        </div>
                     </div>
                 </div>
             </div>

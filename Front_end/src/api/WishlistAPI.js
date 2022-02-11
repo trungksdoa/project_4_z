@@ -99,10 +99,6 @@ const WishlistAPI = {
         const url = 'wishlist/findAll/' + id;
         return RequestWishlists(url);
     },
-    findALlBook: (id) => {
-        const url = 'book/findAll/';
-        return RequestWishlists(url);
-    },
     getByBookId: (userId, bookId) => {
         const url = 'wishlist/findAll/' + userId + '/' + bookId + '/';
         return RequestWishlist(url);
@@ -115,7 +111,7 @@ const WishlistAPI = {
         }
         return RequestSaveWishlish(url,body);
     },
-    DeleteByBook: (wishlistId) => {
+    DeleteByWishlist: (wishlistId) => {
         const url = 'wishlist/delete/'+wishlistId;
         return RequestDelete(url);
     },

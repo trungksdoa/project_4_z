@@ -102,7 +102,7 @@ const AppRouter = () => {
 
                         <Route path="/Payment" element={<Payment />} />
 
-                        <Route path="/Profile/:id" element={<Profile />} />l
+                        <Route path="/Profile/" element={<Profile />} />l
                     </Route>
                 </Routes>
                 <ToastContainer />

@@ -4,9 +4,10 @@ import emailjs from '@emailjs/browser';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import ReviewAPI from '../../api/ReviewAPI';
+import { toast } from 'react-toastify'
 const ContactUs = () => {
   const form = useRef();
-  const [formvalue, setFormValue] = useState({ to_name: "", from_name: "Shop", message: "", to_email: "" });
+  const [formvalue, setFormValue] = useState({ to_name: "", from_name: "Shop", message: "", to_email: "", subject: "" });
   const [reviewContent, setContent] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
@@ -30,14 +31,15 @@ const ContactUs = () => {
   }, []);
   const sendEmail = (e) => {
     e.preventDefault();
-    console.log(formvalue)
     emailjs.send("service_j4mrk0g", "template_gq3eifs", {
       to_name: formvalue.to_name,
       from_name: formvalue.from_name,
       message: formvalue.message,
       to_email: formvalue.to_email,
+      Review: reviewContent,
+      subject: formvalue.subject,
     }, 'user_vIW7ZVHXfJOIHf3MzglMW').then(response => {
-      console.log(response)
+      toast("Send emails is success");
     }).catch(error => {
       alert(error)
     });
@@ -56,12 +58,27 @@ const ContactUs = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={12}>
                   <TextField
+                    name="subject"
+                    fullWidth
+                    required
+                    id="subject"
+                    label="Subject"
+                    value={formvalue.subject}
+                    onChange={handleChange}
+                    // value={formvalue.adminemail}
+                    autoFocus
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <TextField
                     name="to_name"
                     disabled
                     fullWidth
+                    required
                     id="to_name"
                     label="To"
                     value={formvalue.to_name}
+                    onChange={handleChange}
                     // value={formvalue.adminemail}
                     autoFocus
                   />
@@ -71,9 +88,11 @@ const ContactUs = () => {
                     name="to_email"
                     disabled
                     fullWidth
+                    required
                     id="to_email"
                     label="To email"
                     value={formvalue.to_email}
+                    onChange={handleChange}
                     // value={formvalue.adminemail}
                     autoFocus
                   />
@@ -83,9 +102,11 @@ const ContactUs = () => {
                     name="from_name"
                     fullWidth
                     disabled
+                    required
                     id="from_name"
                     label="From"
                     value={formvalue.from_name}
+                    onChange={handleChange}
                     autoFocus
                   />
                 </Grid>
@@ -98,8 +119,11 @@ const ContactUs = () => {
                     name="message"
                     fullWidth
                     id="message"
+                    required
                     label="Reply"
                     autoFocus
+                    value={formvalue.message}
+                    onChange={handleChange}
                     multiline
                   />
                 </Grid>

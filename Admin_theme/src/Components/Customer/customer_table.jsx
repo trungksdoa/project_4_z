@@ -105,8 +105,6 @@ const Customers = ({ data, Ban, UnBan }) => {
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         Phone</th>
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                        Birthday</th>
-                    <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         Register date</th>
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         Modified date</th>
@@ -118,7 +116,7 @@ const Customers = ({ data, Ban, UnBan }) => {
             <tbody>
                 {Listcustomer.length != 0 ? Listcustomer.map((item, index) => {
 
-                    const { userid, status, usercreateddate, usermodifieddate, birthday, phone, useremail, firstName, lastName } = item;
+                    const { userid, status, usercreateddate, usermodifieddate, phone, useremail, firstName, lastName } = item;
                     const full_name = firstName + " " + lastName;
 
                     return (
@@ -142,9 +140,6 @@ const Customers = ({ data, Ban, UnBan }) => {
                             </td>
                             <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">{phone}</span>
-                            </td>
-                            <td className="align-middle text-center">
-                                <span className="text-secondary text-xs font-weight-bold">{birthday}</span>
                             </td>
                             <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">{usercreateddate}</span>

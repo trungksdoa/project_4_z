@@ -61,9 +61,6 @@ public class Users implements Serializable {
     @Column(name = "User_password")
     private String userpassword;
     @Basic(optional = false)
-    @Column(name = "Birthday")
-    private String birthday;
-    @Basic(optional = false)
     @Column(name = "Phone")
     private String phone;
     @Basic(optional = false)

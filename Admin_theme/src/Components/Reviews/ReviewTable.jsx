@@ -10,7 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 
 const Review_Table = (props) => {
     const { reviews, onChange, onDelete, onReply } = props;
-
+    console.log(reviews)
     function OnStatusChange(index, status) {
         if (onChange) {
             onChange(index, status)
@@ -21,8 +21,8 @@ const Review_Table = (props) => {
             onDelete(index)
         }
     }
-    function GoToReply(id){
-        if(onReply){
+    function GoToReply(id) {
+        if (onReply) {
             onReply(id)
         }
     }
@@ -48,7 +48,6 @@ const Review_Table = (props) => {
             </thead>
             <tbody>
                 {reviews.length != 0 ? reviews.map((review, index) => {
-
                     return (
                         <tr key={index}>
                             <td>
@@ -80,7 +79,7 @@ const Review_Table = (props) => {
                                         aria-label="empty textarea"
                                         placeholder="Empty"
                                         style={{ width: 200 }}
-                                        defaultValue={review.reviewcontent}
+                                        value={review.reviewcontent}
                                         disabled
                                     />
                                 </div>
@@ -147,6 +146,6 @@ Review_Table.defaultProps = {
     reviews: [],
     onChange: null,
     onDelete: null,
-    onReply:null
+    onReply: null
 };
 export default Review_Table;

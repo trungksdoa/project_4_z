@@ -45,8 +45,6 @@ const Profile = () => {
     //Check is loggin
     const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
 
-    //Get param of user on url
-    const { id } = useParams();
 
     //Fetch data
     async function fetchData(id) {

@@ -25,7 +25,6 @@ public class UserImpl implements UserService {
         entity.setFirstName(user.getFirstName());
         entity.setLastName(user.getLastName());
         entity.setUserpassword(user.getUserpassword());
-        entity.setBirthday(user.getBirthday());
         entity.setPhone(user.getPhone());
         entity.setUsermodifieddate(dtf.format(now));
         //Previous data

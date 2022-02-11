@@ -24,6 +24,29 @@ const Requestprofile = (url) => {
     })
 }
 
+const RequestOrder = (url) => {
+    const object_user = {};
+    return new Promise((resolve, reject) => {
+        axiosClient.get(url)
+            .then(response => {
+                object_user.code = response.code;
+                object_user.msg = response.msg;
+                object_user.data = response.data_array;
+                resolve(object_user)
+            })
+            .catch((error) => {
+                if (error.toJSON().message === 'Network Error') {
+                    object_user.status = 511;
+                    object_user.msg = "Network Authentication Required";
+                } else {
+                    object_user.status = error.response.status;
+                    object_user.msg = error.response.data.msg;
+                }
+                reject(object_user)
+            })
+    })
+}
+
 const RequestCreate = (url, body) => {
     const object_user = {};
     return new Promise((resolve, reject) => {
@@ -76,16 +99,20 @@ const Profiles = {
         url = 'user/search/' + id;
         return Requestprofile(url)
     },
-    Edit: (id,params) => {
+    Edit: (id, params) => {
         const body = {
-            first_name : params.first_name,
+            first_name: params.first_name,
             last_name: params.last_name,
             password: params.password,
-            birthday:params.birthday,
-            phone:params.phone
+            birthday: params.birthday,
+            phone: params.phone
         }
         url = 'user/update/' + id;
         return RequestEdit(url, body)
+    },
+    OrderList: () => {
+        url = 'orders/findAll/';
+        return RequestOrder (url)
     }
 }
 export default Profiles

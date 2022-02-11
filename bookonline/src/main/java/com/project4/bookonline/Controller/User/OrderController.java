@@ -28,6 +28,12 @@ public class OrderController {
 
     @RequestMapping(value = "/orders/findAll", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Orders>> findAll() {
+        return getMessage_responesResponseEntity();
+    }
+
+
+    private ResponseEntity<Message_Respones<Orders>> getMessage_responesResponseEntity() {
+        setMessage = new Message_Respones<Orders>();
         orders = new ArrayList<>();
         orders = orderService.listAll();
         String msg = "Get data success";
@@ -39,8 +45,8 @@ public class OrderController {
 
     @RequestMapping(value = "/orders/create", method = RequestMethod.POST)
     public ResponseEntity<Object> create(@RequestBody Orders orders) {
-         orderService.Create(orders);
-         return new ResponseEntity<Object>(1, HttpStatus.OK);
+        orderService.Create(orders);
+        return new ResponseEntity<Object>(1, HttpStatus.OK);
     }
 
 

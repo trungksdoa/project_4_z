@@ -1,17 +1,41 @@
-import React,{useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import settingAPi from '../../api/SettingAPI';
-
+import { useCookies } from 'react-cookie';
+import WishlistAPI from '../../api/WishlistAPI';
 const MiddleBar = () => {
     const [setting, setSetting] = useState({ address: "", email: "", id: "", phonenum: "", timeservice: "", logo_name_path: "" });
     useEffect(() => {
-      const getSetting = async () => {
-        await settingAPi.getSetting().then((setting) => {
-          setSetting(setting.data)
-        }).catch((error) => {
-          alert(error.msg);
-        });
-      }
-      getSetting();
+        const getSetting = async () => {
+            await settingAPi.getSetting().then((setting) => {
+                setSetting(setting.data)
+            }).catch((error) => {
+                alert(error.msg);
+            });
+        }
+        getSetting();
+    }, [])
+
+    /////////////////////////
+    // ==================
+    /////////////////////////
+    const [wishlist, setWishlist] = useState([]);
+    const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+    async function fetchData() {
+        if (auth) {
+            await WishlistAPI.getAll(cookies.loggin.userID).then(data => {
+                setWishlist(data.data)
+            }).catch(err => alert(err.msg))
+        }
+    }
+    function formatToCurrency(amount) {
+        return (amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchData()
+        }, 1000)
+        return (() => clearInterval(interval))
     }, [])
     //Logic here
     return (
@@ -23,12 +47,32 @@ const MiddleBar = () => {
                         <div className="tg-wishlistandcart">
                             <div className="dropdown tg-themedropdown tg-wishlistdropdown">
                                 <a href="#!" id="tg-wishlisst" className="tg-btnthemedropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span className="tg-themebadge">3</span>
+                                    <span className="tg-themebadge">{wishlist.length}</span>
                                     <i className="icon-heart" />
                                     <span>Wishlist</span>
                                 </a>
+
                                 <div className="dropdown-menu tg-themedropdownmenu" aria-labelledby="tg-wishlisst">
-                                    <div className="tg-description"><p>No products were added to the wishlist!</p></div>
+                                    {wishlist.length !== 0 ? (
+                                        wishlist.map((wishlist, index) => {
+                                            const { bookname, bookprice, user_id, wishlist_id, booksId } = wishlist;
+                                            return (
+                                                <div className="" key={index}>
+                                                    <div className="tg-minicarproduct">
+                                                        <figure>
+                                                            <img src="images/products/img-01.jpg" alt="image description" />
+                                                        </figure>
+                                                        <div className="tg-minicarproductdata">
+                                                            <h5><a>{bookname}</a></h5>
+                                                            <h6><a>${formatToCurrency(bookprice)}</a></h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    ) : (
+                                        <div className="tg-description"><p>No products were added to the wishlist!</p></div>
+                                    )}
                                 </div>
                             </div>
                             <div className="dropdown tg-themedropdown tg-minicartdropdown">
