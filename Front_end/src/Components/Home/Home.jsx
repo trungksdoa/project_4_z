@@ -56,6 +56,7 @@ const Home = () => {
     useEffect(() => {
         BFetch();
     }, [])
+    
     return (
         <>
             <main id="tg-main" className="tg-main tg-haslayout">
@@ -110,27 +111,6 @@ const Home = () => {
                                 )
                             }
                         })}
-
-                        {/* <div className="item">
-                            <img src="https://f24-zpc.zdn.vn/4464342945787128752/f95523de4fdd8383dacc.jpg" alt="Sunset over beach" />
-                            <div className="carousel-caption">
-                                <h3>Boracay</h3>
-                                <p>White Sand Beach.</p>
-                            </div>
-                        </div>
-                        <div className="item">
-                            <img src="https://f24-zpc.zdn.vn/4464342945787128752/f95523de4fdd8383dacc.jpg" alt="Sunset over beach" />
-                            <div className="carousel-caption">
-                                <h3>Boracay</h3>
-                                <p>White Sand Beach.</p>
-                            </div>
-                        </div> */}
-                        {/* {banner_list.map((book, index) => {
-                            console.log(book)
-                            return (
-                              
-                            )
-                        })} */}
                     </div>
                     {/* Previous/Next controls */}
                     <a className="left carousel-control" href="#my-pics" role="button" data-slide="prev">

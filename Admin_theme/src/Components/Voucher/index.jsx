@@ -66,9 +66,6 @@ const Vouchers = () => {
     // ----------------------
     const validate = (value) => {
         const error = {};
-        if (value.voucherto < value.voucherfrom) {
-            error.voucherto = "Expired date can not be less than start date";
-        }
         if (!value.vouchertitle) {
             error.vouchertitle = "Title is required";
         } else if (value.vouchertitle.trim().length <= 0) {
@@ -109,14 +106,28 @@ const Vouchers = () => {
         setFormErrors({})
     };
     // ----------------------
+    //removeLeadingZeros
+    // ----------------------
+    function removeLeadingZeros(str) {
+        // Regex to remove leading
+        // zeros from a string
+        const regex = new RegExp("^0+(?!$)", 'g');
+
+        // Replaces the matched
+        // value with given string
+        str = str.replaceAll(regex, "");
+
+        return str;
+    }
+    // ----------------------
     //Handle SetValue
     // ----------------------
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "vouchervalue") {
             if (Only_number.test(value)) {
-                if (parseInt(value) <= 100) {
-                    setFormData({ ...formData, [name]: value });
+                if (parseInt(value) >= 1 && parseInt(value) <= 100) {
+                    setFormData({ ...formData, [name]: removeLeadingZeros(value) });
                 }
             }
         } else {
@@ -334,18 +345,6 @@ const Vouchers = () => {
                                                                 autoFocus
                                                             />
                                                             <p style={{ color: "red" }}>{formError.vouchervalue}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12}>
-                                                            <label>From date</label>
-                                                            <DatePicker
-                                                                dateFormat="yyyy/MM/dd HH:mm:ss"
-                                                                selected={new Date(formData.voucherfrom)}
-                                                                className={"form-control"}
-                                                                style={{ border: "1px solid" }}
-                                                                onChange={(date) => setFormData({ ...formData, voucherfrom: date })}
-                                                                withPortal
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.voucherfrom}</p>
                                                         </Grid>
                                                         <Grid item xs={12} sm={12}>
                                                             <label>Expired date</label>

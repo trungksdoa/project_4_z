@@ -47,29 +47,29 @@ public class VoucherManagerController {
     @RequestMapping(value = "/voucher/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Message_Respones<Voucher>> Save(@RequestBody VoucherDTO voucher) {
         setMessage = new Message_Respones<Voucher>();
-        try {
-            boolean existsId = voucherService.findOne(voucher.getVoucherid());
-            if (existsId) {
-                String msg = "ID already exists";
-                setMessage.setMessage(msg);
-                setMessage.setCode(200);
-                return new ResponseEntity<Message_Respones<Voucher>>(setMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-            } else {
-                convert = voucher.convert(voucher);
-                Voucher v = voucherService.Create(convert);
-                String msg = "Get data success";
-                setMessage.setMessage(msg);
-                setMessage.setObject(v);
-                setMessage.setCode(200);
-                return new ResponseEntity<Message_Respones<Voucher>>(setMessage, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            setMessage.setMessage(e.getMessage());
-            setMessage.setCode(0);
+//        try {
+//
+//        } catch (Exception e) {
+//            setMessage.setMessage(e.getMessage());
+//            setMessage.setCode(0);
+//            return new ResponseEntity<Message_Respones<Voucher>>(setMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+
+        boolean existsId = voucherService.findOne(voucher.getVoucherid());
+        if (existsId) {
+            String msg = "ID already exists";
+            setMessage.setMessage(msg);
+            setMessage.setCode(200);
             return new ResponseEntity<Message_Respones<Voucher>>(setMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            convert = voucher.convert(voucher);
+            Voucher v = voucherService.Create(convert);
+            String msg = "Get data success";
+            setMessage.setMessage(msg);
+            setMessage.setObject(v);
+            setMessage.setCode(200);
+            return new ResponseEntity<Message_Respones<Voucher>>(setMessage, HttpStatus.OK);
         }
-
-
     }
 
     @RequestMapping(value = "/voucher/update/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)

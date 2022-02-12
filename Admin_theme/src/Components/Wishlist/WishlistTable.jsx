@@ -24,7 +24,7 @@ const Voucher_table = (props) => {
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Voucher title</th>
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Voucher Description</th>
-                    <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voucher startDate</th>
+                    <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voucher created</th>
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voucher expiredDate</th>
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         Voucher value
