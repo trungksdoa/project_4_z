@@ -47,6 +47,23 @@ public class OrderManagermentController {
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Orders>>(setMessage, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/orders/findAll/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Orders>> loadDataByUserId(@PathVariable String userId) {
+        return getMessage_responesResponseloadDataByUserId(userId);
+    }
+
+
+    private ResponseEntity<Message_Respones<Orders>> getMessage_responesResponseloadDataByUserId(String userId) {
+        setMessage = new Message_Respones<Orders>();
+        orders = new ArrayList<>();
+        orders = orderService.loadDataByUserId(userId);
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(orders);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Orders>>(setMessage, HttpStatus.OK);
+    }
     @RequestMapping(value = "/order/update/{id}/{status}", method = RequestMethod.PUT)
     public ResponseEntity<Message_Respones<Orders>> UpdateStatus(@PathVariable String id, @PathVariable String status) {
         Orders or = orderService.findOne(Integer.valueOf(id));

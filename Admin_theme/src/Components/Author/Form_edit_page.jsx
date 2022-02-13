@@ -260,9 +260,11 @@ const FormPage = () => {
                     </div>
                     <div className="row">
                         <div className="col">
+                            <hr style={{ width: "37%" }}></hr>
                             <label htmlFor="sda">Published</label>
                         </div>
                         <div className="col">
+                            <hr style={{ width: "37%" }}></hr>
                             {action == "view" ? (
                                 <>
                                     {author.numberpublishedbooks} books
@@ -287,9 +289,11 @@ const FormPage = () => {
                     </div>
                     <div className="row">
                         <div className="col">
+                            <hr style={{ width: "37%" }}></hr>
                             <label htmlFor="sda">Infomation</label>
                         </div>
                         <div className="col">
+                            <hr style={{ width: "37%" }}></hr>
                             {action == "view" ? (
                                 <>
                                     <ShowMoreText
@@ -325,9 +329,11 @@ const FormPage = () => {
                     </div>
                     <div className="row">
                         <div className="col">
+                            <hr style={{ width: "37%" }}></hr>
                             <label htmlFor="sda">Image</label>
                         </div>
                         <div className="col">
+                            <hr style={{ width: "37%" }}></hr>
                             <>
                                 <input type='file' ref={ref} name="authorImage" onChange={(e) => HandleImageChange(e)} />
                                 {imgData == null ? (

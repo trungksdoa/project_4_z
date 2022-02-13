@@ -24,7 +24,6 @@ import java.util.List;
 /**
  * @author trung
  */
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/api")
 @RestController
 public class WishlistController {
@@ -44,6 +43,10 @@ public class WishlistController {
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(value = "/wishlist/findAll/{id}", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<VWishlist>> findAll(@PathVariable String id) {
+        return getMessage_responesResponseEntity(id);
+    }
+
+    private ResponseEntity<Message_Respones<VWishlist>> getMessage_responesResponseEntity(@PathVariable String id) {
         setVMessage = new Message_Respones<VWishlist>();
         List<VWishlist> Vwishlists = new ArrayList<>();
         Vwishlists = wishlistService.getVList(id);
@@ -53,6 +56,7 @@ public class WishlistController {
         setVMessage.setCode(200);
         return new ResponseEntity<Message_Respones<VWishlist>>(setVMessage, HttpStatus.OK);
     }
+
 
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(value = "/wishlist/findAll/{userId}/{bookId}", method = RequestMethod.GET)

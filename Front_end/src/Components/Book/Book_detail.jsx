@@ -10,7 +10,7 @@ import Book_catagory from './Book_catagory.jsx';
 import Same_book from './Same_book.jsx';
 import { Reviews, List_review, Single_review, Reviews_edit } from './Book_reviews.jsx'
 import { useCookies } from 'react-cookie';
-
+import './reviews.css'
 import ReviewAPI from '../../api/ReviewAPI';
 // import './App.css';
 
@@ -129,6 +129,7 @@ const Book_detail = () => {
     async function Fetch(id) {
         return await ReviewAPI.FindALl(id)
     }
+    const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
     function caculator(data) {
         //Tóm tắt
         //1: thuộc tính star nằm trong đối tượng
@@ -137,7 +138,6 @@ const Book_detail = () => {
         var average = 0;
         var total_rating = data.map(item => item.ratingstart).reduce((prev, curr) => prev + curr, 0);
 
-        const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
         data.forEach(function (x) { counts[x.ratingstart] = (counts[x.ratingstart] || 0) + 1; });
 
         const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
@@ -215,7 +215,7 @@ const Book_detail = () => {
                     <div className="row">
                         <div id="tg-twocolumns" className="tg-twocolumns">
                             <div className="col-xs-12 col-sm-8 col-md-8 col-lg-9 pull-right">
-                                <div id="tg-content" className="tg-content">
+                                <div id="tg-content" className="tg-content" >
                                     {/* <div className="tg-featurebook alert" role="alert">
                                         <button type="button" className="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">×</span>
@@ -281,19 +281,15 @@ const Book_detail = () => {
                                                     <ul className="tg-bookscategories">
                                                         <li><a href="#!">Art &amp; Photography</a></li>
                                                     </ul>
-                                                    <div className="tg-themetagbox"><span className="tg-themetag">sale</span></div>
                                                     <div className="tg-booktitle">
                                                         <h3>Drive Safely, No Bumping</h3>
                                                     </div>
                                                     <span className="tg-bookwriter">By: <a href="#!">Angela Gunning</a></span>
-                                                    <span className="tg-sdas">
-                                                        Rating score {average}
-                                                    </span>
                                                     <span className="tg-addreviews"></span>
                                                     <div className="tg-sectionhead">
                                                         <h2>Product Details</h2>
                                                     </div>
-                                                    <ul className="tg-productinfo">
+                                                    <ul className="tg-productinfo" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
                                                         <li><span>Format:</span><span>Hardback</span></li>
                                                         <li><span>Pages:</span><span>528 pages</span></li>
                                                         <li><span>Dimensions:</span><span>153 x 234 x 43mm | 758g</span></li>
@@ -306,21 +302,11 @@ const Book_detail = () => {
                                                         <li><span>Other Fomate:</span><span>CD-Audio, Paperback, E-Book</span></li>
                                                     </ul>
                                                     <div className="tg-alsoavailable">
-                                                        <figure>
-                                                            <img src="images/img-02.jpg" alt="image description" />
-                                                            <figcaption>
-                                                                <h3>Also Available in:</h3>
-                                                                <ul>
-                                                                    <li><span>CD-Audio $18.30</span></li>
-                                                                    <li><span>Paperback $20.10</span></li>
-                                                                    <li><span>E-Book $11.30</span></li>
-                                                                </ul>
-                                                            </figcaption>
-                                                        </figure>
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="tg-productdescription">
+                                            <div className="tg-productdescription product-ratings" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
                                                 <Box sx={{ width: '100%' }}>
                                                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -335,6 +321,27 @@ const Book_detail = () => {
                                                             <TabPanel value={value} index={0}>
                                                                 {action === "view" ? (
                                                                     <>
+                                                                        <div className="product-rating-overview">
+                                                                            <div className="product-rating-overview__briefing">
+                                                                                <div className="product-rating-overview__score-wrapper">
+                                                                                    <span class="product-rating-overview__rating-score">4.7</span>
+                                                                                    <span class="product-rating-overview__rating-score-out-of"> trên 5 </span>
+                                                                                </div>
+                                                                                <div className="shopee-rating-stars product-rating-overview__stars">
+                                                                                    <div className="shopee-rating-stars__stars">
+                                                                                        <Rating name="read-only" size="large" value={value} readOnly />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="product-rating-overview__filters">
+                                                                                <div className="product-rating-overview__filter product-rating-overview__filter--active product-rating-overview__filter--all">tất cả</div>
+                                                                                <div className="product-rating-overview__filter">5 Sao (196)</div>
+                                                                                <div className="product-rating-overview__filter">4 Sao (2)</div>
+                                                                                <div className="product-rating-overview__filter">3 Sao (7)</div>
+                                                                                <div className="product-rating-overview__filter">2 Sao (2)</div>
+                                                                                <div className="product-rating-overview__filter">1 Sao (9)</div>
+                                                                            </div>
+                                                                        </div>
                                                                         <Single_review data={user_review} OnEdit={handleEdit_Reviews} />
                                                                         <List_review data={data} customerId={user_review.userid.userid} />
                                                                     </>
@@ -371,11 +378,11 @@ const Book_detail = () => {
             {/*************************************
 					News Grid End
 			**************************************/}
-        </main>
+        </main >
         {/*************************************
 				Main End
 		**************************************/}
-    </div>
+    </div >
     )
 }
 export default Book_detail;

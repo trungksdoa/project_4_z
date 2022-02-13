@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { NavLink, Navigate } from 'react-router-dom'
 
 // -----------------------------
 import { styled, alpha } from '@mui/material/styles';
@@ -52,7 +53,7 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-const Customers = ({ data, Ban, UnBan }) => {
+const Customers = ({ data, Ban, UnBan, Order }) => {
     const [Listcustomer, setListCustomer] = useState([]);
 
     // $('#customers').DataTable();
@@ -88,8 +89,12 @@ const Customers = ({ data, Ban, UnBan }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const handleOrder = () => {
+    const handleOrder = (userID) => {
         //Do logic here
+        // console.log(userID)
+        if (Order) {
+            Order(userID);
+        }
         handleClose();
     }
     const handlewishlish = () => {
@@ -148,40 +153,11 @@ const Customers = ({ data, Ban, UnBan }) => {
                                 <span className="text-secondary text-xs font-weight-bold">{usermodifieddate}</span>
                             </td>
                             <td className="align-middle text-center">
-                                <Button
-                                    id="demo-customized-button"
-                                    aria-controls={open ? 'demo-customized-menu' : undefined}
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? 'true' : undefined}
-                                    variant="contained"
-                                    disableElevation
-                                    onClick={handleClick}
-                                    endIcon={<KeyboardArrowDownIcon />}
-                                >
-                                    Other
-                                </Button>
-                                <StyledMenu
-                                    id="demo-customized-menu"
-                                    MenuListProps={{
-                                        'aria-labelledby': 'demo-customized-button',
-                                    }}
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                >
-                                    <MenuItem onClick={handleOrder} disableRipple>
-                                        <ShoppingBagIcon style={{ fontSize: 20 }} />
-                                        <a href="#!" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                                            Order
-                                        </a>
-                                    </MenuItem>
-                                    <MenuItem onClick={handlewishlish} disableRipple>
-                                        <FavoriteIcon style={{ fontSize: 20 }} />
-                                        <a href="#!" className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                                            Wishlish
-                                        </a>
-                                    </MenuItem>
-                                </StyledMenu>
+                                <select onChange={(e) => handleOrder(e.target.value)} className="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                    <option>Other</option>
+                                    <option value={userid}>Order History</option>
+                                    <option value={userid}>Wishlish</option>
+                                </select>
                             </td>
                             <td className="align-middle">
                                 {status === 3 || status === 2 ? (
@@ -207,7 +183,7 @@ const Customers = ({ data, Ban, UnBan }) => {
 }
 Customers.propTypes = {
     data: PropTypes.array,
-    View_Order: PropTypes.func,
+    Order: PropTypes.func,
     View_wishlist: PropTypes.func,
     View_Detail: PropTypes.func,
     Ban: PropTypes.func,
@@ -216,7 +192,7 @@ Customers.propTypes = {
 
 Customers.defaultProps = {
     data: [],
-    View_Order: null,
+    Order: null,
     View_wishlist: null,
     View_Detail: null,
     Ban: null,

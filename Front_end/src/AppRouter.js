@@ -35,10 +35,6 @@ import Payment from "./Components/Payment/Payment.jsx";
 
 import Collection from './Components/Collection/Collection.jsx';
 
-import News from './Components/News/News.jsx';
-
-import News_detail from './Components/News/News_detail.jsx';
-
 import ForgetPassword from './Components/Login_register/Forget_password.jsx'
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -79,9 +75,6 @@ const AppRouter = () => {
                             <Register />
                         </ProtectLogin>
                     } />
-                    <Route path="/News" element={<News />} />
-
-                    <Route path="/News/:id" element={<News_detail />} />
 
                     <Route path="/author" element={<Author />} />
 

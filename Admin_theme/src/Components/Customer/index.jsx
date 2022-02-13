@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CustomerApi from '../../api/CustomerApi';
 import Customer_table from './customer_table.jsx';
 import TextField from '@mui/material/TextField';
@@ -13,6 +14,7 @@ const Customers = () => {
     const [Listcustomer, setListCustomer] = useState([]);
     const [searchByNameOrEmail, setSearchByNameOrEmail] = useState("");
     const [filtered, setFiltered] = useState([]);
+    const navigate = useNavigate();
     // $('#customers').DataTable();
     const fetchCustomers = async () => {
         try {
@@ -66,7 +68,12 @@ const Customers = () => {
             ))
     }, [searchByNameOrEmail, Listcustomer])
 
-      // /////////////////////////////////////
+    const ViewOrder = (userId) => {
+        // console.log(userId)
+        navigate("/admin/order/" + userId)
+    }
+
+    // /////////////////////////////////////
     // // ---------------------------------
     // /////////////////////////////////////
     // // We start with an empty list of items.
@@ -113,7 +120,7 @@ const Customers = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <Customer_table Ban={banAction} UnBan={unBanAction} data={currentItem} />
+                                <Customer_table Ban={banAction} UnBan={unBanAction} data={currentItem} Order={ViewOrder} />
                                 <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} />
 
                             </div>

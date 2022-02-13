@@ -18,4 +18,6 @@ public interface OrderService {
 
     public Orders findOne(int id);
 
+    public List<Orders> loadDataByUserId(String id);
+
 }

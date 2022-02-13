@@ -63,6 +63,8 @@ import BookCreate from './Components/Books/Form_create_page.jsx'
 
 import CategoryCreate from './Components/Category/Form_create_page.jsx'
 
+import Wishlist from './Components/Wishlist/index.jsx';
+
 import { useCookies } from 'react-cookie';
 
 
@@ -70,10 +72,6 @@ import Auth from './api/CustomerApi';
 
 import './index.css'
 
-
-function Wishlist() {
-  return (<h3>Wishlist page</h3>)
-}
 function Catagorys_book() {
   return (<h3>Catagorys_book page</h3>)
 }
@@ -247,6 +245,7 @@ ReactDOM.render(
 
             <Route element={<RolesOrderOutlet />}>
               <Route path="/admin/order" element={<Order />} />
+              <Route path="/admin/order/:id" element={<Order />} />
               <Route path="/admin/Voucher" element={<Voucher />} />
             </Route>
 
@@ -256,9 +255,6 @@ ReactDOM.render(
               <Route path="/admin/Category" element={<Category/>} />
               <Route path="/admin/category/create" element={<CategoryCreate />} />
             </Route>
-
-            <Route path="/admin/Catagorys_news" element={<Catagorys_News />} />
-            <Route path="/admin/News" element={<News />} />
 
             <Route element={<RolesAuthorOutlet />}>
               <Route path="/admin/author" element={<Author />} />

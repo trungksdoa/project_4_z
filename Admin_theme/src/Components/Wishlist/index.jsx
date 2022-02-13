@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import WishlistTable from './WishlistTable.jsx'
-import voucherAPI from '../../api/VoucherAPI'
-import Grid from '@mui/material/Grid';
+import WishlistAPi from '../../api/WishlistAPI'
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 // ----------------------------------------------------------------
-import DatePicker from "react-datepicker";
 import { toast } from 'react-toastify'
 import Pagination from '../Pagination/pagination';
-import VoucherAPI from '../../api/VoucherAPI';
 
 export const currency = {
     formatToCurrency(amount) {
@@ -21,15 +19,18 @@ export const currency = {
 const Wishlist = () => {
 
     //Start list
+    const { id } = useParams();
 
-    const [Voucher_List, setVoucher_List] = useState([
+    const [Wishlist_List, setWishlist_List] = useState([
     ]);
+    const [filtered, setFiltered] = useState([]);
+    const [searchById, setsearchById] = useState("");
     // ----------------------
     //FetchData
     // ----------------------
     async function fetchData() {
-        await voucherAPI.getAll().then(res => {
-            setVoucher_List(res.data);
+        await WishlistAPi.getAllByUserId(id).then(res => {
+            setWishlist_List(res.data);
         }).catch(e => {
             alert(e.msg)
         });
@@ -49,10 +50,10 @@ const Wishlist = () => {
     // ----------------------
     useEffect(() => {
         setFiltered(
-            Voucher_List.filter((voucher) =>
-                voucher.voucherid.toLowerCase().includes(searchById.toLowerCase())
+            Wishlist_List.filter((wishlist) =>
+                wishlist.bookname.toLowerCase().includes(searchById.toLowerCase())
             ))
-    }, [searchById, Voucher_List])
+    }, [searchById, Wishlist_List])
 
     // ----------------------
     //Pagination
@@ -76,7 +77,7 @@ const Wishlist = () => {
             <div className="card my-4">
                 <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                        <h6 className="text-white text-capitalize ps-3">Voucher list
+                        <h6 className="text-white text-capitalize ps-3">Wishlist
                         </h6>
                     </div>
                 </div>
@@ -90,7 +91,7 @@ const Wishlist = () => {
                                             <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
                                                 <TextField
                                                     id="filled-search"
-                                                    label="Search by ID"
+                                                    label="Search by Book"
                                                     type="search"
                                                     onChange={(e) => setsearchById(e.target.value)}
                                                     variant="filled"
@@ -101,7 +102,7 @@ const Wishlist = () => {
                                 </div>
                             </div>
                         </div>
-                        <WishlistTable vouchers={currentItem} onDelete={handleDelete} onEdit={viewEdis} />
+                        <WishlistTable wishlists={currentItem} />
                         <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} />
                     </div>
                 </div>

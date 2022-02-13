@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import OrderTable from './Order_table.jsx'
 import orderAPI from '../../api/Order_trung'
-
+import { useParams } from 'react-router-dom';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useNavigate } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
@@ -32,8 +33,28 @@ const style = {
 };
 
 const Orders = () => {
-    const [Order_list, setOrder_list] = useState([
-    ]);
+
+    const { id } = useParams();
+    let initialValues = [];
+    const module = {};
+    if (id !== undefined) {
+        module.fetchAll = async () => {
+            await orderAPI.getAllByUserId(id).then(res => {
+                setOrder_list(res.data);
+            }).catch(e => {
+                alert(e.msg)
+            });
+        }
+    } else {
+        module.fetchAll = async () => {
+            await orderAPI.getAll().then(res => {
+                setOrder_list(res.data);
+            }).catch(e => {
+                alert(e.msg)
+            });
+        }
+    }
+    const [Order_list, setOrder_list] = useState(initialValues);
     const [searchBySearchCustomer, setSearchCustomer] = useState("");
     const [open, setOpen] = useState(false);
     const [filtered, setFiltered] = useState([]);
@@ -60,32 +81,14 @@ const Orders = () => {
     }
     const handleClose = () => setOpen(false);
 
-    // const handleDelete = async (index, value) => {
-    //     // window.confirm returns a boolean, true or false, based on whether the user pressed 'Ok' (which will result in true) or 'Cancel' (which will result in false)
-    //     if (window.confirm("This is a dangerous action do you want to continue?")) {
-    //         const newReviews = [...Order_list];
-    //         await ReviewAPI.Delete(newReviews[index].reviewid);
-    //         newReviews.splice(index, 1);
-    //         setOrder_list(newReviews)
-    //     } else {
-    //         //
-    //     }
-    // };
-
-    async function fetchData() {
-        await orderAPI.getAll().then(res => {
-            setOrder_list(res.data);
-        }).catch(e => {
-            alert(e.msg)
-        });
-    }
     useEffect(() => {
         // fetchCustomers();
         const interval = setInterval(() => {
-            fetchData();
+            module.fetchAll();
         }, 1000)
         return () => clearInterval(interval)
     }, [])
+
     function fullname(order) {
         const fullname = order.userid.firstName + " " + order.userid.lastName;
         return fullname;
@@ -108,8 +111,14 @@ const Orders = () => {
     const paginate = page => {
         setCurrentPage(page)
     }
+    const GotoCustomer = () =>{
+        navigate("/admin/customer/")
+    }
     return (
         <div className="col-12">
+            {id && (
+                <a style={{ cursor: 'pointer' }} onClick={GotoCustomer}>Back</a>
+            )}
             <div className="card my-4">
                 <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
@@ -119,7 +128,7 @@ const Orders = () => {
                                 onClose={handleClose}
                             >
                                 <Box sx={style}>
-                                    <div class="table-responsive" style={{maxHeight:300}}>
+                                    <div class="table-responsive" style={{ maxHeight: 300 }}>
                                         <table className="table">
                                             <thead>
                                                 <tr>
