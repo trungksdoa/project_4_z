@@ -16,13 +16,6 @@ const Authors_detail = () => {
     async function Fetch(id) {
         await AuthorAPU.FindOne(id).then(result => {
             setAuthor(result.data)
-            if (result.data.booksCollection == null) {
-                setisEmptyList(true);
-            } else {
-                setBooks(result.data.booksCollection);
-                setisEmptyList(false);
-            }
-
         }).catch(err => {
             alert(err.msg)
             if (500 === err.status) {
@@ -40,6 +33,27 @@ const Authors_detail = () => {
         const res = await AddToWishlist.AddToWishlist(booksId)
         console.log(res);
     }
+    // amounts: 100
+    // bookcreateddate: "1990-04-04 00:00:00.0"
+    // bookdescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et nibh mattis, accumsan eros sed, tempus urna. Donec facilisis, sem quis lacinia laoreet, lacus tortor convallis sem, quis luctus arcu tortor ut nulla. Aenean id egestas tortor, sit amet faucibus mi. Aenean ac leo sem. Suspendisse bibendum eu neque in ullamcorper. Aenean tempus dolor neque, nec suscipit elit aliquet posuere. Nullam varius venenatis nisi, vitae congue nulla varius ac. Curabitur sollicitudin congue suscipit. Maecenas rhoncus augue vel lectus elementum fermentum. Aliquam imperdiet auctor tristique. Vivamus sed dictum urna."
+    // bookmodifieddate: "1991-01-01 00:00:00.0"
+    // bookname: "Awakening Africans"
+    // bookprice: 80
+    // bookreleasedate: "1990-04-04 00:00:00.0"
+    // booksid: "Book17"
+    // groupdetail: []
+    // pdetailid:
+    // dimensions: "123"
+    // format: "2321"
+    // illustrationsnote: "3"
+    // imageLink: "Jaroslav_Hasek"
+    // language: "21"
+    // pages: 3232
+    // pdetailid: 8
+    // [[Prototype]]: Object
+    // status: 2
+    // wishlists: []
+    // console.log(books)
     return (
         <>
             <title>Author</title>
@@ -54,7 +68,7 @@ const Authors_detail = () => {
                             <div className="tg-innerbannercontent">
                                 <h1>Authors</h1>
                                 <ol className="tg-breadcrumb">
-                                    <li><a href="javascript:void(0);">home</a></li>
+                                    <li><a href="#!">home</a></li>
                                     <li className="tg-active">Authors</li>
                                 </ol>
                             </div>
@@ -96,7 +110,7 @@ const Authors_detail = () => {
                                                 width={760}
                                                 truncatedEndingComponent={"... "}
                                             >
-                                                <div class="author_information" dangerouslySetInnerHTML={{ __html: author.authorinformation }} />
+                                                <div className="author_information" dangerouslySetInnerHTML={{ __html: author.authorinformation }} />
 
                                             </ShowMoreText>
                                         </div>
@@ -106,11 +120,11 @@ const Authors_detail = () => {
                                                 <h2 style={{ color: "orange" }}>Books of Scarlet</h2>
                                             </div>
                                             <div className="row">
-                                                {books.length !== 0 && books.map((book, index) => {
-                                                    return <FeatureBook_Author key={book.id} {...book}></FeatureBook_Author>;
-                                                })}
+                                                {/* {books.length !== 0 && books.map((book, index) => {
+                                                    return <FeatureBook_Author key={index} {...book}></FeatureBook_Author>;
+                                                })} */}
                                             </div>
-                                            {books.length === 0 && <p style={{ color: "red", fontSize: 30 }}>Not found any books</p>}
+                                            {/* {books.length === 0 && <p style={{ color: "red", fontSize: 30 }}>Not found any books</p>} */}
                                         </div>
                                     </div>
                                 </div>

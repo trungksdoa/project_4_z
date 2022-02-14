@@ -185,7 +185,7 @@ public class Books implements Serializable {
         this.amounts = amounts;
     }
 
-    @JsonBackReference(value = "Author_book")
+    @JsonManagedReference(value = "Author_book")
     public Authors getAuthorid() {
         return authorid;
     }
