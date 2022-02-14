@@ -10,7 +10,8 @@ import Datepicker from "react-datepicker";
 
 import { NavLink } from 'react-router-dom'
 
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import "react-datepicker/dist/react-datepicker.css";
 
 import "./App.css";
@@ -18,7 +19,6 @@ import "./App.css";
 import Auth from '../../api/Auth'
 
 const sendEmail = (id, name, emails) => {
-    console.log(id, name)
     return emailjs.send("service_j4mrk0g", "template_4k1mkrn", {
         userName: name,
         userId: id,
@@ -33,12 +33,35 @@ const sendEmail = (id, name, emails) => {
 };
 
 const Register = () => {
-    const initialValues = { Fname: "", Lname: "", Emails: "", Pword: "", Cword: "", Pnum: ""};
+    // -------------------------
+    //State
+    // -------------------------
+    const initialValues = { Fname: "", Lname: "", Emails: "", Pword: "", Cword: "", Pnum: "" };
+    // -------------------------
+    //State
+    // -------------------------
     const [formValues, setFormValues] = useState(initialValues);
+    // -------------------------
+    //State
+    // -------------------------
     const [formErrors, setFormErrors] = useState({});
+    // -------------------------
+    //State
+    // -------------------------
     const [isSubmit, setIsSubmit] = useState(false);
+    // -------------------------
+    // State
+    // -------------------------
+    const [showOrHide, setShowOrHide] = useState("hide");
+    const [showOrHideConfirm, setShowOrHideConfirm] = useState("Chide");
     let navigate = useNavigate();
+    // -------------------------
+    // Regex number
+    // -------------------------
     const Only_number = /^[0-9\b]+$/;
+    // -------------------------
+    // Handle change
+    // -------------------------
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name == "Pnum") {
@@ -55,12 +78,29 @@ const Register = () => {
         // }
         // setFormValues({ ...formValues, birthday: e });
     };
-
+    // -------------------------
+    // Handle submit
+    // -------------------------
     const handleSubmit = (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues));
         setIsSubmit(true);
     };
+    // -------------------------
+    // Show hide
+    // -------------------------
+    const showHide = () => {
+        const action = showOrHide === "show" ? "hide" : "show";
+        setShowOrHide(action);
+    }
+
+    const CshowHide = () => {
+        const action = showOrHideConfirm === "Cshow" ? "Chide" : "Cshow";
+        setShowOrHideConfirm(action)
+    }
+    // -------------------------
+    // Handle Register
+    // -------------------------
     async function Register() {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             await Auth.register(formValues).then(response => {
@@ -80,10 +120,12 @@ const Register = () => {
     useEffect(() => {
         Register();
     }, [formErrors]);
-
+    // -------------------------
+    // Handle change
+    // -------------------------
     const validate = (values) => {
         const errors = {};
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+        const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         const phone_regex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
         if (!values.Fname) {
             errors.Fname = "Firstname is required!";
@@ -170,12 +212,32 @@ const Register = () => {
                         </div>
                         <div className="form-group">
                             <label htmlFor="Pword">Password  (not allow whitespace in password)</label>
-                            <input type="password" className="form-control" name="Pword" value={formValues.Pword} onChange={handleChange} />
+                            <div className="input-group">
+                                <input type={showOrHide === "show" ? "text" : "password"} className="form-control" id="Pword" name="Pword" value={formValues.Pword} onChange={handleChange} />
+                                <span className="input-group-addon" style={{ cursor: 'pointer' }} onClick={showHide}>
+                                    {showOrHide === "show" && (
+                                        <VisibilityOffIcon />
+                                    )}
+                                    {showOrHide === "hide" && (
+                                        <VisibilityIcon />
+                                    )}
+                                </span>
+                            </div>
                             <p style={{ color: "red" }}>{formErrors.Pword}</p>
                         </div>
                         <div className="form-group">
                             <label htmlFor="Pword">Confirm-password</label>
-                            <input type="password" className="form-control" name="Cword" value={formValues.Cword} onChange={handleChange} />
+                            <div className="input-group">
+                                <input type={showOrHideConfirm === "Cshow" ? "text" : "password"} className="form-control" id="Cword" name="Cword" value={formValues.Cword} onChange={handleChange} />
+                                <span className="input-group-addon" style={{ cursor: 'pointer' }} onClick={CshowHide}>
+                                    {showOrHideConfirm === "Cshow" && (
+                                        <VisibilityOffIcon />
+                                    )}
+                                    {showOrHideConfirm === "Chide" && (
+                                        <VisibilityIcon />
+                                    )}
+                                </span>
+                            </div>
                             <p style={{ color: "red" }}>{formErrors.Cword}</p>
                         </div>
                         <div className="form-group">

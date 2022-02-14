@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FeatureBook_Author } from '../../Book/Books.jsx';
 import AuthorAPU from '../../../api/Author';
 import './author.css'
+import ShowMoreText from "react-show-more-text";
 import parse from 'html-react-parser';
 
 const Authors_detail = () => {
@@ -15,7 +16,6 @@ const Authors_detail = () => {
     async function Fetch(id) {
         await AuthorAPU.FindOne(id).then(result => {
             setAuthor(result.data)
-            console.log(result.data)
             if (result.data.booksCollection == null) {
                 setisEmptyList(true);
             } else {
@@ -71,25 +71,39 @@ const Authors_detail = () => {
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div className="tg-authordetail">
                                     <figure className="tg-authorimg">
-                                        <img src={"http://localhost:9999/image/" + author.authorImage + "?v=" +new Date().getTime()} style={{ width: "max(230px/1/0.9)" }} alt="image description" />
+                                        <img src={"http://localhost:9999/image/" + author.authorImage + "?v=" + new Date().getTime()} style={{ width: "max(230px/1/0.9)" }} alt="image description" />
                                     </figure>
                                     <div className="tg-authorcontentdetail">
                                         <div className="tg-sectionhead">
-                                            <h2><span>{author.numberpublishedbooks} Published Books</span>{author.authorname}</h2>
+                                            <h2><span>  <h5 style={{ color: "orange" }}> {author.numberpublishedbooks} Published Books</h5> </span>{author.authorname}</h2>
                                         </div>
                                         <div className="tg-description">
-                                            <div class="author_information" dangerouslySetInnerHTML={{ __html: author.authorinformation }} />
+                                            <ShowMoreText
+                                                /* Default options */
+                                                lines={4}
+                                                more="Show more"
+                                                less="Show less"
+                                                className="content-css"
+                                                anchorClass="my-anchor-css-class"
+                                                expanded={false}
+                                                width={760}
+                                                truncatedEndingComponent={"... "}
+                                            >
+                                                <div class="author_information" dangerouslySetInnerHTML={{ __html: author.authorinformation }} />
+
+                                            </ShowMoreText>
                                         </div>
+
                                         <div className="tg-booksfromauthor">
-                                            <div className="tg-sectionhead">
-                                                <h2>Books of Scarlet</h2>
+                                            <div className="tg-sectionhead" >
+                                                <h2 style={{ color: "orange" }}>Books of Scarlet</h2>
                                             </div>
                                             <div className="row">
                                                 {books.length !== 0 && books.map((book, index) => {
                                                     return <FeatureBook_Author key={book.id} {...book}></FeatureBook_Author>;
                                                 })}
                                             </div>
-                                            {books.length === 0 && <p style={{color: "red",fontSize: 30}}>Not found any books</p>}
+                                            {books.length === 0 && <p style={{ color: "red", fontSize: 30 }}>Not found any books</p>}
                                         </div>
                                     </div>
                                 </div>

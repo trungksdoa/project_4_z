@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -48,6 +48,7 @@ function a11yProps(index) {
         'aria-controls': `simple-tabpanel-${index}`,
     };
 }
+
 const Book_detail = () => {
 
 
@@ -67,7 +68,6 @@ const Book_detail = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
     const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
     const [isReviewd, setIsReviewd] = useState(true);
-    const [average, setAverage] = useState();
     const { id } = useParams();
     const [user_review, setUserReview] = useState({
         active: 0,
@@ -113,6 +113,9 @@ const Book_detail = () => {
         }
     }]);
     const [action, setAction] = useState("view");
+    const [searchRating, setSearchRating] = useState("");
+    const [filterd, setFiltered] = useState([]);
+    const numbeRating = useRef();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -129,28 +132,31 @@ const Book_detail = () => {
     async function Fetch(id) {
         return await ReviewAPI.FindALl(id)
     }
-    const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
     function caculator(data) {
         //Tóm tắt
         //1: thuộc tính star nằm trong đối tượng
         //2: lấy tổng số đánh giá
         //3: công thức (1 x SUM(WHERE rating = 1) + 2 x total_rate_2 + 3 x total_rate_3 + 4 x total_rate_4 + 5 x total_rate_5) / total_rating
+        const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
         var average = 0;
         var total_rating = data.map(item => item.ratingstart).reduce((prev, curr) => prev + curr, 0);
 
         data.forEach(function (x) { counts[x.ratingstart] = (counts[x.ratingstart] || 0) + 1; });
 
+        numbeRating.current = counts
+
         const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
         const sum = sumValues(counts); // gives 5
 
-        setAverage(total_rating / sum);
+        return total_rating / sum;
     }
+
     useLayoutEffect(() => {
         if (auth) {
             const interval = setInterval(() => {
                 Fetch(id).then(res => {
                     setData(res.data);
-                    caculator(res.data)
                     let obj = res.data.find(o => o.userid.userid === cookies.loggin.userID);
                     if (obj === undefined) {
                         setIsReviewd(false);
@@ -183,6 +189,12 @@ const Book_detail = () => {
             return () => clearInterval(interval)
         }
     }, [])
+
+    useLayoutEffect(() => {
+        setFiltered(data.filter(review =>
+            review.ratingstart.toString().includes(searchRating)
+        ))
+    }, [data, searchRating])
     // --------------End Reviews-----------------
     return (<div>
         <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index={-100} data-appear-top-offset={600} data-parallax="scroll" data-image-src="images/parallax/bgparallax-07.jpg">
@@ -324,26 +336,30 @@ const Book_detail = () => {
                                                                         <div className="product-rating-overview">
                                                                             <div className="product-rating-overview__briefing">
                                                                                 <div className="product-rating-overview__score-wrapper">
-                                                                                    <span class="product-rating-overview__rating-score">4.7</span>
+                                                                                    <span class="product-rating-overview__rating-score">{Math.round(caculator(data) * 100) / 100}</span>
                                                                                     <span class="product-rating-overview__rating-score-out-of"> trên 5 </span>
                                                                                 </div>
                                                                                 <div className="shopee-rating-stars product-rating-overview__stars">
                                                                                     <div className="shopee-rating-stars__stars">
-                                                                                        <Rating name="read-only" size="large" value={value} readOnly />
+                                                                                        <Rating name="read-only" size="large" value={caculator(data)} readOnly />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className="product-rating-overview__filters">
-                                                                                <div className="product-rating-overview__filter product-rating-overview__filter--active product-rating-overview__filter--all">tất cả</div>
-                                                                                <div className="product-rating-overview__filter">5 Sao (196)</div>
-                                                                                <div className="product-rating-overview__filter">4 Sao (2)</div>
-                                                                                <div className="product-rating-overview__filter">3 Sao (7)</div>
-                                                                                <div className="product-rating-overview__filter">2 Sao (2)</div>
-                                                                                <div className="product-rating-overview__filter">1 Sao (9)</div>
+                                                                                <div className="product-rating-overview__filter product-rating-overview__filter--active product-rating-overview__filter--all" onClick={() => setSearchRating("")}>All</div>
+                                                                                <div className="product-rating-overview__filter" onClick={() => setSearchRating("5")}>5 star ({numbeRating.current[5]})</div>
+                                                                                <div className="product-rating-overview__filter" onClick={() => setSearchRating("4")}>4 star ({numbeRating.current[4]})</div>
+                                                                                <div className="product-rating-overview__filter" onClick={() => setSearchRating("3")}>3 star ({numbeRating.current[3]})</div>
+                                                                                <div className="product-rating-overview__filter" onClick={() => setSearchRating("2")}>2 star ({numbeRating.current[2]})</div>
+                                                                                <div className="product-rating-overview__filter" onClick={() => setSearchRating("1")}>1 star ({numbeRating.current[1]})</div>
                                                                             </div>
                                                                         </div>
                                                                         <Single_review data={user_review} OnEdit={handleEdit_Reviews} />
-                                                                        <List_review data={data} customerId={user_review.userid.userid} />
+                                                                        {filterd.length === 0 ? (
+                                                                            <p> No reviews found</p>
+                                                                        ) : (
+                                                                            <List_review data={filterd} customerId={user_review.userid.userid} />
+                                                                        )}
                                                                     </>
                                                                 ) : (
                                                                     <Reviews_edit onBack={HandleBackToView} bookId={id} customerId={user_review.userid.userid} data={user_review} changeView={() => setAction("view")} />
