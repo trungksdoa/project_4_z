@@ -102,7 +102,7 @@ Book.defaultProps = {
     removeWishlist: null
 };
 
-const FeatureBook_Author = ({ booksid, pdetailid, bookname, cate, author }) => {
+const FeatureBook_Author = ({ booksid, pdetailid, bookname, wishlists, author }) => {
     return (
         <div className="col-xs-6 col-sm-6 col-md-4 col-lg-3">
             <div className="tg-postbook">

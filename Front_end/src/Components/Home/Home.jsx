@@ -8,33 +8,15 @@ import Sectionspace from './sectionspace.jsx';
 import Releases from './Release.jsx';
 import Collection from './Collection_count.jsx';
 import PB_author from './PB_Author.jsx';
-import Testimonials from './Testimonials.jsx';
-import Index_news from './Index_news.jsx';
 
 import BookAPI from '../../api/BookAPI.js';
-import { data } from './arrays';
-import WishlistAPI from '../../api/WishlistAPI.js';
 import BannerAPI from '../../api/BannerAPI.js';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify'
 const Home = () => {
-    const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
     const [action, setAction] = useState("");
     const [banner_list, setBanner_list] = useState([]);
     const [book_list, setbook_list] = useState([]);
-    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
-    async function handleAddWishlist(value) {
-        if (auth) {
-            await WishlistAPI.Save(cookies.loggin.userID, value).then((wishlist) => {
-                toast(wishlist.msg)
-                setAction(new Date().toString());
-            }).catch((error) => {
-                alert(error.msg);
-            })
-        } else {
-            alert("You are not logged in")
-        }
-    }
     async function Fetch() {
         await BannerAPI.getBanner().then((banner) => {
             setBanner_list(banner.data)
@@ -56,7 +38,7 @@ const Home = () => {
     useEffect(() => {
         BFetch();
     }, [])
-    
+
     return (
         <>
             <main id="tg-main" className="tg-main tg-haslayout">
@@ -82,13 +64,14 @@ const Home = () => {
                                         <img src={"http://localhost:9999/image/" + banner.banner_Image + "?v=" + new Date().getTime()} alt="Sunset over beach" />
                                         <div className="carousel-caption"
                                             style={{
-                                                backgroundColor: "rgba(0,0,0, 0.4) !important",
-                                                color: "yellow",
+                                                color: "white",
                                                 fontWeight: "bold",
-                                                border: "3px solid #f1f1f1"
+                                                border: "3px solid rgb(241, 241, 241)",
+                                                boxShadow: "rgb(216 207 207) 0px 4px 8px 0px",
+                                                background: "rgb(0 0 0 / 60%)",
                                             }}
                                         >
-                                            <h3 >{banner.banner_title}</h3>
+                                            <h3 style={{color: "white"}} >{banner.banner_title}</h3>
                                             <p>{banner.banner_content}</p>
                                         </div>
                                     </div>
@@ -99,12 +82,14 @@ const Home = () => {
                                         <img src={"http://localhost:9999/image/" + banner.banner_Image + "?v=" + new Date().getTime()} alt="Sunset over beach" />
                                         <div className="carousel-caption"
                                             style={{
-                                                backgroundColor: "rgba(0,0,0, 0.4) !important",
-                                                color: "yellow",
+                                                color: "white",
                                                 fontWeight: "bold",
-                                                border: "3px solid #f1f1f1"
-                                            }}>
-                                            <h3>{banner.banner_title}</h3>
+                                                border: "3px solid rgb(241, 241, 241)",
+                                                boxShadow: "rgb(216 207 207) 0px 4px 8px 0px",
+                                                background: "rgb(0 0 0 / 60%)",
+                                            }}
+                                        >
+                                            <h3 style={{color: "white"}}>{banner.banner_title}</h3>
                                             <p>{banner.banner_content}</p>
                                         </div>
                                     </div>
@@ -126,8 +111,8 @@ const Home = () => {
                 {/*************************************
 					Best Selling Start
 			**************************************/}
-                
-                {<Sectionspace handleAddWishlist={handleAddWishlist} action={action} data={book_list}></Sectionspace>}
+
+                {<Sectionspace action={action} data={book_list}></Sectionspace>}
                 {/*************************************
                  * 
 					Best Selling End

@@ -5,7 +5,7 @@ import AuthorAPU from '../../../api/Author';
 import './author.css'
 import ShowMoreText from "react-show-more-text";
 import parse from 'html-react-parser';
-
+import AddToWishlist from '../../FolderAction/AddToWishlist';
 const Authors_detail = () => {
     const [author, setAuthor] = useState({ authorid: 0, authorImage: "", authorinformation: "", authorname: "", numberpublishedbooks: 0 });
     const [books, setBooks] = useState([
@@ -33,6 +33,13 @@ const Authors_detail = () => {
     useEffect(() => {
         Fetch(authorId);
     }, [])
+    // --------------------
+    // =======Book=========
+    // --------------------
+    async function handleAddWishlist(booksId) {
+        const res = await AddToWishlist.AddToWishlist(booksId)
+        console.log(res);
+    }
     return (
         <>
             <title>Author</title>

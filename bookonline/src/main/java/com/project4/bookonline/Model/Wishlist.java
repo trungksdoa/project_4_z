@@ -30,7 +30,7 @@ public class Wishlist implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Wishlist_id")
     private Integer Wishlist_id;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "Book_id", nullable = false)
     private Books booksId;
     @ManyToOne
