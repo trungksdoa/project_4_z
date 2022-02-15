@@ -95,6 +95,7 @@ const Login = () => {
                                                 <TextField
                                                     name="adminpassword"
                                                     fullWidth
+                                                    type="password"
                                                     id="adminpassword"
                                                     label="Passoword"
                                                     value={formValues.adminpassword}

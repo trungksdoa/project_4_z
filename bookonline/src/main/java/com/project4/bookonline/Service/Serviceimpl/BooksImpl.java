@@ -4,6 +4,7 @@
  */
 package com.project4.bookonline.Service.Serviceimpl;
 
+import com.project4.bookonline.Model.Authors;
 import com.project4.bookonline.Model.Books;
 import com.project4.bookonline.Repository.BookRepository;
 import java.util.List;
@@ -23,6 +24,13 @@ public class BooksImpl implements com.project4.bookonline.Service.BooksService{
     @Override
     public List<Books> ListBook() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public List<Books> LoadByAuthor(int authorId) {
+        Authors authorsId = new Authors();
+        authorsId.setAuthorid(authorId);
+        return bookRepository.findByAuthor(authorsId);
     }
 
     @Override

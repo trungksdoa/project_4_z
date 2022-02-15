@@ -54,6 +54,10 @@ const Book = {
     FindOne: (id) => {
         url = 'book/find/' + id;
         return RequestfindOne(url);
+    },
+    LoadByAuthor: (id) => {
+        url = 'book/findAll/author/'+id;
+        return RequestAll(url);
     }
 }
 export default Book

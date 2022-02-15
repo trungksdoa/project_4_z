@@ -4,17 +4,21 @@ import { FeatureBook_Author } from '../../Book/Books.jsx';
 import AuthorAPU from '../../../api/Author';
 import './author.css'
 import ShowMoreText from "react-show-more-text";
-import parse from 'html-react-parser';
+import BookAPI from '../../../api/BookAPI.js'
 import AddToWishlist from '../../FolderAction/AddToWishlist';
+import { useCookies } from 'react-cookie';
+
 const Authors_detail = () => {
     const [author, setAuthor] = useState({ authorid: 0, authorImage: "", authorinformation: "", authorname: "", numberpublishedbooks: 0 });
+
     const [books, setBooks] = useState([
     ]);
+    const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
     const [isEmptyList, setisEmptyList] = useState(false);
     let { authorId } = useParams();
     const navigate = useNavigate();
-    async function Fetch(id) {
-        await AuthorAPU.FindOne(id).then(result => {
+    async function Fetch() {
+        await AuthorAPU.FindOne(authorId).then(result => {
             setAuthor(result.data)
         }).catch(err => {
             alert(err.msg)
@@ -23,37 +27,33 @@ const Authors_detail = () => {
             }
         })
     }
+    async function LoadBookByAuthor() {
+        await BookAPI.LoadByAuthor(authorId).then(result => {
+            setBooks(result.data)
+        }).catch(err => {
+            alert(err.msg)
+            if (500 === err.status) {
+                navigate("/")
+            }
+        })
+    }
     useEffect(() => {
-        Fetch(authorId);
+        Fetch();
+    }, [])
+    useEffect(() => {
+        LoadBookByAuthor()
     }, [])
     // --------------------
     // =======Book=========
     // --------------------
     async function handleAddWishlist(booksId) {
-        const res = await AddToWishlist.AddToWishlist(booksId)
-        console.log(res);
+        await AddToWishlist.AddToWishlist(cookies, booksId).then(result => {
+            LoadBookByAuthor()
+            setCookie('action', JSON.stringify({ doChange: new Date().getTime() }), { path: '/' });
+        }).catch(err => {
+            alert(err.msg)
+        })
     }
-    // amounts: 100
-    // bookcreateddate: "1990-04-04 00:00:00.0"
-    // bookdescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et nibh mattis, accumsan eros sed, tempus urna. Donec facilisis, sem quis lacinia laoreet, lacus tortor convallis sem, quis luctus arcu tortor ut nulla. Aenean id egestas tortor, sit amet faucibus mi. Aenean ac leo sem. Suspendisse bibendum eu neque in ullamcorper. Aenean tempus dolor neque, nec suscipit elit aliquet posuere. Nullam varius venenatis nisi, vitae congue nulla varius ac. Curabitur sollicitudin congue suscipit. Maecenas rhoncus augue vel lectus elementum fermentum. Aliquam imperdiet auctor tristique. Vivamus sed dictum urna."
-    // bookmodifieddate: "1991-01-01 00:00:00.0"
-    // bookname: "Awakening Africans"
-    // bookprice: 80
-    // bookreleasedate: "1990-04-04 00:00:00.0"
-    // booksid: "Book17"
-    // groupdetail: []
-    // pdetailid:
-    // dimensions: "123"
-    // format: "2321"
-    // illustrationsnote: "3"
-    // imageLink: "Jaroslav_Hasek"
-    // language: "21"
-    // pages: 3232
-    // pdetailid: 8
-    // [[Prototype]]: Object
-    // status: 2
-    // wishlists: []
-    // console.log(books)
     return (
         <>
             <title>Author</title>
@@ -120,11 +120,11 @@ const Authors_detail = () => {
                                                 <h2 style={{ color: "orange" }}>Books of Scarlet</h2>
                                             </div>
                                             <div className="row">
-                                                {/* {books.length !== 0 && books.map((book, index) => {
-                                                    return <FeatureBook_Author key={index} {...book}></FeatureBook_Author>;
-                                                })} */}
+                                                {books.length !== 0 && books.map((book, index) => {
+                                                    return <FeatureBook_Author addWishlist={handleAddWishlist} key={index} {...book}></FeatureBook_Author>;
+                                                })}
                                             </div>
-                                            {/* {books.length === 0 && <p style={{ color: "red", fontSize: 30 }}>Not found any books</p>} */}
+                                            {books.length === 0 && <p style={{ color: "red", fontSize: 30 }}>Not found any books</p>}
                                         </div>
                                     </div>
                                 </div>

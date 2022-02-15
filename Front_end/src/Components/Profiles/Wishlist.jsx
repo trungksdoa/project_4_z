@@ -19,7 +19,7 @@ const Page3 = () => {
     const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete")) {
             await WishlistAPI.DeleteByWishlist(id).then(data => {
-                console.log(data)
+                setCookie('action', JSON.stringify({ doChange: new Date().getTime() }), { path: '/' });
                 toast(data.msg)
             }).catch(err => alert(err.msg))
         } else {

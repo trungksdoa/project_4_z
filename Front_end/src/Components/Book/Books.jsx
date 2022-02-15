@@ -72,7 +72,6 @@ const Book = ({ booksid, bookname, pdetailid, bookprice, bookdescription, bookre
                         <li><a href="#!">Adventure</a></li>
                         <li><a href="#!">Fun</a></li>
                     </ul>
-                    <div className="tg-themetagbox"><span className="tg-themetag">sale</span></div>
                     <div className="tg-booktitle">
                         <h3><Link to={"/Book/" + booksid}>{bookname}</Link></h3>
                     </div>
@@ -102,34 +101,15 @@ Book.defaultProps = {
     removeWishlist: null
 };
 
-const FeatureBook_Author = ({ booksid, pdetailid, bookname, wishlists, groupdetail, author }) => {
+const FeatureBook_Author = ({ booksid, pdetailid, bookname, wishlists, authorid, addWishlist }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
     const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
-    const object = {
-        wishlists: {
-            user_id: "",
-            wishlist_createddate: "",
-            wishlist_id: 0
-        }
-    };
-    if (wishlists.length === 0) {
-        object.wishlists = {};
-    } else {
-        // userid
-        const filters = wishlists.filter((res) => res.user_id.userid === cookies.loggin.userID)
-        if (filters.length !== 0) {
-            const {
-                user_id,
-                wishlist_createddate,
-                wishlist_id
-            } = filters[0]
-            object.wishlists.user_id = user_id
-            object.wishlists.wishlist_createddate = wishlist_createddate
-            object.wishlists.wishlist_id = wishlist_id
-        } else {
-            console.log("Not found data")
+    const handleWishList = (bookId) => {
+        if (addWishlist) {
+            addWishlist(bookId)
         }
     }
+    console.log(wishlists)
     return (
         <div className="col-xs-6 col-sm-6 col-md-4 col-lg-3">
             <div className="tg-postbook">
@@ -138,34 +118,38 @@ const FeatureBook_Author = ({ booksid, pdetailid, bookname, wishlists, groupdeta
                         <div className="tg-frontcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink + "?v" + new Date().getTime()} alt="image description" /></div>
                         <div className="tg-backcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink + "?v" + new Date().getTime()} alt="image description" /></div>
                     </div>
-                    {/* {auth && (
-                        object.wishlist !== undefined && (
-                            object.wishlist.user_id.userid === cookies.loggin.userID && (
-                                <a className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
-                                    <span>Already in wishlist</span>
-                                </a>
-                            )
-                        ),
-                        object.wishlist === undefined && (
-                            <a className="tg-btnaddtowishlist" style={{ cursor: 'pointer' }}>
+                    {auth && (
+                        wishlists.length !== 0 &&
+                        (
+                            wishlists.map((wishCheck, index) => {
+                                return (
+                                    <a key={index} className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
+                                        <span>Already in wishlist</span>
+                                    </a>
+                                )
+                            })
+                        )
+                    )}
+                    {auth && (
+                        wishlists.length === 0 &&
+                        (
+                            <a className="tg-btnaddtowishlist" onClick={() => handleWishList(booksid)} style={{ cursor: 'pointer' }}>
                                 <i className="icon-heart" />
                                 <span>add to wishlist</span>
                             </a>
                         )
-                    )} */}
+                    )}
                     {!auth && (
                         <a className="tg-btnaddtowishlist" style={{ cursor: 'pointer' }}>
-                            <i className="icon-heart" />
-                            <span>add to wishlist</span>
+                            <span>Please login to use</span>
                         </a>
                     )}
                 </figure>
                 <div className="tg-postbookcontent">
-                    <div className="tg-themetagbox"><span className="tg-themetag">sale</span></div>
                     <div className="tg-booktitle">
                         <h3><Link to={"/Book/" + booksid}>{bookname}</Link></h3>
                     </div>
-                    <span className="tg-bookwriter">By: <a href="#!">{author}</a></span>
+                    <span className="tg-bookwriter">By: <a href="#!">{authorid.authorname}</a></span>
                     <span className="tg-stars"><span /></span>
                     <span className="tg-bookprice">
                         <ins>$25.18</ins>
@@ -182,12 +166,14 @@ const FeatureBook_Author = ({ booksid, pdetailid, bookname, wishlists, groupdeta
 };
 FeatureBook_Author.propTypes = {
     wishlists: PropTypes.array,
-    groupdetail: PropTypes.array
+    groupdetail: PropTypes.array,
+    addWishlist: PropTypes.func
 };
 
 FeatureBook_Author.defaultProps = {
     wishlists: [],
-    wishlists: []
+    wishlists: [],
+    addWishlist: null
 };
 
 const ReleaseBook = ({ booksid, bookname, bookprice, bookdescription, bookreleasedate, status, amounts, author }) => {

@@ -21,7 +21,6 @@ const Author_page = () => {
   async function Fetchdata() {
     await AuthorAPU.FindALl().then(result => {
       setData(result.data)
-      console.log(result.data)
     }).catch(err => {
       alert(err.msg)
     })
