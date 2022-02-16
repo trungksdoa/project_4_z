@@ -1,6 +1,6 @@
 import React from "react";
-import { useEffect, useState } from "react";
-
+import { useEffect,useLayoutEffect, useState } from "react";
+import { useCookies } from 'react-cookie';
 import ProfileAPI from '../../api/profileAPI';
 import PropTypes from 'prop-types'
 import moment from "moment";
@@ -10,7 +10,18 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import "./App.css";
-const Page1 = ({ data }) => {
+const Page1 = () => {
+  //Cookie
+  const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+  //Check is loggin
+  const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+
+
+  //Fetch data
+  async function fetchData(id) {
+    return await ProfileAPI.findOne(id);
+  }
+
 
   //Show Hide password
   const [showOrHide, setShowOrHide] = useState("hide");
@@ -30,11 +41,16 @@ const Page1 = ({ data }) => {
     userID: ""
   });
 
-  useEffect(() => {
-    setFormData(data)
-
-    return (() => setFormData({}))
-  }, [data])
+  //Do function when render success
+  useLayoutEffect(() => {
+    if (auth) {
+      fetchData(cookies.loggin.userID).then(response => {
+        setFormData(response.data)
+      }).catch(error => {
+        alert(error)
+      })
+    }
+  }, [])
 
 
   //Show hide function

@@ -140,7 +140,8 @@ const Book_detail = () => {
         //3: công thức (1 x SUM(WHERE rating = 1) + 2 x total_rate_2 + 3 x total_rate_3 + 4 x total_rate_4 + 5 x total_rate_5) / total_rating
         const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
         var average = 0;
-        var total_rating = data.map(item => item.ratingstart).reduce((prev, curr) => prev + curr, 0);
+        const newArray = data.filter(review => review.active === 1)
+        var total_rating = newArray.map(item => item.ratingstart).reduce((prev, curr) => prev + curr, 0);
 
         data.forEach(function (x) { counts[x.ratingstart] = (counts[x.ratingstart] || 0) + 1; });
 

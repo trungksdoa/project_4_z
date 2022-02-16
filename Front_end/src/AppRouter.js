@@ -1,5 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom';
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    Outlet,
+    Navigate,
+    useNavigate
+} from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Header from './Components/Header/Header.jsx';
 
@@ -30,6 +37,12 @@ import Payment from './Components/Payment/Payment.jsx';
 import Collection from './Components/Collection/Collection.jsx';
 
 import ForgetPassword from './Components/Login_register/Forget_password.jsx'
+
+import Overview from "./Components/Profiles/Overview.jsx";
+
+import Order_tracking from "./Components/Profiles/Order_tracking.jsx";
+
+import Wishlist from "./Components/Profiles/Wishlist.jsx";
 
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -86,10 +99,17 @@ const AppRouter = () => {
 
                     {/* //need protect */}
                     <Route element={<PrivateOutlet />}>
-
                         <Route path="/Payment" element={<Payment />} />
 
-                        <Route path="/Profile/" element={<Profile />} />l
+                        <Route path="/Profile/" element={<Profile />}>
+                            <Route path="setting" element={<Overview />} />
+
+                            <Route path="Order" element={<Order_tracking />} />
+
+                            <Route path="Wishlist" element={<Wishlist />} />
+                        </Route>
+
+
                     </Route>
                 </Routes>
                 <ToastContainer />
