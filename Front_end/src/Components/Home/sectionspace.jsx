@@ -1,39 +1,75 @@
-import React from "react";
-import { useEffect, useState, useContext } from "react";
+import React from 'react';
+import { useLayoutEffect, useState, useContext } from 'react';
 import { Book } from '../Book/Books.jsx';
-import PropTypes from 'prop-types'
+import BookAPI from '../../api/BookAPI.js';
+import { data } from './arrays';
+import PropTypes from 'prop-types';
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
+const Sectionspace = ({ handleAddWishlist, action }) => {
+	const [ BookList, setBookList ] = useState([]);
 
-const Sectionspace = ({ handleAddWishlist, data, action }) => {
-    return (
-        <section className="tg-sectionspace tg-haslayout">
-            <div className="container">
-                <div className="row">
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div className="tg-sectionhead">
-                            <h2><span>People’s Choice</span>Bestselling Books</h2>
-                            <a className="tg-btn" href="#!">View All</a>
-                        </div>
-                    </div>
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div id="tg-bestsellingbooksslider" className="tg-bestsellingbooksslider tg-bestsellingbooks owl-carousel">
-                            {data.map((book, index) => {
-                                if (data.length !== index) {
-                                    return <Book addWishlist={handleAddWishlist} changeAction={action} key={book.id} {...book}></Book>;
-                                }
-                            })}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    )
-}
+	useLayoutEffect(() => {
+		async function BFetch() {
+			await BookAPI.FindAll()
+				.then((book) => {
+					setBookList(book.data);
+				})
+				.catch((error) => {
+					alert(error.msg);
+				});
+		}
+		BFetch();
+		return () => setBookList([]);
+	}, []);
+	console.log(BookList);
+	return (
+		<section className="tg-sectionspace tg-haslayout">
+			<div className="container">
+				<div className="row">
+					<div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div className="tg-sectionhead">
+							<h2>
+								<span>People’s Choice</span>Bestselling Books
+							</h2>
+							<a className="tg-btn" href="#!">
+								View All
+							</a>
+						</div>
+					</div>
+					<div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div id="tg-bestsellingbooksslider" className="tg-bestsellingbooksslider tg-bestsellingbooks">
+							{/* {BookList.map((book, index) => {
+								if (index == 0) {
+									return (
+										<div className="item active">
+											<h2>2</h2>
+										</div>
+										// <Book addWishlist={handleAddWishlist} changeAction={action} key={index} {...book} />
+									);
+								} else {
+                                    return (
+										<div className="item">
+											<h2>2</h2>
+										</div>
+										// <Book addWishlist={handleAddWishlist} changeAction={action} key={index} {...book} />
+									);
+								}
+							})} */}
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	);
+};
 Sectionspace.propTypes = {
-    data: PropTypes.array.isRequired,
-    handleAddWishlist: PropTypes.func,
-}
+	data: PropTypes.array.isRequired,
+	handleAddWishlist: PropTypes.func
+};
 Sectionspace.defaultProps = {
-    data: [],
-    handleAddWishlist: null
-}
+	data: [],
+	handleAddWishlist: null
+};
 export default Sectionspace;

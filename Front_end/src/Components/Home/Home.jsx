@@ -21,7 +21,7 @@ const Home = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
     const [action, setAction] = useState("");
     const [banner_list, setBanner_list] = useState([]);
-    const [book_list, setbook_list] = useState([]);
+   
     const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
     async function handleAddWishlist(value) {
         if (auth) {
@@ -45,17 +45,7 @@ const Home = () => {
     useEffect(() => {
         Fetch();
     }, [])
-    async function BFetch() {
-        await BookAPI.FindALl().then((book) => {
-            setbook_list(book.data);
-            console.log(book.data);
-        }).catch((error) => {
-            alert(error.msg);
-        })
-    }
-    useEffect(() => {
-        BFetch();
-    }, [])
+   
     return (
         <>
             <main id="tg-main" className="tg-main tg-haslayout">
@@ -77,7 +67,7 @@ const Home = () => {
                         {banner_list.map((banner, index) => {
                             if (index === 0) {
                                 return (
-                                    <div className="item active">
+                                    <div className="item active" key={index}>
                                         <img src={"http://localhost:9999/image/" + banner.banner_Image + "?v=" + new Date().getTime()} alt="Sunset over beach" />
                                         <div className="carousel-caption"
                                             style={{
@@ -94,7 +84,7 @@ const Home = () => {
                                 )
                             } else {
                                 return (
-                                    <div className="item">
+                                    <div className="item" key={index}>
                                         <img src={"http://localhost:9999/image/" + banner.banner_Image + "?v=" + new Date().getTime()} alt="Sunset over beach" />
                                         <div className="carousel-caption"
                                             style={{
@@ -111,26 +101,7 @@ const Home = () => {
                             }
                         })}
 
-                        {/* <div className="item">
-                            <img src="https://f24-zpc.zdn.vn/4464342945787128752/f95523de4fdd8383dacc.jpg" alt="Sunset over beach" />
-                            <div className="carousel-caption">
-                                <h3>Boracay</h3>
-                                <p>White Sand Beach.</p>
-                            </div>
-                        </div>
-                        <div className="item">
-                            <img src="https://f24-zpc.zdn.vn/4464342945787128752/f95523de4fdd8383dacc.jpg" alt="Sunset over beach" />
-                            <div className="carousel-caption">
-                                <h3>Boracay</h3>
-                                <p>White Sand Beach.</p>
-                            </div>
-                        </div> */}
-                        {/* {banner_list.map((book, index) => {
-                            console.log(book)
-                            return (
-                              
-                            )
-                        })} */}
+                   
                     </div>
                     {/* Previous/Next controls */}
                     <a className="left carousel-control" href="#my-pics" role="button" data-slide="prev">
@@ -147,7 +118,7 @@ const Home = () => {
 					Best Selling Start
 			**************************************/}
                 
-                {<Sectionspace handleAddWishlist={handleAddWishlist} action={action} data={book_list}></Sectionspace>}
+                {<Sectionspace handleAddWishlist={handleAddWishlist} action={action} ></Sectionspace>}
                 {/*************************************
                  * 
 					Best Selling End
@@ -155,7 +126,7 @@ const Home = () => {
                 {/*************************************
 					New Release Start
 			**************************************/}
-                {<Releases data={book_list}></Releases>}
+                {/* {<Releases data={book_list}></Releases>} */}
                 {/*************************************
 					New Release End
 			**************************************/}

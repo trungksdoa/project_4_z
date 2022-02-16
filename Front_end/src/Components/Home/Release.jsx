@@ -23,7 +23,9 @@ const Release = (props) => {
                             <div className="tg-newreleasebooks">
                                 {props.data.map((book, index) => {
                                     if (index <= 2) {
-                                        return <ReleaseBook key={book.id} {...book}></ReleaseBook>;
+                                        return <ReleaseBook key={index} {...book}></ReleaseBook>;
+                                            
+                                        
                                     }
                                 })}
                             </div>

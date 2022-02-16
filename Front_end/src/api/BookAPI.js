@@ -47,7 +47,7 @@ const RequestfindOne = (url) => {
 }
 
 const Book = {
-    FindALl: () => {
+    FindAll: () => {
         url = 'book/findAll';
         return RequestAll(url)
     },
