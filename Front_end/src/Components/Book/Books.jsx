@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import WishlistAPI from '../../api/WishlistAPI.js';
 import { useCookies } from 'react-cookie';
@@ -23,19 +23,7 @@ const handleOnClick = {
     },
     addToBasket: () => {
 
-async function handleAddWishlist(auth, userID, booksid) {
-	if (auth) {
-		await WishlistAPI.Save(userID, booksid)
-			.then((wishlist) => {
-				toast(wishlist.msg);
-				//   setAction(new Date().toString());
-			})
-			.catch((error) => {
-				alert(error.msg);
-			});
-	} else {
-		alert('You are not logged in');
-	}
+    }
 }
 const Book = ({ booksid, bookname, pdetailid, bookprice, bookdescription, bookreleasedate, status, amounts, author, addWishlist, removeWishlist, changeAction }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
@@ -87,66 +75,30 @@ const Book = ({ booksid, bookname, pdetailid, bookprice, bookdescription, bookre
                     <div className="tg-booktitle">
                         <h3><Link to={"/Book/" + booksid}>{bookname}</Link></h3>
                     </div>
-					{Object.keys(wishlistExist).length !== 0 ? (
-						<a className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
-							<span>Already in wishlist</span>
-						</a>
-					) : (
-						<a
-							className="tg-btnaddtowishlist"
-							onClick={() => handleAddWishlist(booksid)}
-							style={{ cursor: 'pointer' }}
-						>
-							<i className="icon-heart" />
-							<span>add to wishlist</span>
-						</a>
-					)}
-				</figure>
-				<div className="tg-postbookcontent">
-					<ul className="tg-bookscategories">
-						<li>
-							<a href="#!">Adventure</a>
-						</li>
-						<li>
-							<a href="#!">Fun</a>
-						</li>
-					</ul>
-					<div className="tg-themetagbox">
-						<span className="tg-themetag">sale</span>
-					</div>
-					<div className="tg-booktitle">
-						<h3>
-							<Link to={'/Book/' + booksid}>{bookname}</Link>
-						</h3>
-					</div>
-					<span className="tg-bookwriter">
-						By: <a href="#!">{author}</a>
-					</span>
-					<span className="tg-stars">
-						<span />
-					</span>
-					<span className="tg-bookprice">
-						<ins>$25.18</ins>
-						<del>$27.20</del>
-					</span>
-					<a className="tg-btn tg-btnstyletwo">
-						<i className="fa fa-shopping-basket" />
-						<em>Add To Basket</em>
-					</a>
-				</div>
-			</div>
-		</div>
-	);
+                    <span className="tg-bookwriter">By: <a href="#!">{author}</a></span>
+                    <span className="tg-stars"><span /></span>
+                    <span className="tg-bookprice">
+                        <ins>$25.18</ins>
+                        <del>$27.20</del>
+                    </span>
+                    <a className="tg-btn tg-btnstyletwo">
+                        <i className="fa fa-shopping-basket" />
+                        <em>Add To Basket</em>
+                    </a>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 Book.propTypes = {
-	addWishlist: PropTypes.func,
-	removeWishlist: PropTypes.func
+    addWishlist: PropTypes.func,
+    removeWishlist: PropTypes.func
 };
 
 Book.defaultProps = {
-	addWishlist: null,
-	removeWishlist: null
+    addWishlist: null,
+    removeWishlist: null
 };
 
 const FeatureBook_Author = ({ booksid, pdetailid, bookname, wishlists, authorid, addWishlist }) => {
@@ -232,35 +184,25 @@ const ReleaseBook = ({ booksid, bookname, bookprice, bookdescription, bookreleas
                     <div className="tg-bookimg">
                         {/* <div className="tg-frontcover"><img src={img} alt="image description" /></div>
                         <div className="tg-backcover"><img src={img} alt="image description" /></div> */}
-					</div>
-					<a className="tg-btnaddtowishlist" href="#!">
-						<i className="icon-heart" />
-						<span>add to wishlist</span>
-					</a>
-				</figure>
-				<div className="tg-postbookcontent">
-					<ul className="tg-bookscategories">
-						<li>
-							<a href="#!">Adventure</a>
-						</li>
-						<li>
-							<a href="#!">Fun</a>
-						</li>
-					</ul>
-					<div className="tg-booktitle">
-						<h3>
-							<a href="#!">{bookname}</a>
-						</h3>
-					</div>
-					<span className="tg-bookwriter">
-						By: <a href="#!">{author}</a>
-					</span>
-					<span className="tg-stars">
-						<span />
-					</span>
-				</div>
-			</div>
-		</div>
-	);
-};
-export { Book, FeatureBook_Author, ReleaseBook };
+                    </div>
+                    <a className="tg-btnaddtowishlist" href="#!">
+                        <i className="icon-heart" />
+                        <span>add to wishlist</span>
+                    </a>
+                </figure>
+                <div className="tg-postbookcontent">
+                    <ul className="tg-bookscategories">
+                        <li><a href="#!">Adventure</a></li>
+                        <li><a href="#!">Fun</a></li>
+                    </ul>
+                    <div className="tg-booktitle">
+                        <h3><a href="#!">{bookname}</a></h3>
+                    </div>
+                    <span className="tg-bookwriter">By: <a href="#!">{author}</a></span>
+                    <span className="tg-stars"><span /></span>
+                </div>
+            </div>
+        </div>
+    )
+}
+export { Book, FeatureBook_Author, ReleaseBook }

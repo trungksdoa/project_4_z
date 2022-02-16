@@ -27,17 +27,6 @@ const Home = () => {
     useEffect(() => {
         Fetch();
     }, [])
-    async function BFetch() {
-        await BookAPI.FindALl().then((book) => {
-            setbook_list(book.data);
-            console.log(book.data);
-        }).catch((error) => {
-            alert(error.msg);
-        })
-    }
-    useEffect(() => {
-        BFetch();
-    }, [])
 
     return (
         <>
@@ -112,7 +101,7 @@ const Home = () => {
 					Best Selling Start
 			**************************************/}
                 
-                {<Sectionspace handleAddWishlist={handleAddWishlist} action={action} ></Sectionspace>}
+                
 
                 {<Sectionspace action={action} data={book_list}></Sectionspace>}
                 {/*************************************
