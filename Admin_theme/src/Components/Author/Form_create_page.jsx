@@ -83,7 +83,6 @@ const FormPage = () => {
                 ref.current.value = "";
             }
         } else if (name === "numberpublishedbooks") {
-            const regex = new RegExp("^0+(?!$)", 'g');
             if (Only_number.test(value)) {
                 setFormValues({ ...formValues, [name]: removeLeadingZeros(value) });
             }

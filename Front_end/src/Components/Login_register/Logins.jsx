@@ -30,7 +30,6 @@ const Login_page = () => {
         }
 
     };
-    console.log(formValues)
     const handleSubmit = (e) => {
         e.preventDefault();
         const vallidate = validate(formValues);

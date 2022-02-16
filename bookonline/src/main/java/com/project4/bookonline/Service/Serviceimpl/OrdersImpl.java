@@ -2,6 +2,7 @@ package com.project4.bookonline.Service.Serviceimpl;
 
 import com.project4.bookonline.Model.Authors;
 import com.project4.bookonline.Model.Orders;
+import com.project4.bookonline.Model.Users;
 import com.project4.bookonline.Repository.OrderRepository;
 import com.project4.bookonline.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,12 @@ public class OrdersImpl implements OrderService {
         } catch (NoSuchElementException ex) {
             return null;
         }
+    }
+
+    @Override
+    public List<Orders> loadDataByUserId(String id) {
+        Users usersId = new Users();
+        usersId.setUserid(id);
+        return orderRepository.loadDataByUserId(usersId);
     }
 }

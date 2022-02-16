@@ -91,7 +91,7 @@ const Order_Table = (props) => {
                             <td className="align-middle text-center text-sm">
                                 {order.orderstatus === 2 ? (
                                     <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-                                        <InputLabel id="demo-simple-select-filled-label">Rating</InputLabel>
+                                        <InputLabel id="demo-simple-select-filled-label">Status</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-filled-label"
                                             id="demo-simple-select-filled"

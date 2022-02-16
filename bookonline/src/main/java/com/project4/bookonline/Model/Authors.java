@@ -152,7 +152,7 @@ public class Authors implements Serializable {
         this.modifieddate = modifieddate;
     }
 
-    @JsonManagedReference(value="Author_book")
+    @JsonBackReference(value="Author_book")
     @XmlTransient
     public Collection<Books> getBooksCollection() {
         return booksCollection;

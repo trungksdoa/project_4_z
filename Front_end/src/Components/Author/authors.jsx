@@ -6,9 +6,9 @@ const author_dom = (props) => {
         <div className="tg-authorsgrid">
             <div className="container">
                 <div className="row">
-                    <div className="tg-authors">
+                    <div className="tg-authors" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div className="tg-sectionhead">
+                            <div className="tg-sectionhead" style={{padding:"2rem 100px 30px 0"}}>
                                 <h2><span>Strong Minds Behind Us</span>Most Popular Authors</h2>
                             </div>
                         </div>

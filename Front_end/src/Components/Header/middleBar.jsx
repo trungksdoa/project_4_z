@@ -20,7 +20,9 @@ const MiddleBar = () => {
     /////////////////////////
     const [wishlist, setWishlist] = useState([]);
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+    const [cookie_doChange, setCookie_doChange, removeCookie_doChange] = useCookies(['action']);
     const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+    const doChange = cookie_doChange.action !== undefined ? cookie_doChange.action.doChange : false;
     async function fetchData() {
         if (auth) {
             await WishlistAPI.getAll(cookies.loggin.userID).then(data => {
@@ -32,11 +34,8 @@ const MiddleBar = () => {
         return (amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     }
     useEffect(() => {
-        const interval = setInterval(() => {
-            fetchData()
-        }, 1000)
-        return (() => clearInterval(interval))
-    }, [])
+        fetchData();
+    }, [doChange])
     //Logic here
     return (
         <div className="tg-middlecontainer">

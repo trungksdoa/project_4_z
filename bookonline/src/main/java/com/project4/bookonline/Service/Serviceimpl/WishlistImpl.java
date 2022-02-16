@@ -48,6 +48,7 @@ public class WishlistImpl implements WishlistService {
             service.delete(wl);
             return true;
         } catch (Exception ex) {
+            ex.printStackTrace();
             return false;
         }
     }

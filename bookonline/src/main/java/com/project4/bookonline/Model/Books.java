@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -74,8 +75,11 @@ public class Books implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "BooksId")
     private Collection<Reviews> reviews;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "booksId")
-    private Wishlist wishlists;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "booksId")
+    private List<Wishlist> wishlists;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookid")
+    private List<Groupdetail> groupdetail;
 
     @Column(name = "status")
     private int status;
@@ -105,12 +109,14 @@ public class Books implements Serializable {
         this.status = status;
     }
 
+
+
     @JsonManagedReference(value = "wishlist_book")
-    public Wishlist getWishlists() {
+    public List<Wishlist> getWishlists() {
         return wishlists;
     }
 
-    public void setWishlists(Wishlist wishlists) {
+    public void setWishlists(List<Wishlist> wishlists) {
         this.wishlists = wishlists;
     }
 
@@ -179,13 +185,22 @@ public class Books implements Serializable {
         this.amounts = amounts;
     }
 
-    @JsonBackReference(value = "Author_book")
+    @JsonManagedReference(value = "Author_book")
     public Authors getAuthorid() {
         return authorid;
     }
 
     public void setAuthorid(Authors authorid) {
         this.authorid = authorid;
+    }
+
+    @JsonManagedReference(value = "group_cata_book")
+    public List<Groupdetail> getGroupdetail() {
+        return groupdetail;
+    }
+
+    public void setGroupdetail(List<Groupdetail> groupdetail) {
+        this.groupdetail = groupdetail;
     }
 
     @JsonManagedReference(value = "pdetail_book")

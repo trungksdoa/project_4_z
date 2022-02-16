@@ -58,4 +58,15 @@ public class BookController {
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/book/findAll/author/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Books>> loadByAuthors(@PathVariable String id) {
+        List<Books> b = bookService.LoadByAuthor(Integer.valueOf(id));
+        Message_Respones<Books> setMessage = new Message_Respones<Books>();
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(b);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
+    }
 }

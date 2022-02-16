@@ -29,11 +29,7 @@ import Payment from './Components/Payment/Payment.jsx';
 
 import Collection from './Components/Collection/Collection.jsx';
 
-import News from './Components/News/News.jsx';
-
-import News_detail from './Components/News/News_detail.jsx';
-
-import ForgetPassword from './Components/Login_register/Forget_password.jsx';
+import ForgetPassword from './Components/Login_register/Forget_password.jsx'
 
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -52,61 +48,54 @@ function PrivateOutlet() {
 }
 
 const AppRouter = () => {
-	return (
-		<div id="tg-wrapper" className="tg-wrapper tg-haslayout">
-			<BrowserRouter>
-				<Header />
-				<Routes>
-					{/* <Route path="/" element={<Authsos />}></Authsos> */}
-					<Route path="/*" element={<Error_404 />} />
+    return (
+        <div id="tg-wrapper" className="tg-wrapper tg-haslayout">
+            <BrowserRouter>
+                <Header />
+                <Routes>
+                    {/* <Route path="/" element={<Authsos />}></Authsos> */}
+                    <Route path="/*" element={<Error_404 />} />
 
-					<Route exact path="/" element={<Home />} />
+                    <Route exact path="/" element={<Home />} />
 
-					<Route
-						path="/Login"
-						element={
-							<ProtectLogin>
-								<Login />
-							</ProtectLogin>
-						}
-					/>
+                    <Route path="/Login" element={
+                        <ProtectLogin>
+                            <Login />
+                        </ProtectLogin>
+                    } />
 
-					<Route
-						path="/Register"
-						element={
-							<ProtectLogin>
-								<Register />
-							</ProtectLogin>
-						}
-					/>
-					<Route path="/News" element={<News />} />
+                    <Route path="/Register" element={
+                        <ProtectLogin>
+                            <Register />
+                        </ProtectLogin>
+                    } />
 
-					<Route path="/News/:id" element={<News_detail />} />
+                    <Route path="/author" element={<Author />} />
 
-					<Route path="/author" element={<Author />} />
+                    <Route path="/author/:authorId" element={<Author_detail />} />
 
-					<Route path="/author/:authorId" element={<Author_detail />} />
+                    <Route path="/Book/:id" element={<Book_detail />} />
 
-					<Route path="/Book/:id" element={<Book_detail />} />
+                    <Route path="/Cart" element={<Cart />} />
 
-					<Route path="/Cart" element={<Cart />} />
+                    <Route path="/Collection" element={<Collection />} />
 
-					<Route path="/Collection" element={<Collection />} />
+                    <Route path="/Contact" element={<Contact />} />
 
-					<Route path="/Contact" element={<Contact />} />
+                    <Route path="/Forgetpassword" element={<ForgetPassword />} />
 
-					<Route path="/Forgetpassword" element={<ForgetPassword />} />
+                    {/* //need protect */}
+                    <Route element={<PrivateOutlet />}>
 
-					{/* //need protect */}
-					<Route element={<PrivateOutlet />}>
-						<Route path="/Payment" element={<Payment />} />
-						<Route path="/Profile/" element={<Profile />} />l
-					</Route>
-				</Routes>
-				<ToastContainer />
-				<Footer />
-			</BrowserRouter>
-		</div>
-	);
-};
+                        <Route path="/Payment" element={<Payment />} />
+
+                        <Route path="/Profile/" element={<Profile />} />l
+                    </Route>
+                </Routes>
+                <ToastContainer />
+                <Footer />
+            </BrowserRouter>
+        </div>
+    )
+}
 export default AppRouter;

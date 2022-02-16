@@ -42,9 +42,13 @@ const RequestStatus = (url) => {
             })
     })
 }
-const settingAPi = {
+const OrderAPI = {
     getAll: () => {
         const url = 'orders/findAll';
+        return RequestAll(url);
+    },
+    getAllByUserId: (userId) => {
+        const url = 'orders/findAll/' + userId;
         return RequestAll(url);
     },
     changeStatus: (id, status) => {
@@ -54,4 +58,4 @@ const settingAPi = {
     },
 }
 
-export default settingAPi
+export default OrderAPI

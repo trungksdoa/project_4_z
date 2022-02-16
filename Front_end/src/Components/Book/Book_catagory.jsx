@@ -5,7 +5,7 @@ const Book_catagory = () => {
     return (
         <div className="col-xs-12 col-sm-4 col-md-4 col-lg-3 pull-left">
             <aside id="tg-sidebar" className="tg-sidebar">
-                <div className="tg-widget tg-widgetsearch">
+                <div className="tg-widget tg-widgetsearch" style={{boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px'}}>
                     <form className="tg-formtheme tg-formsearch">
                         <div className="form-group">
                             <button type="submit"><i className="icon-magnifier" /></button>
@@ -13,7 +13,7 @@ const Book_catagory = () => {
                         </div>
                     </form>
                 </div>
-                <div className="tg-widget tg-catagories">
+                <div className="tg-widget tg-catagories" style={{boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px'}}>
                     <div className="tg-widgettitle">
                         <h3>Categories</h3>
                     </div>
@@ -33,7 +33,7 @@ const Book_catagory = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="tg-widget tg-widgettrending">
+                <div className="tg-widget tg-widgettrending" style={{boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px'}}>
                     <div className="tg-widgettitle">
                         <h3>Trending Products</h3>
                     </div>
@@ -82,114 +82,6 @@ const Book_catagory = () => {
                                         <span className="tg-bookwriter">By: <a href="#!">Kathrine Culbertson</a></span>
                                     </div>
                                 </article>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="tg-widget tg-widgetinstagram">
-                    <div className="tg-widgettitle">
-                        <h3>Instagram</h3>
-                    </div>
-                    <div className="tg-widgetcontent">
-                        <ul>
-                            <li>
-                                <figure>
-                                    <img src="images/instagram/img-01.jpg" alt="image description" />
-                                    <figcaption><a href="#!"><i className="icon-heart" /><em>50,134</em></a></figcaption>
-                                </figure>
-                            </li>
-                            <li>
-                                <figure>
-                                    <img src="images/instagram/img-02.jpg" alt="image description" />
-                                    <figcaption><a href="#!"><i className="icon-heart" /><em>50,134</em></a></figcaption>
-                                </figure>
-                            </li>
-                            <li>
-                                <figure>
-                                    <img src="images/instagram/img-03.jpg" alt="image description" />
-                                    <figcaption><a href="#!"><i className="icon-heart" /><em>50,134</em></a></figcaption>
-                                </figure>
-                            </li>
-                            <li>
-                                <figure>
-                                    <img src="images/instagram/img-04.jpg" alt="image description" />
-                                    <figcaption><a href="#!"><i className="icon-heart" /><em>50,134</em></a></figcaption>
-                                </figure>
-                            </li>
-                            <li>
-                                <figure>
-                                    <img src="images/instagram/img-05.jpg" alt="image description" />
-                                    <figcaption><a href="#!"><i className="icon-heart" /><em>50,134</em></a></figcaption>
-                                </figure>
-                            </li>
-                            <li>
-                                <figure>
-                                    <img src="images/instagram/img-06.jpg" alt="image description" />
-                                    <figcaption><a href="#!"><i className="icon-heart" /><em>50,134</em></a></figcaption>
-                                </figure>
-                            </li>
-                            <li>
-                                <figure>
-                                    <img src="images/instagram/img-07.jpg" alt="image description" />
-                                    <figcaption><a href="#!"><i className="icon-heart" /><em>50,134</em></a></figcaption>
-                                </figure>
-                            </li>
-                            <li>
-                                <figure>
-                                    <img src="images/instagram/img-08.jpg" alt="image description" />
-                                    <figcaption><a href="#!"><i className="icon-heart" /><em>50,134</em></a></figcaption>
-                                </figure>
-                            </li>
-                            <li>
-                                <figure>
-                                    <img src="images/instagram/img-09.jpg" alt="image description" />
-                                    <figcaption><a href="#!"><i className="icon-heart" /><em>50,134</em></a></figcaption>
-                                </figure>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="tg-widget tg-widgetblogers">
-                    <div className="tg-widgettitle">
-                        <h3>Top Bloogers</h3>
-                    </div>
-                    <div className="tg-widgetcontent">
-                        <ul>
-                            <li>
-                                <div className="tg-author">
-                                    <figure><a href="#!"><img src="images/author/imag-03.jpg" alt="image description" /></a></figure>
-                                    <div className="tg-authorcontent">
-                                        <h2><a href="#!">Jude Morphew</a></h2>
-                                        <span>21,658 Published Books</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="tg-author">
-                                    <figure><a href="#!"><img src="images/author/imag-04.jpg" alt="image description" /></a></figure>
-                                    <div className="tg-authorcontent">
-                                        <h2><a href="#!">Jude Morphew</a></h2>
-                                        <span>21,658 Published Books</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="tg-author">
-                                    <figure><a href="#!"><img src="images/author/imag-05.jpg" alt="image description" /></a></figure>
-                                    <div className="tg-authorcontent">
-                                        <h2><a href="#!">Jude Morphew</a></h2>
-                                        <span>21,658 Published Books</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="tg-author">
-                                    <figure><a href="#!"><img src="images/author/imag-06.jpg" alt="image description" /></a></figure>
-                                    <div className="tg-authorcontent">
-                                        <h2><a href="#!">Jude Morphew</a></h2>
-                                        <span>21,658 Published Books</span>
-                                    </div>
-                                </div>
                             </li>
                         </ul>
                     </div>

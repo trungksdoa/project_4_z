@@ -4,6 +4,9 @@
  */
 package com.project4.bookonline.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -93,6 +96,7 @@ public class Groupdetail implements Serializable {
         this.groupmodifieddate = groupmodifieddate;
     }
 
+    @JsonBackReference(value = "group_cata_book")
     public Books getBookid() {
         return bookid;
     }

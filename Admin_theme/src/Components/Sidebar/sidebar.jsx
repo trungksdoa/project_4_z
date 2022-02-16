@@ -118,14 +118,6 @@ const sidebar = () => {
                             <span className="nav-link-text ms-1">Voucher </span>
                         </NavLink>
                     </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link text-white " to="/admin/News">
-                            <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <NewspaperIcon />
-                            </div>
-                            <span className="nav-link-text ms-1">News </span>
-                        </NavLink>
-                    </li>
                 </ul>
             </div>
         </aside>

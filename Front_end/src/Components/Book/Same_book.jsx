@@ -1,7 +1,7 @@
 
 const Same_book = () => {
     return (
-        <div className="tg-relatedproducts">
+        <div className="tg-relatedproducts" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div className="tg-sectionhead">
                     <h2><span>Related Products</span>You May Also Like</h2>

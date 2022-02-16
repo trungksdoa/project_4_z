@@ -250,7 +250,7 @@ const Reviews_edit = ({ customerId, bookId, data, onBack,changeView }) => {
 
 
 const List_review = ({ data, customerId }) => {
-
+   
     return (
         <ul className="media-list">
             {data.map((review, index) => {
