@@ -1,20 +1,41 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom"
-
-const sidebar = ({ ChangePage, formData }) => {
-    const HandleChange = (e) => {
-        const page = e.currentTarget.dataset.page;
-        var target = e.currentTarget;
-        var li = target.parentNode;
-
-        document.querySelector('ul.profile_sidebar > li.active').classList.remove("active");;
-        // return element ? element.classList.value : undefined;
-        li.classList.add("active");
-        ChangePage(page);
+import React,{ useLayoutEffect, useState} from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useCookies } from 'react-cookie';
+import ProfileAPI from '../../api/profileAPI';
+const Sidebar = () => {
+    const { pathname } = useLocation();
+    const getNavLinkClass = (path) => {
+        return pathname === path ? 'active' : '';
     }
-    const setActive = () => {
+    
+    const [formData, setFormData] = useState({
+        first_name: "",
+        last_name: "",
+        user_email: "",
+    });
 
+    //Cookie
+    const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+    //Check is loggin
+    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+
+
+    //Fetch data
+    async function fetchData(id) {
+        return await ProfileAPI.findOne(id);
     }
+
+    //Do function when render success
+    useLayoutEffect(() => {
+        if (auth) {
+            // console.log(cookies.loggin.userID)
+            fetchData(cookies.loggin.userID).then(response => {
+                setFormData(response.data)
+            }).catch(error => {
+                alert(error)
+            })
+        }
+    }, [])
     return (
         <>
             <div className="col-md-3">
@@ -30,14 +51,14 @@ const sidebar = ({ ChangePage, formData }) => {
                     </div>
                     <div className="profile-usermenu">
                         <ul className="nav profile_sidebar">
-                            <li className="active">
-                                <a style={{ cursor: "pointer" }} data-page="page1" onClick={HandleChange}><i className="glyphicon glyphicon-home"> Overview</i></a>
+                            <li className={getNavLinkClass("/Profile/setting")}>
+                                <Link to="/Profile/setting" ><i className="glyphicon glyphicon-home"> Setting</i></Link>
                             </li>
-                            <li>
-                                <a style={{ cursor: "pointer" }} data-page="page2" onClick={HandleChange}><i className="glyphicon glyphicon-user"> Order tracking</i></a>
+                            <li className={getNavLinkClass("/Profile/Order")}>
+                                <Link to="/Profile/Order" ><i className="glyphicon glyphicon-user"> Order</i></Link>
                             </li>
-                            <li>
-                                <a style={{ cursor: "pointer" }} data-page="page3" onClick={HandleChange}><i className="glyphicon glyphicon-ok"> Wishlist</i></a>
+                            <li className={getNavLinkClass("/Profile/Wishlist")}>
+                                <Link to="/Profile/Wishlist" ><i className="glyphicon glyphicon-ok"> Wishlist</i></Link>
                             </li>
                         </ul>
                     </div>
@@ -48,4 +69,4 @@ const sidebar = ({ ChangePage, formData }) => {
     )
 
 }
-export default sidebar;
+export default Sidebar;

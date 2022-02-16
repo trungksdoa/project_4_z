@@ -43,6 +43,19 @@ public class OrderController {
         return new ResponseEntity<Message_Respones<Orders>>(setMessage, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/orders/findAll/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Orders>> findAllByCusId(@PathVariable String id) {
+        setMessage = new Message_Respones<Orders>();
+        orders = new ArrayList<>();
+        orders = orderService.loadDataByUserId(id);
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(orders);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Orders>>(setMessage, HttpStatus.OK);
+    }
+
+
     @RequestMapping(value = "/orders/create", method = RequestMethod.POST)
     public ResponseEntity<Object> create(@RequestBody Orders orders) {
         orderService.Create(orders);

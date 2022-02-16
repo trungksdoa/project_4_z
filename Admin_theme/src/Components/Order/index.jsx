@@ -54,12 +54,18 @@ const Orders = () => {
             });
         }
     }
+    // ------------------------------
+    // ================
+    // ------------------------------
     const [Order_list, setOrder_list] = useState(initialValues);
     const [searchBySearchCustomer, setSearchCustomer] = useState("");
     const [open, setOpen] = useState(false);
     const [filtered, setFiltered] = useState([]);
     const [modalValue, setModalValue] = useState([]);
     const navigate = useNavigate();
+    // ------------------------------
+    // ================
+    // ------------------------------
     const handleChange = async (orderId, value) => {
         let newArr = [...Order_list]; // copying the old datas array
         const index = newArr.findIndex(item => item.orderid === orderId);
@@ -71,16 +77,22 @@ const Orders = () => {
             alert(err.msg)
         });
     };
-
-
+    // ------------------------------
+    // ================
+    // ------------------------------
     const ViewDetails = (orderId) => {
         let newArr = [...Order_list]; // copying the old datas array
         const index = newArr.findIndex(item => item.orderid === orderId);
         setModalValue(newArr[index].orderDetailCollection)
         setOpen(true)
     }
+    // ------------------------------
+    // ================
+    // ------------------------------
     const handleClose = () => setOpen(false);
-
+    // ------------------------------
+    // ================
+    // ------------------------------
     useEffect(() => {
         // fetchCustomers();
         const interval = setInterval(() => {
@@ -88,22 +100,27 @@ const Orders = () => {
         }, 1000)
         return () => clearInterval(interval)
     }, [])
-
+    // ------------------------------
+    // ================
+    // ------------------------------
     function fullname(order) {
         const fullname = order.userid.firstName + " " + order.userid.lastName;
         return fullname;
     }
+    // ------------------------------
+    // ================
+    // ------------------------------
     useEffect(() => {
         setFiltered(
             Order_list.filter((review) =>
                 fullname(review).toLowerCase().includes(searchBySearchCustomer.toLowerCase())
             ))
     }, [searchBySearchCustomer, Order_list])
-
+    // ------------------------------
+    // ================
+    // ------------------------------
     const [currentPage, setCurrentPage] = useState(1);
-
     const itemsPerPage = 3;
-
     const itemOfLast = currentPage * itemsPerPage;
     const itemOfFirst = itemOfLast - itemsPerPage;
     const currentItem = filtered.slice(itemOfFirst, itemOfLast)
@@ -111,9 +128,12 @@ const Orders = () => {
     const paginate = page => {
         setCurrentPage(page)
     }
-    const GotoCustomer = () =>{
+    const GotoCustomer = () => {
         navigate("/admin/customer/")
     }
+    // ------------------------------
+    // ================
+    // ------------------------------
     return (
         <div className="col-12">
             {id && (

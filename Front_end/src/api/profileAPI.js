@@ -110,9 +110,9 @@ const Profiles = {
         url = 'user/update/' + id;
         return RequestEdit(url, body)
     },
-    OrderList: () => {
-        url = 'orders/findAll/';
-        return RequestOrder (url)
+    OrderList: (id) => {
+        url = 'orders/findAll/' + id;
+        return RequestOrder(url)
     }
 }
 export default Profiles
