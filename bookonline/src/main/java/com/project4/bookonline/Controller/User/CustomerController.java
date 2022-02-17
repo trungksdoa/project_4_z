@@ -60,6 +60,7 @@ public class CustomerController {
                     udto = new UsersDTO();
                     udto.setUserID(users.getUserid());
                     udto.setLast_name(users.getLastName());
+                    udto.setFirst_name(users.getFirstName());
                     udto.setUser_email(users.getUseremail());
                     setMessage.setObject(udto);
                     setMessage.setMessage(msg);

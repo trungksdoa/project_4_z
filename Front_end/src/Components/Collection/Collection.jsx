@@ -4,23 +4,27 @@ import CategoryAPI from '../../api/CategoryAPI.js';
 import { useEffect, useState } from 'react';
 import Getbook from './Getbook.jsx';
 import Getcategory from './Getcategory.jsx';
+import AddToWishlist from '../FolderAction/AddToWishlist';
+import { useCookies } from 'react-cookie';
+
 const Collection = () => {
 	//const [book, setBooks] = useState({ booksid:"", bookname: "", bookprice: "", bookdescription: "", bookreleasedate: "",bookmodifieddate:"",bookcreateddate:"",amounts:0,authorid:0,wishlists:"",groupdetail:"",status:0,pdetailid:0 });
 	const[bookList,setbookList] = useState([]);
 	const[categoryList,setcategoryList] = useState([]);
+	const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+	async function fetchbookList(){
+		await BookAPI.FindAll().then(result => {
+			setbookList(result.data)
+		  }).catch(err => {
+			alert(err.msg)
+		  })
+		// const requesUrl ='http://localhost:9999/admin/api/book/findAll';
+		// const reponse = await fetch(requesUrl);
+		// const reponseJSON = await reponse.json();
+		// console.log(reponseJSON);
+		// setbookList(reponseJSON);
+	}
 	useEffect(()=>{
-		async function fetchbookList(){
-			await BookAPI.FindAll().then(result => {
-				setbookList(result.data)
-			  }).catch(err => {
-				alert(err.msg)
-			  })
-			// const requesUrl ='http://localhost:9999/admin/api/book/findAll';
-			// const reponse = await fetch(requesUrl);
-			// const reponseJSON = await reponse.json();
-			// console.log(reponseJSON);
-			// setbookList(reponseJSON);
-		}
 		fetchbookList();
 	},[])
 	useEffect(()=>{
@@ -33,6 +37,15 @@ const Collection = () => {
 		}
 		fetchcategoryList();
 	},[])
+
+	async function handleAddWishlist(booksId) {
+        await AddToWishlist.AddToWishlist(cookies, booksId).then(result => {
+			fetchbookList();
+            setCookie('action', JSON.stringify({ doChange: new Date().getTime() }), { path: '/' });
+        }).catch(err => {
+            alert(err.msg)
+        })
+    }
 	return (
 		<div>
 			<div
@@ -135,7 +148,7 @@ const Collection = () => {
 												</div>
 											</div>
 											
-												<Getbook bookList={bookList}></Getbook>
+												<Getbook addWishlist={handleAddWishlist} bookList={bookList}></Getbook>
 											
 										</div>
 									</div>

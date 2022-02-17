@@ -19,7 +19,6 @@ function Getcategory(props) {
             </li>
             ))}
         </ul>
-        
     )
 }
 export default Getcategory;

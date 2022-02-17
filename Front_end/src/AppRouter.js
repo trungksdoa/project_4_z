@@ -101,7 +101,7 @@ const AppRouter = () => {
                     <Route element={<PrivateOutlet />}>
                         <Route path="/Payment" element={<Payment />} />
 
-                        <Route path="/Profile/" element={<Profile />}>
+                        <Route path="/Profile/*" element={<Profile/>}>
                             <Route path="setting" element={<Overview />} />
 
                             <Route path="Order" element={<Order_tracking />} />

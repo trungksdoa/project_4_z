@@ -12,6 +12,7 @@ import com.project4.bookonline.Model.Message_Respones;
 import com.project4.bookonline.Model.PDetail;
 import com.project4.bookonline.Service.BooksService;
 import com.project4.bookonline.Service.PDetailService;
+import com.project4.bookonline.Service.ProductRankService;
 import com.project4.bookonline.UploadService.FileStorageService;
 import com.project4.bookonline.dto.BookDTO;
 
@@ -20,12 +21,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
+import com.project4.bookonline.Model.View_Product_Rank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,6 +53,9 @@ public class BookManagerController {
     PDetailService pDetailService;
 
     @Autowired
+    ProductRankService ProductRankService;
+
+    @Autowired
     BooksService bookService;
 
     @RequestMapping(value = "/book/findAll", method = RequestMethod.GET)
@@ -64,6 +67,17 @@ public class BookManagerController {
         setMessage.setList(b);
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/BookRank/findAll", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<View_Product_Rank>> loadProductRanks() {
+        List<View_Product_Rank> ranks = ProductRankService.loadRanks();
+        Message_Respones<View_Product_Rank> setMessage = new Message_Respones<View_Product_Rank>();
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(ranks);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<View_Product_Rank>>(setMessage, HttpStatus.OK);
     }
 
     public BookDTO getBookDTO(Books book) {

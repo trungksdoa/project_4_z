@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Book_catagory = () => {
-
     return (
         <div className="col-xs-12 col-sm-4 col-md-4 col-lg-3 pull-left">
             <aside id="tg-sidebar" className="tg-sidebar">
