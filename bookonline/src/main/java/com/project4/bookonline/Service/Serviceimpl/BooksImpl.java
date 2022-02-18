@@ -7,17 +7,19 @@ package com.project4.bookonline.Service.Serviceimpl;
 import com.project4.bookonline.Model.Authors;
 import com.project4.bookonline.Model.Books;
 import com.project4.bookonline.Repository.BookRepository;
+
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author PC
  */
 @Service
-public class BooksImpl implements com.project4.bookonline.Service.BooksService{
-    
+public class BooksImpl implements com.project4.bookonline.Service.BooksService {
+
     @Autowired
     BookRepository bookRepository;
 
@@ -36,6 +38,16 @@ public class BooksImpl implements com.project4.bookonline.Service.BooksService{
     @Override
     public Books Create(Books books) {
         return bookRepository.save(books);
+    }
+
+    @Override
+    public Books findOne(String id) {
+        Optional<Books> option = bookRepository.findById(id);
+        if (option == null) {
+            return null;
+        } else {
+           return option.get();
+        }
     }
 
     @Override

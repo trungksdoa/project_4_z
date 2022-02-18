@@ -15,6 +15,7 @@ public interface BooksService {
     public List<Books> ListBook();
     public List<Books> LoadByAuthor(int authorId);
     public Books Create(Books books);
+    public Books findOne(String id);
     public void Delete(String id);   
     public void DeleteAllBy(List<String> id);
 }
