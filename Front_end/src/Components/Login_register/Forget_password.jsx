@@ -1,13 +1,26 @@
-import React from 'react';
+import React,{useState} from 'react';
 import emailjs from '@emailjs/browser';
 import Auth from '../../api/Auth';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify'
+import CircularProgress from '@mui/material/CircularProgress';
+
 const Forget_pass = () => {
-    const [emails, setEmails] = React.useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [emails, setEmails] = useState("");
     async function GetByEmail(email) {
+        setIsLoading(true);
         await Auth.findByEmail(email).then(res => {
-            console.log(res)
-            sendEmail(res.data.password,res.data.last_name,email)
+            setIsLoading(false);
+            toast.success(res.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }).catch(e => {
             alert(e.msg)
         });
@@ -23,14 +36,21 @@ const Forget_pass = () => {
                 margin: "2rem auto 0px auto",
                 width: "40rem"
             }}>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="to_email">Emails</label>
-                        <input type="text" className="form-control" name="to_email" value={emails.toLowerCase()} onChange={(e) => setEmails(e.target.value)} />
-                        {/* <p style={{ color: "red" }}>{formErrors.Fname}</p> */}
-                    </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
-                </form>
+                {isLoading ? (
+                    <h3 style={{textAlign: "center"}}>On Loading   <CircularProgress color="success" /></h3>
+                ) : (
+                    <>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="to_email">Emails</label>
+                                <input type="text" className="form-control" name="to_email" value={emails.toLowerCase()} onChange={(e) => setEmails(e.target.value)} />
+                                {/* <p style={{ color: "red" }}>{formErrors.Fname}</p> */}
+                            </div>
+                            <button type="submit" className="btn btn-primary">Submit</button>
+                        </form>
+
+                    </>
+                )}
             </div>
         </main>
     )

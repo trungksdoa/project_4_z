@@ -154,6 +154,12 @@ const Customers = () => {
         navigate("/admin/order/" + userId)
     }
 
+
+    const ViewWishlist = (userId) => {
+        // console.log(userId)
+        navigate("/admin/wishlist/" + userId)
+    }
+
     // /////////////////////////////////////
     // // ---------------------------------
     // /////////////////////////////////////
@@ -227,7 +233,7 @@ const Customers = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <Customer_table Ban={handleClickOpen} UnBan={unBanAction} data={currentItem} Order={ViewOrder} />
+                                <Customer_table Ban={handleClickOpen} UnBan={unBanAction} data={currentItem} Wishlist={ViewWishlist} Order={ViewOrder} />
                                 <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} />
 
                             </div>

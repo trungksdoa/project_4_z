@@ -69,19 +69,22 @@ const MiddleBar = () => {
                                     {wishlist.length !== 0 ? (
                                         wishlist.map((wishlist, index) => {
                                             const { bookname, bookprice, user_id, wishlist_id, booksId } = wishlist;
-                                            return (
-                                                <div className="" key={index}>
-                                                    <div className="tg-minicarproduct">
-                                                        <figure>
-                                                            <img src="images/products/img-01.jpg" alt="image description" />
-                                                        </figure>
-                                                        <div className="tg-minicarproductdata">
-                                                            <h5><a>{bookname}</a></h5>
-                                                            <h6><a>${formatToCurrency(bookprice)}</a></h6>
+                                            if(index < 3){
+                                                return (
+                                                    <div className="" key={index}>
+                                                        <div className="tg-minicarproduct">
+                                                            <figure>
+                                                                <img src="images/products/img-01.jpg" alt="image description" />
+                                                            </figure>
+                                                            <div className="tg-minicarproductdata">
+                                                                <h5><a>{bookname}</a></h5>
+                                                                <h6><a>${formatToCurrency(bookprice)}</a></h6>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            )
+                                                )
+                                            }
+                                         
                                         })
                                     ) : (
                                         <div className="tg-description"><p>No products were added to the wishlist!</p></div>

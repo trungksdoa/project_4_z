@@ -12,7 +12,8 @@ import { NavLink } from 'react-router-dom'
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import "react-datepicker/dist/react-datepicker.css";
+
+import { toast } from 'react-toastify'
 
 import "./App.css";
 
@@ -98,20 +99,35 @@ const Register = () => {
         const action = showOrHideConfirm === "Cshow" ? "Chide" : "Cshow";
         setShowOrHideConfirm(action)
     }
+    const [isLoading, setIsLoading] = useState(false);
     // -------------------------
     // Handle Register
     // -------------------------
     async function Register() {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
+            setIsLoading(true);
             await Auth.register(formValues).then(response => {
-                alert(response.msg);
-                const userId = response.data.userID;
-                const Lastname = response.data.last_name;
-                const email = response.data.user_email;
-                sendEmail(userId, Lastname, email)
+                setIsLoading(false);
+                toast.success(response.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 navigate("/login")
             }).catch(e => {
-                alert(e.msg);
+                toast.error(e.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             });
         } else {
 
@@ -194,62 +210,69 @@ const Register = () => {
                     margin: "2rem auto 0px auto",
                     width: "40rem"
                 }}>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="Fname">First name</label>
-                            <input type="text" className="form-control" name="Fname" value={formValues.Fname} onChange={handleChange} />
-                            <p style={{ color: "red" }}>{formErrors.Fname}</p>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="Lname">Last name</label>
-                            <input type="text" className="form-control" name="Lname" value={formValues.Lname} onChange={handleChange} />
-                            <p style={{ color: "red" }}>{formErrors.Lname}</p>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="Emails">Email address</label>
-                            <input type="text" className="form-control" name="Emails" value={formValues.Emails} onChange={handleChange} aria-describedby="emailHelp" />
-                            <p style={{ color: "red" }}>{formErrors.Emails}</p>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="Pword">Password  (not allow whitespace in password)</label>
-                            <div className="input-group">
-                                <input type={showOrHide === "show" ? "text" : "password"} className="form-control" id="Pword" name="Pword" value={formValues.Pword} onChange={handleChange} />
-                                <span className="input-group-addon" style={{ cursor: 'pointer' }} onClick={showHide}>
-                                    {showOrHide === "show" && (
-                                        <VisibilityOffIcon />
-                                    )}
-                                    {showOrHide === "hide" && (
-                                        <VisibilityIcon />
-                                    )}
-                                </span>
-                            </div>
-                            <p style={{ color: "red" }}>{formErrors.Pword}</p>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="Pword">Confirm-password</label>
-                            <div className="input-group">
-                                <input type={showOrHideConfirm === "Cshow" ? "text" : "password"} className="form-control" id="Cword" name="Cword" value={formValues.Cword} onChange={handleChange} />
-                                <span className="input-group-addon" style={{ cursor: 'pointer' }} onClick={CshowHide}>
-                                    {showOrHideConfirm === "Cshow" && (
-                                        <VisibilityOffIcon />
-                                    )}
-                                    {showOrHideConfirm === "Chide" && (
-                                        <VisibilityIcon />
-                                    )}
-                                </span>
-                            </div>
-                            <p style={{ color: "red" }}>{formErrors.Cword}</p>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="Pnum">Phone number</label>
-                            <input type="text" className="form-control" name="Pnum" value={formValues.Pnum} onChange={handleChange} />
-                            <p style={{ color: "red" }}>{formErrors.Pnum}</p>
-                        </div>
-                        <div className="form-group">
-                            <NavLink to="/Login">Have account ? Want log in ?</NavLink>
-                        </div>
-                        <button type="submit" className="btn btn-primary">Submit</button>
-                    </form>
+                    {isLoading ? (
+                        <h3>On Loading...</h3>
+                    ) : (
+                        <>
+                            <form onSubmit={handleSubmit}>
+                                <div className="form-group">
+                                    <label htmlFor="Fname">First name</label>
+                                    <input type="text" className="form-control" name="Fname" value={formValues.Fname} onChange={handleChange} />
+                                    <p style={{ color: "red" }}>{formErrors.Fname}</p>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="Lname">Last name</label>
+                                    <input type="text" className="form-control" name="Lname" value={formValues.Lname} onChange={handleChange} />
+                                    <p style={{ color: "red" }}>{formErrors.Lname}</p>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="Emails">Email address</label>
+                                    <input type="text" className="form-control" name="Emails" value={formValues.Emails} onChange={handleChange} aria-describedby="emailHelp" />
+                                    <p style={{ color: "red" }}>{formErrors.Emails}</p>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="Pword">Password  (not allow whitespace in password)</label>
+                                    <div className="input-group">
+                                        <input type={showOrHide === "show" ? "text" : "password"} className="form-control" id="Pword" name="Pword" value={formValues.Pword} onChange={handleChange} />
+                                        <span className="input-group-addon" style={{ cursor: 'pointer' }} onClick={showHide}>
+                                            {showOrHide === "show" && (
+                                                <VisibilityOffIcon />
+                                            )}
+                                            {showOrHide === "hide" && (
+                                                <VisibilityIcon />
+                                            )}
+                                        </span>
+                                    </div>
+                                    <p style={{ color: "red" }}>{formErrors.Pword}</p>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="Pword">Confirm-password</label>
+                                    <div className="input-group">
+                                        <input type={showOrHideConfirm === "Cshow" ? "text" : "password"} className="form-control" id="Cword" name="Cword" value={formValues.Cword} onChange={handleChange} />
+                                        <span className="input-group-addon" style={{ cursor: 'pointer' }} onClick={CshowHide}>
+                                            {showOrHideConfirm === "Cshow" && (
+                                                <VisibilityOffIcon />
+                                            )}
+                                            {showOrHideConfirm === "Chide" && (
+                                                <VisibilityIcon />
+                                            )}
+                                        </span>
+                                    </div>
+                                    <p style={{ color: "red" }}>{formErrors.Cword}</p>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="Pnum">Phone number</label>
+                                    <input type="text" className="form-control" name="Pnum" value={formValues.Pnum} onChange={handleChange} />
+                                    <p style={{ color: "red" }}>{formErrors.Pnum}</p>
+                                </div>
+                                <div className="form-group">
+                                    <NavLink to="/Login">Have account ? Want log in ?</NavLink>
+                                </div>
+                                <button type="submit" className="btn btn-primary">Submit</button>
+                            </form>
+                        </>
+                    )}
+
                 </div>
             </main>
         </>
