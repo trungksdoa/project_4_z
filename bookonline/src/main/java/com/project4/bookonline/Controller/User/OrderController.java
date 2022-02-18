@@ -115,7 +115,6 @@ public class OrderController {
             orderDetail.setTotal(orderdetail.getTotal());
             orderDetail.setOrderid(crep);
             orderDetail.setQuantity(orderdetail.getQuantity());
-            orderDetail.setDetailid(crep.getOrderid());
             orderDetailService.Create(orderDetail);
         }
         

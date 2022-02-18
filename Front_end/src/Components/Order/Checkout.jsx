@@ -57,13 +57,14 @@ function Checkout() {
 				body.bookid = id;
 				body.total = itemTotal;
 				body.quantity = quantity;
+				console.log(body)
 				formbody.orderDetailDto.push(body);
 			});
 			await OrderAPI.Create(formbody)
 				.then((res) => {
 					toast(res.msg);
 					// navigator('/admin/category');
-					window.location.href="/Profile/Order";
+					// window.location.href="/Profile/Order";
 				})
 				.catch((err) => {
 					alert(err.msg);

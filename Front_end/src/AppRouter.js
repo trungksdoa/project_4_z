@@ -29,6 +29,9 @@ import Payment from './Components/Payment/Payment.jsx';
 
 import Collection from './Components/Collection/Collection.jsx';
 
+import Getbook from './Components/Collection/Getbook.jsx';
+
+
 import ForgetPassword from './Components/Login_register/Forget_password.jsx';
 
 import Overview from './Components/Profiles/Overview.jsx';
@@ -94,6 +97,11 @@ const AppRouter = () => {
 
                     {/* //need protect */}
                     <Route element={<PrivateOutlet />}>
+                         <Route path="/Order/Checkout" element={<Checkout/>}>
+                            
+                        </Route>
+
+                        {/* <Route path="/Checkout" element={<Checkout />} /> */}
                         <Route path="/Payment" element={<Payment />} />
 
                         <Route path="/Profile/*" element={<Profile/>}>
