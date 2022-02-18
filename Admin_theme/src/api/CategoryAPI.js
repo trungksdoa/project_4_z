@@ -143,7 +143,7 @@ const RequestfindOne = (url) => {
 const RequestCreate = (url, formdata) => {
     const object_user = {};
 
-    const RequestCreate = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         axiosClient.post(url, formdata, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -171,13 +171,6 @@ const RequestCreate = (url, formdata) => {
                 reject(object_user)
             })
     })
-    toast.promise(
-        RequestCreate, {
-            pending: 'Wating...',
-            success: 'Create successfully 😍😍😍😍',
-            error: 'Create fails 🤯'
-        }
-    )
 }
 
 const CategoryAPI = {
@@ -186,7 +179,7 @@ const CategoryAPI = {
         return RequestAll(url);
     },
     Edit: (id, formdata) => {
-        const url = "category/update/" + id;
+        const url = "/categorys/update/" + id;
         return RequestEdit(url, formdata)
     },
     Delete: (id) => {

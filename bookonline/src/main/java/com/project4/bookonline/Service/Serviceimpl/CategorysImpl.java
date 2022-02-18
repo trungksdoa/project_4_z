@@ -42,5 +42,11 @@ public class CategorysImpl implements com.project4.bookonline.Service.CategorysS
        Catagorys ca = optional.get();
         return ca;
     }
-    
+
+    @Override
+    public Catagorys findByName(String name) {
+        Catagorys exists = CategoryRepository.findByName(name);
+        return exists == null ? null : exists;
+    }
+
 }

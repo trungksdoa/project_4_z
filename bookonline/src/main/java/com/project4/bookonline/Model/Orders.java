@@ -54,8 +54,7 @@ public class Orders implements Serializable {
     private Integer orderid;
     @Basic(optional = false)
     @Column(name = "Order_createddate", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date ordercreateddate;
+    private String ordercreateddate;
     @Basic(optional = false)
     @Column(name = "Order_address", nullable = false, length = 50)
     private String orderaddress;
@@ -86,7 +85,7 @@ public class Orders implements Serializable {
         this.orderid = orderid;
     }
 
-    public Orders(Integer orderid, Date ordercreateddate, String orderaddress, String orderdistrict, String ordercity, int orderstatus) {
+    public Orders(Integer orderid, String ordercreateddate, String orderaddress, String orderdistrict, String ordercity, int orderstatus) {
         this.orderid = orderid;
         this.ordercreateddate = ordercreateddate;
         this.orderaddress = orderaddress;
@@ -103,11 +102,11 @@ public class Orders implements Serializable {
         this.orderid = orderid;
     }
 
-    public Date getOrdercreateddate() {
+    public String getOrdercreateddate() {
         return ordercreateddate;
     }
 
-    public void setOrdercreateddate(Date ordercreateddate) {
+    public void setOrdercreateddate(String ordercreateddate) {
         this.ordercreateddate = ordercreateddate;
     }
 

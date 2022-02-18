@@ -46,12 +46,10 @@ public class Groupdetail implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @Column(name = "Group_createddate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date groupcreateddate;
+    private String groupcreateddate;
     @Basic(optional = false)
     @Column(name = "Group_modifieddate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date groupmodifieddate;
+    private String groupmodifieddate;
     @JoinColumn(name = "Book_id", referencedColumnName = "Books_id")
     @ManyToOne(optional = false)
     private Books bookid;
@@ -66,7 +64,7 @@ public class Groupdetail implements Serializable {
         this.id = id;
     }
 
-    public Groupdetail(Integer id, Date groupcreateddate, Date groupmodifieddate) {
+    public Groupdetail(Integer id, String groupcreateddate, String groupmodifieddate) {
         this.id = id;
         this.groupcreateddate = groupcreateddate;
         this.groupmodifieddate = groupmodifieddate;
@@ -80,19 +78,19 @@ public class Groupdetail implements Serializable {
         this.id = id;
     }
 
-    public Date getGroupcreateddate() {
+    public String getGroupcreateddate() {
         return groupcreateddate;
     }
 
-    public void setGroupcreateddate(Date groupcreateddate) {
+    public void setGroupcreateddate(String groupcreateddate) {
         this.groupcreateddate = groupcreateddate;
     }
 
-    public Date getGroupmodifieddate() {
+    public String getGroupmodifieddate() {
         return groupmodifieddate;
     }
 
-    public void setGroupmodifieddate(Date groupmodifieddate) {
+    public void setGroupmodifieddate(String groupmodifieddate) {
         this.groupmodifieddate = groupmodifieddate;
     }
 

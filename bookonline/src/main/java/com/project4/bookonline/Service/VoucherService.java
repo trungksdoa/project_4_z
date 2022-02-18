@@ -14,6 +14,7 @@ import java.util.List;
 public interface VoucherService {
     public List<Voucher> listVorcher();
     public boolean findOne(String id);
+    public Voucher findOnebyid(String id);
     public Voucher findById(String id);
     public Voucher Create(Voucher voucher);
     public boolean Delete(String id);

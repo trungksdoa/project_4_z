@@ -1,5 +1,6 @@
 package com.project4.bookonline.Service.Serviceimpl;
 
+import com.project4.bookonline.Model.OrderDetail;
 import com.project4.bookonline.Model.Orders;
 import com.project4.bookonline.Repository.OrderDetailRespository;
 import com.project4.bookonline.Service.OrderDetailService;
@@ -18,5 +19,10 @@ public class OrderDetailImpl implements OrderDetailService {
         Orders orderId = new Orders();
         orderId.setOrderid(id);
         return orderService.findAllById(orderId);
+    }
+
+    @Override
+    public OrderDetail Create(OrderDetail orderDetail) {
+        return orderService.save(orderDetail);
     }
 }

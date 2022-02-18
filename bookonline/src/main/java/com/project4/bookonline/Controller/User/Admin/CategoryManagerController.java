@@ -10,25 +10,20 @@ import com.project4.bookonline.Model.Catagorys;
 import com.project4.bookonline.Model.Message_Respones;
 import com.project4.bookonline.Service.CategorysService;
 import com.project4.bookonline.dto.CategoryDTO;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import static jdk.nashorn.internal.objects.NativeError.printStackTrace;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
  * @catagorys PC
  */
 @CrossOrigin(origins = "http://localhost:3006")
@@ -58,31 +53,41 @@ public class CategoryManagerController {
         return new ResponseEntity<Message_Respones<Catagorys>>(setMessage, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/category/create", method = RequestMethod.POST)
-    public ResponseEntity<Message_Respones<Catagorys>> Save(String catagorys_String) {
+    @RequestMapping(value = "/category/create", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    public ResponseEntity<Message_Respones<Catagorys>> Create(String categorys_string) {
         setMessage = new Message_Respones<Catagorys>();
         Catagorys catagorys = new Catagorys();
         CategoryDTO audt = null;
         try {
-            audt = new ObjectMapper().readValue(catagorys_String, CategoryDTO.class);
+            audt = new ObjectMapper().readValue(categorys_string, CategoryDTO.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        catagorys.setCatagoryname(audt.getCategory_name());
-        catagorys.setCatagorydescription(audt.getCategory_description());
+        String msg = "Category exist!";
+        Catagorys exiss = categorysService.findByName(audt.getCategory_name());
+        if (exiss != null) {
+            setMessage.setMessage(msg);
+            //setMessage.setObject(catagoryss1);
+            setMessage.setCode(200);
+            return new ResponseEntity<Message_Respones<Catagorys>>(setMessage, HttpStatus.CONFLICT);
+        } else {
+            catagorys.setCatagoryname(audt.getCategory_name());
+            catagorys.setCatagorydescription(audt.getCategory_description());
 
-        catagorys.setCatagorycreateddate(dtf.format(now));
-        catagorys.setCatagorymodifieddate(dtf.format(now));
-        Catagorys catagoryss1 = categorysService.Create(catagorys);
-        String msg = "Create success";
-        setMessage.setMessage(msg);
-        setMessage.setObject(catagoryss1);
-        setMessage.setCode(200);
-        return new ResponseEntity<Message_Respones<Catagorys>>(setMessage, HttpStatus.OK);
+            catagorys.setCatagorycreateddate(dtf.format(now));
+            catagorys.setCatagorymodifieddate(dtf.format(now));
+            Catagorys catagoryss1 = categorysService.Create(catagorys);
+             msg = "Create success";
+            setMessage.setMessage(msg);
+            setMessage.setObject(catagoryss1);
+            setMessage.setCode(200);
+            return new ResponseEntity<Message_Respones<Catagorys>>(setMessage, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/category/find/{id}", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Catagorys>> findOne(@PathVariable int id) {
+
         setMessage = new Message_Respones<Catagorys>();
         catagorys = new Catagorys();
         catagorys = categorysService.findOne(id);
@@ -96,7 +101,6 @@ public class CategoryManagerController {
     @RequestMapping(value = "/category/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Message_Respones<Catagorys>> Delete(@PathVariable int id) {
         setMessage = new Message_Respones<Catagorys>();
-
         Catagorys catagorys = categorysService.findOne(id);
         categorysService.Delete(id);
 
@@ -108,13 +112,13 @@ public class CategoryManagerController {
 
     @CrossOrigin(origins = "http://localhost:3006")
     @RequestMapping(value = "/categorys/update/{id}", method = RequestMethod.PUT, consumes = {"multipart/form-data"})
-    public ResponseEntity<Message_Respones<Catagorys>> Update(@PathVariable String id, String author_String) {
+    public ResponseEntity<Message_Respones<Catagorys>> Update(@PathVariable String id, String categorys_string) {
         setMessage = new Message_Respones<Catagorys>();
         catagorys = new Catagorys();
         CategoryDTO audt = null;
 
         try {
-            audt = new ObjectMapper().readValue(author_String, CategoryDTO.class);
+            audt = new ObjectMapper().readValue(categorys_string, CategoryDTO.class);
 
             catagorys = categorysService.findOne(Integer.valueOf(id));
             String msg = "Update success";

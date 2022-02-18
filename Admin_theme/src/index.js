@@ -23,6 +23,8 @@ import Books from './Components/Books/index.jsx';
 
 import Category from './Components/Category/index.jsx';
 
+import CategoryEdit from './Components/Category/Form_edit_page.jsx';
+
 import Customers from './Components/Customer/index.jsx';
 
 import Customer_detail from './Components/Customer/Customer_detail.jsx'
@@ -254,6 +256,7 @@ ReactDOM.render(
               <Route path="/admin/book/create" element={<BookCreate />} />
               <Route path="/admin/Category" element={<Category/>} />
               <Route path="/admin/category/create" element={<CategoryCreate />} />
+              <Route path="/admin/category/edit/:id" element={<CategoryEdit />} />
             </Route>
 
             <Route element={<RolesAuthorOutlet />}>

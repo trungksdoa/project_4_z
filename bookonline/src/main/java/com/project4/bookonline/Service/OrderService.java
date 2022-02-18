@@ -12,7 +12,7 @@ public interface OrderService {
 
     public List<Orders> listAll();
 
-    public void Create(Orders orders);
+    public Orders Create(Orders orders);
 
     public Orders update_status(int id,Orders orders);
 

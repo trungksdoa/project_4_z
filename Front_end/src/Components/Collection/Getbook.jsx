@@ -1,6 +1,7 @@
 import React from 'react';
 import PropType from 'prop-types';
-
+import { useState } from 'react';
+import { CartProvider, useCart } from "react-use-cart";
 Getbook.PropType = {
 	bookList: PropType.array
 };
@@ -9,12 +10,22 @@ Getbook.defaultProps = {
 };
 function Getbook(props) {
 	//const { bookList } = props;
-    const { bookList, onAdd } = props;
+    const { bookList } = props;
+	const { addItem } = useCart();
+	function onClick(props){
+		const {booksid,bookprice,imageLink,bookname} =props;
+		const newObject = {id:"", price:0,img:"",name:""};
+		newObject.id = booksid;
+		newObject.price = bookprice;
+		newObject.img = imageLink;
+		newObject.name = bookname;
+		addItem(newObject);
+	}
 	return (
         <div className="tg-productgrid">
             
 			{bookList.map((post) => (
-                <div className="col-xs-6 col-sm-6 col-md-4 col-lg-3">
+                <div className="col-xs-6 col-sm-6 col-md-4 col-lg-3" >
 				<div className="tg-postbook">
 					<figure className="tg-featureimg">
 						<div className="tg-bookimg">
@@ -54,10 +65,11 @@ function Getbook(props) {
 							<ins key={post.booksid} >${post.bookprice}</ins>
 							
 						</span>
-						<a className="tg-btn tg-btnstyletwo" href="javascript:void(0);">
+						<a className="tg-btn tg-btnstyletwo" >
 							<i className="fa fa-shopping-basket" />
-							<em onClick={() => onAdd(bookList)}>Add To Basket</em>
-						</a>
+							{/* <em onClick={() => onAdd(post)}>Add To Basket</em> */}
+							<em key={post.booksid} onClick={() => onClick(post)}>Add To Basket</em>
+						</a>	
 					</div>
 				</div>
                 </div>

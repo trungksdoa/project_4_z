@@ -10,7 +10,6 @@ import com.project4.bookonline.Service.VoucherService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,12 +29,19 @@ public class VoucherImpl implements VoucherService {
 
     @Override
     public boolean findOne(String id) {
+
+
         try {
-             voucherRepository.findById(id).get();
+              voucherRepository.findById(id).get();
              return true;
         }catch(NoSuchElementException ex){
             return false;
         }
+    }
+
+    @Override
+    public Voucher findOnebyid(String id) {
+        return voucherRepository.findById(id).get();
     }
 
     @Override

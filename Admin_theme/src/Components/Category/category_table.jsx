@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const Categorytable = (props) => {
+const Categorytable = (props) => { 
     const { categorys, onViewDetail, onDelete, onEdit } = props;
     // console.log(categorys)
     function OnViewDetail(index) {
@@ -38,10 +38,12 @@ const Categorytable = (props) => {
                     {categorys.length != 0 ? categorys.map((category, index) => {
 
                         return (
+                            
                             <tr key={index}>
+                                
                                 <td>
                                     <div className="d-flex px-3 py-1">
-                                        <p className="text-xs font-weight-bold mb-0">{category.categoryid}</p>
+                                        <p className="text-xs font-weight-bold mb-0">{category.catagoryid}</p>
                                     </div>
                                 </td>
                                 <td>
@@ -54,14 +56,14 @@ const Categorytable = (props) => {
                                     {category.catagorymodifieddate}
                                 </td>
                                 <td className="align-middle text-center">
-                                    <a style={{ cursor: 'pointer' }} onClick={() => OnDelete(index)}>
+                                    <a style={{ cursor: 'pointer' }} onClick={() => OnDelete(category.catagoryid)}>
                                         <span style={{ fontSize: "0.6em", color: "red" }}>
                                             <i className="fas fa-trash-alt fa-2x" />
                                         </span>
                                     </a>
                                 </td>
                                 <td className="align-middle" style={{ textAlign: 'left' }}>
-                                    <a style={{ cursor: 'pointer' }} onClick={() => OnViewDetail(category.categoryid)}><i className="fa fa-eye" /></a>
+                                    <a style={{ cursor: 'pointer' }} onClick={() => OnViewDetail(category.catagoryid)}><i className="fa fa-eye" /></a>
                                 </td>
                             </tr>
                         )

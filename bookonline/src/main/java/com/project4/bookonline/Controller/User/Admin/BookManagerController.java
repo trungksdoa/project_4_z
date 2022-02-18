@@ -6,11 +6,9 @@ package com.project4.bookonline.Controller.User.Admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project4.bookonline.Model.Authors;
-import com.project4.bookonline.Model.Books;
-import com.project4.bookonline.Model.Message_Respones;
-import com.project4.bookonline.Model.PDetail;
+import com.project4.bookonline.Model.*;
 import com.project4.bookonline.Service.BooksService;
+import com.project4.bookonline.Service.GDetailService;
 import com.project4.bookonline.Service.PDetailService;
 import com.project4.bookonline.UploadService.FileStorageService;
 import com.project4.bookonline.dto.BookDTO;
@@ -20,12 +18,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
+import com.project4.bookonline.dto.GDetailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +51,8 @@ public class BookManagerController {
 
     @Autowired
     BooksService bookService;
+    @Autowired
+    GDetailService gDetailService;
 
     @RequestMapping(value = "/book/findAll", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Books>> findAll() {
@@ -72,7 +71,7 @@ public class BookManagerController {
     }
 
     @RequestMapping(value = "/book/create", method = RequestMethod.POST, consumes = {"multipart/form-data"})
-    public ResponseEntity<Message_Respones<BookDTO>> CreateBook(@RequestParam("file") MultipartFile file, String book_String) {
+    public void CreateBook(@RequestParam("file") MultipartFile file, String book_String) {
         uuid = UUID.randomUUID();
         bid = uuid.toString();
         setMessage = new Message_Respones<BookDTO>();
@@ -86,39 +85,53 @@ public class BookManagerController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        String fileName = fileStorageService.storeBookNameFile(file);
-        // insert pdetail
-        PDetail p = new PDetail();
-        p.setDimensions(bookdto.getDimensions());
-        p.setImageLink(fileName);
-        p.setIllustrationsnote(bookdto.getIllustrationsnote());
-        p.setLanguage(bookdto.getLanguage());
-        p.setPages(bookdto.getPages());
-        p.setFormat(bookdto.getFormat());
-        PDetail crep = pDetailService.Create(p);
+        //
+//        String fileName = fileStorageService.storeBookNameFile(file);
+//        // insert pdetail
+//        PDetail p = new PDetail();
+//        p.setDimensions(bookdto.getDimensions());
+//        p.setImageLink(fileName);
+//        p.setIllustrationsnote(bookdto.getIllustrationsnote());
+//        p.setLanguage(bookdto.getLanguage());
+//        p.setPages(bookdto.getPages());
+//        p.setFormat(bookdto.getFormat());
+//        PDetail crep = pDetailService.Create(p);
+//        // end insert//
+//        // insert book//
+//        Authors authors = new Authors();
+//        PDetail pdetail = new PDetail();
+//        Books b = new Books();
+//
+//
+//        authors.setAuthorid(bookdto.getAuthorid());
+//        pdetail.setPdetailid(crep.getPdetailid());
+//        b.setBooksid(bid);
+//        b.setAmounts(bookdto.getAmounts());
+//        b.setAuthorid(authors);
+//        b.setBookname(bookdto.getBookname());
+//        b.setBookprice(bookdto.getBookprice());
+//        b.setBookdescription(bookdto.getBookdescription());
+//        b.setBookreleasedate(bookdto.getBookreleasedate());
+//        b.setPDetailid(pdetail);
+//        b.setStatus(bookdto.getStatus());
+//        b.setBookcreateddate(dtf.format(now));
+//        b.setBookmodifieddate(dtf.format(now));
+//
+//        Books creb = bookService.Create(b);
+//        for (GDetailDTO dto : bookdto.getGroupdetailDto()) {
+//            Groupdetail groupdetail = new Groupdetail();
+//            Catagorys catagorys = new Catagorys();
+//            catagorys.setCatagoryid(dto.getCatagory());
+//            groupdetail.setCatagoryid(catagorys);
+//            groupdetail.setBookid(creb);
+//            groupdetail.setGroupcreateddate(dtf.format(now));
+//            groupdetail.setGroupmodifieddate(dtf.format(now));
+//            gDetailService.create(groupdetail);
+//        }
         // end insert//
-        // insert book//
-        Authors authors = new Authors();
-        PDetail pdetail = new PDetail();
-        Books b = new Books();
-        authors.setAuthorid(bookdto.getAuthorid());
-        pdetail.setPdetailid(crep.getPdetailid());
-        b.setBooksid(bid);
-        b.setAmounts(bookdto.getAmounts());
-        b.setAuthorid(authors);
-        b.setBookname(bookdto.getBookname());
-        b.setBookprice(bookdto.getBookprice());
-        b.setBookdescription(bookdto.getBookdescription());
-        b.setBookreleasedate(bookdto.getBookreleasedate());
-        b.setPDetailid(pdetail);
-        b.setStatus(bookdto.getStatus());
-        b.setBookcreateddate(dtf.format(now));
-        b.setBookmodifieddate(dtf.format(now));
-        Books creb = bookService.Create(b);
-        // end insert//
-        setMessage.setMessage(msg);
-        setMessage.setObject(bdto);
-        setMessage.setCode(200);
-        return new ResponseEntity<Message_Respones<BookDTO>>(setMessage, HttpStatus.OK);
+//        setMessage.setMessage(msg);
+//        setMessage.setObject(bdto);
+//        setMessage.setCode(200);
+//        return new ResponseEntity<Message_Respones<BookDTO>>(setMessage, HttpStatus.OK);
     }
 }

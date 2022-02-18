@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css'
+import { CartProvider } from "react-use-cart";
 
 
 import reportWebVitals from './reportWebVitals';
 
 import AppRouter from './AppRouter';
+import Getbook from './Components/Collection/Getbook';
 ReactDOM.render(
   <React.StrictMode>
-      <AppRouter />
+    <CartProvider>
+    <AppRouter />
+    </CartProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

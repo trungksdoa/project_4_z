@@ -33,7 +33,7 @@ const Page2 = () => {
         orderid: 3,
         ordernote: "asdsa",
         orderstatus: 1,
-        ordervoucher: {},
+        ordervoucher: {vouchervalue: 0},
         userid: {},
         orderDetailCollection: []
     }
@@ -42,7 +42,7 @@ const Page2 = () => {
     const { pathname } = useLocation();
     const [modalValue, setModalValue] = useState([]);
     const [open, setOpen] = useState(false);
-
+    
     const handleClose = () => setOpen(false);
     //Cookie
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
@@ -85,6 +85,7 @@ const Page2 = () => {
                             </thead>
                             <tbody>
                                 {modalValue.map((order, index) => {
+                                    
                                     // console.log(order)
                                     const { quantity, total, detailid, bookid } = order
                                     return (
@@ -143,12 +144,13 @@ const Page2 = () => {
                     {list.length !== 0 ? list.map((value, index) => {
                         const status = value.orderstatus === 1 ? "Confirm" : (value.orderstatus === 2 ? "Pending" : "Cancel")
                         const sumtotal = value.orderDetailCollection.reduce((a, b) => a + (b["total"] || 0), 0);
+                        console.log(value);
                         return (
                             <tr key={value.orderid}>
                                 <td>{value.orderid}</td>
-                                <td style={{ padding: 10 }}><span style={status === "Confirm" ? { color: 'green' } : (status === "Pending" ? { color: 'black' } : { color: "red" })}>{status}</span></td>
+                                <td style={{ padding: 10 }}><span style={status === "Confirm" ? { color: 'green' } : (status === "Pending" ? { color: 'purple' } : { color: "red" })}>{status}</span></td>
                                 <td>{new Date(value.ordercreateddate).toString()}</td>
-                                <td>{value.ordervoucher.vouchertitle}</td>
+                                <td>{value.ordervoucher !== null && ( value.ordervoucher.vouchertitle)}</td>
                                 <td>
                                     {value.orderaddress + ", " + value.ordercity + ", " + value.orderdistrict}
                                 </td>
@@ -156,7 +158,8 @@ const Page2 = () => {
                                     {value.ordernote}
                                 </td>
                                 <td>
-                                    {currency.formatToCurrency(sumtotal)}
+                                    {value.ordervoucher !== null ? (sumtotal-(sumtotal*value.ordervoucher.vouchervalue)/100) : (sumtotal)}
+                                   {/* {currency.formatToCurrency(sumtotal)}{sumtotal-(sumtotal*value.ordervoucher.vouchervalue)/100} */}
                                 </td>
                                 <td>
                                     <button onClick={() => ViewDetails(value.orderid)}>Show product</button>

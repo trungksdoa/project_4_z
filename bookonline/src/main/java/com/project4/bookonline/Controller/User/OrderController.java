@@ -1,29 +1,48 @@
 package com.project4.bookonline.Controller.User;
 
 
+import com.project4.bookonline.dto.OrderDetailDTO;
 import com.project4.bookonline.Model.Authors;
 import com.project4.bookonline.Model.Orders;
 import com.project4.bookonline.Model.Message_Respones;
 import com.project4.bookonline.Service.AuthorService;
 import com.project4.bookonline.Service.OrderService;
+import com.project4.bookonline.dto.OrderDTO;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.project4.bookonline.Model.Books;
+import com.project4.bookonline.Model.OrderDetail;
+import com.project4.bookonline.Model.Users;
+import com.project4.bookonline.Model.Voucher;
+import com.project4.bookonline.Service.OrderDetailService;
+import com.project4.bookonline.Service.UserService;
+
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class OrderController {
-
+    OrderDTO orderDTO;
+    OrderDetailDTO orderDetailDTO;
+    String msg;
+    String respone;
+    Message_Respones<OrderDTO> setMessagess;
     Orders order;
     List<Orders> orders;
     @Autowired
     OrderService orderService;
-
+    @Autowired
+    UserService userServide;
+    @Autowired
+    OrderDetailService orderDetailService;
     Message_Respones<Orders> setMessage = new Message_Respones<Orders>();
 
     @RequestMapping(value = "/orders/findAll", method = RequestMethod.GET)
@@ -55,12 +74,58 @@ public class OrderController {
         return new ResponseEntity<Message_Respones<Orders>>(setMessage, HttpStatus.OK);
     }
 
+    public OrderDTO getOrderDTO(Orders orders) {
+        orderDTO = new OrderDTO();
+        return orderDTO;
+    }
 
     @RequestMapping(value = "/orders/create", method = RequestMethod.POST)
-    public ResponseEntity<Object> create(@RequestBody Orders orders) {
-        orderService.Create(orders);
-        return new ResponseEntity<Object>(1, HttpStatus.OK);
+    public ResponseEntity<Message_Respones<OrderDTO>> Create(@RequestBody OrderDTO orderDTO) {
+        setMessagess = new Message_Respones<OrderDTO>();
+        //--- Set Date time --- 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        //--- End---
+        // insert pdetail
+        Orders order = new Orders();
+        Users users = new Users();
+        users.setUserid(orderDTO.getUserid());
+        order.setUserid(users);
+        if(!orderDTO.getOrdervoucher().equals("")){
+            Voucher vcher = new Voucher();
+            vcher.setVoucherid(orderDTO.getOrdervoucher());
+            order.setOrdervoucher(vcher);
+        }
+        order.setOrderaddress(orderDTO.getOrderaddress());
+        order.setOrdercity(orderDTO.getOrdercity());
+        order.setOrdernote(orderDTO.getOrdernote());
+        order.setOrderdistrict(orderDTO.getOrderdistrict());
+        order.setOrdercreateddate(dtf.format(now));
+        order.setOrderstatus(2);
+        
+        Orders crep = orderService.Create(order);
+        // end insert//
+        // insert book//
+        //Authors authors = new Authors();
+        for (OrderDetailDTO orderdetail : orderDTO.getOrderDetailDto()) {
+            OrderDetail orderDetail = new OrderDetail();
+            Books b = new Books();
+            b.setBooksid(orderdetail.getBookid());
+            orderDetail.setBookid(b);
+            orderDetail.setTotal(orderdetail.getTotal());
+            orderDetail.setOrderid(crep);
+            orderDetail.setQuantity(orderdetail.getQuantity());
+            orderDetail.setDetailid(crep.getOrderid());
+            orderDetailService.Create(orderDetail);
+        }
+        
+        // end insert//
+        msg ="Success";
+        setMessagess.setMessage(msg);
+        setMessagess.setCode(200);
+        return new ResponseEntity<Message_Respones<OrderDTO>>(setMessagess, HttpStatus.OK);
     }
+    
 
 
 }
