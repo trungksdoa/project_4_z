@@ -105,7 +105,7 @@ public class FileStorageService {
     public String storeBookNameFile(MultipartFile file) {
         // Normalize file name
         RandomString a = new RandomString();
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename() + "Books_");
+        String fileName = StringUtils.cleanPath("Books_" +file.getOriginalFilename());
 
         try {
             // Check if the file's name contains invalid characters

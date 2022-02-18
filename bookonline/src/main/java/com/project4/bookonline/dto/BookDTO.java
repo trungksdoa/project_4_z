@@ -32,7 +32,7 @@ public class BookDTO {
     private int amounts;
     private int authorid;
 
-    private List<GDetailDTO> groupdto;
+    private List<String> groupdto;
 
 
     

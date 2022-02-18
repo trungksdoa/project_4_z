@@ -67,6 +67,10 @@ import CategoryCreate from './Components/Category/Form_create_page.jsx'
 
 import Wishlist from './Components/Wishlist/index.jsx';
 
+import Form_Update_Pdetails from './Components/Books/Form_Update_Pdetail.jsx';
+
+import Form_Update_Books from './Components/Books/Form_Update_book.jsx';
+
 import { useCookies } from 'react-cookie';
 
 
@@ -252,9 +256,11 @@ ReactDOM.render(
             </Route>
 
             <Route element={<RolesProductOutlet />}>
+              <Route path="/admin/book/pdetail/:id" element={<Form_Update_Pdetails />} />
+              <Route path="/admin/book/:id" element={<Form_Update_Books />} />
               <Route path="/admin/book" element={<Books />} />
               <Route path="/admin/book/create" element={<BookCreate />} />
-              <Route path="/admin/Category" element={<Category/>} />
+              <Route path="/admin/Category" element={<Category />} />
               <Route path="/admin/category/create" element={<CategoryCreate />} />
               <Route path="/admin/category/edit/:id" element={<CategoryEdit />} />
             </Route>

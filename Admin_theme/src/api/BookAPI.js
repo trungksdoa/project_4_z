@@ -120,6 +120,7 @@ const RequestfindOne = (url) => {
     return new Promise((resolve, reject) => {
         axiosClient.get(url)
             .then(response => {
+                console.log(response)
                 object_user.code = response.code;
                 object_user.msg = response.msg;
                 object_user.data = response.data_object;
@@ -199,6 +200,10 @@ const BookAPI = {
     },
     FindOne: (id) => {
         const url = "book/find/" + id;
+        return RequestfindOne(url);
+    },
+    FindOnePdetails: (id) => {
+        const url = "/book/pdetails/findOne/"+id;
         return RequestfindOne(url);
     },
     Update_Image: (id, formdata) => {

@@ -133,7 +133,12 @@ public class Groupdetail implements Serializable {
 
     @Override
     public String toString() {
-        return "com.project4.bookonline.Model.Groupdetail[ id=" + id + " ]";
+        return "Groupdetail{" +
+                "id=" + id +
+                ", groupcreateddate='" + groupcreateddate + '\'' +
+                ", groupmodifieddate='" + groupmodifieddate + '\'' +
+                ", bookid=" + bookid +
+                ", catagoryid=" + catagoryid +
+                '}';
     }
-    
 }
