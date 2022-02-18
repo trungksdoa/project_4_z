@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect,useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { useCookies } from 'react-cookie';
 import ProfileAPI from '../../api/profileAPI';
 import PropTypes from 'prop-types'
@@ -11,6 +11,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import "./App.css";
 const Page1 = () => {
+
+  let htmlDom = useRef()
+  window.onload = function Scrolls() {
+    window.scrollTo({ behavior: 'smooth', top: htmlDom.current.offsetTop })
+  }
   //Cookie
   const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
   //Check is loggin
@@ -126,7 +131,7 @@ const Page1 = () => {
   };
   return (
     <>
-      <div className="card h-100">
+      <div className="card h-100" ref={htmlDom}>
         <div className="card-body">
           <div className="row gutters">
             <form onSubmit={handleSubmit}>

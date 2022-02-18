@@ -106,7 +106,7 @@ public class WishlistController {
 
     @RequestMapping(value = "/wishlist/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Message_Respones<Wishlist>> save(@RequestBody WishlistDTO wishlistDTO) {
-        wishlists = new ArrayList<>();
+        setMessage = new Message_Respones<Wishlist>();
         Wishlist converter = wishlistDTO.Convert(wishlistDTO);
         wishlist = wishlistService.save(converter);
         String msg = "Save success";

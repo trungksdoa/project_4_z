@@ -1,9 +1,31 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import Navbar from '../Navbar/navbar.jsx';
-import Sidebar from '../Sidebar/sidebar.jsx';
+import React, { useState, useMemo, useLayoutEffect } from 'react';
 import CustomerApi from '../../api/CustomerApi';
+import { Bar } from 'react-chartjs-2';
+import rankAPI from "../../api/RankAPI";
+import Bar_comp from './BarChart';
+import { UserData } from "./Data";
 
+export const options = {
+    indexAxis: 'y',
+    elements: {
+        bar: {
+            borderWidth: 2,
+        },
+    },
+    responsive: true,
+    plugins: {
+        legend: {
+            position: 'right',
+        },
+        title: {
+            display: true,
+            text: 'Chart.js Horizontal Bar Chart',
+        },
+    },
+};
 const Dashboard = () => {
+
+    //=----------------------------------
     const [countCustomer, setCounts] = useState(0);
     let body = document.getElementsByTagName("body")[0]
         , className = "g-sidenav-pinned";
@@ -19,10 +41,43 @@ const Dashboard = () => {
             console.log('failed to fetch List_customer list', error);
         }
     }
-
-    useEffect(() => {
+    const [productData, setProductData] = useState([]);
+    const [userData, setUserData] = useState({});
+    const fetchProductRank = async () => {
+        await rankAPI.getAll().then((response) => {
+            setProductData(response.data.sort())
+        }).catch((error) => {
+            alert(error.msg)
+        })
+    }
+    useLayoutEffect(() => {
+        fetchProductRank();
+    }, [])
+    useLayoutEffect(() => {
         fetchCustomers();
     }, [])
+
+    useLayoutEffect(() => {
+        setUserData({
+            labels: productData.map((data) => data.book_name),
+            datasets: [
+                {
+                    label: "Product Rank",
+                    data: productData.map((data) => data.total_review),
+                    backgroundColor: [
+                        "rgba(75,192,192,1)",
+                        "#ecf0f1",
+                        "#50AF95",
+                        "#f3ba2f",
+                        "#2a71d0",
+                    ],
+                    borderColor: "black",
+                    borderWidth: 2,
+                },
+            ],
+        })
+    }, [productData])
+    console.log(userData)
     return (
         <>
             <div className="container-fluid py-4">
@@ -74,6 +129,11 @@ const Dashboard = () => {
                                 <p className="mb-0"><span className="text-success text-sm font-weight-bolder">+5% </span>than yesterday</p>
                             </div>
                         </div>
+                    </div>
+                    <div className="col-xl-12 col-sm-6">
+                        {productData.length !== 0 && (
+                            <Bar_comp options={options} chartData={userData} />
+                        )}
                     </div>
                 </div>
             </div>

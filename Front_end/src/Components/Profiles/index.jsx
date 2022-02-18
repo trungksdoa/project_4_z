@@ -1,13 +1,24 @@
 import {
     Outlet,
 } from 'react-router-dom';
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useRef } from "react";
+import { Link, useLocation, useNavigate, useOutlet } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import "./App.css";
 //End page1
 import Profile_sidebar from './Profile_sidebar.jsx'
 
 const Profile = () => {
+    const { pathname } = useLocation();
+    const Navigate = useNavigate();
+
+
+    const Checks = () => {
+        if ("/Profile/" === pathname) {
+            window.location.href = ("/Profile/setting")
+        }
+    }
+    Checks();
     return (
         <>
             <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index="-100" data-appear-top-offset="600" data-parallax="scroll" data-image-src="images/parallax/bgparallax-07.jpg">
@@ -28,10 +39,10 @@ const Profile = () => {
             <main id="tg-main" className="tg-main tg-haslayout">
                 <div className="container">
                     <div className="row profile">
-                        <Profile_sidebar/>
+                        <Profile_sidebar />
                         <div className="col-md-9">
                             <div className="profile-content">
-                                <Outlet/>
+                                <Outlet />
                             </div>
                         </div>
                     </div>

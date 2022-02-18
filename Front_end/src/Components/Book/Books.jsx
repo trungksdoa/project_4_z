@@ -26,27 +26,7 @@ const handleOnClick = {
     }
 }
 const Book = ({ booksid, bookname, pdetailid, bookprice, bookdescription, bookreleasedate, status, amounts, author, addWishlist, removeWishlist, changeAction }) => {
-    const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
 
-    function handleAddWishlist() {
-        handleOnClick.addToWish(auth, cookies.loggin.userID, booksid);
-    }
-    //const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-    const [wishlistExist, setSWishlistExist] = useState({});
-    // const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
-    async function fetchData() {
-        if (auth) {
-            await WishlistAPI.getByBookId(cookies.loggin.userID, booksid).then((wishlist) => {
-                setSWishlistExist(wishlist.data == null ? {} : wishlist.data);
-            }).catch((error) => {
-                alert(error.msg);
-            })
-        }
-    }
-    useLayoutEffect(() => {
-        fetchData();
-    }, [cookies, changeAction])
     return (
         <div className="item">
             <div className="tg-postbook">
@@ -55,17 +35,6 @@ const Book = ({ booksid, bookname, pdetailid, bookprice, bookdescription, bookre
                         <div className="tg-frontcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
                         <div className="tg-backcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
                     </div>
-                    {Object.keys(wishlistExist).length !== 0 ? (
-                        <a className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
-                            <span>Already in wishlist</span>
-                        </a>
-                    ) : (
-                        <a className="tg-btnaddtowishlist" onLCick={handleAddWishlist} style={{ cursor: 'pointer' }}>
-                            <i className="icon-heart" />
-                            <span>add to wishlist</span>
-                        </a>
-                    )}
-
                 </figure>
                 <div className="tg-postbookcontent">
                     <ul className="tg-bookscategories">
@@ -109,7 +78,6 @@ const FeatureBook_Author = ({ booksid, pdetailid, bookname, wishlists, authorid,
             addWishlist(bookId)
         }
     }
-    console.log(wishlists)
     return (
         <div className="col-xs-6 col-sm-6 col-md-4 col-lg-3">
             <div className="tg-postbook">
@@ -171,7 +139,6 @@ FeatureBook_Author.propTypes = {
 };
 
 FeatureBook_Author.defaultProps = {
-    wishlists: [],
     wishlists: [],
     addWishlist: null
 };

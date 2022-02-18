@@ -2,11 +2,7 @@ import React from 'react';
 import { useLayoutEffect, useState, useContext } from 'react';
 import { Book } from '../Book/Books.jsx';
 import BookAPI from '../../api/BookAPI.js';
-import { data } from './arrays';
 import PropTypes from 'prop-types';
-import OwlCarousel from 'react-owl-carousel';
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
 const Sectionspace = ({ handleAddWishlist, action }) => {
 	const [ BookList, setBookList ] = useState([]);
 

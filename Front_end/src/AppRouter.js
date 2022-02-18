@@ -56,53 +56,61 @@ function PrivateOutlet() {
 }
 
 const AppRouter = () => {
-	return (
-		<div id="tg-wrapper" className="tg-wrapper tg-haslayout">
-			<BrowserRouter>
-				<Header />
-				<Routes>
-					{' '}
-					{/* <Route path="/" element={<Authsos />}></Authsos> */} <Route path="/*" element={<Error_404 />} />
-					<Route exact path="/" element={<Home />} />
-					<Route
-						path="/Login"
-						element={
-							<ProtectLogin>
-								<Login />
-							</ProtectLogin>
-						}
-					/>
-					<Route
-						path="/Register"
-						element={
-							<ProtectLogin>
-								<Register />
-							</ProtectLogin>
-						}
-					/>
-					<Route path="/author" element={<Author />} />
-					<Route path="/author/:authorId" element={<Author_detail />} />
-					<Route path="/Book/:id" element={<Book_detail />} />
-					<Route path="/Cart" element={<Cart />} />
-					<Route path="/Collection" element={<Collection />} />
-					<Route path="/Contact" element={<Contact />} />
-					<Route path="/Forgetpassword" element={<ForgetPassword />} />{' '}
-					<Route path="/Order/Checkout" element={<Checkout />} />
-					{/* //need protect */}{' '}
-					<Route element={<PrivateOutlet />}>
-						<Route path="/Payment" element={<Payment />} />
+    return (
+        <div id="tg-wrapper" className="tg-wrapper tg-haslayout">
+            <BrowserRouter>
+                <Header />
+                <Routes>
+                    {/* <Route path="/" element={<Authsos />}></Authsos> */}
+                    <Route path="/*" element={<Error_404 />} />
 
-						<Route path="/Profile/" element={<Profile />}>
-							<Route path="setting" element={<Overview />} />
-							<Route path="Order" element={<Order_tracking />} />
-							<Route path="Wishlist" element={<Wishlist />} />{' '}
-						</Route>
-					</Route>{' '}
-				</Routes>{' '}
-				<ToastContainer />
-				<Footer />
-			</BrowserRouter>{' '}
-		</div>
-	);
-};
+                    <Route exact path="/" element={<Home />} />
+
+                    <Route path="/Login" element={
+                        <ProtectLogin>
+                            <Login />
+                        </ProtectLogin>
+                    } />
+
+                    <Route path="/Register" element={
+                        <ProtectLogin>
+                            <Register />
+                        </ProtectLogin>
+                    } />
+
+                    <Route path="/author" element={<Author />} />
+
+                    <Route path="/author/:authorId" element={<Author_detail />} />
+
+                    <Route path="/Book/:id" element={<Book_detail />} />
+
+                    <Route path="/Cart" element={<Cart />} />
+
+                    <Route path="/Collection" element={<Collection />} />
+
+                    <Route path="/Contact" element={<Contact />} />
+
+                    <Route path="/Forgetpassword" element={<ForgetPassword />} />
+
+                    {/* //need protect */}
+                    <Route element={<PrivateOutlet />}>
+                        <Route path="/Payment" element={<Payment />} />
+
+                        <Route path="/Profile/*" element={<Profile/>}>
+                            <Route path="setting" element={<Overview />} />
+
+                            <Route path="Order" element={<Order_tracking />} />
+
+                            <Route path="Wishlist" element={<Wishlist />} />
+                        </Route>
+
+
+                    </Route>
+                </Routes>
+                <ToastContainer />
+                <Footer />
+            </BrowserRouter>
+        </div>
+    )
+}
 export default AppRouter;
