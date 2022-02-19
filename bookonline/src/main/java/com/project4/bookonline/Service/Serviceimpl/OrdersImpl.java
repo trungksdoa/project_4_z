@@ -62,4 +62,14 @@ public class OrdersImpl implements OrderService {
         usersId.setUserid(id);
         return orderRepository.loadDataByUserId(usersId);
     }
+
+    @Override
+    public List<Orders> loadDataByDay(String now) {
+        return orderRepository.loadDataByDay(now);
+    }
+
+    @Override
+    public List<Orders> loadDataByMonth(String now) {
+        return orderRepository.loadDataByMonth(now);
+    }
 }

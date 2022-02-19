@@ -37,5 +37,12 @@ public class GDetailImpl implements GDetailService{
         Groupdetail gr= optional.get();
         return gr;
     }
+
+    @Override
+    public List<Groupdetail> findByCategory(int id) {
+        return GDetailRespository.findByCategory(id);
+    }
+
+ 
     
 }

@@ -15,4 +15,6 @@ public interface GDetailService {
     public List<Groupdetail> findAll();
     public Groupdetail create(Groupdetail groupdetail);
     public Groupdetail findOne(int id);
+    public List<Groupdetail> findByCategory(int id);
+            
 }
