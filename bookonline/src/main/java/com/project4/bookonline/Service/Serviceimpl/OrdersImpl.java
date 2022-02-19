@@ -1,6 +1,7 @@
 package com.project4.bookonline.Service.Serviceimpl;
 
 import com.project4.bookonline.Model.Authors;
+import com.project4.bookonline.Model.OrderDetail;
 import com.project4.bookonline.Model.Orders;
 import com.project4.bookonline.Model.Users;
 import com.project4.bookonline.Repository.OrderRepository;
@@ -71,5 +72,15 @@ public class OrdersImpl implements OrderService {
     @Override
     public List<Orders> loadDataByMonth(String now) {
         return orderRepository.loadDataByMonth(now);
+    }
+
+    @Override
+    public List<Orders> loadDataByYear(String now) {
+        return orderRepository.loadDataByYear(now);
+    }
+
+    @Override
+    public List<OrderDetail> loadtotalprice(int id) {
+        return orderRepository.loadtotalprice(id);
     }
 }

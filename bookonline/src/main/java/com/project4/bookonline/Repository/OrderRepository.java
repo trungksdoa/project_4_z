@@ -1,6 +1,7 @@
 package com.project4.bookonline.Repository;
 
 
+import com.project4.bookonline.Model.OrderDetail;
 import com.project4.bookonline.Model.Orders;
 import com.project4.bookonline.Model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,5 +25,9 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     // Select All Order Month
     @Query(value = "SELECT * FROM Orders WHERE MONTH(Order_createddate) = MONTH(:now) and YEAR(Order_createddate) = YEAR(:now) and Order_status = 1 ", nativeQuery = true)
     public List<Orders> loadDataByMonth(@Param("now") String now);
+    @Query(value = "SELECT * FROM Orders WHERE YEAR(Order_createddate) = YEAR(:now) and Order_status = 1 ", nativeQuery = true)
+    public List<Orders> loadDataByYear(@Param("now") String now);
+    @Query(value = "SELECT * FROM Order_Detail WHERE Order_id =:order_id", nativeQuery = true)
+    public List<OrderDetail> loadtotalprice(@Param("order_id") int id);
 }
 
