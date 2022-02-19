@@ -6,46 +6,71 @@ import Getbook from './Getbook.jsx';
 import Getcategory from './Getcategory.jsx';
 import AddToWishlist from '../FolderAction/AddToWishlist';
 import { useCookies } from 'react-cookie';
+import { CartProvider, useCart } from "react-use-cart";
+import { toast } from 'react-toastify';
 
 const Collection = () => {
 	//const [book, setBooks] = useState({ booksid:"", bookname: "", bookprice: "", bookdescription: "", bookreleasedate: "",bookmodifieddate:"",bookcreateddate:"",amounts:0,authorid:0,wishlists:"",groupdetail:"",status:0,pdetailid:0 });
-	const[bookList,setbookList] = useState([]);
-	const[categoryList,setcategoryList] = useState([]);
+	const [bookList, setbookList] = useState([]);
+	const [categoryList, setcategoryList] = useState([]);
 	const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-	async function fetchbookList(){
+	const { addItem } = useCart();
+	async function fetchbookList() {
 		await BookAPI.FindAll().then(result => {
 			setbookList(result.data)
-		  }).catch(err => {
+		}).catch(err => {
 			alert(err.msg)
-		  })
-		// const requesUrl ='http://localhost:9999/admin/api/book/findAll';
-		// const reponse = await fetch(requesUrl);
-		// const reponseJSON = await reponse.json();
-		// console.log(reponseJSON);
-		// setbookList(reponseJSON);
+		})
 	}
-	useEffect(()=>{
+	useEffect(() => {
 		fetchbookList();
-	},[])
-	useEffect(()=>{
-		async function fetchcategoryList(){
+	}, [])
+	useEffect(() => {
+		async function fetchcategoryList() {
 			await CategoryAPI.FindALl().then(result => {
 				setcategoryList(result.data)
-			  }).catch(err => {
+			}).catch(err => {
 				alert(err.msg)
-			  })
+			})
 		}
 		fetchcategoryList();
-	},[])
+	}, [])
 
 	async function handleAddWishlist(booksId) {
-        await AddToWishlist.AddToWishlist(cookies, booksId).then(result => {
+		await AddToWishlist.AddToWishlist(cookies, booksId).then(result => {
 			fetchbookList();
-            setCookie('action', JSON.stringify({ doChange: new Date().getTime() }), { path: '/' });
-        }).catch(err => {
-            alert(err.msg)
-        })
-    }
+			setCookie('action', JSON.stringify({ doChange: new Date().getTime() }), { path: '/' });
+			toast.success(result.msg, {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		}).catch(err => {
+			alert(err.msg)
+		})
+	}
+	function handleCart(props) {
+		const { booksid, bookprice, pdetailid, bookname } = props;
+		const newObject = { id: "", price: 0, img: "", name: "" };
+		newObject.id = booksid;
+		newObject.price = bookprice;
+		newObject.img = pdetailid.imageLink;
+		newObject.name = bookname;
+		addItem(newObject);
+		toast.success("Add item #" + newObject.name + " to basket", {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+		});
+	}
 	return (
 		<div>
 			<div
@@ -147,9 +172,9 @@ const Collection = () => {
 													</div>
 												</div>
 											</div>
-											
-												<Getbook addWishlist={handleAddWishlist} bookList={bookList}></Getbook>
-											
+
+											<Getbook addWishlist={handleAddWishlist} onAdd={handleCart} bookList={bookList}></Getbook>
+
 										</div>
 									</div>
 								</div>
@@ -408,7 +433,7 @@ const Collection = () => {
 												</ul>
 											</div>
 										</div>
-										
+
 									</aside>
 								</div>
 							</div>

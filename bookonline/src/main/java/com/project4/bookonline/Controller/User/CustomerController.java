@@ -218,21 +218,32 @@ public class CustomerController {
             setMessage.setMessage(msg);
             return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
         }
-        users.setUserpassword(getSaltString());
-        users = userServide.Register(users);
-        setMessage.setObject(getUserDTO(users));
-        setMessage.setCode(200);
-        setMessage.setMessage(msg);
+        switch (users.getStatus()) {
+            case 3:
+                msg = "Your account has been banned";
+                setMessage.setMessage(msg);
+                return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.FORBIDDEN);
+            case 2:
+                msg = "Your account has not been activated";
+                setMessage.setMessage(msg);
+                return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.UNAUTHORIZED);
+            default:
+                users.setUserpassword(getSaltString());
+                users = userServide.Register(users);
+                setMessage.setObject(getUserDTO(users));
+                setMessage.setCode(200);
+                setMessage.setMessage(msg);
 
-        SendEmail("BookstoreOnline forget password\n", "" +
-                "<p>Hello soda,</p>\n" +
-                "\n" +
-                "<p>This is your new password : " + users.getUserpassword() + ":</p>\n" +
-                "\n" +
-                "<p>Please keep this serect</p>\n" +
-                "\n" +
-                "<p>Shop</p>\n", users.getUseremail());
-        return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
+                SendEmail("BookstoreOnline forget password\n", "" +
+                        "<p>Hello soda,</p>\n" +
+                        "\n" +
+                        "<p>This is your new password : " + users.getUserpassword() + ":</p>\n" +
+                        "\n" +
+                        "<p>Please keep this serect</p>\n" +
+                        "\n" +
+                        "<p>Shop</p>\n", users.getUseremail());
+                return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/user/update/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)

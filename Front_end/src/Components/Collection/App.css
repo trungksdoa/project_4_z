@@ -1,0 +1,67 @@
+body{
+    margin-top:20px;
+    background:#eee;
+}
+
+
+
+.btn-blue {
+  background-color: #3498db;
+  border-color: #3498db;
+  color: white;
+}
+.btn-blue:hover,
+.btn-blue:visited {
+  background-color: #2980b9;
+  color: white;
+}
+.btn-green {
+  background-color: #2ecc71;
+  border-color: #27ae60;
+  color: white;
+}
+.btn-green:hover,
+.btn-green:visited {
+  background-color: #27ae60;
+  color: white;
+}
+.btn-orange {
+  background-color: #ff530d;
+  border-color: #e82c0c;
+  color: white;
+}
+.btn-orange:hover,
+.btn-orange:visited {
+  background-color: #e82c0c;
+  color: white;
+}
+.btn-red {
+  background-color: #ff1d23;
+  border-color: #d40d12;
+  color: white;
+}
+.btn-red:hover,
+.btn-red:visited {
+  background-color: #d40d12;
+  color: white;
+}
+.btn-purple {
+  background-color: #9b59b6;
+  border-color: #8e44ad;
+  color: white;
+}
+.btn-purple:hover,
+.btn-purple:visited {
+  background-color: #8e44ad;
+  color: white;
+}
+.btn-pink {
+  background-color: #fd32c0;
+  border-color: #fe31ab;
+  color: white;
+}
+.btn-pink:hover,
+.btn-pink:visited {
+  background-color: #fe31ab;
+  color: white;
+}

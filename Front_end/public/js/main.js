@@ -17,14 +17,14 @@ jQuery(document).on('ready', function() {
 	/* -------------------------------------
 			COLLAPSE MENU SMALL DEVICES
 	-------------------------------------- */
-	function collapseMenu(){
-		jQuery('.menu-item-has-children, .menu-item-has-mega-menu').prepend('<span class="tg-dropdowarrow"><i class="fa  fa-angle-right"></i></span>');
-		jQuery('.menu-item-has-children span, .menu-item-has-mega-menu span').on('click', function() {
-			jQuery(this).next().next().slideToggle(500);
-			jQuery(this).parent('.menu-item-has-children, .menu-item-has-mega-menu').toggleClass('tg-open');
-		});
-	}
-	collapseMenu();
+	// function collapseMenu(){
+	// 	jQuery('.menu-item-has-children, .menu-item-has-mega-menu').prepend('<span class="tg-dropdowarrow"><i class="fa  fa-angle-right"></i></span>');
+	// 	jQuery('.menu-item-has-children span, .menu-item-has-mega-menu span').on('click', function() {
+	// 		jQuery(this).next().next().slideToggle(500);
+	// 		jQuery(this).parent('.menu-item-has-children, .menu-item-has-mega-menu').toggleClass('tg-open');
+	// 	});
+	// }
+	// collapseMenu();
 	/*--------------------------------------
 			HOME SLIDER						
 	--------------------------------------*/
@@ -253,13 +253,13 @@ jQuery(document).on('ready', function() {
 			}
 		}
 	});
-	/*------------------------------------------
-			PRODUCT INCREASE
-	------------------------------------------*/
-	jQuery('em.minus').on('click', function () {
-		jQuery('#quantity1').val(parseInt(jQuery('#quantity1').val(), 10) - 1);
-	});
-	jQuery('em.plus').on('click', function () {
-		jQuery('#quantity1').val(parseInt(jQuery('#quantity1').val(), 10) + 1);
-	});
+	// /*------------------------------------------
+	// 		PRODUCT INCREASE
+	// ------------------------------------------*/
+	// jQuery('em.minus').on('click', function () {
+	// 	jQuery('#quantity1').val(parseInt(jQuery('#quantity1').val(), 10) - 1);
+	// });
+	// jQuery('em.plus').on('click', function () {
+	// 	jQuery('#quantity1').val(parseInt(jQuery('#quantity1').val(), 10) + 1);
+	// });
 });

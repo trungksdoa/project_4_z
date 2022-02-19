@@ -4,7 +4,19 @@ import BookAPI from '../../api/BookAPI.js';
 import { useCookies } from 'react-cookie';
 import Basket from './Basket.jsx';
 import WishlistAPI from '../../api/WishlistAPI';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import { CartProvider, useCart } from 'react-use-cart';
+import Box from '@mui/material/Box';
+
 const MiddleBar = () => {
+    const [open, setOpen] = useState("open");
+    const handleClick = () => {
+        setOpen("open");
+    };
+
+    const handleClickAway = () => {
+        setOpen("");
+    };
     const [setting, setSetting] = useState({ address: "", email: "", id: "", phonenum: "", timeservice: "", logo_name_path: "" });
     useEffect(() => {
         const getSetting = async () => {
@@ -40,17 +52,26 @@ const MiddleBar = () => {
     }, [doChange])
     //Logic here
     //Cart
-    const[bookList,setbookList] = useState([]);
-    useEffect(()=>{
-		async function fetchbookList(){
-			await BookAPI.FindAll().then(result => {
-				setbookList(result.data)
-			  }).catch(err => {
-				alert(err.msg)
-			  })
-		}
-		fetchbookList();
-	},[])
+    const [bookList, setbookList] = useState([]);
+    useEffect(() => {
+        async function fetchbookList() {
+            await BookAPI.FindAll().then(result => {
+                setbookList(result.data)
+            }).catch(err => {
+                alert(err.msg)
+            })
+        }
+        fetchbookList();
+    }, [])
+    const {
+        cartTotal,
+        isEmpty,
+        totalUniqueItems,
+        items,
+        updateItemQuantity,
+        removeItem,
+        clearCartMetadata
+    } = useCart();
     return (
         <div className="tg-middlecontainer">
             <div className="container">
@@ -69,7 +90,7 @@ const MiddleBar = () => {
                                     {wishlist.length !== 0 ? (
                                         wishlist.map((wishlist, index) => {
                                             const { bookname, bookprice, user_id, wishlist_id, booksId } = wishlist;
-                                            if(index < 3){
+                                            if (index < 3) {
                                                 return (
                                                     <div className="" key={index}>
                                                         <div className="tg-minicarproduct">
@@ -84,14 +105,36 @@ const MiddleBar = () => {
                                                     </div>
                                                 )
                                             }
-                                         
+
                                         })
                                     ) : (
                                         <div className="tg-description"><p>No products were added to the wishlist!</p></div>
                                     )}
                                 </div>
                             </div>
-                            <Basket></Basket>
+                            <div className={"tg-themedropdown tg-minicartdropdown " + open}>
+                                <ClickAwayListener onClickAway={handleClickAway}>
+                                    <Box sx={{ position: 'relative' }}>
+                                        <>
+                                            <a
+                                                style={{ cursor: 'pointer' }}
+                                                id="tg-minicart"
+                                                className="tg-btnthemedropdown"
+                                                onClick={handleClick}
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <span className="tg-themebadge">{totalUniqueItems}</span>
+                                                <i className="icon-cart" />
+                                                <span />
+                                            </a>
+                                            <Basket></Basket>
+                                        </>
+                                    </Box>
+                                </ClickAwayListener>
+
+                            </div>
+
                         </div>
                         <div className="tg-searchbox">
                             <form className="tg-formtheme tg-formsearch">

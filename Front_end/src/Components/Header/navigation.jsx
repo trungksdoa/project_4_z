@@ -29,42 +29,6 @@ const NavigationBar = () => {
                             </div>
                             <div id="tg-navigation" className="collapse navbar-collapse tg-navigation">
                                 <ul className="web_navigation">
-                                    <li className="menu-item-has-children menu-item-has-mega-menu">
-                                        <a href="#!">All Categories</a>
-                                        <div className="mega-menu">
-                                            <ul className="tg-themetabnav" role="tablist">
-                                                <li role="presentation" className="active">
-                                                    <a href="#artandphotography" aria-controls="artandphotography" role="tab" data-toggle="tab">Art &amp; Photography</a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a href="#biography" aria-controls="biography" role="tab" data-toggle="tab">Biography</a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a href="#childrensbook" aria-controls="childrensbook" role="tab" data-toggle="tab">Children’s Book</a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a href="#craftandhobbies" aria-controls="craftandhobbies" role="tab" data-toggle="tab">Craft &amp; Hobbies</a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a href="#crimethriller" aria-controls="crimethriller" role="tab" data-toggle="tab">Crime &amp; Thriller</a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a href="#fantasyhorror" aria-controls="fantasyhorror" role="tab" data-toggle="tab">Fantasy &amp; Horror</a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a href="#fiction" aria-controls="fiction" role="tab" data-toggle="tab">Fiction</a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a href="#fooddrink" aria-controls="fooddrink" role="tab" data-toggle="tab">Food &amp; Drink</a>
-                                                </li><li role="presentation">
-                                                    <a href="#graphicanimemanga" aria-controls="graphicanimemanga" role="tab" data-toggle="tab">Graphic, Anime &amp; Manga</a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a href="#sciencefiction" aria-controls="sciencefiction" role="tab" data-toggle="tab">Science Fiction</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
                                     <li>
                                         <a href="/">Home</a>
                                     </li>
