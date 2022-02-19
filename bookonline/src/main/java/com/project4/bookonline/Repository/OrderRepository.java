@@ -17,4 +17,12 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
 
     @Query(value = "SElECT * FROM Orders WHERE User_id = :userId", nativeQuery = true)
     public List<Orders> loadDataByUserId(@Param("userId") Users userId);
+
+    // Select All Order Day
+    @Query(value = "SELECT * FROM Orders WHERE DAY(Order_createddate) = DAY(:now) and MONTH(Order_createddate) = MONTH(:now) and YEAR(Order_createddate) = YEAR(:now) and Order_status = 1 ", nativeQuery = true)
+    public List<Orders> loadDataByDay(@Param("now") String now);
+    // Select All Order Month
+    @Query(value = "SELECT * FROM Orders WHERE MONTH(Order_createddate) = MONTH(:now) and YEAR(Order_createddate) = YEAR(:now) and Order_status = 1 ", nativeQuery = true)
+    public List<Orders> loadDataByMonth(@Param("now") String now);
 }
+

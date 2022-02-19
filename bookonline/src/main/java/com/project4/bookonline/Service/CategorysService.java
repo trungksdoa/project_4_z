@@ -6,7 +6,6 @@ package com.project4.bookonline.Service;
 
 import com.project4.bookonline.Model.Catagorys;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
 /**
  *

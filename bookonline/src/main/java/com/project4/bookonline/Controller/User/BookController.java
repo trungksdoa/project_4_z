@@ -8,9 +8,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project4.bookonline.Model.Authors;
 import com.project4.bookonline.Model.Books;
+import com.project4.bookonline.Model.Catagorys;
+import com.project4.bookonline.Model.Groupdetail;
 import com.project4.bookonline.Model.Message_Respones;
 import com.project4.bookonline.Model.PDetail;
 import com.project4.bookonline.Service.BooksService;
+import com.project4.bookonline.Service.CategorysService;
+import com.project4.bookonline.Service.GDetailService;
 import com.project4.bookonline.Service.PDetailService;
 import com.project4.bookonline.UploadService.FileStorageService;
 import com.project4.bookonline.dto.BookDTO;
@@ -22,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +44,7 @@ public class BookController {
     Message_Respones<BookDTO> setMessage;
     UUID uuid;
     String bid;
-
+    Message_Respones<Books> setMessagecate;
     @Autowired
     private FileStorageService fileStorageService;
     @Autowired
@@ -47,7 +52,10 @@ public class BookController {
 
     @Autowired
     BooksService bookService;
-
+    @Autowired
+    GDetailService gDetailService;
+    @Autowired
+    CategorysService categorysService;
     @RequestMapping(value = "/book/findAll", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Books>> findAll() {
         List<Books> b = bookService.ListBook();
@@ -68,6 +76,24 @@ public class BookController {
         setMessage.setList(b);
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
+    }
+    @RequestMapping(value = "book/category/find/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Books>> filterBookwithCategory(@PathVariable int id) {
+        Message_Respones<Books> setMessagecate = new Message_Respones<Books>();
+        List<Groupdetail> glist = new ArrayList<>();
+        Catagorys catagory = categorysService.findOne(id);
+        glist = gDetailService.findByCategory(id);
+        List<Books> b = new ArrayList<>();
+        for (Groupdetail groupdetail : glist) {
+           Books str = groupdetail.getBookid();
+           Books gb = bookService.findOne(str.getBooksid());
+           b.add(gb);
+        }
+        String msg = "Get data success";
+        setMessagecate.setMessage(msg);
+        setMessagecate.setList(b);
+        setMessagecate.setCode(200);
+        return new ResponseEntity<Message_Respones<Books>>(setMessagecate, HttpStatus.OK);
     }
     
     
