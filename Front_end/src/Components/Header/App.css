@@ -1,0 +1,11 @@
+.image_with_badge_container {
+    display: inline-block; /* keeps the img with the badge if the img is forced to a new line */
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.badge-on-image {
+    position: absolute;
+    top: -5px;
+    z-index: 99;
+}
