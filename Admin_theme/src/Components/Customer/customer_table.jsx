@@ -53,7 +53,7 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-const Customers = ({ data, Ban, UnBan, Order }) => {
+const Customers = ({ data, Ban, UnBan, Order, Wishlist }) => {
     const [Listcustomer, setListCustomer] = useState([]);
 
     // $('#customers').DataTable();
@@ -89,11 +89,14 @@ const Customers = ({ data, Ban, UnBan, Order }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const handleOrder = (userID) => {
+    const handeRedirect = (userID) => {
         //Do logic here
         // console.log(userID)
         if (Order) {
             Order(userID);
+        }
+        if (Wishlist) {
+            Wishlist(userID);
         }
         handleClose();
     }
@@ -153,10 +156,10 @@ const Customers = ({ data, Ban, UnBan, Order }) => {
                                 <span className="text-secondary text-xs font-weight-bold">{usermodifieddate}</span>
                             </td>
                             <td className="align-middle text-center">
-                                <select onChange={(e) => handleOrder(e.target.value)} className="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                <select onChange={(e) => handeRedirect(userid)} className="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                                     <option>Other</option>
-                                    <option value={userid}>Order History</option>
-                                    <option value={userid}>Wishlish</option>
+                                    <option value={1}>Order History</option>
+                                    <option value={2}>Wishlish</option>
                                 </select>
                             </td>
                             <td className="align-middle">
@@ -184,6 +187,7 @@ const Customers = ({ data, Ban, UnBan, Order }) => {
 Customers.propTypes = {
     data: PropTypes.array,
     Order: PropTypes.func,
+    Wishlist: PropTypes.func,
     View_wishlist: PropTypes.func,
     View_Detail: PropTypes.func,
     Ban: PropTypes.func,
@@ -193,6 +197,7 @@ Customers.propTypes = {
 Customers.defaultProps = {
     data: [],
     Order: null,
+    Wishlist: null,
     View_wishlist: null,
     View_Detail: null,
     Ban: null,

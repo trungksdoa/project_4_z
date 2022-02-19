@@ -95,4 +95,17 @@ public class BookController {
         setMessagecate.setCode(200);
         return new ResponseEntity<Message_Respones<Books>>(setMessagecate, HttpStatus.OK);
     }
+    
+    
+    @RequestMapping(value = "/book/findOne/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Books>> findOne(@PathVariable String id) {
+        Books b = bookService.findOne(id);
+        Message_Respones<Books> setMessage = new Message_Respones<Books>();
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setObject(b);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
+    }
+
 }

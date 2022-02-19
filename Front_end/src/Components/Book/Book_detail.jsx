@@ -12,6 +12,11 @@ import { Reviews, List_review, Single_review, Reviews_edit } from './Book_review
 import { useCookies } from 'react-cookie';
 import './reviews.css'
 import ReviewAPI from '../../api/ReviewAPI';
+import BookAPI from '../../api/BookAPI.js';
+import { useEffect } from 'react';
+import { CartProvider, useCart } from "react-use-cart";
+import AddToWishlist from '../FolderAction/AddToWishlist';
+
 // import './App.css';
 
 function TabPanel(props) {
@@ -196,6 +201,58 @@ const Book_detail = () => {
             review.ratingstart.toString().includes(searchRating)
         ))
     }, [data, searchRating])
+    const [book, setbook] = useState({
+        amounts: 0,
+        authorid: {},
+        bookcreateddate: "",
+        bookdescription: "",
+        bookmodifieddate: "",
+        bookname: "",
+        bookprice: 0,
+        bookreleasedate: "",
+        booksid: "",
+        groupdetail: [],
+        pdetailid: {
+            dimensions: "",
+            format: "",
+            illustrationsnote: "",
+            imageLink: "",
+            language: "",
+            pages: 0,
+            pdetailid: 0
+        },
+        wishlists:[],
+        status: 2
+    });
+    async function fetchbook() {
+        await BookAPI.findPdetails(id).then(result => {
+            setbook(result.data)
+        }).catch(err => {
+            alert(err.msg)
+        })
+    }
+    useEffect(() => {
+        fetchbook();
+    }, [])
+    const { addItem } = useCart();
+    function onClick(props) {
+        const { booksid, bookprice, pdetailid, bookname } = props;
+        const newObject = { id: "", price: 0, img: "", name: "" };
+        newObject.id = booksid;
+        newObject.price = bookprice;
+        newObject.img = pdetailid.imageLink;
+        newObject.name = bookname;
+        addItem(newObject);
+        console.log(newObject);
+    }
+    async function handleAddWishlist(booksId) {
+        await AddToWishlist.AddToWishlist(cookies, booksId).then(result => {
+            fetchbook();
+            setCookie('action', JSON.stringify({ doChange: new Date().getTime() }), { path: '/' });
+        }).catch(err => {
+            alert(err.msg)
+        })
+    }
     // --------------End Reviews-----------------
     return (<div>
         <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index={-100} data-appear-top-offset={600} data-parallax="scroll" data-image-src="images/parallax/bgparallax-07.jpg">
@@ -265,13 +322,15 @@ const Book_detail = () => {
                                         <div className="row">
                                             <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                                                 <div className="tg-postbook">
-                                                    <figure className="tg-featureimg"><img src="images/books/img-07.jpg" alt="image description" /></figure>
+                                                    <figure className="tg-featureimg">									
+                                                    <img key={book.booksid} src={"http://localhost:9999/image/" + book.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" />
+                                                    </figure>
                                                     <div className="tg-postbookcontent">
                                                         <span className="tg-bookprice">
-                                                            <ins>$25.18</ins>
-                                                            <del>$27.20</del>
+                                                            <ins>{book.bookprice}$</ins>
+                                                            {/* <del>$27.20</del> */}
                                                         </span>
-                                                        <span className="tg-bookwriter">You save $4.02</span>
+                                                        {/* <span className="tg-bookwriter">You save $4.02</span>
                                                         <ul className="tg-delevrystock">
                                                             <li><i className="icon-rocket" /><span>Free delivery worldwide</span></li>
                                                             <li><i className="icon-checkmark-circle" /><span>Dispatch from the USA in 2 working days </span></li>
@@ -281,38 +340,58 @@ const Book_detail = () => {
                                                             <em className="minus">-</em>
                                                             <input type="text" className="result" defaultValue={0} id="quantity1" name="quantity" />
                                                             <em className="plus">+</em>
-                                                        </div>
-                                                        <a className="tg-btn tg-active tg-btn-lg" href="#!">Add To Basket</a>
-                                                        <a className="tg-btnaddtowishlist" href="#!">
-                                                            <span>add to wishlist</span>
-                                                        </a>
+                                                        </div> */}
+                                                        <a className="tg-btn tg-active tg-btn-lg" onClick={() => onClick(book)}>Add To Basket</a>
+                                                        {auth && (
+                                                            book.wishlists.length !== 0 &&
+                                                            (
+                                                                book.wishlists.map((wishCheck, index) => {
+                                                                    return (
+                                                                        <a key={index} className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
+                                                                            <span>Already in wishlist</span>
+                                                                        </a>
+                                                                    )
+                                                                })
+                                                            )
+                                                        )}
+                                                        {auth && (
+                                                            book.wishlists.length === 0 &&
+                                                            (
+                                                                <a className="tg-btnaddtowishlist" onClick={() => handleAddWishlist(book.booksid)} style={{ cursor: 'pointer' }}>
+                                                                    <i className="icon-heart" />
+                                                                    <span>add to wishlist</span>
+                                                                </a>
+                                                            )
+                                                        )}
+                                                        {!auth && (
+                                                            <a className="tg-btnaddtowishlist" style={{ cursor: 'pointer' }}>
+                                                                <span>Please login to use</span>
+                                                            </a>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                                                 <div className="tg-productcontent">
                                                     <ul className="tg-bookscategories">
-                                                        <li><a href="#!">Art &amp; Photography</a></li>
+                                                        {/* <li><a href="#!">Art &amp; Photography</a></li> */}
                                                     </ul>
                                                     <div className="tg-booktitle">
-                                                        <h3>Drive Safely, No Bumping</h3>
+                                                        <h3>{book.bookname}</h3>
                                                     </div>
-                                                    <span className="tg-bookwriter">By: <a href="#!">Angela Gunning</a></span>
+                                                    <span className="tg-bookwriter">By: <a href="#!">{book.authorid.authorname}</a></span>
                                                     <span className="tg-addreviews"></span>
                                                     <div className="tg-sectionhead">
-                                                        <h2>Product Details</h2>
+                                                        <h2>Book Details</h2>
                                                     </div>
                                                     <ul className="tg-productinfo" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
-                                                        <li><span>Format:</span><span>Hardback</span></li>
-                                                        <li><span>Pages:</span><span>528 pages</span></li>
-                                                        <li><span>Dimensions:</span><span>153 x 234 x 43mm | 758g</span></li>
-                                                        <li><span>Publication Date:</span><span>June 27, 2017</span></li>
-                                                        <li><span>Publisher:</span><span>Sunshine Orlando</span></li>
-                                                        <li><span>Language:</span><span>English</span></li>
-                                                        <li><span>Illustrations note:</span><span>b&amp;w images thru-out; 1 x 16pp colour plates</span></li>
-                                                        <li><span>ISBN10:</span><span>1234567890</span></li>
-                                                        <li><span>ISBN13:</span><span>1234567890000</span></li>
-                                                        <li><span>Other Fomate:</span><span>CD-Audio, Paperback, E-Book</span></li>
+                                                        <li><span>Format:</span><span>{book.pdetailid.format}</span></li>
+                                                        <li><span>Pages:</span><span>{book.pdetailid.pages}</span></li>
+                                                        <li><span>Dimensions:</span><span>{book.pdetailid.dimensions}</span></li>
+                                                        <li><span>Publication Date:</span><span>{book.bookreleasedate}</span></li>
+                                                        <li><span>Publisher:</span><span>{book.authorid.authorname}</span></li>
+                                                        <li><span>Language:</span><span>{book.pdetailid.language}</span></li>
+                                                        <li><span>Illustrations note:</span><span>{book.pdetailid.illustrationsnote}</span></li>
                                                     </ul>
                                                     <div className="tg-alsoavailable">
 

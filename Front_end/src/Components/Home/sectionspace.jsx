@@ -5,9 +5,9 @@ import BookAPI from '../../api/BookAPI.js';
 import PropTypes from 'prop-types';
 import { useCookies } from 'react-cookie';
 import { CartProvider, useCart } from 'react-use-cart';
-import OwlCarousel from 'react-owl-carousel';
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
+// import OwlCarousel from 'react-owl-carousel';
+// import 'owl.carousel/dist/assets/owl.carousel.css';
+// import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 const Sectionspace = ({ handleAddWishlist, action }) => {
 	const [ BookList, setBookList ] = useState([]);
@@ -51,7 +51,7 @@ const Sectionspace = ({ handleAddWishlist, action }) => {
 					</div>
 					<div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<div id="tg-bestsellingbooksslider" className="tg-bestsellingbooksslider tg-bestsellingbooks">
-							<OwlCarousel className="owl-theme" loop margin={10}>
+							{/* <OwlCarousel className="owl-theme" loop margin={10}>
 								<div class="item ">
 									{BookList.map((book, index) => {
 										return (
@@ -95,7 +95,7 @@ const Sectionspace = ({ handleAddWishlist, action }) => {
 										);
 									})}
 								</div>
-							</OwlCarousel>
+							</OwlCarousel> */}
 						</div>
 					</div>
 				</div>

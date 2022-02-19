@@ -100,6 +100,7 @@ const Update_Pdetail = () => {
     console.log(formDatas)
 
     useEffect(() => {fetchData()},[])
+    
     useEffect(() => {
         const getSetting = async () => {
             await settingAPi.getSetting().then((setting) => {

@@ -13,8 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +40,9 @@ public class CustomerController {
     String uid;
     @Autowired
     UserService userServide;
+
+    @Autowired
+    public JavaMailSender emailSender;
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Message_Respones<UsersDTO>> Login(@RequestBody UsersDTO user) {
@@ -60,12 +67,11 @@ public class CustomerController {
                     udto = new UsersDTO();
                     udto.setUserID(users.getUserid());
                     udto.setFirst_name(users.getFirstName());
-                    
+
                     udto.setLast_name(users.getLastName());
                     udto.setFirst_name(users.getFirstName());
                     udto.setUser_email(users.getUseremail());
                     setMessage.setObject(udto);
-                    System.out.print("sjagdbjas");
                     setMessage.setMessage(msg);
                     return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
             }
@@ -81,6 +87,46 @@ public class CustomerController {
         udto.setPhone(users.getPhone());
         udto.setPassword(users.getUserpassword());
         return udto;
+    }
+
+    public void SendEmail(String subject, String messages, String toEmails) {
+
+        MimeMessage message = emailSender.createMimeMessage();
+
+        //Send emails
+
+
+        boolean multipart = true;
+
+        MimeMessageHelper helper = null;
+        try {
+            helper = new MimeMessageHelper(message, multipart, "utf-8");
+        } catch (javax.mail.MessagingException e) {
+            e.printStackTrace();
+        }
+
+        String htmlMsg = messages;
+
+        try {
+            message.setContent(htmlMsg, "text/html");
+        } catch (javax.mail.MessagingException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            helper.setTo(toEmails);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            helper.setSubject(subject);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+
+        this.emailSender.send(message);
     }
 
     @RequestMapping(value = "/user/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -119,12 +165,28 @@ public class CustomerController {
             //End
             udto = new UsersDTO();
             udto.setUserID(users.getUserid());
+            udto.setPhone(users.getPhone());
             udto.setLast_name(users.getLastName());
             udto.setUser_email(users.getUseremail());
             setMessage.setMessage(msg);
             setMessage.setObject(udto);
             setMessage.setCode(200);
 
+            //Send emails
+
+
+            String htmlMsg = "" +
+                    "<p>Hello " + users.getFirstName() + users.getLastName() + ",</p>\n" +
+                    "\n" +
+                    "<p><strong>Click the link to activate your account:&nbsp;</strong></p>\n" +
+                    "\n" +
+                    "<blockquote>\n" +
+                    "<p><u><strong><a href=\"http://localhost:9999/api/user/setActive/" + users.getUserid() + "\" target=\"_blank\">Active account</a></strong></u></p>" +
+                    "</blockquote>\n" +
+                    "\n" +
+                    "<p>Shop,<br />\n" +
+                    "BookStoreOnline</p>\n";
+            SendEmail("Active account", htmlMsg, users.getUseremail());
             return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
         }
     }
@@ -148,8 +210,9 @@ public class CustomerController {
     @RequestMapping(value = "/user/forgetpassword/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Message_Respones<UsersDTO>> findByEmail(@RequestBody UsersDTO user) {
         users = userServide.findByMail(user.getUser_email());
+        MimeMessage message = emailSender.createMimeMessage();
         setMessage = new Message_Respones<UsersDTO>();
-        msg = "Account has been found";
+        msg = "New password is send to your emails";
         if (users == null) {
             msg = "No account has been found";
             setMessage.setMessage(msg);
@@ -160,6 +223,15 @@ public class CustomerController {
         setMessage.setObject(getUserDTO(users));
         setMessage.setCode(200);
         setMessage.setMessage(msg);
+
+        SendEmail("BookstoreOnline forget password\n", "" +
+                "<p>Hello soda,</p>\n" +
+                "\n" +
+                "<p>This is your new password : " + users.getUserpassword() + ":</p>\n" +
+                "\n" +
+                "<p>Please keep this serect</p>\n" +
+                "\n" +
+                "<p>Shop</p>\n", users.getUseremail());
         return new ResponseEntity<Message_Respones<UsersDTO>>(setMessage, HttpStatus.OK);
     }
 

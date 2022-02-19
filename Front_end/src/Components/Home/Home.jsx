@@ -103,7 +103,7 @@ const Home = () => {
                 
                 
 
-                {<Sectionspace action={action} data={book_list}></Sectionspace>}
+                {/* {<Sectionspace action={action} data={book_list}></Sectionspace>} */}
                 {/*************************************
                  * 
 					Best Selling End
