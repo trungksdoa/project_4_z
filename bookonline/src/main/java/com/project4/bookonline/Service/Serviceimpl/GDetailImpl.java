@@ -43,6 +43,10 @@ public class GDetailImpl implements GDetailService{
         return GDetailRespository.findByCategory(id);
     }
 
- 
-    
+    @Override
+    public List<Groupdetail> findBySameBook(String list) {
+        return GDetailRespository.findBySameBook(list);
+    }
+
+
 }

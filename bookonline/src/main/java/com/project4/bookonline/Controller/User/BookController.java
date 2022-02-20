@@ -107,5 +107,21 @@ public class BookController {
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
     }
+    @RequestMapping(value = "/book/same/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Books>> sameBook(@PathVariable String id) {
+        List<Groupdetail> groupdetails = gDetailService.findBySameBook(id);
+        List<Books> bsame = new ArrayList<>();
+        for (Groupdetail groupdetail : groupdetails) {
+            Books str = groupdetail.getBookid();
+            Books gb = bookService.findOne(str.getBooksid());
+            bsame.add(gb);
+        }
+        Message_Respones<Books> setMessage = new Message_Respones<Books>();
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(bsame);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
+    }
 
 }

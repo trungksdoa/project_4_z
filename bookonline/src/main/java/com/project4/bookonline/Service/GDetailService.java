@@ -5,6 +5,8 @@
 package com.project4.bookonline.Service;
 
 import com.project4.bookonline.Model.Groupdetail;
+import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
 /**
@@ -16,5 +18,5 @@ public interface GDetailService {
     public Groupdetail create(Groupdetail groupdetail);
     public Groupdetail findOne(int id);
     public List<Groupdetail> findByCategory(int id);
-            
+    public List<Groupdetail> findBySameBook(String list);
 }

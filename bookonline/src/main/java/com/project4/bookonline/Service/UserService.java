@@ -1,6 +1,7 @@
 package com.project4.bookonline.Service;
 
 import com.project4.bookonline.Model.Users;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -24,5 +25,6 @@ public interface UserService {
 
     public Users Update(String id, Users user);
 
+    public List<Users> totaluserrgister(String now);
 
 }

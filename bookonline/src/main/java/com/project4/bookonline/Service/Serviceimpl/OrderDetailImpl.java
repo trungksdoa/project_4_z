@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderDetailImpl implements OrderDetailService {
@@ -25,4 +26,10 @@ public class OrderDetailImpl implements OrderDetailService {
     public OrderDetail Create(OrderDetail orderDetail) {
         return orderService.save(orderDetail);
     }
+
+    @Override
+    public OrderDetail FindOne(int id) {
+        return orderService.findById(id).orElse(null);
+    }
+
 }

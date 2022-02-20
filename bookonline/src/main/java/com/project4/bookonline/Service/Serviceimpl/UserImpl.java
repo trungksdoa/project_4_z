@@ -109,6 +109,11 @@ public class UserImpl implements UserService {
     }
 
     @Override
+    public List<Users> totaluserrgister(String now) {
+        return userService.totaluserrgister(now);
+    }
+
+    @Override
     public Users Login(String email, String password) {
         return userService.login(email, password);
     }
