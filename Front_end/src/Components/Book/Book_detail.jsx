@@ -1,25 +1,43 @@
 import React, { useLayoutEffect, useState, useRef } from 'react';
+import ReviewAPI from '../../api/ReviewAPI';
+import BookAPI from '../../api/BookAPI.js';
+//-----------------------
+import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
+import { CartProvider, useCart } from "react-use-cart";
 import { useParams } from 'react-router-dom';
+import AddToWishlist from '../FolderAction/AddToWishlist';
+//----------------------
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import Book_catagory from './Book_catagory.jsx';
-import Same_book from './Same_book.jsx';
-import { Reviews, List_review, Single_review, Reviews_edit } from './Book_reviews.jsx'
-import { useCookies } from 'react-cookie';
-import './reviews.css'
-import ReviewAPI from '../../api/ReviewAPI';
-import BookAPI from '../../api/BookAPI.js';
-import { useEffect } from 'react';
-import { CartProvider, useCart } from "react-use-cart";
-import AddToWishlist from '../FolderAction/AddToWishlist';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Backdrop from '@mui/material/Backdrop';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { styled } from '@mui/material/styles';
+//-----------------------
+//----------------------
+import Book_catagory from './Book_catagory.jsx';
+import Same_book from './Same_book.jsx';
+import { Reviews, List_review, Single_review, Reviews_edit } from './Book_reviews.jsx'
+import './reviews.css'
 
 import './App.css'
+
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    cursor: 'pointer',
+    position: "relative",
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+}));
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -57,15 +75,15 @@ function a11yProps(index) {
 }
 
 const style = {
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: 'auto',
-	bgcolor: 'background.paper',
-	border: '2px solid #000',
-	boxShadow: 24,
-	p: 4,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '70%',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
 };
 
 const Book_detail = () => {
@@ -88,7 +106,18 @@ const Book_detail = () => {
         bookprice: 0,
         bookreleasedate: "",
         booksid: "",
-        groupdetail: [],
+        groupdetail: [
+            //             catagoryid:
+            // catagorycreateddate: "2022-02-02 00:00:00.0"
+            // catagorydescription: "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\""
+            // catagoryid: 2
+            // catagorymodifieddate: "2022-02-02 00:00:00.0"
+            // catagoryname: "Foreign Language Books"
+            // [[Prototype]]: Object
+            // groupcreateddate: "2022-02-02 00:00:00.0"
+            // groupmodifieddate: "2022-02-02 00:00:00.0"
+            // id: 1
+        ],
         pdetailid: {
             dimensions: "",
             format: "",
@@ -121,7 +150,15 @@ const Book_detail = () => {
         newObject.img = pdetailid.imageLink;
         newObject.name = bookname;
         addItem(newObject);
-        console.log(newObject);
+        toast.success("Add item #" + newObject.name + " to basket", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
     }
     async function handleAddWishlist(booksId) {
         await AddToWishlist.AddToWishlist(cookies, booksId).then(result => {
@@ -132,8 +169,39 @@ const Book_detail = () => {
         })
     }
 
+    const [books, setBooks] = useState([
+    ]);
+    async function LoadBookByAuthor() {
+        if (book.authorid.authorid !== undefined) {
+            await BookAPI.LoadByAuthor(book.authorid.authorid).then(result => {
+                setBooks(result.data)
+            }).catch(err => {
+                console.log(err.msg)
+            })
+        }
+    }
+    useEffect(() => {
+        LoadBookByAuthor()
+    }, [book])
+    // console.log(book)
     // --------------End Books-----------------
 
+    // --------------SameBook-----------------
+    const [sameBooks, setSameBooks] = useState([
+    ]);
+    async function LoadByCatagory() {
+        if (book.groupdetail.length !== 0) {
+            await BookAPI.findByCatagory(book.groupdetail[0].catagoryid.catagoryid).then(result => {
+                setSameBooks(result.data)
+            }).catch(err => {
+                console.log(err.msg)
+            })
+        }
+    }
+    useEffect(() => {
+        LoadByCatagory()
+    }, [book])
+    // --------------End SameBook-----------------
 
 
     // --------------Reviews-----------------
@@ -284,30 +352,91 @@ const Book_detail = () => {
                 }}
             >
                 <Fade in={open}>
-                    <Box sx={style} className="well well-purple mini-profile-widget bootdey.com">
-                        <div className="col-md-6">
+                    <Box sx={style} className="well well-white mini-profile-widget bootdey.com">
+                        <div className="col-md-6" >
                             <div className="image-container">
                                 <img src={"http://localhost:9999/image/" + book.authorid.authorImage + "?v=" + new Date().getTime()} className="avatar img-responsive" alt="avatar" />
+                            </div>
+                            <div className="tg-widget tg-widgettrending" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
+                                <div className="tg-widgettitle">
+                                    <h3>There own book</h3>
+                                </div>
+                                <div className="tg-widgetcontent">
+                                    <ul style={{
+                                        color: "black",
+                                        height: "40rem",
+                                        overflow: "scroll"
+                                    }}>
+                                        {books.length !== 0 && books.map((book_b, index) => {
+                                            return (
+                                                <li key={index}>
+                                                    <article className="tg-post">
+                                                        <figure><a style={{
+                                                            width: 120,
+                                                            height: 120
+                                                        }}><img src={"http://localhost:9999/image/" + book_b.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></a></figure>
+                                                        <div className="tg-postcontent">
+                                                            <div className="tg-posttitle">
+                                                                <h3><a href="#!">{book_b.bookname}</a></h3>
+                                                            </div>
+                                                            <span className="tg-bookwriter">
+                                                                {"$" + book_b.bookprice}
+                                                                <span style={{ padding: 30 }}>
+                                                                    <Stack direction="row" spacing={2} style={{ margin: "auto" }}>
+                                                                        <Item>
+                                                                            <a style={{ cursor: 'pointer', fontSize: 15, padding: 15 }} onClick={() => onClick(book_b)} >Add To Basket</a>
+                                                                        </Item>
+                                                                        <Item>
+                                                                            {auth && (
+                                                                                book_b.wishlists.length !== 0 &&
+                                                                                (
+                                                                                    book.wishlists.map((wishCheck, index) => {
+                                                                                        return (
+                                                                                            <a style={{ backgroundColor: 'green' }}>
+                                                                                                <span>Already in wishlist</span>
+                                                                                            </a>
+                                                                                        )
+                                                                                    })
+                                                                                )
+                                                                            )}
+                                                                            {auth && (
+                                                                                book_b.wishlists.length === 0 &&
+                                                                                (
+                                                                                    <a onClick={() => handleAddWishlist(book.booksid)} style={{ cursor: 'pointer', fontSize: 15, padding: 15 }}>
+                                                                                        <span>Add to wishlist</span>
+                                                                                    </a>
+                                                                                )
+                                                                            )}
+                                                                            {!auth && (
+                                                                                <a style={{ cursor: 'pointer', fontSize: 15, padding: 15 }}>
+                                                                                    <span>Please login..</span>
+                                                                                </a>
+                                                                            )}
+                                                                        </Item>
+                                                                    </Stack>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+
+                                                    </article>
+                                                </li>
+                                            )
+                                        })}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <div className="col-md-6">
                             <div className="details">
-                                <h4>{book.authorid.authorname}</h4>
-                                <hr />
-                                <div>Works at Bootdey</div>
-                                <div>Attended University of Technology</div>
-                                <div>Lives in Miami, Florida</div>
-                                <p className="mg-top-20">
-                                    <a href="javascript:void(0);" className="btn btn-blue">
-                                        <i className="fa fa-facebook fa-fw" />
-                                    </a>
-                                    <a href="javascript:void(0);" className="btn btn-info">
-                                        <i className="fa fa-twitter fa-fw" />
-                                    </a>
-                                    <a href="javascript:void(0);" className="btn btn-red">
-                                        <i className="fa fa-google-plus fa-fw" />
-                                    </a>
-                                </p>
+                                <h4 style={{
+                                    color: "black"
+                                }}>{book.authorid.authorname}</h4>
+                                <hr style={{ color: "#333", backgroundColor: "#333" }} />
+                                <div style={{
+                                    color: "black",
+                                    height: "60rem",
+                                    overflow: "scroll"
+                                }} className="author_information" dangerouslySetInnerHTML={{ __html: book.authorid.authorinformation }} />
                             </div>
                         </div>
                     </Box>
@@ -394,7 +523,7 @@ const Book_detail = () => {
                                                         <div className="tg-booktitle">
                                                             <h3>{book.bookname}</h3>
                                                         </div>
-                                                        <span className="tg-bookwriter">By: <a  onMouseEnter={() => setOpen(true)} >{book.authorid.authorname}</a></span>
+                                                        <span className="tg-bookwriter">By: <a onMouseEnter={() => setTimeout(setOpen(true), 99999999999)} >{book.authorid.authorname}</a></span>
                                                         <span className="tg-addreviews"></span>
                                                         <div className="tg-sectionhead">
                                                             <h2>Book Details</h2>
@@ -408,9 +537,6 @@ const Book_detail = () => {
                                                             <li><span>Language:</span><span>{book.pdetailid.language}</span></li>
                                                             <li><span>Illustrations note:</span><span>{book.pdetailid.illustrationsnote}</span></li>
                                                         </ul>
-                                                        <div className="tg-alsoavailable">
-
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className="tg-productdescription product-ratings" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
@@ -476,7 +602,7 @@ const Book_detail = () => {
 
                                                     </Box>
                                                 </div>
-                                                <Same_book />
+                                                <Same_book data={sameBooks} addWishlist={handleAddWishlist} onAdd={onClick} />
                                             </div>
                                         </div>
                                     </div>

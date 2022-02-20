@@ -77,12 +77,12 @@ public class BookController {
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
     }
+    //Gửi 1 list String catagory
     @RequestMapping(value = "book/category/find/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Message_Respones<Books>> filterBookwithCategory(@PathVariable int id) {
+    public ResponseEntity<Message_Respones<Books>> filterBookwithCategory(@PathVariable String id) {
         Message_Respones<Books> setMessagecate = new Message_Respones<Books>();
         List<Groupdetail> glist = new ArrayList<>();
-        Catagorys catagory = categorysService.findOne(id);
-        glist = gDetailService.findByCategory(id);
+        glist = gDetailService.findByCategory(Integer.valueOf(id));
         List<Books> b = new ArrayList<>();
         for (Groupdetail groupdetail : glist) {
            Books str = groupdetail.getBookid();

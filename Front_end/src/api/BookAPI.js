@@ -84,6 +84,10 @@ const Book = {
     findPdetails: (id) =>{
         url ='/book/findOne/'+id;
         return RequestfindPdetails(url);
+    },
+    findByCatagory: (id) =>{
+        url ='/book/category/find/'+id;
+        return RequestAll(url);
     }
 }
 export default Book

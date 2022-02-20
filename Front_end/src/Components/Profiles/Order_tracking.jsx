@@ -144,7 +144,7 @@ const Page2 = () => {
                     {list.length !== 0 ? list.map((value, index) => {
                         const status = value.orderstatus === 1 ? "Confirm" : (value.orderstatus === 2 ? "Pending" : "Cancel")
                         const sumtotal = value.orderDetailCollection.reduce((a, b) => a + (b["total"] || 0), 0);
-                        console.log(value);
+        
                         return (
                             <tr key={value.orderid}>
                                 <td>{value.orderid}</td>

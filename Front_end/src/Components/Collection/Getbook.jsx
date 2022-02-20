@@ -37,7 +37,6 @@ function Getbook({ bookList, onAdd, addWishlist }) {
 		<>
 			<div className="tg-productgrid">
 				{bookList.map((post, index) => {
-					console.log(post)
 					return (
 						<>
 							<div key={index} className="col-xs-6 col-sm-6 col-md-4 col-lg-3">
@@ -54,13 +53,9 @@ function Getbook({ bookList, onAdd, addWishlist }) {
 										{auth && (
 											post.wishlists.length !== 0 &&
 											(
-												post.wishlists.map((wishCheck, index) => {
-													return (
-														<a key={index} className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
-															<span>Already in wishlist</span>
-														</a>
-													)
-												})
+												<a className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
+													<span key={index}>Already in wishlist</span>
+												</a>
 											)
 										)}
 										{auth && (
@@ -81,17 +76,17 @@ function Getbook({ bookList, onAdd, addWishlist }) {
 									<div className="tg-postbookcontent">
 										<ul className="tg-bookscategories">
 											<li>
-												<a href="javascript:void(0);">Language:{post.pdetailid.language}</a>
+												<a>Language:{post.pdetailid.language}</a>
 											</li>
 										</ul>
-										<div className="tg-themetagbox">
+										{/* <div className="tg-themetagbox">
 											<span className="tg-themetag">sale</span>
-										</div>
+										</div> */}
 										<div className="tg-booktitle">
 											<Link to={"/Book/" + post.booksid}>{post.bookname}</Link>
 										</div>
 										<span className="tg-bookwriter">
-											By: <a style={{ cursor: 'pointer' }}  key={post.booksid}>{post.authorid.authorname}</a>
+											By: <a href={"/author/" + post.authorid.authorid} style={{ cursor: 'pointer' }} key={post.booksid}>{post.authorid.authorname}</a>
 										</span>
 										<span className="tg-stars">
 											<span />

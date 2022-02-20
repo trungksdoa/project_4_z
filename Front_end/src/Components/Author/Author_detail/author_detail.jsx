@@ -13,6 +13,7 @@ const Authors_detail = () => {
 
     const [books, setBooks] = useState([
     ]);
+    
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
     const [isEmptyList, setisEmptyList] = useState(false);
     let { authorId } = useParams();

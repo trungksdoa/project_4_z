@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import settingAPi from '../../api/SettingAPI';
 import BookAPI from '../../api/BookAPI.js';
 import { useCookies } from 'react-cookie';
@@ -7,9 +8,10 @@ import WishlistAPI from '../../api/WishlistAPI';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { CartProvider, useCart } from 'react-use-cart';
 import Box from '@mui/material/Box';
+import './App.css'
 
 const MiddleBar = () => {
-    const [open, setOpen] = useState("open");
+    const [open, setOpen] = useState("");
     const handleClick = () => {
         setOpen("open");
     };
@@ -52,7 +54,18 @@ const MiddleBar = () => {
     }, [doChange])
     //Logic here
     //Cart
+    const [coslape, setCoslape] = useState(false);
+    const handleSearchChange = () => {
+        setCoslape(true);
+    };
+
+    const CloseAutoComplete = () => {
+        setCoslape(false);
+    };
     const [bookList, setbookList] = useState([]);
+    const [suggestBook, setSuggestBook] = useState([]);
+    const [searchText, setSearchText] = useState("");
+
     useEffect(() => {
         async function fetchbookList() {
             await BookAPI.FindAll().then(result => {
@@ -62,7 +75,20 @@ const MiddleBar = () => {
             })
         }
         fetchbookList();
-    }, [])
+    }, [searchText])
+    useEffect(() => {
+        if (searchText.length > 0) {
+            handleSearchChange()
+            setSuggestBook(bookList.filter(book =>
+                book.bookname.toLowerCase().includes(searchText.toLowerCase()) ||
+                book.authorid.authorname.toLowerCase().includes(searchText.toLowerCase())
+            ))
+        }
+    }, [searchText, bookList])
+    const ItemClick = (url) => {
+        CloseAutoComplete();
+        window.location.href = url;
+    }
     const {
         cartTotal,
         isEmpty,
@@ -72,6 +98,7 @@ const MiddleBar = () => {
         removeItem,
         clearCartMetadata
     } = useCart();
+    console.log(coslape)
     return (
         <div className="tg-middlecontainer">
             <div className="container">
@@ -139,10 +166,55 @@ const MiddleBar = () => {
                         <div className="tg-searchbox">
                             <form className="tg-formtheme tg-formsearch">
                                 <fieldset>
-                                    <input type="text" name="search" className="typeahead form-control" placeholder="Search by title, author, keyword, ISBN..." />
+                                    <input type="text" name="search" onChange={(e) => setSearchText(e.target.value)} className="typeahead form-control" placeholder="Search book by author or book name" />
                                     <button type="submit"><i className="icon-magnifier" /></button>
+
+                                    <ClickAwayListener onClickAway={CloseAutoComplete}>
+                                        <Box sx={{ position: 'relative' }}>
+                                            <>
+                                                {coslape == true && (
+                                                    <>
+                                                        {suggestBook.length !== 0 && (
+                                                            <div className="shopping-cart">
+                                                                <ul className="shopping-cart-items" style={suggestBook.length > 6 ? (
+                                                                    {
+                                                                        height: 386,
+                                                                        overflow: "scroll"
+                                                                    }
+                                                                ) : (
+                                                                    {
+                                                                        height: "100%",
+                                                                        overflow: "scroll"
+                                                                    }
+                                                                )}>
+                                                                    {suggestBook.map((book_b, index) => {
+
+                                                                        return (
+                                                                            <li className="clearfix searchAutocomplete_item" style={{ cursor: 'pointer' }} onClick={() => ItemClick("/Book/" + book_b.booksid)}>
+                                                                                <img style={{
+                                                                                    width: 70,
+                                                                                    height: 70
+                                                                                }} src={"http://localhost:9999/image/" + book_b.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="item1" />
+                                                                                <span className="item-name">{book_b.bookname}</span>
+                                                                                <span className="item-price">${book_b.bookprice}</span>
+                                                                                <span className="item-quantity">By : {book_b.authorid.authorname}</span>
+                                                                            </li>
+                                                                        )
+                                                                    })}
+                                                                </ul>
+                                                            </div>
+                                                        )}
+                                                        {suggestBook.length === 0 && (
+                                                            <div className="shopping-cart">
+                                                                No book have been found
+                                                            </div>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </>
+                                        </Box>
+                                    </ClickAwayListener>
                                 </fieldset>
-                                <a href="#!">+  Advanced Search</a>
                             </form>
                         </div>
                     </div>

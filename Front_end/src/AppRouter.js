@@ -43,6 +43,8 @@ import Wishlist from './Components/Profiles/Wishlist.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
 import Checkout from './Components/Order/Checkout.jsx';
 
@@ -90,6 +92,7 @@ const AppRouter = () => {
                     <Route path="/Cart" element={<Cart />} />
 
                     <Route path="/Collection" element={<Collection />} />
+                    <Route path="/Collection/:cataId" element={<Collection />} />
 
                     <Route path="/Contact" element={<Contact />} />
 

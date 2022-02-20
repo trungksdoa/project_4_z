@@ -212,7 +212,7 @@ public class Books implements Serializable {
         this.PDetailId = pDetailid;
     }
 
-    @JsonBackReference(value = "ReviewID")
+    @JsonManagedReference(value = "ReviewID")
     public Collection<Reviews> getReviews() {
         return reviews;
     }

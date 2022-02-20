@@ -4,6 +4,7 @@
  */
 package com.project4.bookonline.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -73,7 +74,7 @@ public class Reviews implements Serializable {
         this.userid = userid;
     }
 
-    @JsonManagedReference(value="ReviewID")
+    @JsonBackReference(value="ReviewID")
     public Books getBooksId() {
         return BooksId;
     }

@@ -89,13 +89,9 @@ const FeatureBook_Author = ({ booksid, pdetailid, bookname, wishlists, authorid,
                     {auth && (
                         wishlists.length !== 0 &&
                         (
-                            wishlists.map((wishCheck, index) => {
-                                return (
-                                    <a key={index} className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
-                                        <span>Already in wishlist</span>
-                                    </a>
-                                )
-                            })
+                            <a className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
+                                <span>Already in wishlist</span>
+                            </a>
                         )
                     )}
                     {auth && (
