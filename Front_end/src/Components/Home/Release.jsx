@@ -195,6 +195,9 @@ const Release = () => {
                                             )
                                         }
                                     }))}
+                                {currentItem.length <= 0 && (
+                                    <h3>No book found</h3>
+                                )}
                             </div>
                         </div>
                     </div>

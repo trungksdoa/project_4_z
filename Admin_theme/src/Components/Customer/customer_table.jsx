@@ -89,14 +89,17 @@ const Customers = ({ data, Ban, UnBan, Order, Wishlist }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const handeRedirect = (userID) => {
+    const handleChanges = (userID,type) => {
         //Do logic here
         // console.log(userID)
-        if (Order) {
-            Order(userID);
-        }
-        if (Wishlist) {
-            Wishlist(userID);
+        if (type == "order") {
+            if (Order) {
+                Order(userID);
+            }
+        } else if (type == "wishlist") {
+            if (Wishlist) {
+                Wishlist(userID);
+            }
         }
         handleClose();
     }
@@ -156,10 +159,10 @@ const Customers = ({ data, Ban, UnBan, Order, Wishlist }) => {
                                 <span className="text-secondary text-xs font-weight-bold">{usermodifieddate}</span>
                             </td>
                             <td className="align-middle text-center">
-                                <select onChange={(e) => handeRedirect(userid)} className="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                <select onChange={(e) => handleChanges(userid,e.target.value)} className="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                                     <option>Other</option>
-                                    <option value={1}>Order History</option>
-                                    <option value={2}>Wishlish</option>
+                                    <option value={"order"}>Order History</option>
+                                    <option value={"wishlist"}>Wishlish</option>
                                 </select>
                             </td>
                             <td className="align-middle">

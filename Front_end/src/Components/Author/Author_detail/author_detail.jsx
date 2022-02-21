@@ -34,7 +34,7 @@ const Authors_detail = () => {
         await BookAPI.LoadByAuthor(authorId).then(result => {
             setBooks(result.data)
         }).catch(err => {
-            alert(err.msg)
+            console.log(err)
             if (500 === err.status) {
                 navigate("/")
             }

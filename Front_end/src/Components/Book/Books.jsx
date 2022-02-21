@@ -89,11 +89,11 @@ Book.propTypes = {
 Book.defaultProps = {
     addWishlist: null,
     removeWishlist: null,
-    onAdd:null
+    onAdd: null
 };
 
 const FeatureBook_Author = (props) => {
-    const { booksid, pdetailid, bookprice, bookname, wishlists, reviews, authorid, onAdd,addWishlist } = props
+    const { booksid, pdetailid, bookprice, bookname, wishlists, reviews, authorid, onAdd, addWishlist } = props
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
     const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
     const handleWishList = (bookId) => {
@@ -150,10 +150,17 @@ const FeatureBook_Author = (props) => {
                     <span className="tg-bookprice">
                         <p>${bookprice}</p>
                     </span>
-                    <a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(props)} style={{ cursor: 'pointer' }}>
-                        <i className="fa fa-shopping-basket" />
-                        <em >Add To Basket</em>
-                    </a>
+                    {props.status === 3 ? (
+                        <a className="tg-btn tg-btnstyletwo">
+                            <i className="fa fa-shopping-basket" />
+                            <em >Out stock</em>
+                        </a>
+                    ) : (
+                        <a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(props)} style={{ cursor: 'pointer' }}>
+                            <i className="fa fa-shopping-basket" />
+                            <em >Add To Basket</em>
+                        </a>
+                    )}
                 </div>
             </div>
         </div>

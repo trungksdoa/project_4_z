@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
+
 // ----------------------------------------------------------------
 import { toast } from 'react-toastify'
 import Pagination from '../Pagination/pagination';
@@ -35,6 +36,7 @@ const Wishlist = () => {
             alert(e.msg)
         });
     }
+    const navigate = useNavigate();
     // ----------------------
     //UseEffect
     // ----------------------
@@ -69,11 +71,17 @@ const Wishlist = () => {
     const paginate = page => {
         setCurrentPage(page)
     }
+    const GotoCustomer = () => {
+        navigate("/admin/customer/")
+    }
     // ----------------------
     //Return
     // ----------------------
     return (
         <div className="col-12">
+             {id && (
+                <a style={{ cursor: 'pointer' }} onClick={GotoCustomer}>Back</a>
+            )}
             <div className="card my-4">
                 <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">

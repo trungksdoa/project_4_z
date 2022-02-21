@@ -17,12 +17,17 @@ import java.time.format.DateTimeFormatter;
 @Setter
 @NoArgsConstructor
 public class ReviewDTO {
+    private Integer reviewid;
     private String reviewtitle;
     private String reviewcontent;
     private int ratingstart;
     private int active;
+    private String createddate;
     private String userId;
     private String bookId;
+    private Books books;
+    private Users users;
+
 
     public Reviews convert (ReviewDTO dto){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");

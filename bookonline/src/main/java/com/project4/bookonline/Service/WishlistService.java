@@ -10,7 +10,7 @@ import java.util.List;
 public interface WishlistService {
     public List<Wishlist> getList(Users id);
 
-    public Wishlist getListByBookId(Users userId, Books bookId);
+    public List<Wishlist> getListByBookId(Books bookId);
 
     public Wishlist save(Wishlist wishlist);
 

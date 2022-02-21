@@ -28,19 +28,16 @@ export default function Basket(props) {
 		removeItem,
 		clearCartMetadata
 	} = useCart();
-	//   const { cartItems, onAdd, onRemove } = props;
-	//   const itemsPrice = cartItems.reduce((a, c) => a + c.qty * c.price, 0);
-	//   const totalPrice = itemsPrice;
 	return (
 		<div className="dropdown-menu tg-themedropdownmenu" aria-labelledby="tg-minicart">
 			{items.length === 0 && (
 				<div className="tg-description"><p>No products were added to the cart!</p></div>
 			)}
-			<div className="tg-minicartbody" style={{
-				paddingTop:10,
-				height:300,
-				overflow: "scroll"
-			}}>
+			<div className="tg-minicartbody" style={items.length !== 0 ? {
+				paddingTop: 10,
+				height: 300,
+				overflowY: "scroll"
+			} : {}}>
 				{items.length !== 0 && items.map((item, index) => {
 					return (
 						<div className="tg-minicarproduct" key={index}>
@@ -93,7 +90,7 @@ export default function Basket(props) {
 					</span>
 					<div className="tg-btns">
 						<a className="tg-btn tg-active">
-							
+
 						</a>
 						<a className="tg-btn" href="./Order/Checkout">
 							Checkout

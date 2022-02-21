@@ -181,17 +181,6 @@ const Collection = () => {
 													</>
 												)}
 											</div>
-											{/* <div className="tg-sectionhead">
-												<h2>
-													<span>People’s Choice</span>Bestselling Books
-												</h2>
-											</div>
-											{bookList.length === 0 && (
-												<h3>No data have been found</h3>
-											)}
-											{bookList.length !== 0 && (
-												<Getbook addWishlist={handleAddWishlist} onAdd={handleCart} bookList={bookList}></Getbook>
-											)} */}
 											<div className="col-lg-12">
 												<Pagination PerPage={itemsPerPage} total={bookList.length} paginate={paginate} currenPages={currentPage} />
 											</div>

@@ -62,8 +62,8 @@ function Getbook({ bookList, onAdd, addWishlist }) {
 					<div className="col-xs-6 col-sm-6 col-md-4 col-lg-3">
 						<div className="tg-postbook">
 							<figure className="tg-featureimg" style={{
-								    margin: 0,
-									width: "100%"
+								margin: 0,
+								width: "100%"
 							}}>
 								<div className="tg-bookimg">
 									<div className="tg-frontcover"><img src={"http://localhost:9999/image/" + post.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
@@ -119,10 +119,18 @@ function Getbook({ bookList, onAdd, addWishlist }) {
 									<p>${post.bookprice}</p>
 
 								</span>
-								<a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(post)} style={{ cursor: 'pointer' }}>
-									<i className="fa fa-shopping-basket" />
-									<em >Add To Basket</em>
-								</a>
+								{post.status === 3 ? (
+									<a className="tg-btn tg-btnstyletwo">
+										<i className="fa fa-shopping-basket" />
+										<em >Out stock</em>
+									</a>
+								) : (
+									<a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(post)} style={{ cursor: 'pointer' }}>
+										<i className="fa fa-shopping-basket" />
+										<em >Add To Basket</em>
+									</a>
+								)}
+
 							</div>
 						</div>
 					</div>

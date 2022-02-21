@@ -89,6 +89,40 @@ const RequestChangeStatus = (url, id, status) => {
     )
 }
 
+const SendEmail = (url, body) => {
+    const object_user = {};
+    const requestStatus = new Promise((resolve, reject) => {
+        axiosClient.put(url, body)
+            .then(response => {
+                console.log(response)
+                object_user.code = response.code;
+                object_user.msg = response.msg;
+                resolve(object_user)
+            })
+            .catch((error) => {
+                console.log(error.response);
+                if (error.toJSON().message === 'Network Error') {
+                    object_user.status = 511;
+                    object_user.msg = "Network Authentication Required";
+                } else {
+                    object_user.status = error.response.status;
+                    console.log(error.response);
+                    object_user.msg = error.response.data.msg;
+                }
+                reject(object_user)
+            })
+    })
+    const Actions = "Send reply success";
+    toast.promise(
+        requestStatus,
+        {
+            pending: 'Wating...',
+            success: Actions,
+            error: 'Change fails 🤯'
+        }
+    )
+}
+
 const RequestDelete = (url) => {
     const object_user = {};
     const DeleteAction = new Promise((resolve, reject) => {
@@ -139,6 +173,17 @@ const ReviewsAPI = {
     Findone: (id) => {
         const url = "reviews/" + id;
         return RequestFindOne(url)
+    },
+    SendEmail: (id, bodys) => {
+        const url = "reviews/sendmail/" + id;
+        const data = {
+            subjectl: bodys.subjectl,
+            to: bodys.to,
+            toEmail: bodys.toEmail,
+            oldreview: bodys.oldreview,
+            message: bodys.message,
+        }
+        return SendEmail(url, data)
     }
 }
 

@@ -26,7 +26,7 @@ function caculator(data) {
 const Same_book = ({ data, onAdd, addWishlist }) => {
     const settings = {
         dots: true,
-        infinite: true,
+        infinite: false,
         slidesToShow: 1,
         slidesToScroll: 1,
         // autoplay: true,
@@ -65,7 +65,7 @@ const Same_book = ({ data, onAdd, addWishlist }) => {
                         {
                             data.map((item, index) => {
                                 let wishlistArray;
-                                if(auth){
+                                if (auth) {
                                     wishlistArray = item.wishlists.filter(wishlist => wishlist.user_id.userid.includes(cookies.loggin.userID))
                                 }
                                 return (
@@ -124,10 +124,17 @@ const Same_book = ({ data, onAdd, addWishlist }) => {
                                                 <span className="tg-bookprice">
                                                     <p>${item.bookprice}</p>
                                                 </span>
-                                                <a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(item)} style={{ cursor: 'pointer' }}>
-                                                    <i className="fa fa-shopping-basket" />
-                                                    <em>Add To Basket</em>
-                                                </a>
+                                                {item.status === 3 ? (
+                                                    <a className="tg-btn tg-btnstyletwo">
+                                                        <i className="fa fa-shopping-basket" />
+                                                        <em>Out stock</em>
+                                                    </a>
+                                                ) : (
+                                                    <a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(item)} style={{ cursor: 'pointer' }}>
+                                                        <i className="fa fa-shopping-basket" />
+                                                        <em>Add to basket</em>
+                                                    </a>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

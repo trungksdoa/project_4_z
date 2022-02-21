@@ -57,24 +57,6 @@ public class WishlistController {
         return new ResponseEntity<Message_Respones<VWishlist>>(setVMessage, HttpStatus.OK);
     }
 
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/wishlist/findAll/{userId}/{bookId}", method = RequestMethod.GET)
-    public ResponseEntity<Message_Respones<Wishlist>> findAllByBookId(@PathVariable String userId, @PathVariable String bookId) {
-        setMessage = new Message_Respones<Wishlist>();
-        wishlist = new Wishlist();
-        Users user_id = new Users();
-        Books book_id = new Books();
-        user_id.setUserid(userId);
-        book_id.setBooksid(bookId);
-        wishlist = wishlistService.getListByBookId(user_id, book_id);
-        String msg = "Get object success";
-        setMessage.setMessage(msg);
-        setMessage.setObject(wishlist);
-        setMessage.setCode(200);
-        return new ResponseEntity<Message_Respones<Wishlist>>(setMessage, HttpStatus.OK);
-    }
-
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(value = "/wishlist/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Message_Respones<Wishlist>> RemoveWishlist(@PathVariable String id) {

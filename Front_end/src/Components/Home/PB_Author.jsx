@@ -164,7 +164,7 @@ const Pb_author = () => {
                                                             <div className="tg-ratingbox">
                                                                 {auth && (
                                                                     wishlistArray.length !== 0 && (
-                                                                        <a className="tg-btn tg-btnstyletwo" key={index} style={{ backgroundColor: 'green',color: 'white' }}>
+                                                                        <a className="tg-btn tg-btnstyletwo" key={index} style={{ backgroundColor: 'green', color: 'white' }}>
                                                                             <span>Already in wishlist</span>
                                                                         </a>
                                                                     )
@@ -190,10 +190,17 @@ const Pb_author = () => {
                                                             ><a href={"/Book/" + book.booksid}>{book.bookname}</a></h3>
                                                         </div>
                                                         <span className="tg-bookwriter">By: <a href={"/author/" + book.authorid.authorid}>{book.authorid.authorname}</a></span>
-                                                        <a className="tg-btn tg-btnstyletwo" onClick={() => handleCart(book)} href="#!">
-                                                            <i className="fa fa-shopping-basket" />
-                                                            <em>Add To Basket</em>
-                                                        </a>
+                                                        {book.status === 3 ? (
+                                                            <a className="tg-btn tg-btnstyletwo">
+                                                                <i className="fa fa-shopping-basket" />
+                                                                <em >Out stock</em>
+                                                            </a>
+                                                        ) : (
+                                                            <a className="tg-btn tg-btnstyletwo" onClick={() => handleCart(book)} style={{ cursor: 'pointer' }}>
+                                                                <i className="fa fa-shopping-basket" />
+                                                                <em >Add To Basket</em>
+                                                            </a>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>

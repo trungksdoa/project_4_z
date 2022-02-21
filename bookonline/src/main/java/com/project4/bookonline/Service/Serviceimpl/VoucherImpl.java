@@ -29,8 +29,6 @@ public class VoucherImpl implements VoucherService {
 
     @Override
     public boolean findOne(String id) {
-
-
         try {
               voucherRepository.findById(id).get();
              return true;

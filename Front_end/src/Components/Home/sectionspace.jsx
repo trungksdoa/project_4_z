@@ -181,10 +181,18 @@ const Sectionspace = () => {
 																	<p>${item.bookprice}</p>
 																</span>
 																<br></br>
-																<a className="tg-btn tg-btnstyletwo" onClick={() => onClick(item)} style={{ cursor: 'pointer' }}>
-																	<i className="fa fa-shopping-basket" />
-																	<em>Add To Basket</em>
-																</a>
+																{item.status === 3 ? (
+																	<a className="tg-btn tg-btnstyletwo">
+																		<i className="fa fa-shopping-basket" />
+																		<em >Out stock</em>
+																	</a>
+																) : (
+																	<a className="tg-btn tg-btnstyletwo" onClick={() => onClick(item)} style={{ cursor: 'pointer' }}>
+																		<i className="fa fa-shopping-basket" />
+																		<em>Add To Basket</em>
+																	</a>
+																)}
+
 															</div>
 														</div>
 													</div>

@@ -216,7 +216,7 @@ const ReviewsComponent = () => {
                                     <div className="product-rating-overview__briefing">
                                         <div className="product-rating-overview__score-wrapper">
                                             <span className="product-rating-overview__rating-score">{Math.round(caculator(data) * 100) / 100}</span>
-                                            <span className="product-rating-overview__rating-score-out-of"> trên 5 </span>
+                                            <span className="product-rating-overview__rating-score-out-of"> out of 5 </span>
                                         </div>
                                         <div className="shopee-rating-stars product-rating-overview__stars">
                                             <div className="shopee-rating-stars__stars">
@@ -255,7 +255,7 @@ const ReviewsComponent = () => {
                     </TabPanel>
                 </>
             ) : (
-                <h3>Please loggin</h3>
+                <h6>Please loggin</h6>
             )}
 
         </Box>

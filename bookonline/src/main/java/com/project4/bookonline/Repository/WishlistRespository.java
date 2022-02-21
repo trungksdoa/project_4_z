@@ -19,8 +19,11 @@ public interface WishlistRespository extends JpaRepository<Wishlist, Integer> {
     public List<Wishlist> findAllById(@Param("userId") Users userId);
 
 
-    @Query(value = "SELECT * FROM Wishlist WHERE User_id = :userId AND Book_id = :bookId", nativeQuery = true)
-    public Wishlist findAllByBookId(@Param("userId") Users userId,@Param("bookId") Books bookId);
+//    @Query(value = "SELECT * FROM Wishlist WHERE User_id = :userId AND Book_id = :bookId", nativeQuery = true)
+//    public Wishlist findAllByBookId(@Param("userId") Users userId,@Param("bookId") Books bookId);
+
+    @Query(value = "SELECT * FROM Wishlist WHERE Book_id = :bookId", nativeQuery = true)
+    public List<Wishlist> findAllByBookId(@Param("bookId") Books bookId);
 
     @Modifying
     @Query(value = "DELETE  FROM Wishlist WHERE Wishlist_id = :wishlistId", nativeQuery = true)

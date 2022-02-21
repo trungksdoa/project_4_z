@@ -42,7 +42,6 @@ const Admin_table = ({ data, onDelete }) => {
                 <tr>
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
-                    <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Password</th>
                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Roles</th>
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         Account creation date</th>
@@ -68,13 +67,6 @@ const Admin_table = ({ data, onDelete }) => {
                                 <div className="d-flex px-2 py-1">
                                     <div className="d-flex flex-column justify-content-center">
                                         <h6 className="mb-0 text-sm">{adminemail}</h6>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="d-flex px-2 py-1">
-                                    <div className="d-flex flex-column justify-content-center">
-                                        <h6 className="mb-0 text-sm">{adminpassword}</h6>
                                     </div>
                                 </div>
                             </td>

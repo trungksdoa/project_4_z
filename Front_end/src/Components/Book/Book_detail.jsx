@@ -96,6 +96,12 @@ const Book_detail = () => {
     useEffect(() => {
         fetchbook();
     }, [])
+    useEffect(() => {
+        const refresh = setInterval(() => {
+            fetchbook();
+        }, 10000);
+        return () => clearInterval(refresh);
+    }, [])
     const { addItem } = useCart();
     function onClick(props) {
         const { booksid, bookprice, pdetailid, bookname } = props;
@@ -245,7 +251,7 @@ const Book_detail = () => {
                             <div className="image-container">
                                 <img src={"http://localhost:9999/image/" + book.authorid.authorImage + "?v=" + new Date().getTime()} className="avatar img-responsive" alt="avatar" />
                             </div>
-                            <div className="tg-widget tg-widgettrending" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
+                            <div className="tg-widget tg-widgettrending">
                                 <div className="tg-widgettitle">
                                     <h3>There own book</h3>
                                 </div>
@@ -256,7 +262,10 @@ const Book_detail = () => {
                                         overflow: "scroll"
                                     }}>
                                         {books.length !== 0 && books.map((book_b, index) => {
-                                            console.log(book_b)
+                                            let wishlistArray;
+                                            if (auth) {
+                                                wishlistArray = book_b.wishlists.filter(wishlist => wishlist.user_id.userid.includes(cookies.loggin.userID))
+                                            }
                                             return (
                                                 <li key={index}>
                                                     <article className="tg-post">
@@ -273,26 +282,21 @@ const Book_detail = () => {
                                                                 <span style={{ padding: 30 }}>
                                                                     <Stack direction="row" spacing={2} style={{ margin: "auto" }}>
                                                                         <Item>
-                                                                            <a style={{ cursor: 'pointer', fontSize: 15, padding: 15 }} onClick={() => onClick(book_b)} >Add To Basket</a>
+                                                                            {book_b.status === 3 ? (
+                                                                                <a style={{  fontSize: 15, padding: 15 }} >Out stock</a>
+                                                                            ) : (
+                                                                                <a style={{ cursor: 'pointer', fontSize: 15, padding: 15 }} onClick={() => onClick(book_b)} >Add To Basket</a>
+                                                                            )}
                                                                         </Item>
                                                                         <Item>
                                                                             {auth && (
-                                                                                book_b.wishlists.length !== 0 &&
-                                                                                (
+                                                                                wishlistArray.length !== 0 && (
                                                                                     <a style={{ cursor: 'default', fontSize: 15, padding: 15 }}><span style={{ color: "green" }}>Already in  wishlist</span></a>
                                                                                 )
                                                                             )}
-                                                                            {auth && (
-                                                                                book_b.wishlists.length === 0 &&
-                                                                                (
-                                                                                    <a onClick={() => handleAddBookInAuthor(book.booksid)} style={{ cursor: 'pointer', fontSize: 15, padding: 15 }}>
-                                                                                        <span>Add to wishlist</span>
-                                                                                    </a>
-                                                                                )
-                                                                            )}
-                                                                            {!auth && (
-                                                                                <a style={{ cursor: 'pointer', fontSize: 15, padding: 15 }}>
-                                                                                    <span>Please login..</span>
+                                                                            {auth && wishlistArray.length === 0 && (
+                                                                                <a onClick={() => handleAddBookInAuthor(book_b.booksid)} style={{ cursor: 'pointer', fontSize: 15, padding: 15 }}>
+                                                                                    <span>Add to wishlist</span>
                                                                                 </a>
                                                                             )}
                                                                         </Item>
@@ -368,7 +372,12 @@ const Book_detail = () => {
                                                                 <ins>${book.bookprice}</ins>
                                                                 {/* <del>$27.20</del> */}
                                                             </span>
-                                                            <a className="tg-btn tg-active tg-btn-lg" onClick={() => onClick(book)}>Add To Basket</a>
+                                                            {book.status === 3 ? (
+                                                                <a className="tg-btn tg-active tg-btn-lg" >Out stock</a>
+                                                            ) : (
+                                                                <a className="tg-btn tg-active tg-btn-lg" onClick={() => onClick(book)}>Add To Basket</a>
+                                                            )}
+
                                                             {auth && (
                                                                 book.wishlists.length !== 0 &&
                                                                 (
@@ -421,10 +430,10 @@ const Book_detail = () => {
                                                                 <img src="images/img-02.jpg" alt="image description" />
                                                                 <figcaption>
                                                                     <h3>Catagory:</h3>
-                                                                    <ul style={{height:120,overflow:"scroll"}}>
+                                                                    <ul style={{ height: 120, overflowY: "scroll" }}>
                                                                         {book.groupdetail.length !== 0 && book.groupdetail.map((category, index) => {
                                                                             return (
-                                                                                <li key={index}>
+                                                                                <li key={index} style={{ listStyleType: "none" }}>
                                                                                     <a style={{ color: "black" }} href={"/Collection/" + category.catagoryid.catagoryid}>
                                                                                         <small>{category.catagoryid.catagoryname}</small>
                                                                                     </a>
