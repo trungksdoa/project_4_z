@@ -36,7 +36,7 @@ const Book_catagory = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="tg-widget tg-widgettrending" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
+                {/* <div className="tg-widget tg-widgettrending" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
                     <div className="tg-widgettitle">
                         <h3>Trending Products</h3>
                     </div>
@@ -88,7 +88,7 @@ const Book_catagory = () => {
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> */}
             </aside>
         </div>
     )

@@ -29,6 +29,9 @@ const Voucher_table = (props) => {
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         Voucher value
                     </th>
+                    <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        Total used
+                    </th>
                     <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                 </tr>
             </thead>
@@ -41,7 +44,7 @@ const Voucher_table = (props) => {
                                     <div className="d-flex flex-column justify-content-center">
                                         {voucher.voucherid}
 
-                                        <a style={{ cursor: 'pointer' }}onClick={()=>OnEditData(voucher.voucherid)}>Edit</a>
+                                        <a style={{ cursor: 'pointer' }} onClick={() => OnEditData(voucher.voucherid)}>Edit</a>
                                     </div>
                                 </div>
                             </td>
@@ -67,6 +70,9 @@ const Voucher_table = (props) => {
                             </td>
                             <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">{voucher.vouchervalue}</span>
+                            </td>
+                            <td className="align-middle text-center">
+                                <span className="text-secondary text-xs font-weight-bold">{voucher.voucherused}</span>
                             </td>
                             <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">

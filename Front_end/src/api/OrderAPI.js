@@ -57,8 +57,8 @@ const OrderAPI = {
         const url = '/orders/findAll';
         return RequestAll(url);
     },
-    Create: (formdata) => {
-        const url = "/orders/create";
+    Create: (formdata, type) => {
+        const url = "/orders/create/" + type;
         return RequestCreate(url, formdata)
     }
 }

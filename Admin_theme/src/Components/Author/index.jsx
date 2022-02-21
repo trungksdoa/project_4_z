@@ -57,10 +57,10 @@ const Author = () => {
         navigate("/admin/author/create")
     }
 
-    // /////////////////////////////////////
-    // // ---------------------------------
-    // /////////////////////////////////////
-    // // We start with an empty list of items.
+    // ///////////////////////////////////
+    // ---------------------------------
+    // ///////////////////////////////////
+    // We start with an empty list of items.
     const [currentPage, setCurrentPage] = useState(1);
 
     const itemsPerPage = 5;
@@ -72,7 +72,6 @@ const Author = () => {
 
     const paginate = page => {
         setCurrentPage(page)
-        console.log(currentItem)
     }
 
     return (

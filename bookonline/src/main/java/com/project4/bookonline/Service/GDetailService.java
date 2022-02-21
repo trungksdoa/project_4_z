@@ -18,5 +18,5 @@ public interface GDetailService {
     public Groupdetail create(Groupdetail groupdetail);
     public Groupdetail findOne(int id);
     public List<Groupdetail> findByCategory(int id);
-    public List<Groupdetail> findBySameBook(String list);
+    public List<Groupdetail> findBySameBook(List<Integer> list);
 }

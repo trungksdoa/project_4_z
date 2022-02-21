@@ -42,14 +42,7 @@ const NavigationBar = () => {
                                     <li>
                                         <a href="/Contact">Contact</a>
                                     </li>
-                                    <li><a href="contactus.html">About us</a></li>
-                                    {/* <li className="menu-item-has-children"> */}
                                     <li>
-                                        {/* <li><NavLink to="/Login">Log in</NavLink></li>
-                                                    <li><NavLink to="/Register">Register</NavLink></li> */}
-                                        {/* <ul className="sub-menu">
-                                                    <li></li>
-                                                </ul> */}
                                         {
                                             auth ? (
                                                 <a style={{

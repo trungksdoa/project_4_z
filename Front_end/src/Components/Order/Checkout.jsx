@@ -7,13 +7,21 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import VoucherAPI from '../../api/VoucherAPI.js';
+import CloseIcon from '@mui/icons-material/Close';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import './Checkout.css';
 function Checkout() {
 	const { cartTotal, isEmpty, totalUniqueItems, items, updateItemQuantity, removeItem } = useCart();
 	//const orders = { district: "", address: "", city: "", voucher: ""};
-	const [ cookies, setCookie, removeCookie ] = useCookies([ 'loggin' ]);
+	const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+
+	const [selectedValue, setSelectedValue] = useState('offline');
 	//const [formData, setFormValues] = useState(initialValues);
-	const [ formData, setFormData ] = useState({
+	const [formData, setFormData] = useState({
 		orderdistrict: '',
 		orderaddress: '',
 		ordercity: '',
@@ -21,8 +29,8 @@ function Checkout() {
 		ordernote: '',
 		orderDetailDto: []
 	});
-	const [ formError, setformError ] = useState({});
-	const [ isSubmit, setIsSubmit ] = useState(false);
+	const [formError, setformError] = useState({});
+	const [isSubmit, setIsSubmit] = useState(false);
 
 	const navigator = useNavigate();
 
@@ -39,18 +47,23 @@ function Checkout() {
 		setformError(validateResult);
 		setIsSubmit(true);
 	};
-	const onClick = async (e) => {};
+	const onClick = async (e) => { };
 	const handleSubmit = async () => {
 		if (Object.keys(formError).length === 0 && isSubmit) {
 			const formbody = {
 				orderdistrict: formData.orderdistrict,
 				orderaddress: formData.orderaddress,
 				ordercity: formData.ordercity,
-				ordervoucher: formData.ordervoucher,
+				// ordervoucher: formData.ordervoucher,
 				ordernote: formData.ordernote,
 				userid: cookies.loggin.userID,
 				orderDetailDto: []
 			};
+			if (applyVoucher) {
+				formbody.ordervoucher = formData.ordervoucher;
+			} else {
+				formbody.ordervoucher = "";
+			}
 			items.map((currentValue, index) => {
 				const { id, itemTotal, name, price, quantity } = currentValue;
 				const body = {};
@@ -60,14 +73,31 @@ function Checkout() {
 				console.log(body)
 				formbody.orderDetailDto.push(body);
 			});
-			await OrderAPI.Create(formbody)
+			await OrderAPI.Create(formbody,selectedValue)
 				.then((res) => {
-					toast(res.msg);
+					toast.success(res.msg, {
+						position: "top-right",
+						autoClose: 5000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+					});
+
 					// navigator('/admin/category');
-					// window.location.href="/Profile/Order";
+					window.location.href = "/Profile/Order";
 				})
 				.catch((err) => {
-					alert(err.msg);
+					toast.error(err.msg, {
+						position: "top-right",
+						autoClose: 5000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+					});
 				});
 		} else {
 			setIsSubmit(false);
@@ -98,11 +128,11 @@ function Checkout() {
 		() => {
 			handleSubmit();
 		},
-		[ formError ]
+		[formError]
 	);
 	///
 
-	const [ voucher, setVoucher ] = useState({
+	const [voucher, setVoucher] = useState({
 		voucherid: '',
 		vouchertitle: '',
 		voucherdescription: '',
@@ -111,21 +141,55 @@ function Checkout() {
 		voucherfrom: '',
 		voucherto: ''
 	});
-	function OnClickApply(props) {
+	const [applyVoucher, setApplyVoucher] = useState(false);
+	function OnClickApply(voucherId) {
 		if (formData.ordervoucher === '') {
-			alert('Empty');
+			toast.error("Cannot apply empty voucher", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
 		} else {
-			VoucherAPI.Check(props).then((res) => {
+			VoucherAPI.Check(voucherId, cookies.loggin.userID).then((res) => {
 				setVoucher(res.data);
+				setApplyVoucher(true)
+				toast.success("Apply voucher success", {
+					position: "top-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+			}).catch((err) => {
+				toast.error(err.msg, {
+					position: "top-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
 			});
 		}
-		// console.log(props);
 	}
+
+
+	const controlProps = (item) => ({
+		checked: selectedValue === item,
+		onChange: handleChange,
+		value: item,
+		name: 'size-radio-button-demo',
+		inputProps: { 'aria-label': item },
+	});
 	return (
 		<div className="container wrapper">
-			<pre>{JSON.stringify(formData, null, 2)}</pre> <br />
-			<pre>{JSON.stringify(formError, null, 2)}</pre>
-			<pre>{}</pre>
 			<div className="row cart-head">
 				<div className="container">
 					<div className="row">
@@ -176,7 +240,7 @@ function Checkout() {
 									</div>
 									<div className="col-xs-12">
 										<small>Voucher</small>
-										<div className="pull-right"><span>{voucher.vouchervalue !== 0 && ("-"+voucher.vouchervalue+"%") }</span></div>
+										<div className="pull-right"><span>{voucher.vouchervalue !== 0 && ("-" + voucher.vouchervalue + "%")}</span></div>
 									</div>
 								</div>
 								<div className="form-group">
@@ -187,7 +251,7 @@ function Checkout() {
 										<strong>Order Total</strong>
 										<div className="pull-right">
 											<span>$</span>
-											<span>{cartTotal-(cartTotal*voucher.vouchervalue)/100}</span>
+											<span>{cartTotal - (cartTotal * voucher.vouchervalue) / 100}</span>
 										</div>
 									</div>
 								</div>
@@ -223,31 +287,6 @@ function Checkout() {
 											onChange={handleChange}
 										/>
 										<p style={{ color: 'red' }}>{formError.orderdistrict}</p>
-									</div>
-								</div>
-								<div className="form-group">
-									<div className="col-md-6 col-xs-12">
-										<strong>First Name:</strong>
-										<input
-											type="text"
-											name="first_name"
-											className="form-control"
-											placeholder="First Name"
-											value={cookies.loggin.first_name}
-											readOnly
-										/>
-									</div>
-									<div className="span1" />
-									<div className="col-md-6 col-xs-12">
-										<strong>Last Name:</strong>
-										<input
-											type="text"
-											name="last_name"
-											className="form-control"
-											placeholder="Last Name:"
-											value={cookies.loggin.last_name}
-											readOnly
-										/>
 									</div>
 								</div>
 								<div className="form-group">
@@ -297,59 +336,155 @@ function Checkout() {
 									</div>
 								</div>
 								<div className="form-group">
+									<hr style={{
+										color: "black",
+										height: 5,
+										backgroundColor: "#000"
+									}}></hr>
 									<div className="col-md-12">
 										<strong>Voucher:</strong>
 									</div>
 									<div className="col-md-12">
-										<div className="col-md-8">
-											<input
-												type="text"
-												name="ordervoucher"
-												className="form-control"
-												placeholder="Enter discount code (if any)"
-												value={formData.ordervoucher}
-												onChange={handleChange}
-											/>
-										</div>
-										<div className="col-md-4 col-xs-12">
-											<button
-												type="button"
-												className="btn btn-success"
-												onClick={() => OnClickApply(formData.ordervoucher)}
-											>
-												Apply
-											</button>
-										</div>
+										{!applyVoucher && (
+											<>
+												<div className="col-md-8">
+													<input
+														type="text"
+														name="ordervoucher"
+														className="form-control"
+														placeholder="Enter discount code (if any)"
+														value={formData.ordervoucher}
+														onChange={handleChange}
+													/>
+												</div>
+												<div className="col-md-4 col-xs-12">
+													<button
+														type="button"
+														className="btn btn-success"
+														onClick={() => OnClickApply(formData.ordervoucher)}
+													>
+														Apply
+													</button>
+												</div>
+											</>
+										)}
+
+										{applyVoucher && (
+											<>
+												<p>{formData.ordervoucher} <CloseIcon onClick={() => {
+													setApplyVoucher(false);
+													setFormData({ ...formData, "ordervoucher": "" });
+													setVoucher({
+														voucherid: '',
+														vouchertitle: '',
+														voucherdescription: '',
+														voucherstatus: 0,
+														vouchervalue: 0,
+														voucherfrom: '',
+														voucherto: ''
+													})
+												}} style={{ fontSize: 20 }} /></p>
+											</>
+										)}
 									</div>
 								</div>
 								<div className="form-group">
 									<div className="col-md-12">
-										<strong>Phone Number:</strong>
-									</div>
-									<div className="col-md-12">
-										<input
-											type="text"
-											name="phone_number"
-											className="form-control"
-											value={cookies.loggin.phone_number}
-											disabled
-										/>
+										<div className="form-group">
+											<div className="col-md-12">
+												<strong>Payment type:</strong>
+											</div>
+											<div className="col-md-12" style={{ fontSize: 20 }}>
+												<FormControl >
+													<RadioGroup
+														aria-labelledby="demo-radio-buttons-group-label"
+														defaultValue="female"
+														style={{ fontSize: 20 }}
+														name="radio-buttons-group"
+														value={selectedValue}
+														onChange={(e) => setSelectedValue(e.target.value)}
+													>
+														<FormControlLabel value="offline" control={<Radio
+
+														/>} label={<span style={{ fontSize: '2rem' }}>Offline</span>} />
+														<FormControlLabel value="online" control={<Radio />} label={<span style={{ fontSize: '2rem' }}>Online</span>} />
+													</RadioGroup>
+												</FormControl>
+											</div>
+										</div>
+
 									</div>
 								</div>
-								<div className="form-group">
-									<div className="col-md-12">
-										<strong>Email Address:</strong>
+								{/* {selectedValue === "online" && (
+									<div className="form-group">
+										<div className="col-md-12">
+											<div className="form-group">
+												<div className="col-md-12">
+													<strong>Name on Card:</strong>
+												</div>
+												<div className="col-md-12">
+													<input
+														type="text"
+														name="ordernote"
+														className="form-control"
+													// value={formData.ordernote}
+													// onChange={handleChange}
+													/>
+												</div>
+											</div>
+											<div className="form-group">
+												<div className="col-md-12">
+													<strong>Card Number:</strong>
+												</div>
+												<div className="col-md-12">
+													<input
+														type="text"
+														name="ordernote"
+														className="form-control"
+														placeholder='ex: 311'
+													// value={formData.ordernote}
+													// onChange={handleChange}
+													/>
+												</div>
+											</div>
+											<div className="form-group">
+												<div className="col-md-3">
+													<strong>CVC:</strong>
+													<input
+														type="text"
+														name="ordernote"
+														className="form-control"
+														placeholder='ex: 311'
+													// value={formData.ordernote}
+													// onChange={handleChange}
+													/>
+												</div>
+												<div className="col-md-3">
+													<strong>Expiration:</strong>
+													<input
+														type="text"
+														name="ordernote"
+														className="form-control"
+														placeholder='MM'
+													// value={formData.ordernote}
+													// onChange={handleChange}
+													/>
+												</div>
+												<div className="col-md-3">
+													<strong>Year:</strong>
+													<input
+														type="text"
+														name="ordernote"
+														className="form-control"
+														placeholder='YYYY'
+													// value={formData.ordernote}
+													// onChange={handleChange}
+													/>
+												</div>
+											</div>
+										</div>
 									</div>
-									<div className="col-md-12">
-										<input
-											type="text"
-											name="email_address"
-											className="form-control"
-											value={cookies.loggin.user_email}
-											disabled
-										/>
-									</div>
-								</div>
+								)} */}
 							</div>
 						</div>
 						{/*SHIPPING METHOD END*/}

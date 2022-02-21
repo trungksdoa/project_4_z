@@ -18,8 +18,10 @@ import com.project4.bookonline.Service.GDetailService;
 import com.project4.bookonline.Service.PDetailService;
 import com.project4.bookonline.UploadService.FileStorageService;
 import com.project4.bookonline.dto.BookDTO;
+import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,8 +29,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author PC
@@ -56,6 +60,7 @@ public class BookController {
     GDetailService gDetailService;
     @Autowired
     CategorysService categorysService;
+
     @RequestMapping(value = "/book/findAll", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Books>> findAll() {
         List<Books> b = bookService.ListBook();
@@ -77,6 +82,7 @@ public class BookController {
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
     }
+
     //Gửi 1 list String catagory
     @RequestMapping(value = "book/category/find/{id}", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Books>> filterBookwithCategory(@PathVariable String id) {
@@ -85,9 +91,9 @@ public class BookController {
         glist = gDetailService.findByCategory(Integer.valueOf(id));
         List<Books> b = new ArrayList<>();
         for (Groupdetail groupdetail : glist) {
-           Books str = groupdetail.getBookid();
-           Books gb = bookService.findOne(str.getBooksid());
-           b.add(gb);
+            Books str = groupdetail.getBookid();
+            Books gb = bookService.findOne(str.getBooksid());
+            b.add(gb);
         }
         String msg = "Get data success";
         setMessagecate.setMessage(msg);
@@ -95,8 +101,8 @@ public class BookController {
         setMessagecate.setCode(200);
         return new ResponseEntity<Message_Respones<Books>>(setMessagecate, HttpStatus.OK);
     }
-    
-    
+
+
     @RequestMapping(value = "/book/findOne/{id}", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Books>> findOne(@PathVariable String id) {
         Books b = bookService.findOne(id);
@@ -107,9 +113,11 @@ public class BookController {
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
     }
-    @RequestMapping(value = "/book/same/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Message_Respones<Books>> sameBook(@PathVariable String id) {
-        List<Groupdetail> groupdetails = gDetailService.findBySameBook(id);
+
+    @PostMapping(value = "/book/same/")
+    public ResponseEntity<Message_Respones<Books>> sameBook(@RequestBody List<Integer> listId) {
+//        String string = listId.stream().map(Object::toString).collect(Collectors.joining(""));
+        List<Groupdetail> groupdetails = gDetailService.findBySameBook(listId);
         List<Books> bsame = new ArrayList<>();
         for (Groupdetail groupdetail : groupdetails) {
             Books str = groupdetail.getBookid();

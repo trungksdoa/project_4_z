@@ -10,8 +10,6 @@ import { useParams } from 'react-router-dom';
 import AddToWishlist from '../FolderAction/AddToWishlist';
 //----------------------
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Paper from '@mui/material/Paper';
@@ -25,10 +23,10 @@ import { styled } from '@mui/material/styles';
 //----------------------
 import Book_catagory from './Book_catagory.jsx';
 import Same_book from './Same_book.jsx';
-import { Reviews, List_review, Single_review, Reviews_edit } from './Book_reviews.jsx'
 import './reviews.css'
 
 import './App.css'
+import Review from './reviews';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -39,40 +37,6 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <div>
-                        {children}
-                    </div>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
 
 const style = {
     position: 'absolute',
@@ -89,8 +53,9 @@ const style = {
 const Book_detail = () => {
     const [open, setOpen] = useState(false);
 
-
-
+    const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
+    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
+    const { id } = useParams();
     const handleClose = () => setOpen(false);
 
     // --------------Books-----------------
@@ -107,16 +72,6 @@ const Book_detail = () => {
         bookreleasedate: "",
         booksid: "",
         groupdetail: [
-            //             catagoryid:
-            // catagorycreateddate: "2022-02-02 00:00:00.0"
-            // catagorydescription: "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\""
-            // catagoryid: 2
-            // catagorymodifieddate: "2022-02-02 00:00:00.0"
-            // catagoryname: "Foreign Language Books"
-            // [[Prototype]]: Object
-            // groupcreateddate: "2022-02-02 00:00:00.0"
-            // groupmodifieddate: "2022-02-02 00:00:00.0"
-            // id: 1
         ],
         pdetailid: {
             dimensions: "",
@@ -164,6 +119,15 @@ const Book_detail = () => {
         await AddToWishlist.AddToWishlist(cookies, booksId).then(result => {
             fetchbook();
             setCookie('action', JSON.stringify({ doChange: new Date().getTime() }), { path: '/' });
+            toast.success("Adding item to wishlist", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }).catch(err => {
             alert(err.msg)
         })
@@ -182,7 +146,25 @@ const Book_detail = () => {
     }
     useEffect(() => {
         LoadBookByAuthor()
-    }, [book])
+    }, [])
+
+    async function handleAddBookInAuthor(booksId) {
+        await AddToWishlist.AddToWishlist(cookies, booksId).then(result => {
+            LoadBookByAuthor();
+            setCookie('action', JSON.stringify({ doChange: new Date().getTime() }), { path: '/' });
+            toast.success("Adding item to wishlist", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }).catch(err => {
+            alert(err.msg)
+        })
+    }
     // console.log(book)
     // --------------End Books-----------------
 
@@ -190,154 +172,60 @@ const Book_detail = () => {
     const [sameBooks, setSameBooks] = useState([
     ]);
     async function LoadByCatagory() {
+        const newArrays = [];
+        book.groupdetail.map(respone => newArrays.push(respone.catagoryid.catagoryid))
+
+        // console.log(newArrays)
+
         if (book.groupdetail.length !== 0) {
-            await BookAPI.findByCatagory(book.groupdetail[0].catagoryid.catagoryid).then(result => {
-                setSameBooks(result.data)
+            await BookAPI.getSameBook(newArrays).then(result => {
+                const key = 'booksid';
+
+                const arrayUniqueByKey = [...new Map(result.data.map(item =>
+                    [item[key], item])).values()];
+                setSameBooks(arrayUniqueByKey)
             }).catch(err => {
                 console.log(err.msg)
             })
         }
     }
+
+    async function handleSameBookAddWishlist(booksId) {
+        await AddToWishlist.AddToWishlist(cookies, booksId).then(result => {
+            LoadByCatagory();
+            setCookie('action', JSON.stringify({ doChange: new Date().getTime() }), { path: '/' });
+            toast.success("Adding item to wishlist", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }).catch(err => {
+            alert(err.msg)
+        })
+    }
+
+
     useEffect(() => {
         LoadByCatagory()
     }, [book])
     // --------------End SameBook-----------------
 
 
-    // --------------Reviews-----------------
-    const [value, setValue] = useState(0);
-    const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
-    const auth = cookies.loggin !== undefined ? cookies.loggin.loggin : false;
-    const [isReviewd, setIsReviewd] = useState(true);
-    const { id } = useParams();
-    const [user_review, setUserReview] = useState({
-        active: 0,
-        createddate: "",
-        ratingstart: 0,
-        reviewcontent: "",
-        reviewid: 0,
-        reviewtitle: "",
-        userid: {
-            userid: "",
-            firstName: "",
-            lastName: "",
-            useremail: "",
-            userpassword: "responseresponse",
-            birthday: "",
-            phone: "",
-            status: 0,
-            usercreateddate: "",
-            usermodifieddate: ""
-        }
-    });
-    const [data, setData] = useState([{
-        active: 0,
-        createddate: "",
-        ratingstart: 0,
-        reviewcontent: "",
-        reviewid: 0,
-        reviewtitle: "",
-        userid: {
-            userid: "",
-            firstName: "",
-            lastName: "",
-            useremail: "",
-            userpassword: "responseresponse",
-            birthday: "",
-            phone: "",
-            status: 0,
-            usercreateddate: "",
-            usermodifieddate: ""
-        },
-        booksId: {
-            booksid: ""
-        }
-    }]);
-    const [action, setAction] = useState("view");
-    const [searchRating, setSearchRating] = useState("");
-    const [filterd, setFiltered] = useState([]);
-    const numbeRating = useRef();
+    const [delayHandler, setDelayHandler] = useState(null)
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
-    const handleEdit_Reviews = (target, reviewId) => {
-        const action_ = action === "view" ? "edit" : "view";
-        setAction(action_)
-        // console.log(target, reviewId)
-    };
-    const HandleBackToView = () => {
-        setAction("view")
+    const handleMouseEnter = event => {
+        setDelayHandler(setTimeout(() => {
+            setOpen(true)
+            LoadBookByAuthor()
+        }, 500))
     }
-    async function Fetch(id) {
-        return await ReviewAPI.FindALl(id)
+    const handleMouseLeave = () => {
+        clearTimeout(delayHandler)
     }
-
-    function caculator(data) {
-        //Tóm tắt
-        //1: thuộc tính star nằm trong đối tượng
-        //2: lấy tổng số đánh giá
-        //3: công thức (1 x SUM(WHERE rating = 1) + 2 x total_rate_2 + 3 x total_rate_3 + 4 x total_rate_4 + 5 x total_rate_5) / total_rating
-        const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-        var average = 0;
-        const newArray = data.filter(review => review.active === 1)
-        var total_rating = newArray.map(item => item.ratingstart).reduce((prev, curr) => prev + curr, 0);
-
-        data.forEach(function (x) { counts[x.ratingstart] = (counts[x.ratingstart] || 0) + 1; });
-
-        numbeRating.current = counts
-
-        const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
-        const sum = sumValues(counts); // gives 5
-
-        return total_rating / sum;
-    }
-
-    useLayoutEffect(() => {
-        if (auth) {
-            const interval = setInterval(() => {
-                Fetch(id).then(res => {
-                    setData(res.data);
-                    let obj = res.data.find(o => o.userid.userid === cookies.loggin.userID);
-                    if (obj === undefined) {
-                        setIsReviewd(false);
-                        setUserReview({
-                            active: 0,
-                            createddate: "",
-                            ratingstart: 0,
-                            reviewcontent: "",
-                            reviewid: 0,
-                            reviewtitle: "",
-                            userid: {
-                                userid: "",
-                                firstName: "",
-                                lastName: "",
-                                useremail: "",
-                                userpassword: "responseresponse",
-                                birthday: "",
-                                phone: "",
-                                status: 0,
-                                usercreateddate: "",
-                                usermodifieddate: ""
-                            }
-                        })
-                    } else {
-                        setIsReviewd(true);
-                        setUserReview(obj)
-                    }
-                })
-            }, 1000)
-            return () => clearInterval(interval)
-        }
-    }, [])
-
-    useLayoutEffect(() => {
-        setFiltered(data.filter(review =>
-            review.ratingstart.toString().includes(searchRating)
-        ))
-    }, [data, searchRating])
-    // --------------End Reviews-----------------
     return (
         <div>
             <Modal
@@ -368,6 +256,7 @@ const Book_detail = () => {
                                         overflow: "scroll"
                                     }}>
                                         {books.length !== 0 && books.map((book_b, index) => {
+                                            console.log(book_b)
                                             return (
                                                 <li key={index}>
                                                     <article className="tg-post">
@@ -390,19 +279,13 @@ const Book_detail = () => {
                                                                             {auth && (
                                                                                 book_b.wishlists.length !== 0 &&
                                                                                 (
-                                                                                    book.wishlists.map((wishCheck, index) => {
-                                                                                        return (
-                                                                                            <a style={{ backgroundColor: 'green' }}>
-                                                                                                <span>Already in wishlist</span>
-                                                                                            </a>
-                                                                                        )
-                                                                                    })
+                                                                                    <a style={{ cursor: 'default', fontSize: 15, padding: 15 }}><span style={{ color: "green" }}>Already in  wishlist</span></a>
                                                                                 )
                                                                             )}
                                                                             {auth && (
                                                                                 book_b.wishlists.length === 0 &&
                                                                                 (
-                                                                                    <a onClick={() => handleAddWishlist(book.booksid)} style={{ cursor: 'pointer', fontSize: 15, padding: 15 }}>
+                                                                                    <a onClick={() => handleAddBookInAuthor(book.booksid)} style={{ cursor: 'pointer', fontSize: 15, padding: 15 }}>
                                                                                         <span>Add to wishlist</span>
                                                                                     </a>
                                                                                 )
@@ -482,20 +365,16 @@ const Book_detail = () => {
                                                         </figure>
                                                         <div className="tg-postbookcontent">
                                                             <span className="tg-bookprice">
-                                                                <ins>{book.bookprice}$</ins>
+                                                                <ins>${book.bookprice}</ins>
                                                                 {/* <del>$27.20</del> */}
                                                             </span>
                                                             <a className="tg-btn tg-active tg-btn-lg" onClick={() => onClick(book)}>Add To Basket</a>
                                                             {auth && (
                                                                 book.wishlists.length !== 0 &&
                                                                 (
-                                                                    book.wishlists.map((wishCheck, index) => {
-                                                                        return (
-                                                                            <a key={index} className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
-                                                                                <span>Already in wishlist</span>
-                                                                            </a>
-                                                                        )
-                                                                    })
+                                                                    <a className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>
+                                                                        <span>Already in wishlist</span>
+                                                                    </a>
                                                                 )
                                                             )}
                                                             {auth && (
@@ -517,13 +396,13 @@ const Book_detail = () => {
                                                 </div>
                                                 <div className="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                                                     <div className="tg-productcontent">
-                                                        <ul className="tg-bookscategories">
-                                                            {/* <li><a href="#!">Art &amp; Photography</a></li> */}
-                                                        </ul>
                                                         <div className="tg-booktitle">
                                                             <h3>{book.bookname}</h3>
                                                         </div>
-                                                        <span className="tg-bookwriter">By: <a onMouseEnter={() => setTimeout(setOpen(true), 99999999999)} >{book.authorid.authorname}</a></span>
+                                                        <span className="tg-bookwriter">By: <a
+                                                            style={{ cursor: 'progress' }}
+                                                            onMouseLeave={handleMouseLeave}
+                                                            onMouseEnter={handleMouseEnter} >{book.authorid.authorname}</a></span>
                                                         <span className="tg-addreviews"></span>
                                                         <div className="tg-sectionhead">
                                                             <h2>Book Details</h2>
@@ -537,72 +416,34 @@ const Book_detail = () => {
                                                             <li><span>Language:</span><span>{book.pdetailid.language}</span></li>
                                                             <li><span>Illustrations note:</span><span>{book.pdetailid.illustrationsnote}</span></li>
                                                         </ul>
+                                                        <div className="tg-alsoavailable">
+                                                            <figure>
+                                                                <img src="images/img-02.jpg" alt="image description" />
+                                                                <figcaption>
+                                                                    <h3>Catagory:</h3>
+                                                                    <ul style={{height:120,overflow:"scroll"}}>
+                                                                        {book.groupdetail.length !== 0 && book.groupdetail.map((category, index) => {
+                                                                            return (
+                                                                                <li key={index}>
+                                                                                    <a style={{ color: "black" }} href={"/Collection/" + category.catagoryid.catagoryid}>
+                                                                                        <small>{category.catagoryid.catagoryname}</small>
+                                                                                    </a>
+                                                                                </li>
+                                                                            )
+                                                                        })}
+                                                                        {book.groupdetail.length === 0 && (
+                                                                            <li><span>On update</span></li>
+                                                                        )}
+                                                                    </ul>
+                                                                </figcaption>
+                                                            </figure>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className="tg-productdescription product-ratings" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
-                                                    <Box sx={{ width: '100%' }}>
-                                                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                                            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                                                <Tab
-                                                                    label="Description"
-                                                                    {...a11yProps(0)} />
-                                                                <Tab label="Review" {...a11yProps(1)} />
-                                                            </Tabs>
-                                                        </Box>
-                                                        {auth ? (
-                                                            <>
-                                                                <TabPanel value={value} index={0}>
-                                                                    {action === "view" ? (
-                                                                        <>
-                                                                            <div className="product-rating-overview">
-                                                                                <div className="product-rating-overview__briefing">
-                                                                                    <div className="product-rating-overview__score-wrapper">
-                                                                                        <span class="product-rating-overview__rating-score">{Math.round(caculator(data) * 100) / 100}</span>
-                                                                                        <span class="product-rating-overview__rating-score-out-of"> trên 5 </span>
-                                                                                    </div>
-                                                                                    <div className="shopee-rating-stars product-rating-overview__stars">
-                                                                                        <div className="shopee-rating-stars__stars">
-                                                                                            <Rating name="read-only" size="large" value={caculator(data)} readOnly />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="product-rating-overview__filters">
-                                                                                    <div className="product-rating-overview__filter product-rating-overview__filter--active product-rating-overview__filter--all" onClick={() => setSearchRating("")}>All</div>
-                                                                                    <div className="product-rating-overview__filter" onClick={() => setSearchRating("5")}>5 star ({numbeRating.current[5]})</div>
-                                                                                    <div className="product-rating-overview__filter" onClick={() => setSearchRating("4")}>4 star ({numbeRating.current[4]})</div>
-                                                                                    <div className="product-rating-overview__filter" onClick={() => setSearchRating("3")}>3 star ({numbeRating.current[3]})</div>
-                                                                                    <div className="product-rating-overview__filter" onClick={() => setSearchRating("2")}>2 star ({numbeRating.current[2]})</div>
-                                                                                    <div className="product-rating-overview__filter" onClick={() => setSearchRating("1")}>1 star ({numbeRating.current[1]})</div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <Single_review data={user_review} OnEdit={handleEdit_Reviews} />
-                                                                            {filterd.length === 0 ? (
-                                                                                <p> No reviews found</p>
-                                                                            ) : (
-                                                                                <List_review data={filterd} customerId={user_review.userid.userid} />
-                                                                            )}
-                                                                        </>
-                                                                    ) : (
-                                                                        <Reviews_edit onBack={HandleBackToView} bookId={id} customerId={user_review.userid.userid} data={user_review} changeView={() => setAction("view")} />
-                                                                    )}
-                                                                    <hr></hr>
-                                                                </TabPanel>
-                                                                <TabPanel value={value} index={1}>
-                                                                    {isReviewd && (
-                                                                        <h3>Bạn đã đánh giá</h3>
-                                                                    )}
-                                                                    {!isReviewd && (
-                                                                        <Reviews bookId={id} customerId={cookies.loggin.userID} />
-                                                                    )}
-                                                                </TabPanel>
-                                                            </>
-                                                        ) : (
-                                                            <h3>Please loggin</h3>
-                                                        )}
-
-                                                    </Box>
+                                                    <Review />
                                                 </div>
-                                                <Same_book data={sameBooks} addWishlist={handleAddWishlist} onAdd={onClick} />
+                                                <Same_book data={sameBooks} addWishlist={handleSameBookAddWishlist} onAdd={onClick} />
                                             </div>
                                         </div>
                                     </div>

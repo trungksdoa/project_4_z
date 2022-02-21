@@ -98,7 +98,6 @@ const MiddleBar = () => {
         removeItem,
         clearCartMetadata
     } = useCart();
-    console.log(coslape)
     return (
         <div className="tg-middlecontainer">
             <div className="container">
@@ -119,14 +118,16 @@ const MiddleBar = () => {
                                             const { bookname, bookprice, user_id, wishlist_id, booksId } = wishlist;
                                             if (index < 3) {
                                                 return (
-                                                    <div className="" key={index}>
-                                                        <div className="tg-minicarproduct">
-                                                            <figure>
-                                                                <img src="images/products/img-01.jpg" alt="image description" />
-                                                            </figure>
-                                                            <div className="tg-minicarproductdata">
-                                                                <h5><a>{bookname}</a></h5>
-                                                                <h6><a>${formatToCurrency(bookprice)}</a></h6>
+                                                    <div key={index}>
+                                                        <div className="" key={index}>
+                                                            <div className="tg-minicarproduct">
+                                                                <figure>
+                                                                    <img src="images/products/img-01.jpg" alt="image description" />
+                                                                </figure>
+                                                                <div className="tg-minicarproductdata">
+                                                                    <h5><a>{bookname}</a></h5>
+                                                                    <h6><a>${formatToCurrency(bookprice)}</a></h6>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -137,6 +138,7 @@ const MiddleBar = () => {
                                     ) : (
                                         <div className="tg-description"><p>No products were added to the wishlist!</p></div>
                                     )}
+                                    {wishlist.length !== 0 && <a href="/Profile/Wishlist">View all</a>}
                                 </div>
                             </div>
                             <div className={"tg-themedropdown tg-minicartdropdown " + open}>
@@ -166,7 +168,7 @@ const MiddleBar = () => {
                         <div className="tg-searchbox">
                             <form className="tg-formtheme tg-formsearch">
                                 <fieldset>
-                                    <input type="text" name="search" onChange={(e) => setSearchText(e.target.value)} className="typeahead form-control" placeholder="Search book by author or book name" />
+                                    <input type="text" name="search" autoComplete="off" onChange={(e) => setSearchText(e.target.value)} className="typeahead form-control" placeholder="Search book by author or book name" />
                                     <button type="submit"><i className="icon-magnifier" /></button>
 
                                     <ClickAwayListener onClickAway={CloseAutoComplete}>
@@ -190,7 +192,7 @@ const MiddleBar = () => {
                                                                     {suggestBook.map((book_b, index) => {
 
                                                                         return (
-                                                                            <li className="clearfix searchAutocomplete_item" style={{ cursor: 'pointer' }} onClick={() => ItemClick("/Book/" + book_b.booksid)}>
+                                                                            <li key={index} className="clearfix searchAutocomplete_item" style={{ cursor: 'pointer' }} onClick={() => ItemClick("/Book/" + book_b.booksid)}>
                                                                                 <img style={{
                                                                                     width: 70,
                                                                                     height: 70

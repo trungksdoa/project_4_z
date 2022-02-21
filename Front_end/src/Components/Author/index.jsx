@@ -3,19 +3,14 @@ import React from 'react';
 
 import Author_dom from './authors.jsx';
 
-import Pb_author from '../Home/PB_Author.jsx';
-
-import Tesminal from '../Home/Testimonials.jsx'
-
 import { useEffect, useState } from "react";
 
 import AuthorAPU from '../../api/Author';
 
-import { store, useGlobalState } from 'state-pool';
+import Pagination from '../Pagination/pagination'
 
 const Author_page = () => {
   const [data, setData] = useState([]);
-  const Roles_list = localStorage.getItem("rolse");
 
   // const params = window.location.pathname;
   async function Fetchdata() {
@@ -29,7 +24,18 @@ const Author_page = () => {
   useEffect(() => {
     Fetchdata();
   }, [])
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const itemsPerPage = 12;
+
+  const itemOfLast = currentPage * itemsPerPage;
+  const itemOfFirst = itemOfLast - itemsPerPage;
+  const currentItem = data.slice(itemOfFirst, itemOfLast)
+
+
+  const paginate = page => {
+    setCurrentPage(page)
+  }
   return (
     <>
       <title>Author</title>
@@ -37,7 +43,7 @@ const Author_page = () => {
       {/*************************************
                  Inner Banner Start
          **************************************/}
-      <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index={-100} data-appear-top-offset={600} data-parallax="scroll" data-image-src={"http://localhost:9999/image/bgparallax-07.jpg?v=" +new Date().getTime()}>
+      <div className="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index={-100} data-appear-top-offset={600} data-parallax="scroll" data-image-src={"http://localhost:9999/image/bgparallax-07.jpg?v=" + new Date().getTime()}>
         <div className="container">
           <div className="row">
             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -62,7 +68,7 @@ const Author_page = () => {
         {/* ************************************
                      Authors Start
              **************************************/}
-        {<Author_dom data={data}></Author_dom>}
+        {<Author_dom PerPage={itemsPerPage} total={data.length} paginate={paginate} currenPages={currentPage} currenPages={currentPage}  data={currentItem}></Author_dom>}
         {/*************************************
                      Authors End
              **************************************/}

@@ -17,6 +17,6 @@ import org.springframework.data.repository.query.Param;
 public interface GDetailRespository extends JpaRepository<Groupdetail, Integer>{
      @Query(value = "SELECT * FROM Group_detail WHERE Catagory_id = :catagory_id", nativeQuery = true)
     public List<Groupdetail> findByCategory(@Param("catagory_id") int catagory_id);
-    @Query(value = "SELECT *FROM Group_detail WHERE Catagory_id IN (:list)", nativeQuery = true)
-    public List<Groupdetail> findBySameBook(@Param("list") String list);
+    @Query(value = "SELECT *FROM Group_detail WHERE Catagory_id IN :list", nativeQuery = true)
+    public List<Groupdetail> findBySameBook(@Param("list") List<Integer> list);
 }
