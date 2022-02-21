@@ -19,4 +19,7 @@ import java.util.List;
 public interface VoucherRepository extends JpaRepository<Voucher, String> {
     @Query(value = "select * from Voucher where Voucher_status=1", nativeQuery = true)
     public List<Voucher> findAll();
+
+    @Query(value = "select * from Voucher where Voucher_id = :voucherId", nativeQuery = true)
+    public Voucher findOne(@Param("voucherId") String voucherId);
 }

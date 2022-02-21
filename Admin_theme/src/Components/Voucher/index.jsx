@@ -134,7 +134,7 @@ const Vouchers = () => {
                     setFormData({ ...formData, [name]: removeLeadingZeros(value) });
                 }
             }
-        }else if(name === "voucherused"){
+        } else if (name === "voucherused") {
             if (Only_number.test(value)) {
                 if (parseInt(value) >= 1 && parseInt(value) <= 100) {
                     setFormData({ ...formData, [name]: removeLeadingZeros(value) });
@@ -152,19 +152,51 @@ const Vouchers = () => {
             console.log("call")
             if (isEdit) {
                 await VoucherAPI.Update(formData.voucherid, formData).then(res => {
-                    toast("Update voucher successfully")
+                    toast.success("Update voucher successfully", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                     setIsEdit(false);
                     setIsSubmit(false);
                     handleResetForm()
                 }).catch(error => {
-                    alert(error.msg)
+                    toast.error(error.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                 });
             } else {
                 await VoucherAPI.Save(formData).then(res => {
-                    toast("Create voucher successfully")
+                    toast.success("Create voucher successfully", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                     setIsSubmit(false);
                 }).catch(error => {
-                    alert(error.msg)
+                    toast.error(error.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                 });
             }
 
@@ -209,10 +241,25 @@ const Vouchers = () => {
         // window.confirm returns a boolean, true or false, based on whether the user pressed 'Ok' (which will result in true) or 'Cancel' (which will result in false)
         if (window.confirm("This is a dangerous action do you want to continue?")) {
             await VoucherAPI.Deleted(voucherId).then(res => {
-                toast(res.msg);
+                toast.success(res.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }).catch(e => {
-                console.log(e)
-                alert(e.msg)
+                toast.error(e.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
 
         } else {

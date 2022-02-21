@@ -46,10 +46,26 @@ const FormPage = () => {
             }
             formDataBody.append("banner_string", JSON.stringify(formbody));
             await BannerAPI.SaveFormData(formDataBody).then(res => {
-                toast(res.msg)
+                toast.success(res.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 navigator('/admin/banner')
             }).catch(err => {
-                alert(err.msg)
+                toast.error(err.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
         } else {
             setIsSubmit(false);
@@ -59,15 +75,15 @@ const FormPage = () => {
         const error = {};
         if (!value.banner_title) {
             error.banner_title = "Title is required";
-        } else if (value.banner_title.trim().length <= 10) {
-            error.banner_title = "Title length must be at max 10 characters";
+        } else if (value.banner_title.trim().length <= 3) {
+            error.banner_title = "Title length must be at max 3 characters";
         } else if (value.banner_title.trim().length <= 0) {
             error.banner_title = "Title can not blank";
         }
         if (!value.banner_content) {
             error.banner_content = "Title is required";
-        } else if (value.banner_content.trim().length <= 10) {
-            error.banner_content = "Content length must be at max 10 characters";
+        } else if (value.banner_content.trim().length <= 3) {
+            error.banner_content = "Content length must be at max 3 characters";
         } else if (value.banner_content.trim().length <= 0) {
             error.banner_content = "Content can not blank";
         }

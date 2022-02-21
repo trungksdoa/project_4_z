@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdminAPI from '../../api/AdminAPI';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import roles from './roles.json';
 const Edit_form = () => {
     const [formvalue, setFormValue] = useState({ adminemail: "", adminpassword: "", roles: "" })
@@ -46,11 +46,28 @@ const Edit_form = () => {
     }
     async function submitAction() {
         if (Object.keys(formError).length === 0 && isSubmit) {
-            console.log(formvalue)
             await AdminAPI.Edit(id, formvalue).then(res => {
-                toast(res.msg)
+                toast.success(res.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 navigate("/owner/admin")
-            }).catch(err => alert(err.msg));
+            }).catch(err =>
+                toast.error(err.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            );
         } else {
             setIsSubmit(false);
         }
@@ -79,7 +96,7 @@ const Edit_form = () => {
             error.adminpassword = "Password length needs to be at least 10 characters";
         }
 
-        if(!value.roles){
+        if (!value.roles) {
             error.roles = "Roles is required";
         }
         return error;
@@ -106,7 +123,7 @@ const Edit_form = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <div className="input-group" style={{float:"left"}}>
+                                    <div className="input-group" style={{ float: "left" }}>
                                         <TextField
                                             id="adminpassword"
                                             fullWidth

@@ -91,16 +91,40 @@ const Customers = () => {
             await sendEmail(body).then(async (res) => {
                 await CustomerApi.ban(userID).then(res => {
                     if (res.code !== 200) {
-                        alert(res.msg)
+                        toast.error(res.msg, {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
                     } else {
                         handleClose();
-                        toast(res.msg)
+                        toast.success(res.msg, {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
                     }
                 }).catch(err => {
-                    alert(err.msg)
+                    toast.error(err.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                 })
             }).catch((error) => {
-                alert(error);
+                console.log(error);
             })
         }
 
@@ -111,9 +135,25 @@ const Customers = () => {
     const unBanAction = async (userId) => {
         await CustomerApi.Unban(userId).then(res => {
             if (res.code !== 200) {
-                alert(res.msg)
+                toast.error(res.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             } else {
-                toast(res.msg)
+                toast.success(res.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         }).catch(err => {
             alert(err.msg)

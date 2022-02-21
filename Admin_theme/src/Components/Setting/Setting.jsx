@@ -31,17 +31,51 @@ const Setting = () => {
         if (Object.keys(formError).length === 0 && isSubmit) {
             console.log(setting)
             await settingAPi.save(setting).then(res => {
-                toast(res.msg)
-            }).catch(err => alert(err.msg));
+                toast.success(res.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }).catch(err =>{
+                toast.error(err.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            });
         } else {
             setIsSubmit(false);
         }
     }
     const uploadRequest = async (id, form) => {
         await settingAPi.upload(id, form).then(res => {
-            toast(res.msg)
+            toast.success(res.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }).catch(err => {
-            alert(err.msg)
+            toast.error(err.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         })
     }
     const HandleImageChange = (e) => {
