@@ -24,7 +24,7 @@ const Banners = () => {
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div id="my-pics" className="carousel slide" data-ride="carousel" style={{
-                            width: "78%",
+                            width: "100%",
                             height: "auto",
                             margin: "1% auto"
                         }}>
