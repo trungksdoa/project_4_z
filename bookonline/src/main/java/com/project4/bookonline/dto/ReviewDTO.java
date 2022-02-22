@@ -25,8 +25,8 @@ public class ReviewDTO {
     private String createddate;
     private String userId;
     private String bookId;
-    private Books books;
-    private Users users;
+    private String bookname;
+    private String fullname;
 
 
     public Reviews convert (ReviewDTO dto){

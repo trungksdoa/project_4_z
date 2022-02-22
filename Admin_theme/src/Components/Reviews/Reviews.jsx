@@ -59,18 +59,18 @@ const Reviews = () => {
         }, 1000)
         return () => clearInterval(interval)
     }, [])
-    function fullname(review) {
-        const fullname = review.users.firstName + " " + review.users.lastName;
-        return fullname;
-    }
+    // function fullname(review) {
+    //     const fullname = review.users.firstName + " " + review.users.lastName;
+    //     return fullname;
+    // }
     function gotoReply(id) {
         navigate('/admin/Reviews/reply/' + id);
     }
     useEffect(() => {
         setFiltered(
             Reviews_list.filter((review) =>
-                review.books.bookname.toLowerCase().includes(searchByBook.toLowerCase()) &&
-                fullname(review).toLowerCase().includes(searchBySearchCustomer.toLowerCase()) &&
+                review.bookname.toLowerCase().includes(searchByBook.toLowerCase()) &&
+                review.fullname.toLowerCase().includes(searchBySearchCustomer.toLowerCase()) &&
                 review.active.toString().includes(searchByStatus) &&
                 review.ratingstart.toString().includes(searchByRating)
             ))

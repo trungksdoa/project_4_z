@@ -60,14 +60,14 @@ const Review_Table = (props) => {
                             <td>
                                 <div className="d-flex px-2 py-1">
                                     <div className="d-flex flex-column justify-content-center">
-                                        <h6 className="mb-0 text-sm">{review.users.firstName + " " + review.users.lastName}</h6>
+                                        <h6 className="mb-0 text-sm">{review.fullname}</h6>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div className="d-flex px-2 py-1">
                                     <div className="d-flex flex-column justify-content-center">
-                                        <h6 className="mb-0 text-sm">{review.books.bookname}</h6>
+                                        <h6 className="mb-0 text-sm">{review.bookname}</h6>
                                     </div>
                                 </div>
                             </td>

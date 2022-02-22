@@ -5,6 +5,7 @@
  */
 package com.project4.bookonline.Controller.User.Admin;
 
+import com.project4.bookonline.Model.Books;
 import com.project4.bookonline.Model.Message_Respones;
 import com.project4.bookonline.Model.Reviews;
 import com.project4.bookonline.Model.Users;
@@ -91,8 +92,8 @@ public class ReviewsManageController {
             reviewDTO.setRatingstart(reviews.get(i).getRatingstart());
             reviewDTO.setActive(reviews.get(i).getActive());
             reviewDTO.setCreateddate(reviews.get(i).getCreateddate());
-            reviewDTO.setBooks(reviews.get(i).getBooksId());
-            reviewDTO.setUsers(reviews.get(i).getUserid());
+            reviewDTO.setBookname(reviews.get(i).getBooksId().getBookname());
+            reviewDTO.setFullname(reviews.get(i).getUserid().getFirstName()+" "+reviews.get(i).getUserid().getLastName());
             dtoreview.add(reviewDTO);
         }
         String msg = "Get data success";
