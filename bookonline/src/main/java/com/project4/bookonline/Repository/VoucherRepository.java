@@ -7,6 +7,7 @@ package com.project4.bookonline.Repository;
 import com.project4.bookonline.Model.Voucher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,7 @@ import java.util.List;
 public interface VoucherRepository extends JpaRepository<Voucher, String> {
     @Query(value = "select * from Voucher where Voucher_status=1", nativeQuery = true)
     public List<Voucher> findAll();
+
+    @Query(value = "select * from Voucher where Voucher_id = :voucherId", nativeQuery = true)
+    public Voucher findOne(@Param("voucherId") String voucherId);
 }

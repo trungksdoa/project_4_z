@@ -29,12 +29,10 @@ public class VoucherImpl implements VoucherService {
 
     @Override
     public boolean findOne(String id) {
-
-
         try {
-              voucherRepository.findById(id).get();
-             return true;
-        }catch(NoSuchElementException ex){
+            voucherRepository.findById(id).get();
+            return true;
+        } catch (NoSuchElementException ex) {
             return false;
         }
     }
@@ -46,7 +44,11 @@ public class VoucherImpl implements VoucherService {
 
     @Override
     public Voucher findById(String id) {
-        return voucherRepository.findById(id).get() != null ? voucherRepository.findById(id).get() : null;
+        try {
+            return voucherRepository.findOne(id);
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
     }
 
     @Override

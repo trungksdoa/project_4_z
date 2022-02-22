@@ -1,3 +1,76 @@
 .react-datepicker__month-container {
     font-size: 10px;
 }
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: 1rem;
+}
+.justify-content-between {
+    justify-content: space-between!important;
+}
+.card-body {
+    flex: 1 1 auto;
+    padding: 1rem 1rem;
+}
+.mb-2 {
+    margin-bottom: .5rem!important;
+}
+.d-flex {
+    display: flex!important;
+}
+.flex-shrink-0 {
+    flex-shrink: 0!important;
+}
+@media (min-width: 992px)
+{
+    .flex-lg-grow-1 {
+        flex-grow: 1!important;
+    }
+}
+.ms-3 {
+    margin-left: -6rem!important;
+}
+.mb-0 {
+    margin-bottom: 0!important;
+}
+.small, small {
+    font-size: .875em;
+}
+
+.text-reset {
+    --bs-text-opacity: 1;
+    color: inherit!important;
+}
+
+.table-borderless>:not(caption)>*>* {
+    border-bottom-width: 0;
+}
+.table>:not(caption)>*>* {
+    padding: .5rem .5rem;
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 1px;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+.fw-bold {
+    font-weight: 700!important;
+}
+
+.table-borderless > tbody > tr > td,
+.table-borderless > tbody > tr > th,
+.table-borderless > tfoot > tr > td,
+.table-borderless > tfoot > tr > th,
+.table-borderless > thead > tr > td,
+.table-borderless > thead > tr > th {
+    border: none;
+}
+.bg-success{
+    background:green
+}

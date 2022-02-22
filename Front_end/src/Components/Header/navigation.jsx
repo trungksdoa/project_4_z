@@ -3,6 +3,8 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom'
 import useLocalStorage from 'react-use-localstorage';
 import { useCookies } from 'react-cookie';
+import Autocomplete from '@mui/material/Autocomplete';
+
 const NavigationBar = () => {
     const redirect = useNavigate();
     const [cookies, setCookie, removeCookie] = useCookies(['loggin'])
@@ -40,14 +42,7 @@ const NavigationBar = () => {
                                     <li>
                                         <a href="/Contact">Contact</a>
                                     </li>
-                                    <li><a href="contactus.html">About us</a></li>
-                                    {/* <li className="menu-item-has-children"> */}
                                     <li>
-                                        {/* <li><NavLink to="/Login">Log in</NavLink></li>
-                                                    <li><NavLink to="/Register">Register</NavLink></li> */}
-                                        {/* <ul className="sub-menu">
-                                                    <li></li>
-                                                </ul> */}
                                         {
                                             auth ? (
                                                 <a style={{

@@ -38,10 +38,25 @@ const Admins = () => {
     }
     const handleDelete = async (value) => {
         await AdminAPI.Delete(value).then(res => {
-            toast(res.msg);
+            toast.success(res.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }).catch(err => {
-            setAdminList([]);
-            alert(err.msg);
+            toast.error(err.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         });
     }
     // /////////////////////////////////////

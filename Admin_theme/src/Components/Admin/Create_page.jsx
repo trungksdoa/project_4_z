@@ -29,9 +29,25 @@ const Create_form = () => {
         if (Object.keys(formError).length === 0 && isSubmit) {
             console.log(formvalue)
             await AdminAPI.Create(formvalue).then(res => {
-                toast(res.msg)
+                toast.success(res.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 navigate("/owner/admin")
-            }).catch(err => alert(err.msg));
+            }).catch(err => toast.error(err.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            }));
         } else {
             setIsSubmit(false);
         }

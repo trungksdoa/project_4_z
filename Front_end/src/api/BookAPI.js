@@ -68,6 +68,35 @@ const RequestfindPdetails = (url) => {
     })
 }
 
+
+const RequestSameBook = (url,array) => {
+    const object_user = {};
+    var headers = {
+        'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+    };
+    return new Promise((resolve, reject) => {
+        axiosClient.post(url,array)
+            .then(response => {
+                object_user.code = response.code;
+                object_user.msg = response.msg;
+                object_user.data = response.data_array;
+                resolve(object_user)
+            })
+            .catch((error) => {
+                if (error.toJSON().message === 'Network Error') {
+                    object_user.status = 511;
+                    object_user.msg = "Network Authentication Required";
+                } else {
+                    object_user.status = error.response.status;
+                    object_user.msg = error.response.data.msg;
+                }
+                reject(object_user)
+            })
+    })
+}
+
 const Book = {
     FindAll: () => {
         url = 'book/findAll';
@@ -84,6 +113,14 @@ const Book = {
     findPdetails: (id) =>{
         url ='/book/findOne/'+id;
         return RequestfindPdetails(url);
+    },
+    findByCatagory: (id) =>{
+        url ='/book/category/find/'+id;
+        return RequestAll(url);
+    },
+    getSameBook: (array) =>{
+        url ='/book/same/';
+        return RequestSameBook(url,array);
     }
 }
 export default Book

@@ -7,6 +7,7 @@ import ReviewAPI from '../../api/ReviewAPI';
 import { toast } from 'react-toastify'
 const ContactUs = () => {
   const form = useRef();
+  const [isLoading, setIsLoading] = useState(false);
   const [formvalue, setFormValue] = useState({ to_name: "", from_name: "Shop", message: "", to_email: "", subject: "" });
   const [reviewContent, setContent] = useState("");
   const navigate = useNavigate();
@@ -29,20 +30,18 @@ const ContactUs = () => {
   useEffect(() => {
     fetchData(id)
   }, []);
-  const sendEmail = (e) => {
+  const sendEmail =async (e) => {
     e.preventDefault();
-    emailjs.send("service_j4mrk0g", "template_gq3eifs", {
-      to_name: formvalue.to_name,
-      from_name: formvalue.from_name,
+
+    const data = {
+      subjectl: formvalue.subject,
+      to: formvalue.to_name,
+      toEmail: formvalue.to_email,
+      oldreview: reviewContent,
       message: formvalue.message,
-      to_email: formvalue.to_email,
-      Review: reviewContent,
-      subject: formvalue.subject,
-    }, 'user_vIW7ZVHXfJOIHf3MzglMW').then(response => {
-      toast("Send emails is success");
-    }).catch(error => {
-      alert(error)
-    });
+    }
+    // console.log(data)
+    await ReviewAPI.SendEmail(id,data)
   };
   const backToList = () => {
     navigate("/admin/Reviews");

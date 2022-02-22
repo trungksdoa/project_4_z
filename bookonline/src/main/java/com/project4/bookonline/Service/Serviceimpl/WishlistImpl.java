@@ -27,8 +27,8 @@ public class WishlistImpl implements WishlistService {
     }
 
     @Override
-    public Wishlist getListByBookId(Users userId, Books bookId) {
-        return service.findAllByBookId(userId, bookId);
+    public List<Wishlist> getListByBookId(Books bookId) {
+        return service.findAllByBookId(bookId);
     }
 
     @Override

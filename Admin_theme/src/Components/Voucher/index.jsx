@@ -35,7 +35,8 @@ const Vouchers = () => {
         voucherstatus: 1,
         vouchertitle: "",
         voucherto: new Date(),
-        vouchervalue: 1
+        vouchervalue: 1,
+        voucherused: 0
     }
     // ----------------------
     //Form data
@@ -87,6 +88,9 @@ const Vouchers = () => {
         } else if (value.voucherid.trim().length > 50) {
             error.voucherid = "String length must be less than 50 characters";
         }
+        if (!value.voucherused) {
+            error.voucherused = "Total used is required";
+        }
         return error;
     }
     // ----------------------
@@ -130,6 +134,12 @@ const Vouchers = () => {
                     setFormData({ ...formData, [name]: removeLeadingZeros(value) });
                 }
             }
+        } else if (name === "voucherused") {
+            if (Only_number.test(value)) {
+                if (parseInt(value) >= 1 && parseInt(value) <= 100) {
+                    setFormData({ ...formData, [name]: removeLeadingZeros(value) });
+                }
+            }
         } else {
             setFormData({ ...formData, [name]: value });
         }
@@ -142,22 +152,54 @@ const Vouchers = () => {
             console.log("call")
             if (isEdit) {
                 await VoucherAPI.Update(formData.voucherid, formData).then(res => {
-                    toast("Update voucher successfully")
+                    toast.success("Update voucher successfully", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                     setIsEdit(false);
                     setIsSubmit(false);
                     handleResetForm()
                 }).catch(error => {
-                    alert(error.msg)
+                    toast.error(error.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                 });
             } else {
                 await VoucherAPI.Save(formData).then(res => {
-                    toast("Create voucher successfully")
+                    toast.success("Create voucher successfully", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                     setIsSubmit(false);
                 }).catch(error => {
-                    alert(error.msg)
+                    toast.error(error.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                 });
             }
-           
+
         } else {
             setIsSubmit(false);
         }
@@ -199,10 +241,25 @@ const Vouchers = () => {
         // window.confirm returns a boolean, true or false, based on whether the user pressed 'Ok' (which will result in true) or 'Cancel' (which will result in false)
         if (window.confirm("This is a dangerous action do you want to continue?")) {
             await VoucherAPI.Deleted(voucherId).then(res => {
-                toast(res.msg);
+                toast.success(res.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }).catch(e => {
-                console.log(e)
-                alert(e.msg)
+                toast.error(e.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
 
         } else {
@@ -347,6 +404,18 @@ const Vouchers = () => {
                                                             <p style={{ color: "red" }}>{formError.vouchervalue}</p>
                                                         </Grid>
                                                         <Grid item xs={12} sm={12}>
+                                                            <TextField
+                                                                name="voucherused"
+                                                                fullWidth
+                                                                value={formData.voucherused}
+                                                                onChange={handleChange}
+                                                                id="voucherused"
+                                                                label="Total used Max(100)"
+                                                                autoFocus
+                                                            />
+                                                            <p style={{ color: "red" }}>{formError.voucherused}</p>
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={12}>
                                                             <label>Expired date</label>
                                                             <DatePicker
                                                                 dateFormat="yyyy/MM/dd HH:mm:ss"
@@ -413,16 +482,16 @@ const Vouchers = () => {
                                                             <p style={{ color: "red" }}>{formError.vouchervalue}</p>
                                                         </Grid>
                                                         <Grid item xs={12} sm={12}>
-                                                            <label>From date</label>
-                                                            <DatePicker
-                                                                dateFormat="yyyy/MM/dd HH:mm:ss"
-                                                                selected={new Date(formData.voucherfrom)}
-                                                                className={"form-control"}
-                                                                style={{ border: "1px solid" }}
-                                                                onChange={(date) => setFormData({ ...formData, voucherfrom: date })}
-                                                                withPortal
+                                                            <TextField
+                                                                name="voucherused"
+                                                                fullWidth
+                                                                value={formData.voucherused}
+                                                                onChange={handleChange}
+                                                                id="voucherused"
+                                                                label="Total used Max(100)"
+                                                                autoFocus
                                                             />
-                                                            <p style={{ color: "red" }}>{formError.voucherfrom}</p>
+                                                            <p style={{ color: "red" }}>{formError.voucherused}</p>
                                                         </Grid>
                                                         <Grid item xs={12} sm={12}>
                                                             <label>Expired date</label>

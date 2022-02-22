@@ -10,11 +10,18 @@ import com.project4.bookonline.Model.Reviews;
 import com.project4.bookonline.Model.Users;
 import com.project4.bookonline.Service.ReviewsService;
 import com.project4.bookonline.Service.UserService;
+import com.project4.bookonline.dto.ReviewDTO;
+import com.project4.bookonline.dto.emailsReply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,15 +35,71 @@ public class ReviewsManageController {
     @Autowired
     ReviewsService reviewServide;
 
+    @Autowired
+    public JavaMailSender emailSender;
+
+    public void SendEmail(String subject, String messages, String toEmails) {
+
+        MimeMessage message = emailSender.createMimeMessage();
+
+        //Send emails
+
+
+        boolean multipart = true;
+
+        MimeMessageHelper helper = null;
+        try {
+            helper = new MimeMessageHelper(message, multipart, "utf-8");
+        } catch (javax.mail.MessagingException e) {
+            e.printStackTrace();
+        }
+
+        String htmlMsg = messages;
+
+        try {
+            message.setContent(htmlMsg, "text/html");
+        } catch (javax.mail.MessagingException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            helper.setTo(toEmails);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            helper.setSubject(subject);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+
+        this.emailSender.send(message);
+    }
+
     @RequestMapping(value = "/reviews/findAll", method = RequestMethod.GET)
-    public ResponseEntity<Message_Respones<Reviews>> findAll() {
+    public ResponseEntity<Message_Respones<ReviewDTO>> findAll() {
         List<Reviews> reviews = reviewServide.render_in_admin();
-        Message_Respones<Reviews> setMessage = new Message_Respones<Reviews>();
+        List<ReviewDTO> dtoreview = new ArrayList<>();
+        Message_Respones<ReviewDTO> setMessage = new Message_Respones<ReviewDTO>();
+        for (int i = 0; i < reviews.size(); i++) {
+            ReviewDTO reviewDTO = new ReviewDTO();
+            reviewDTO.setReviewid(reviews.get(i).getReviewid());
+            reviewDTO.setReviewtitle(reviews.get(i).getReviewtitle());
+            reviewDTO.setReviewcontent(reviews.get(i).getReviewcontent());
+            reviewDTO.setRatingstart(reviews.get(i).getRatingstart());
+            reviewDTO.setActive(reviews.get(i).getActive());
+            reviewDTO.setCreateddate(reviews.get(i).getCreateddate());
+            reviewDTO.setBooks(reviews.get(i).getBooksId());
+            reviewDTO.setUsers(reviews.get(i).getUserid());
+            dtoreview.add(reviewDTO);
+        }
         String msg = "Get data success";
         setMessage.setMessage(msg);
-        setMessage.setList(reviews);
+        setMessage.setList(dtoreview);
         setMessage.setCode(200);
-        return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.OK);
+        return new ResponseEntity<Message_Respones<ReviewDTO>>(setMessage, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/reviews/{id}", method = RequestMethod.GET)
@@ -53,6 +116,28 @@ public class ReviewsManageController {
             setMessage.setCode(200);
             return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.OK);
         }
+    }
+
+    @RequestMapping(value = "/reviews/sendmail/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Message_Respones<Reviews>> sendReply(@PathVariable String id, @RequestBody emailsReply emails) {
+        Message_Respones<Reviews> setMessage = new Message_Respones<Reviews>();
+        String htmlMsg = "" +
+                "<p>Hello " + emails.getTo() + ",</p>\n" +
+                "\n" +
+                "<p><strong>"+emails.getMessage()+"</strong></p>\n" +
+                "\n" +
+                "Your review: \n" +
+                "<blockquote>\n" +
+                "<p><u><strong>"+emails.getOldreview()+"</strong></u></p>" +
+                "</blockquote>\n" +
+                "\n" +
+                "<p>Shop,<br />\n" +
+                "BookStoreOnline</p>\n";
+        SendEmail(emails.getSubjectl(), htmlMsg, emails.getToEmail());
+
+        setMessage.setMessage("Send emails success");
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/reviews/status/{id}/{status}", method = RequestMethod.PUT)
@@ -84,7 +169,7 @@ public class ReviewsManageController {
             setMessage.setMessage(msg);
             setMessage.setCode(200);
             return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.OK);
-        }else{
+        } else {
             setMessage.setMessage(message);
             setMessage.setCode(500);
             return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.BAD_REQUEST);

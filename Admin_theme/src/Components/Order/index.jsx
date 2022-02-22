@@ -72,9 +72,25 @@ const Orders = () => {
         newArr[index].orderstatus = value;
         setTimeout(setOrder_list(newArr), 10000);
         await orderAPI.changeStatus(orderId, value).then(res => {
-            toast(res.msg)
+            toast.success(res.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }).catch(err => {
-            alert(err.msg)
+            toast.error(err.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         });
     };
     // ------------------------------

@@ -60,7 +60,7 @@ const Reviews = () => {
         return () => clearInterval(interval)
     }, [])
     function fullname(review) {
-        const fullname = review.userid.firstName + " " + review.userid.lastName;
+        const fullname = review.users.firstName + " " + review.users.lastName;
         return fullname;
     }
     function gotoReply(id) {
@@ -69,7 +69,7 @@ const Reviews = () => {
     useEffect(() => {
         setFiltered(
             Reviews_list.filter((review) =>
-                review.booksId.bookname.toLowerCase().includes(searchByBook.toLowerCase()) &&
+                review.books.bookname.toLowerCase().includes(searchByBook.toLowerCase()) &&
                 fullname(review).toLowerCase().includes(searchBySearchCustomer.toLowerCase()) &&
                 review.active.toString().includes(searchByStatus) &&
                 review.ratingstart.toString().includes(searchByRating)
@@ -87,6 +87,8 @@ const Reviews = () => {
     const paginate = page => {
         setCurrentPage(page)
     }
+
+    
     return (
 
         <div className="col-12">

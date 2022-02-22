@@ -9,6 +9,7 @@ import com.project4.bookonline.Model.Books;
 import com.project4.bookonline.Repository.BookRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +43,10 @@ public class BooksImpl implements com.project4.bookonline.Service.BooksService {
 
     @Override
     public Books findOne(String id) {
-        Optional<Books> option = bookRepository.findById(id);
-        if (option == null) {
+        try {
+            return bookRepository.findOne(id);
+        }catch(NoSuchElementException ex){
             return null;
-        } else {
-           return option.get();
         }
     }
 

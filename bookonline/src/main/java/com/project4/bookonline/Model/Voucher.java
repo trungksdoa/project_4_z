@@ -68,6 +68,9 @@ public class Voucher implements Serializable {
     @Basic(optional = false)
     @Column(name = "Voucher_to", nullable = false)
     private String voucherto;
+    @Basic(optional = false)
+    @Column(name = "Voucher_used", nullable = false)
+    private int Voucherused;
     @OneToMany(mappedBy = "ordervoucher")
     private Collection<Orders> ordersCollection;
 

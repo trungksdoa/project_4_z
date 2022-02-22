@@ -6,6 +6,8 @@ import './author.css'
 import ShowMoreText from "react-show-more-text";
 import BookAPI from '../../../api/BookAPI.js'
 import AddToWishlist from '../../FolderAction/AddToWishlist';
+import { CartProvider, useCart } from "react-use-cart";
+import { toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
 
 const Authors_detail = () => {
@@ -13,6 +15,7 @@ const Authors_detail = () => {
 
     const [books, setBooks] = useState([
     ]);
+    const { addItem } = useCart();
     const [cookies, setCookie, removeCookie] = useCookies(['loggin']);
     const [isEmptyList, setisEmptyList] = useState(false);
     let { authorId } = useParams();
@@ -31,7 +34,7 @@ const Authors_detail = () => {
         await BookAPI.LoadByAuthor(authorId).then(result => {
             setBooks(result.data)
         }).catch(err => {
-            alert(err.msg)
+            console.log(err)
             if (500 === err.status) {
                 navigate("/")
             }
@@ -48,11 +51,38 @@ const Authors_detail = () => {
     // --------------------
     async function handleAddWishlist(booksId) {
         await AddToWishlist.AddToWishlist(cookies, booksId).then(result => {
-            LoadBookByAuthor()
+            LoadBookByAuthor();
             setCookie('action', JSON.stringify({ doChange: new Date().getTime() }), { path: '/' });
+            toast.success(result.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }).catch(err => {
             alert(err.msg)
         })
+    }
+    function handleCart(props) {
+        const { booksid, bookprice, pdetailid, bookname } = props;
+        const newObject = { id: "", price: 0, img: "", name: "" };
+        newObject.id = booksid;
+        newObject.price = bookprice;
+        newObject.img = pdetailid.imageLink;
+        newObject.name = bookname;
+        addItem(newObject);
+        toast.success("Add item #" + newObject.name + " to basket", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
     }
     return (
         <>
@@ -121,10 +151,10 @@ const Authors_detail = () => {
                                             </div>
                                             <div className="row">
                                                 {books.length !== 0 && books.map((book, index) => {
-                                                    return <FeatureBook_Author addWishlist={handleAddWishlist} key={index} {...book}></FeatureBook_Author>;
+                                                    return <FeatureBook_Author onAdd={handleCart} addWishlist={handleAddWishlist} key={index} {...book}></FeatureBook_Author>;
                                                 })}
                                             </div>
-                                            {books.length === 0 && <p style={{ color: "red", fontSize: 30 }}>Not found any books</p>}
+                                            {books.length === 0 && <p style={{ color: "red", fontSize: 20 }}>Not found any books</p>}
                                         </div>
                                     </div>
                                 </div>

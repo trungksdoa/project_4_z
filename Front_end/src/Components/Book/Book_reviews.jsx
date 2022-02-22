@@ -124,7 +124,7 @@ const Reviews = ({ customerId, bookId }) => {
                         name="reviewcontent"
                         value={formValue.content}
                         onChange={handleChange}
-                        style={{ width: "100%" }}
+                        style={{ width: "100%",height:100 }}
                     />
                     <br></br>
                 </div>

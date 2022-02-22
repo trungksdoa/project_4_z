@@ -42,9 +42,26 @@ const FormPage = () => {
     const handleSubmit = async () => {
         if (Object.keys(formError).length === 0 && isSubmit) {
             await BannerAPI.save(formData, id).then(res => {
-                toast(res.msg)
+                toast.success(res.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                navigator('/admin/banner')
             }).catch(err => {
-                alert(err.msg)
+                toast.error(err.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
         } else {
             setIsSubmit(false);
@@ -54,15 +71,15 @@ const FormPage = () => {
         const error = {};
         if (!value.bannerTitle) {
             error.bannerTitle = "Title is required";
-        } else if (value.bannerTitle.trim().length <= 10) {
-            error.bannerTitle = "Title length must be at max 10 characters";
+        } else if (value.bannerTitle.trim().length <= 3) {
+            error.bannerTitle = "Title length must be at max 3 characters";
         } else if (value.bannerTitle.trim().length <= 0) {
             error.bannerTitle = "Title can not blank";
         }
         if (!value.bannerContent) {
             error.bannerContent = "Title is required";
-        } else if (value.bannerContent.trim().length <= 10) {
-            error.bannerContent = "Content length must be at max 10 characters";
+        } else if (value.bannerContent.trim().length <= 3) {
+            error.bannerContent = "Content length must be at max 3 characters";
         } else if (value.bannerContent.trim().length <= 0) {
             error.bannerContent = "Content can not blank";
         }
@@ -80,9 +97,25 @@ const FormPage = () => {
     }
     const uploadRequest = async (id, form) => {
         await BannerAPI.upload(id, form).then(res => {
-            toast(res.msg)
+            toast.success(res.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }).catch(err => {
-            alert(err.msg)
+            toast.error(err.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         })
     }
     const HandleImageChange = (e) => {

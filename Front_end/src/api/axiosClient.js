@@ -8,6 +8,7 @@ const axiosClient = axios.create({
     headers: {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': '*',
     },
     paramsSerializer: params => queryString.stringify(params),
 });

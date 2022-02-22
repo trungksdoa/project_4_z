@@ -19,6 +19,12 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Books, String> {
 
-    @Query(value = "SELECT * FROM Books WHERE Author_id = :AuthorId", nativeQuery = true)
+    @Query(value = "SELECT * FROM Books WHERE Author_id = :AuthorId AND status != 2", nativeQuery = true)
     public List<Books> findByAuthor(@Param("AuthorId") Authors authorsId);
+
+    @Query(value = "SELECT * FROM Books WHERE status != 2", nativeQuery = true)
+    public List<Books> findAll();
+
+    @Query(value = "SELECT * FROM Books WHERE Books_id = :booksId", nativeQuery = true)
+    public Books findOne(@Param("booksId") String booksId);
 }

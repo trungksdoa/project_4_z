@@ -4,6 +4,7 @@ package com.project4.bookonline.Repository;
 import com.project4.bookonline.Model.OrderDetail;
 import com.project4.bookonline.Model.Orders;
 import com.project4.bookonline.Model.Users;
+import com.project4.bookonline.Model.Voucher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,6 +19,9 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
 
     @Query(value = "SElECT * FROM Orders WHERE User_id = :userId", nativeQuery = true)
     public List<Orders> loadDataByUserId(@Param("userId") Users userId);
+
+    @Query(value = "SElECT * FROM Orders WHERE User_id = :userId and Order_voucher = :Ordervoucher", nativeQuery = true)
+    public Orders checkusedVoucher(@Param("userId") Users userId,@Param("Ordervoucher") Voucher voucherid);
 
     // Select All Order Day
     @Query(value = "SELECT * FROM Orders WHERE DAY(Order_createddate) = DAY(:now) and MONTH(Order_createddate) = MONTH(:now) and YEAR(Order_createddate) = YEAR(:now) and Order_status = 1 ", nativeQuery = true)

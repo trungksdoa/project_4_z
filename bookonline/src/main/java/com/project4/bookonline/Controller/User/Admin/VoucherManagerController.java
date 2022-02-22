@@ -47,16 +47,8 @@ public class VoucherManagerController {
     @RequestMapping(value = "/voucher/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Message_Respones<Voucher>> Save(@RequestBody VoucherDTO voucher) {
         setMessage = new Message_Respones<Voucher>();
-//        try {
-//
-//        } catch (Exception e) {
-//            setMessage.setMessage(e.getMessage());
-//            setMessage.setCode(0);
-//            return new ResponseEntity<Message_Respones<Voucher>>(setMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-
-        boolean existsId = voucherService.findOne(voucher.getVoucherid());
-        if (existsId) {
+        Voucher exixsts = voucherService.findById(voucher.getVoucherid());
+        if (exixsts != null) {
             String msg = "ID already exists";
             setMessage.setMessage(msg);
             setMessage.setCode(200);
@@ -73,7 +65,7 @@ public class VoucherManagerController {
     }
 
     @RequestMapping(value = "/voucher/update/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Message_Respones<Voucher>> Updates(@PathVariable String id,@RequestBody VoucherDTO voucher) {
+    public ResponseEntity<Message_Respones<Voucher>> Updates(@PathVariable String id, @RequestBody VoucherDTO voucher) {
         setMessage = new Message_Respones<Voucher>();
         boolean existsId = voucherService.findOne(id);
         if (existsId) {

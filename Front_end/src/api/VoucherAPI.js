@@ -23,8 +23,9 @@ const RequestCheck = (url, body) => {
     })
 }
 const VoucherAPI = {
-    Check: (voucher) => {
-        const url = "voucher/check/" + voucher;
+    Check: (voucher, userId) => {
+        const url = "voucher/check/" + voucher + "/" + userId;
+        console.log(url)
         return RequestCheck(url);
     }
 }

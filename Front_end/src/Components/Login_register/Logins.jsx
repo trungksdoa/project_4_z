@@ -61,7 +61,7 @@ const Login_page = () => {
 
     const validate = (values) => {
         const errors = {};
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+        const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         errors.status = true;
         if (!values.Emails) {
             errors.Emails = "Email is required!";

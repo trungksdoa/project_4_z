@@ -19,6 +19,7 @@ public class VoucherDTO {
     private int vouchervalue;
     private String voucherfrom;
     private String voucherto;
+    private int voucherused;
 
     public Voucher convert(VoucherDTO dto){
         Voucher voucher = new Voucher();
@@ -30,6 +31,7 @@ public class VoucherDTO {
         voucher.setVoucherto(dto.getVoucherto());
         voucher.setVouchervalue(dto.getVouchervalue());
         voucher.setOrdersCollection(null);
+        voucher.setVoucherused(dto.getVoucherused());
         return voucher;
     }
 }
