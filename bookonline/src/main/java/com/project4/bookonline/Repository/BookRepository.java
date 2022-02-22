@@ -27,4 +27,14 @@ public interface BookRepository extends JpaRepository<Books, String> {
 
     @Query(value = "SELECT * FROM Books WHERE Books_id = :booksId", nativeQuery = true)
     public Books findOne(@Param("booksId") String booksId);
+
+    // top order
+    @Query(value = "select top 10 Books.*,(SELECT COUNT(Order_Detail.Book_id) from Order_Detail  where Order_Detail.Book_id = Books.Books_id  ) as Book_id from Books ORDER BY Book_id DESC",nativeQuery = true)
+    public List<Books> findtoporder();
+    // top releasedate
+    @Query(value = "Select top 10 * from Books Order by Book_releasedate DESC",nativeQuery = true)
+    public List<Books> topreleasedateBook();
+    // top ratting
+    @Query(value = "select top 10 Books.*,(SELECT COUNT(Review.Rating_start) from Review  where Review.Book_id = Books.Books_id  and Review.Rating_start = 5 ) as Ratting from Books ORDER BY Ratting DESC",nativeQuery = true)
+    public List<Books> toprattingBook();
 }

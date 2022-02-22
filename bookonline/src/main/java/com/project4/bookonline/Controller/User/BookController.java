@@ -131,5 +131,34 @@ public class BookController {
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
     }
-
+    @RequestMapping(value = "/book/findtoporder", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Books>> findtoporder() {
+        List<Books> b = bookService.findtoporder();
+        Message_Respones<Books> setMessage = new Message_Respones<Books>();
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(b);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
+    }
+    @RequestMapping(value = "/book/topreleasedate", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Books>> topreleasedate() {
+        List<Books> b = bookService.topreleasedateBook();
+        Message_Respones<Books> setMessage = new Message_Respones<Books>();
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(b);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
+    }
+    @RequestMapping(value = "/book/topratting", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Books>> topratting() {
+        List<Books> b = bookService.toprattingBook();
+        Message_Respones<Books> setMessage = new Message_Respones<Books>();
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(b);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
+    }
 }
