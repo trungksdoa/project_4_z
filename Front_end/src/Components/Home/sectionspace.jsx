@@ -32,7 +32,7 @@ function caculator(data) {
 const Sectionspace = () => {
 	const settings = {
 		dots: true,
-		infinite: true,
+		infinite: false,
 		slidesToShow: 3,
 		slidesToScroll: 3,
 		// autoplay: true,
@@ -122,16 +122,19 @@ const Sectionspace = () => {
 													wishlistArray = item.wishlists.filter(wishlist => wishlist.user_id.userid.includes(cookies.loggin.userID))
 												}
 												return (
-													<div className="item" key={index} style={{ width: 250 }}>
+													<div className="item" key={index} style={{ width: 220 }}>
 														<div className="tg-postbook">
 															<figure className="tg-featureimg" style={{
 																margin: 0,
-																width: "85%"
+																// width: "71%"
 															}}>
-																<div className="tg-bookimg">
-																	<div className="tg-frontcover"><img src={"http://localhost:9999/image/" + item.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
-																	<div className="tg-backcover"><img src={"http://localhost:9999/image/" + item.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
-																</div>
+																
+																	<div className="tg-bookimg">
+																		<div className="tg-frontcover"><img src={"http://localhost:9999/image/" + item.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image thumbnail" style={{height:246, width:"100%"}} /></div>
+																		<div className="tg-backcover"><img src={"http://localhost:9999/image/" + item.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image thumbnail" style={{height:246, width:"100%"}} /></div>
+																	</div>
+															
+
 																{auth && (
 																	wishlistArray.length !== 0 && (
 																		<a key={index} className="tg-btnaddtowishlist" style={{ backgroundColor: 'green' }}>

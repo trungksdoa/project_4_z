@@ -20,7 +20,6 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
 export const options = {
     responsive: true,
     plugins: {
@@ -33,27 +32,27 @@ export const options = {
         },
     },
 };
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'];
 
 export const data = {
     labels,
     datasets: [{
             label: 'Dataset 1',
-            //data:,
+            data: [1000,2004],
+
             borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
         {
             label: 'Dataset 2',
-            //data:,
+            data: [1,25,3,75,5,6,7,85,99,610,511,12],
+
             borderColor: 'rgb(53, 162, 235)',
             backgroundColor: 'rgba(53, 162, 235, 0.5)',
         },
     ],
 };
-
-export function LineChar() {
+export default function LineChar() {
     return <Line options = { options }
     data = { data }
     />;

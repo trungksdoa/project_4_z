@@ -62,19 +62,19 @@ const FormPage = () => {
 	const [groups, setGroups] = useState([]);
 	// --------------------------
 	const initialValues_Books = {
-		bookname: '',
-		bookprice: 59,
-		bookdescription: '',
-		amounts: 55,
-		authorid: '',
+		format: "",
+		pages: "",
+		dimensions: "",
+		language: "",
+		illustrationsnote: "",
+		// Book
+		bookname: "",
+		bookprice: "",
+		bookdescription: "",
 		bookreleasedate: new Date(),
-		status: 4,
-		imageLink: '',
-		format: '',
-		pages: 0,
-		dimensions: '',
-		language: '',
-		illustrationsnote: '0'
+		amounts: "",
+		authorid: "",
+		groupdto:[]
 	};
 	const [formData, setFormData] = useState(initialValues_Books);
 	const [formError, setformError] = useState({});
@@ -120,50 +120,43 @@ const FormPage = () => {
 		setIsSubmit(true);
 	};
 	const handleSubmit = async (e) => {
-		e.preventDefault();
+
 		const formbody = {
-			bookprice: formData.bookprice,
-			bookdescription: formData.bookdescription,
+
+			format: formData.format,
+			pages: formData.pages,
+			dimensions: formData.dimensions,
+			language: formData.language,
+			illustrationsnote: formData.illustrationsnote,
+			// Book
 			groupdto: groups,
 			bookname: formData.bookname,
-			amounts: formData.amounts,
-			language: formData.language,
-			authorid: formData.authorid,
+			bookprice: formData.bookprice,
+			bookdescription: formData.bookdescription,
 			bookreleasedate: formData.bookreleasedate,
-			pages: formData.pages,
-			illustrationsnote: formData.illustrationsnote,
-			dimensions: formData.dimensions
+			amounts: formData.amounts,
+			authorid: formData.authorid
 		};
 		formDataBody.append('file', selectedFile);
 		formDataBody.append('book_String', JSON.stringify(formbody));
 		if (Object.keys(formError).length === 0 && isSubmit) {
 			await BookAPI.Create(formDataBody)
-				.then((res) => {
-					toast(res.msg);
-					navigator('/admin/book');
-				})
-				.catch((err) => {
-					alert(err.msg);
-				});
+			navigator('/admin/book')
 		} else {
 			setIsSubmit(false);
 		}
 	};
+	useEffect(() => {
+		handleSubmit();
+	}, [formError])
 	const validate = (value) => {
 		const error = {};
-		if (!value.book_name) {
-			error.book_name = 'Name is required';
-		} else if (value.book_name.trim().length <= 10) {
-			error.book_name = 'Name length must be at max 10 characters';
-		} else if (value.book_name.trim().length <= 0) {
-			error.book_name = 'Name can not blank';
-		}
-		if (!value.bookdescription) {
-			error.bookdescription = 'Description is required';
-		} else if (value.bookdescription.trim().length <= 10) {
-			error.bookdescription = 'Description length must be at max 10 characters';
-		} else if (value.bookdescription.trim().length <= 0) {
-			error.bookdescription = 'Description can not blank';
+		if (!value.bookname) {
+			error.bookname = 'Name is required';
+		} else if (value.bookname.trim().length <= 10) {
+			error.bookname = 'Name length must be at max 10 characters';
+		} else if (value.bookname.trim().length <= 0) {
+			error.bookname = 'Name can not blank';
 		}
 		if (selectedFile == null) {
 			error.file = 'Image is required';
@@ -224,10 +217,11 @@ const FormPage = () => {
 				<a style={{ cursor: 'pointer' }} onClick={goBackList}>
 					Back
 				</a>
+				<pre>{JSON.stringify(formError, undefined, 2)}</pre>
 				<div className="container">
 					<div className="admin_card" style={{ width: '100%', margin: 'auto' }}>
 						<h3 className="text-center">Add Book</h3>
-						<form onSubmit={handleSubmit}>
+						<form onSubmit={handleClick}>
 							<div className="row">
 								<div className="col-lg-6">
 									<Grid item xs={8} sm={12}>
@@ -332,7 +326,7 @@ const FormPage = () => {
 										<label>Release date</label>
 										<DatePicker
 											dateFormat="yyyy/MM/dd HH:mm:ss"
-											selected={new Date(formData.bookreleasedate)}
+											selected={new Date()}
 											className={'form-control'}
 											style={{ border: '1px solid' }}
 											onChange={(date) => setFormData({ ...formData, bookreleasedate: date })}

@@ -193,7 +193,6 @@ const RequesttotalpriceorderByMouth = (url) => {
             .then(response => {
                 object_user.code = response.code;
                 object_user.msg = response.msg;
-                object_user.data = response.data_array;
                 resolve(object_user)
             })
             .catch((error) => {

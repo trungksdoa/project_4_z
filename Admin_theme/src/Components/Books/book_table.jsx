@@ -29,11 +29,11 @@ const Book_table = (props) => {
     }
 
     return (
-        <>
-            <table id="dtable" className="table align-items-center mb-0">
+       <div className="container-fluid py-4">
+<table id="dtable" className="table align-items-center mb-0">
                 <thead>
                     <tr>
-                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
+                        {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th> */}
                         <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                         <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price
                         </th>
@@ -53,11 +53,11 @@ const Book_table = (props) => {
                         const status = book.status === 3 ? 3 : 4;
                         return (
                             <tr key={index}>
-                                <td>
+                                {/* <td>
                                     <div className="d-flex px-3 py-1">
-                                        <p className="text-xs font-weight-bold mb-0">{book.booksid}</p>
+                                        <p className="text-xs font-weight-bold mb-0">{index}</p>
                                     </div>
-                                </td>
+                                </td> */}
                                 <td>
                                     <p className="text-xs font-weight-bold mb-0">{book.bookname} books</p>
                                 </td>
@@ -111,7 +111,9 @@ const Book_table = (props) => {
                     )}
                 </tbody>
             </table>
-        </>
+       </div>
+            
+        
     )
 }
 Book_table.propTypes = {

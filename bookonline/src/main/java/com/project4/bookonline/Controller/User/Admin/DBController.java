@@ -1,9 +1,6 @@
 package com.project4.bookonline.Controller.User.Admin;
 
-import com.project4.bookonline.Model.Message_Respones;
-import com.project4.bookonline.Model.OrderDetail;
-import com.project4.bookonline.Model.Orders;
-import com.project4.bookonline.Model.Users;
+import com.project4.bookonline.Model.*;
 import com.project4.bookonline.Service.OrderDetailService;
 import com.project4.bookonline.Service.OrderService;
 import com.project4.bookonline.Service.UserService;
@@ -35,12 +32,13 @@ public class DBController {
     Message_Respones<Orders> setMessage = new Message_Respones<Orders>();
     // Sum user register in day
     @RequestMapping(value = "/db/userByDay", method = RequestMethod.GET)
-    public ResponseEntity<String> totaluserByDay(){
+    public ResponseEntity<Message_Respones<Orders>> totaluserByDay(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         //--- End---
         List<Users> usersList = userService.totaluserrgister(dtf.format(now));
+        Message_Respones<Orders> setMessage = new Message_Respones<Orders>();
 
         int count =0;
         for (Users users:
@@ -48,19 +46,22 @@ public class DBController {
             count++;
         }
         String str =String.valueOf(count);
-        return new ResponseEntity<String>(str, HttpStatus.OK);
+        setMessage.setMessage(str);
+        return new ResponseEntity<Message_Respones<Orders>>(setMessage, HttpStatus.OK);
     }
     // Tổng số đơn hàng trong ngày
 
     @RequestMapping(value = "/db/orderByDay", method = RequestMethod.GET)
-    public ResponseEntity<String> totalorderByDay(){
+    public ResponseEntity<Message_Respones<Orders>> totalorderByDay(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
+        Message_Respones<Orders> setMessage = new Message_Respones<Orders>();
         //--- End---
         List<Orders> orders = orderService.loadDataByDay(dtf.format(now));
+        setMessage.setList(orders);
         String str = orders.toString();
-        return new ResponseEntity<String>(str, HttpStatus.OK);
+        return new ResponseEntity<Message_Respones<Orders>>(setMessage, HttpStatus.OK);
     }
     // Tổng số đơn hàng trong tháng
     @RequestMapping(value = "/db/orderByMouth", method = RequestMethod.GET)
@@ -153,12 +154,13 @@ public class DBController {
     }
     // Tổng số price đơn hàng trong thang
     @RequestMapping(value = "/db/totalpriceorderByMouth", method = RequestMethod.GET)
-    public ResponseEntity<String> totalpriceorderByMouth(){
+    public ResponseEntity<Message_Respones<Orders>> totalpriceorderByMouth(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         //--- End---
         List<Orders> orders = orderService.loadDataByMonth(dtf.format(now));
+        Message_Respones<Orders> setMessage = new Message_Respones<Orders>();
         List<OrderDetail> orderDetails = new ArrayList<>();
         int total =0;
         for (Orders getdata:
@@ -171,20 +173,21 @@ public class DBController {
             }
         }
         String str = String.valueOf(total);
-        return new ResponseEntity<String>(str, HttpStatus.OK);
+        setMessage.setMessage(str);
+        return new ResponseEntity<Message_Respones<Orders>>(setMessage, HttpStatus.OK);
     }
     // Tổng số price đơn hàng trong nam
     @RequestMapping(value = "/db/totalpriceorderByYear", method = RequestMethod.GET)
-    public ResponseEntity<String> totalpriceorderByYear(){
+    public ResponseEntity<Message_Respones<Orders>> totalpriceorderByYear(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         //--- End---
         List<Orders> orders = orderService.loadDataByYear(dtf.format(now));
+        Message_Respones<Integer> setmessage = new Message_Respones<>()
         List<OrderDetail> orderDetails = new ArrayList<>();
         int total =0;
-        for (Orders getdata:
-                orders) {
+        for (Orders getdata:  orders) {
             orderDetails = orderService.loadtotalprice(getdata.getOrderid());
             for (OrderDetail orderDetail:
                     orderDetails) {
@@ -194,6 +197,8 @@ public class DBController {
         }
         String str = String.valueOf(total);
        // System.out.println(str);
-        return new ResponseEntity<String>(str, HttpStatus.OK);
+        setmessage.setMessage(str);
+        return new ResponseEntity<Message_Respones<Orders>>(setmessage, HttpStatus.OK);
     }
+
 }

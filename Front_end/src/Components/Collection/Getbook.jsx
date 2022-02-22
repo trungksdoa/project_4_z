@@ -66,8 +66,8 @@ function Getbook({ bookList, onAdd, addWishlist }) {
 								width: "100%"
 							}}>
 								<div className="tg-bookimg">
-									<div className="tg-frontcover"><img src={"http://localhost:9999/image/" + post.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
-									<div className="tg-backcover"><img src={"http://localhost:9999/image/" + post.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
+									<div className="tg-frontcover" style={{width:160 ,height:200}}><img src={"http://localhost:9999/image/" + post.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
+									<div className="tg-backcover" style={{width:160 ,height:200}}><img src={"http://localhost:9999/image/" + post.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
 								</div>
 								{auth && (
 									wishlistArray.length !== 0 && (

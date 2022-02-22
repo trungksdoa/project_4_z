@@ -271,7 +271,7 @@ const Book_detail = () => {
                                                     <article className="tg-post">
                                                         <figure><a style={{
                                                             width: 120,
-                                                            height: 120
+                                                            
                                                         }}><img src={"http://localhost:9999/image/" + book_b.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></a></figure>
                                                         <div className="tg-postcontent">
                                                             <div className="tg-posttitle">

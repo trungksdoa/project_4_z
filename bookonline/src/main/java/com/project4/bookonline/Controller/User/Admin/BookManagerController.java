@@ -183,6 +183,12 @@ public class BookManagerController {
             bookId = bookService.findOne(id);
             bookId.setStatus(Integer.valueOf(status));
             bookId.setBookmodifieddate(dtf.format(now));
+            wishlists = new ArrayList<>();
+            wishlists = wishlistService.getListByBookId(bookId);
+            for (int i = 0; i < wishlists.size(); i++) {
+                SendEmail("Product is out of stock", "<h3>Product <b>" + bookId.getBookname() + "</b> is out stock</h3> \n\n" +
+                        "<br> <a href='http://localhost:3000/'>Go to website</a>", wishlists.get(i).getUser_id().getUseremail());
+            }
             bookService.Create(bookId);
             String msg = "Update out of stock";
             setMessage.setMessage(msg);
