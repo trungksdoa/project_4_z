@@ -35,44 +35,54 @@ public class DBController {
     Message_Respones<Orders> setMessage = new Message_Respones<Orders>();
     // Sum user register in day
     @RequestMapping(value = "/db/userByDay", method = RequestMethod.GET)
-    public ResponseEntity<Integer> totaluserByDay(){
+    public ResponseEntity<String> totaluserByDay(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         //--- End---
         List<Users> usersList = userService.totaluserrgister(dtf.format(now));
-        return new ResponseEntity<Integer>(usersList.size(), HttpStatus.OK);
+
+        int count =0;
+        for (Users users:
+        usersList) {
+            count++;
+        }
+        String str =String.valueOf(count);
+        return new ResponseEntity<String>(str, HttpStatus.OK);
     }
     // Tổng số đơn hàng trong ngày
 
     @RequestMapping(value = "/db/orderByDay", method = RequestMethod.GET)
-    public ResponseEntity<Integer> totalorderByDay(){
+    public ResponseEntity<String> totalorderByDay(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         //--- End---
         List<Orders> orders = orderService.loadDataByDay(dtf.format(now));
-        return new ResponseEntity<Integer>(orders.size(), HttpStatus.OK);
+        String str = orders.toString();
+        return new ResponseEntity<String>(str, HttpStatus.OK);
     }
     // Tổng số đơn hàng trong tháng
     @RequestMapping(value = "/db/orderByMouth", method = RequestMethod.GET)
-    public ResponseEntity<Integer> totalorderByMouth(){
+    public ResponseEntity<String> totalorderByMouth(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         //--- End---
         List<Orders> orders = orderService.loadDataByMonth(dtf.format(now));
-        return new ResponseEntity<Integer>(orders.size(), HttpStatus.OK);
+        String str = orders.toString();
+        return new ResponseEntity<String>(str, HttpStatus.OK);
     }
     // Tổng số đơn hàng trong năm
     @RequestMapping(value = "/db/orderByYear", method = RequestMethod.GET)
-    public ResponseEntity<Integer> totalorderByYear(){
+    public ResponseEntity<String> totalorderByYear(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         //--- End---
         List<Orders> orders = orderService.loadDataByYear(dtf.format(now));
-        return new ResponseEntity<Integer>(orders.size(), HttpStatus.OK);
+        String str = orders.toString();
+        return new ResponseEntity<String>(str, HttpStatus.OK);
     }
     // tất cả order(obj) trong ngày
     @RequestMapping(value = "/db/objorderByDay", method = RequestMethod.GET)
@@ -121,7 +131,7 @@ public class DBController {
     }
     // Tổng số price đơn hàng trong ngày
     @RequestMapping(value = "/db/totalpriceorderByDay", method = RequestMethod.GET)
-    public ResponseEntity<Integer> totalpriceorderByDay(){
+    public ResponseEntity<String> totalpriceorderByDay(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -138,11 +148,12 @@ public class DBController {
                 total += getODetail.getTotal();
             }
         }
-        return new ResponseEntity<Integer>(total, HttpStatus.OK);
+        String str = String.valueOf(total);
+        return new ResponseEntity<String>(str, HttpStatus.OK);
     }
     // Tổng số price đơn hàng trong thang
     @RequestMapping(value = "/db/totalpriceorderByMouth", method = RequestMethod.GET)
-    public ResponseEntity<Integer> totalpriceorderByMouth(){
+    public ResponseEntity<String> totalpriceorderByMouth(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -159,11 +170,12 @@ public class DBController {
                 total += getODetail.getTotal();
             }
         }
-        return new ResponseEntity<Integer>(total, HttpStatus.OK);
+        String str = String.valueOf(total);
+        return new ResponseEntity<String>(str, HttpStatus.OK);
     }
     // Tổng số price đơn hàng trong nam
     @RequestMapping(value = "/db/totalpriceorderByYear", method = RequestMethod.GET)
-    public ResponseEntity<Integer> totalpriceorderByYear(){
+    public ResponseEntity<String> totalpriceorderByYear(){
         //--- Set Date time ---
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -180,6 +192,8 @@ public class DBController {
                 total += getODetail.getTotal();
             }
         }
-        return new ResponseEntity<Integer>(total, HttpStatus.OK);
+        String str = String.valueOf(total);
+       // System.out.println(str);
+        return new ResponseEntity<String>(str, HttpStatus.OK);
     }
 }

@@ -4,6 +4,7 @@ import { Bar } from 'react-chartjs-2';
 import rankAPI from "../../api/RankAPI";
 import Bar_comp from './BarChart';
 import { UserData } from "./Data";
+import DashboardAPI from "../../api/DashboardAPI.js";
 
 export const options = {
     indexAxis: 'y',
@@ -35,12 +36,25 @@ const Dashboard = () => {
     )
     const fetchCustomers = async () => {
         try {
-            const response = await CustomerApi.getAll();
-            setCounts(response.data.length);
+            const response = await DashboardAPI.gettotaluserByDay();
+            setCounts(response.data);
+            console.log(response.data)
         } catch (error) {
             console.log('failed to fetch List_customer list', error);
         }
     }
+    const [moneyMouth, setMoneyMouth] = useState(
+       []);
+    const fetchMoneyMouth = async () => {
+        try {
+            const response = await DashboardAPI.getobjectOrderByMouth();
+            setMoneyMouth(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.log('failed to fetch List_customer list', error);
+        }
+    }
+    console.log(moneyMouth);
     const [productData, setProductData] = useState([]);
     const [userData, setUserData] = useState({});
     const fetchProductRank = async () => {
@@ -56,7 +70,9 @@ const Dashboard = () => {
     useLayoutEffect(() => {
         fetchCustomers();
     }, [])
-
+    useLayoutEffect(() => {
+        fetchMoneyMouth();
+    }, [])
     useLayoutEffect(() => {
         setUserData({
             labels: productData.map((data) => data.book_name),
@@ -77,7 +93,6 @@ const Dashboard = () => {
             ],
         })
     }, [productData])
-    console.log(userData)
     return (
         <>
             <div className="container-fluid py-4">
@@ -89,8 +104,8 @@ const Dashboard = () => {
                                     <i className="material-icons opacity-10">weekend</i>
                                 </div>
                                 <div className="text-end pt-1">
-                                    <p className="text-sm mb-0 text-capitalize">Week's Money</p>
-                                    <h4 className="mb-0">$53k</h4>
+                                    <p className="text-sm mb-0 text-capitalize">Month's Money</p>
+                                    <h4 className="mb-0">{moneyMouth}</h4>
                                 </div>
                             </div>
                             <hr className="dark horizontal my-0" />
@@ -107,7 +122,7 @@ const Dashboard = () => {
                                 </div>
                                 <div className="text-end pt-1">
                                     <p className="text-sm mb-0 text-capitalize">Register customer</p>
-                                    <h4 className="mb-0">{countCustomer.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</h4>
+                                    <h4 className="mb-0">{countCustomer}</h4>
                                 </div>
                             </div>
                             <hr className="dark horizontal my-0" />
