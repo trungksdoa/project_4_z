@@ -18,4 +18,7 @@ public interface BooksService {
     public Books findOne(String id);
     public void Delete(String id);   
     public void DeleteAllBy(List<String> id);
+    public List<Books> findtoporder();
+    public List<Books> topreleasedateBook();
+    public List<Books> toprattingBook();
 }

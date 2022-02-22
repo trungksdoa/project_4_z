@@ -59,4 +59,19 @@ public class BooksImpl implements com.project4.bookonline.Service.BooksService {
     public void DeleteAllBy(List<String> id) {
         bookRepository.deleteAllById(id);
     }
+
+    @Override
+    public List<Books> findtoporder() {
+        return bookRepository.findtoporder();
+    }
+
+    @Override
+    public List<Books> topreleasedateBook() {
+        return bookRepository.topreleasedateBook();
+    }
+
+    @Override
+    public List<Books> toprattingBook() {
+        return bookRepository.toprattingBook();
+    }
 }
