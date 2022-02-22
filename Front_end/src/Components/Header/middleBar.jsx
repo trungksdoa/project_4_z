@@ -181,12 +181,12 @@ const MiddleBar = () => {
                                                                 <ul className="shopping-cart-items" style={suggestBook.length > 6 ? (
                                                                     {
                                                                         height: 386,
-                                                                        overflow: "scroll"
+                                                                        overflowY: "scroll"
                                                                     }
                                                                 ) : (
                                                                     {
                                                                         height: "100%",
-                                                                        overflow: "scroll"
+                                                                        overflowY: "scroll"
                                                                     }
                                                                 )}>
                                                                     {suggestBook.map((book_b, index) => {

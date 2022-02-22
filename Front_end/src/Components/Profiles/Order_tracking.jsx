@@ -256,7 +256,7 @@ const Page2 = () => {
                                     {value.ordernote}
                                 </td>
                                 <td>
-                                    {value.ordervoucher !== null ? (sumtotal - (sumtotal * value.ordervoucher.vouchervalue) / 100) : (sumtotal)}
+                                    ${value.ordervoucher !== null ? (sumtotal - (sumtotal * value.ordervoucher.vouchervalue) / 100).toFixed(2) : (sumtotal.toFixed(2))}
                                     {/* {currency.formatToCurrency(sumtotal)}{sumtotal-(sumtotal*value.ordervoucher.vouchervalue)/100} */}
                                 </td>
                                 <td>

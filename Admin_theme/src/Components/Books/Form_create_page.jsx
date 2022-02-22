@@ -29,7 +29,7 @@ const MenuProps = {
 	}
 };
 const FormPage = () => {
-	const [ author, setAuthor ] = useState([]);
+	const [author, setAuthor] = useState([]);
 	const fetchDataAuthor = async () => {
 		await AuthorAPI.getAll()
 			.then((res) => {
@@ -40,7 +40,9 @@ const FormPage = () => {
 	useEffect(() => {
 		fetchDataAuthor();
 	}, []);
-	const [ catagory, setCategorys ] = useState([]);
+	console.log(author)
+	const [catagory, setCategorys] = useState([]);
+	const character_only = /^[a-z\sA-Z]+$/g;
 	const fetchData = async () => {
 		await CategoryAPI.getAll()
 			.then((catagory) => {
@@ -57,7 +59,7 @@ const FormPage = () => {
 		fetchData();
 	}, []);
 
-	const [ groups, setGroups ] = useState([]);
+	const [groups, setGroups] = useState([]);
 	// --------------------------
 	const initialValues_Books = {
 		bookname: '',
@@ -66,7 +68,7 @@ const FormPage = () => {
 		amounts: 55,
 		authorid: '',
 		bookreleasedate: new Date(),
-		status: 2,
+		status: 4,
 		imageLink: '',
 		format: '',
 		pages: 0,
@@ -74,11 +76,11 @@ const FormPage = () => {
 		language: '',
 		illustrationsnote: '0'
 	};
-	const [ formData, setFormData ] = useState(initialValues_Books);
-	const [ formError, setformError ] = useState({});
-	const [ isSubmit, setIsSubmit ] = useState(false);
-	const [ selectedFile, setFiles ] = useState(null);
-	const [ imgData, setImgData ] = useState(null);
+	const [formData, setFormData] = useState(initialValues_Books);
+	const [formError, setformError] = useState({});
+	const [isSubmit, setIsSubmit] = useState(false);
+	const [selectedFile, setFiles] = useState(null);
+	const [imgData, setImgData] = useState(null);
 	const formDataBody = new FormData();
 
 	const fileUploader = useRef();
@@ -89,7 +91,13 @@ const FormPage = () => {
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
+		if (name == "language") {
+			if (character_only.test(value.trim())) {
+				setFormData({ ...formData, [name]: value })
+			}
+		} else {
+			setFormData({ ...formData, [name]: value });
+		}
 	};
 
 	const handleChangeCatagory = (event) => {
@@ -117,7 +125,7 @@ const FormPage = () => {
 			bookprice: formData.bookprice,
 			bookdescription: formData.bookdescription,
 			groupdto: groups,
-			bookname:formData.bookname,
+			bookname: formData.bookname,
 			amounts: formData.amounts,
 			language: formData.language,
 			authorid: formData.authorid,
@@ -128,19 +136,18 @@ const FormPage = () => {
 		};
 		formDataBody.append('file', selectedFile);
 		formDataBody.append('book_String', JSON.stringify(formbody));
-		await BookAPI.Create(formDataBody)
-		// if (Object.keys(formError).length === 0 && isSubmit) {
-			// await BookAPI.Create(formDataBody)
-			// 	.then((res) => {
-			// 		toast(res.msg);
-			// 		navigator('/admin/book');
-			// 	})
-			// 	.catch((err) => {
-			// 		alert(err.msg);
-			// 	});
-		// } else {
-		// 	setIsSubmit(false);
-		// }
+		if (Object.keys(formError).length === 0 && isSubmit) {
+			await BookAPI.Create(formDataBody)
+				.then((res) => {
+					toast(res.msg);
+					navigator('/admin/book');
+				})
+				.catch((err) => {
+					alert(err.msg);
+				});
+		} else {
+			setIsSubmit(false);
+		}
 	};
 	const validate = (value) => {
 		const error = {};
@@ -322,20 +329,6 @@ const FormPage = () => {
 								</div>
 								<div className="col-lg-6">
 									<Grid item xs={8} sm={12}>
-										<TextField
-											name="status"
-											fullWidth
-											value={formData.status}
-											onChange={handleChange}
-											id="status"
-											label="Status"
-											autoFocus
-										/>
-										<p style={{ color: 'red' }}>{formError.status}</p>
-									</Grid>
-								</div>
-								<div className="col-lg-6">
-									<Grid item xs={8} sm={12}>
 										<label>Release date</label>
 										<DatePicker
 											dateFormat="yyyy/MM/dd HH:mm:ss"
@@ -349,45 +342,50 @@ const FormPage = () => {
 									</Grid>
 								</div>
 								<div className="col-lg-12">
-									<FormControl sx={{ m: 0, width: '100%' }}>
-										<InputLabel id="demo-multiple-checkbox-label">Catagory</InputLabel>
-										<Select
-											labelId="demo-multiple-checkbox-label"
-											id="demo-multiple-checkbox"
-											multiple
-											value={groups}
-											onChange={handleChangeCatagory}
-											input={<OutlinedInput label="Catagory" />}
-											renderValue={(selected) => selected.join(', ')}
-											MenuProps={MenuProps}
-										>
-											{catagory.map((value,index) => (
-												<MenuItem key={index} value={value.catagoryid}>
-													<Checkbox checked={groups.indexOf(value.catagoryid) > -1} />
-													<ListItemText primary={value.catagoryname} />
-												</MenuItem>
-											))}
-										</Select>
-									</FormControl>
+									<Grid item xs={8} sm={12}>
+										<FormControl sx={{ m: 0, width: '100%' }}>
+											<InputLabel id="demo-multiple-checkbox-label">Catagory</InputLabel>
+											<Select
+												labelId="demo-multiple-checkbox-label"
+												id="demo-multiple-checkbox"
+												multiple
+												value={groups}
+												onChange={handleChangeCatagory}
+												input={<OutlinedInput label="Catagory" />}
+												renderValue={(selected) => selected.join(', ')}
+												MenuProps={MenuProps}
+											>
+												{catagory.map((value, index) => (
+													<MenuItem key={index} value={value.catagoryid}>
+														<Checkbox checked={groups.indexOf(value.catagoryid) > -1} />
+														<ListItemText primary={value.catagoryname} />
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									</Grid>
+
 								</div>
-								<div className="col-lg-12">
-									<FormControl fullWidth>
-										<InputLabel id="authorid">Author</InputLabel>
-										<Select
-											labelId="authorid"
-											id="authorid"
-											name="authorid"
-											value={formData.authorid}
-											label="Author"
-											onChange={handleChange}
-										>
-											{author.map((value, index) => (
-												<MenuItem key={index} value={value.authorid}>
-													{value.authorname}
-												</MenuItem>
-											))}
-										</Select>
-									</FormControl>
+								<div className="col-lg-12" style={{ paddingTop: 30 }}>
+									<Grid item xs={8} sm={12}>
+										<FormControl fullWidth>
+											<InputLabel id="authorid">Author</InputLabel>
+											<Select
+												labelId="authorid"
+												id="authorid"
+												name="authorid"
+												value={formData.authorid}
+												label="Author"
+												onChange={handleChange}
+											>
+												{author.map((value, index) => (
+													<MenuItem key={index} value={value.authorid}>
+														{value.authorname}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									</Grid>
 								</div>
 								<div className="col-lg-12">
 									<label>illustrations note: </label>
