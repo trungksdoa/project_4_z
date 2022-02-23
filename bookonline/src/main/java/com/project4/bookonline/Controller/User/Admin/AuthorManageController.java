@@ -152,7 +152,7 @@ public class AuthorManageController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        String fileName = fileStorageService.storeFile(file);
+        String fileName = fileStorageService.storeFileAuthor(file);
         author.setAuthorname(audt.getAuthorname());
         author.setNumberpublishedbooks(audt.getNumberpublishedbooks());
         author.setAuthorinformation(audt.getAuthorinformation());

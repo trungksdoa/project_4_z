@@ -79,13 +79,17 @@ const FormPage = () => {
             error.banner_title = "Title length must be at max 3 characters";
         } else if (value.banner_title.trim().length <= 0) {
             error.banner_title = "Title can not blank";
+        }else if (value.banner_title.trim().length >= 20) {
+            error.banner_title = "Title can not more than 20 characters";
         }
         if (!value.banner_content) {
-            error.banner_content = "Title is required";
+            error.banner_content = "Content is required";
         } else if (value.banner_content.trim().length <= 3) {
             error.banner_content = "Content length must be at max 3 characters";
         } else if (value.banner_content.trim().length <= 0) {
             error.banner_content = "Content can not blank";
+        }else if (value.banner_content.trim().length >= 30) {
+            error.banner_content = "Content can not more than 30 characters";
         }
         if (selectedFile == null) {
             error.file = "Image is required";

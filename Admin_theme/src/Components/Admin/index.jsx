@@ -8,7 +8,28 @@ import AdminTable from './Admin_table';
 import AdminAPI from '../../api/AdminAPI';
 import Pagination from '../Pagination/pagination';
 
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 const Admins = () => {
+
+    const [confirmDelete, setCobfirmDelete] = useState(false);
+    const [id, setId] = useState(0);
+
+    const handleClickOpen = (ids) => {
+        setCobfirmDelete(true);
+        setId(ids)
+    };
+
+    const handleClose = () => {
+        setCobfirmDelete(false);
+    };
+
+
     const [adminList, setAdminList] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const navigate = useNavigate();
@@ -28,16 +49,13 @@ const Admins = () => {
         return () => clearInterval(interval)
     }, [])
     useLayoutEffect(() => {
-        setFiltered(
-            adminList.filter((admins) =>
-                !admins.roles.toLowerCase().includes('owner')
-            ))
+        setFiltered(adminList)
     }, [adminList])
     function GotoCreatePage() {
         navigate("/owner/admin/create")
     }
-    const handleDelete = async (value) => {
-        await AdminAPI.Delete(value).then(res => {
+    const handleDelete = async () => {
+        await AdminAPI.Delete(id).then(res => {
             toast.success(res.msg, {
                 position: "top-right",
                 autoClose: 5000,
@@ -47,6 +65,7 @@ const Admins = () => {
                 draggable: true,
                 progress: undefined,
             });
+            handleClose();
         }).catch(err => {
             toast.error(err.msg, {
                 position: "top-right",
@@ -76,6 +95,27 @@ const Admins = () => {
     }
     return (
         <div className="container-fluid py-4">
+            <Dialog
+                open={confirmDelete}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Delete Confirm?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleDelete} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <div className="row">
                 <div className="col-12">
                     <a style={{ cursor: 'pointer' }} onClick={GotoCreatePage}><AddCircleIcon fontSize="large" /></a>
@@ -87,7 +127,7 @@ const Admins = () => {
                         </div>
                         <div className="card-body px-0 pb-2">
                             <div className="table-responsive p-0">
-                                <AdminTable data={filtered} onDelete={handleDelete} />
+                                <AdminTable data={filtered} onDelete={handleClickOpen} />
                                 {/* <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} /> */}
                             </div>
                         </div>

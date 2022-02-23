@@ -34,7 +34,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     @Query(value = "SELECT * FROM Order_Detail WHERE Order_id =:order_id", nativeQuery = true)
     public List<OrderDetail> loadtotalprice(@Param("order_id") int id);
     // Select order monthly
-    @Query(value = "SELECT SUM(order_Detail.Total) as Total FROM Orders INNER JOIN order_Detail ON Orders.order_id = order_Detail.order_id WHERE YEAR(Orders.order_createddate) =YEAR(GETDATE()) GROUP BY MONTH(Orders.order_createddate)", nativeQuery = true)
+    @Query(value = "SELECT SUM(order_Detail.Total) as Total FROM Orders INNER JOIN order_Detail ON Orders.order_id = order_Detail.order_id WHERE YEAR(Orders.order_createddate) =YEAR(GETDATE()) and Order_status = 1 GROUP BY MONTH(Orders.order_createddate)", nativeQuery = true)
     public List<Integer> totalmonthly();
 }
 

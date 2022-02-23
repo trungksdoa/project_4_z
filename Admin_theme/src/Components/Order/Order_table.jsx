@@ -51,6 +51,7 @@ const Order_Table = (props) => {
             <tbody>
                 {Order.length != 0 ? Order.map((order, index) => {
                     const sumtotal = order.orderDetailCollection.reduce((a, b) => a + (b["total"] || 0), 0);
+                    const voucher = order.ordervoucher === null ? "No voucher" : order.ordervoucher.vouchertitle
                     return (
                         <tr key={index}>
                             <td>
@@ -83,7 +84,7 @@ const Order_Table = (props) => {
                                 <span className="text-secondary text-xs font-weight-bold">{order.ordercreateddate}</span>
                             </td>
                             <td className="align-middle text-center">
-                                <span className="text-secondary text-xs font-weight-bold">{order.ordervoucher.vouchertitle}</span>
+                                <span className="text-secondary text-xs font-weight-bold">{ voucher}</span>
                             </td>
                             <td className="align-middle text-center">
                                 <span className="text-secondary text-xs font-weight-bold">{currency.formatToCurrency(sumtotal)}</span>

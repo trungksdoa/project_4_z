@@ -1,6 +1,7 @@
 package com.project4.bookonline.Controller.User.Admin;
 
 import com.project4.bookonline.Model.*;
+import com.project4.bookonline.Service.BooksService;
 import com.project4.bookonline.Service.OrderDetailService;
 import com.project4.bookonline.Service.OrderService;
 import com.project4.bookonline.Service.UserService;
@@ -25,6 +26,8 @@ public class DBController {
     OrderService orderService;
     @Autowired
     UserService userService;
+    @Autowired
+    BooksService bookService;
     @Autowired
     OrderDetailService orderDetailService;
     Message_Respones<Orders> setMessage = new Message_Respones<Orders>();
@@ -208,5 +211,15 @@ public class DBController {
         setMessage.setList(o);
         setMessage.setCode(200);
         return new ResponseEntity<Message_Respones<Integer>>(setMessage, HttpStatus.OK);
+    }
+    @RequestMapping(value = "/db/findtoporder", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Books>> findtoporder() {
+        List<Books> b = bookService.findtoporder();
+        Message_Respones<Books> setMessage = new Message_Respones<Books>();
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(b);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Books>>(setMessage, HttpStatus.OK);
     }
 }

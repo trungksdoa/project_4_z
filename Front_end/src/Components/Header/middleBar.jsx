@@ -125,7 +125,7 @@ const MiddleBar = () => {
                                                                     <img src="images/products/img-01.jpg" alt="image description" />
                                                                 </figure>
                                                                 <div className="tg-minicarproductdata">
-                                                                    <h5><a>{bookname}</a></h5>
+                                                                    <h5>	<a href={"/book/"+booksId}>{bookname}</a></h5>
                                                                     <h6><a>${formatToCurrency(bookprice)}</a></h6>
                                                                 </div>
                                                             </div>

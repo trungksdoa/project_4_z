@@ -50,7 +50,7 @@ const Author_page = () => {
               <div className="tg-innerbannercontent">
                 <h1>Authors</h1>
                 <ol className="tg-breadcrumb">
-                  <li><a href="#;">home</a></li>
+                  <li><a href="/">home</a></li>
                   <li className="tg-active">Authors</li>
                 </ol>
               </div>
@@ -68,7 +68,7 @@ const Author_page = () => {
         {/* ************************************
                      Authors Start
              **************************************/}
-        {<Author_dom PerPage={itemsPerPage} total={data.length} paginate={paginate} currenPages={currentPage} currenPages={currentPage}  data={currentItem}></Author_dom>}
+        {<Author_dom PerPage={itemsPerPage} total={data.length} paginate={paginate} currenPages={currentPage} currenPages={currentPage} data={currentItem}></Author_dom>}
         {/*************************************
                      Authors End
              **************************************/}

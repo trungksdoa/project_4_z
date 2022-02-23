@@ -114,10 +114,6 @@ const FormPage = () => {
                 if (value.length >= 0 && value.length <= 1000000)
                     setAuthor({ ...author, [name]: value });
             }
-        } else if (name === "authorname") {
-            if (character_only.test(value.trim().toLowerCase())) {
-                setAuthor({ ...author, [name]: value });
-            }
         } else {
 
             setAuthor({ ...author, [name]: value })
@@ -130,7 +126,7 @@ const FormPage = () => {
     // ----------------------------------------------------------------
     const HandleChangeCKEditor = (event, editor) => {
         const data = editor.getData();
-        setAuthor({ ...author, "authorinformation": data });
+        setAuthor({ ...author, "authorinformation": data});
     }
     // ----------------------------------------------------------------
 
@@ -167,8 +163,10 @@ const FormPage = () => {
         else if (values.authorname.trim().length <= 0) {
             errors.authorname = "Author name not be blank";
 
-        } else if (values.authorname.trim().length <= 3) {
-            errors.authorname = "String lenght not less than 3";
+        } else if (values.authorname.trim().length < 3) {
+            errors.authorname = "String lenght not less than 3 characters";
+        }else if(values.authorname.trim().length > 50){
+            errors.authorname = "String lenght not more than 50 characters";
         }
         // Không nhập số author name 
         // Không ký tự đặt biệt author name
@@ -350,7 +348,7 @@ const FormPage = () => {
                         </>
                     ) : (
                         <>
-                            <button type="submit" className="btn btn-vimeo">Submit</button>
+                            <button type="submit" className="btn btn-vimeo">Update</button>
                         </>)}
                 </form>
             </div >

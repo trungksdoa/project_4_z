@@ -101,9 +101,26 @@ const FormPage = () => {
             }
             formDataBody.append("categorys_string", JSON.stringify(formbody));
             await CategoryAPI.Edit(id,formDataBody).then(res => {
-                toast(res.msg)
+                toast.success(res.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+                navigator('/admin/category');
             }).catch(err => {
-                alert(err.msg)
+                toast.error(err.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             })
         } else {
             setIsSubmit(false);
@@ -177,7 +194,7 @@ const FormPage = () => {
                                     </Grid>
                                 
                             <div className="mb-3">
-                                <button className="btn btn-primary" type="submit">Submit</button>
+                                <button className="btn btn-primary" type="submit">Update</button>
                             </div>
                         </form>
                     </div>

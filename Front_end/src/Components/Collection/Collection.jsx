@@ -122,7 +122,7 @@ const Collection = () => {
 								<h1>All Products</h1>
 								<ol className="tg-breadcrumb">
 									<li>
-										<a >home</a>
+										<a href="/">home</a>
 									</li>
 									<li className="tg-active">Products</li>
 								</ol>
@@ -151,7 +151,7 @@ const Collection = () => {
 										<div className="tg-products">
 											<div className="tg-productgrid">
 												<div className="tg-refinesearch">
-													<span>showing {itemOfFirst + 1} to {itemOfLast - 1} of {bookList.length} total</span>
+													<span>showing {itemOfFirst + 1} to {currentItem.length+itemOfFirst} of {bookList.length} total</span>
 													<form className="tg-formtheme tg-formsortshoitems">
 														<fieldset>
 															<div className="form-group">

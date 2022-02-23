@@ -42,6 +42,7 @@ const FormPage = () => {
 	}, []);
 	console.log(author)
 	const [catagory, setCategorys] = useState([]);
+	const Only_number = /^[0-9\b]+$/;
 	const character_only = /^[a-z\sA-Z]+$/g;
 	const fetchData = async () => {
 		await CategoryAPI.getAll()
@@ -74,7 +75,7 @@ const FormPage = () => {
 		bookreleasedate: new Date(),
 		amounts: "",
 		authorid: "",
-		groupdto:[]
+		groupdto: []
 	};
 	const [formData, setFormData] = useState(initialValues_Books);
 	const [formError, setformError] = useState({});
@@ -88,14 +89,29 @@ const FormPage = () => {
 	const navigator = useNavigate();
 
 	const { id } = useParams();
+	function removeLeadingZeros(str) {
+		// Regex to remove leading
+		// zeros from a string
+		const regex = new RegExp("^0+(?!$)", 'g');
 
+		// Replaces the matched
+		// value with given string
+		str = str.replaceAll(regex, "");
+
+		return str;
+	}
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		if (name == "language") {
 			if (character_only.test(value.trim())) {
 				setFormData({ ...formData, [name]: value })
 			}
-		} else {
+		}
+		 else if (name === "bookprice") {
+            setFormData({ ...formData, [name]: removeLeadingZeros(value) });
+        } else if (name === "amounts") {
+            setFormData({ ...formData, [name]: removeLeadingZeros(value) });
+        }else {
 			setFormData({ ...formData, [name]: value });
 		}
 	};
@@ -158,6 +174,43 @@ const FormPage = () => {
 		} else if (value.bookname.trim().length <= 0) {
 			error.bookname = 'Name can not blank';
 		}
+		if (!value.pages) {
+			error.pages = 'pages is required';
+		}else if (value.pages.trim().length <=0){
+			error.pages = 'pages cannot blank';
+		}
+		if (!value.bookprice) {
+			error.bookprice = 'Price is required';
+		}else if (value.bookprice.trim().length <=0){
+			error.bookprice = 'pages cannot blank';
+		}
+		if (!value.dimensions) {
+			error.dimensions = 'dimensions is required';
+		}else if (value.dimensions.trim().length <=0){
+			error.dimensions = 'pages cannot blank';
+		}
+		if (!value.language) {
+			error.language = 'language is required';
+		}else if (value.language.trim().length <=0){
+			error.language = 'language cannot blank';
+		}
+		if (!value.illustrationsnote) {
+			error.illustrationsnote = 'illustrationsnote is required';
+		}else if (value.illustrationsnote.trim().length <=0){
+			error.illustrationsnote = 'illustrationsnote cannot blank';
+		}
+		if (groups.length === 0) {
+			error.groups = 'Catagory is required';
+		}
+		if (!value.bookdescription) {
+			error.bookdescription = 'Description is required';
+		}
+		if (!value.authorid) {
+			error.authorid = 'Author is required';
+		}
+		if (!value.amounts) {
+			error.amounts = 'Amounts is required';
+		}
 		if (selectedFile == null) {
 			error.file = 'Image is required';
 		}
@@ -212,12 +265,11 @@ const FormPage = () => {
 	};
 	return (
 		<div className="container">
-			<pre>{JSON.stringify(formData)}</pre>
 			<div className="col-12">
 				<a style={{ cursor: 'pointer' }} onClick={goBackList}>
 					Back
 				</a>
-				<pre>{JSON.stringify(formError, undefined, 2)}</pre>
+
 				<div className="container">
 					<div className="admin_card" style={{ width: '100%', margin: 'auto' }}>
 						<h3 className="text-center">Add Book</h3>
@@ -246,6 +298,7 @@ const FormPage = () => {
 											onChange={handleChange}
 											id="bookprice"
 											label="Price"
+											type="number"
 											autoFocus
 										/>
 										<p style={{ color: 'red' }}>{formError.bookprice}</p>
@@ -272,6 +325,7 @@ const FormPage = () => {
 											fullWidth
 											value={formData.amounts}
 											onChange={handleChange}
+											type="number"
 											id="amounts"
 											label="Amounts"
 											autoFocus
@@ -314,6 +368,7 @@ const FormPage = () => {
 											fullWidth
 											value={formData.pages}
 											onChange={handleChange}
+											type="number"
 											id="pages"
 											label="Pages"
 											autoFocus
@@ -357,6 +412,7 @@ const FormPage = () => {
 												))}
 											</Select>
 										</FormControl>
+											<p style={{ color: 'red' }}>{formError.groups}</p>
 									</Grid>
 
 								</div>
@@ -379,6 +435,8 @@ const FormPage = () => {
 												))}
 											</Select>
 										</FormControl>
+									
+										<p style={{ color: 'red' }}>{formError.authorid}</p>
 									</Grid>
 								</div>
 								<div className="col-lg-12">

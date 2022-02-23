@@ -165,8 +165,6 @@ const FormPage = () => {
                 <div className="container">
                     <div className="admin_card" style={{ width: "50%", margin: "auto" }}>
                         <h3 className="text-center">Update banner</h3>
-                        <pre>{JSON.stringify(formData, undefined, 2)}</pre>
-                        <pre>{JSON.stringify(ckValue, undefined, 2)}</pre>
                         <form onSubmit={handleClick}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={12}>
@@ -210,7 +208,7 @@ const FormPage = () => {
                                 </Grid>
                             </Grid>
                             <div className="mb-3">
-                                <button className="btn btn-primary" type="submit">Submit</button>
+                                <button className="btn btn-primary" type="submit">Update</button>
                             </div>
                         </form>
                     </div>

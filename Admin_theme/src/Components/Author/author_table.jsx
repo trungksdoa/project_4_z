@@ -58,7 +58,7 @@ const Author_table = (props) => {
                                     <p className="text-xs font-weight-bold mb-0">{author.numberpublishedbooks} books</p>
                                 </td>
                                 <td>
-                                    {author.modifieddate}
+                                    {new Date(author.modifieddate).toLocaleDateString()}
                                 </td>
                                 <td className="align-middle text-center">
                                     <a style={{ cursor: 'pointer' }} onClick={() => OnDelete(author.authorid)}>

@@ -143,10 +143,9 @@ const ReviewsComponent = () => {
         const newArray = data.filter(review => review.active === 1)
         var total_rating = newArray.map(item => item.ratingstart).reduce((prev, curr) => prev + curr, 0);
 
-        data.forEach(function (x) { counts[x.ratingstart] = (counts[x.ratingstart] || 0) + 1; });
+        newArray.forEach(function (x) { counts[x.ratingstart] = (counts[x.ratingstart] || 0) + 1; });
 
         numbeRating.current = counts
-
         const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
         const sum = sumValues(counts); // gives 5
 
@@ -234,6 +233,7 @@ const ReviewsComponent = () => {
                                     </div>
                                 </div>
                                 <Single_review data={user_review} OnEdit={handleEdit_Reviews} />
+                                <hr style={{borderBottom: "1px solid #333"}}></hr>
                                 {filterd.length === 0 ? (
                                     <p> No reviews found</p>
                                 ) : (

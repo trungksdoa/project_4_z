@@ -220,7 +220,6 @@ const Book_detail = () => {
     }, [book])
     // --------------End SameBook-----------------
 
-
     const [delayHandler, setDelayHandler] = useState(null)
 
     const handleMouseEnter = event => {
@@ -340,8 +339,8 @@ const Book_detail = () => {
                             <div className="tg-innerbannercontent">
                                 <h1>All Products</h1>
                                 <ol className="tg-breadcrumb">
-                                    <li><a href="#!">home</a></li>
-                                    <li><a href="#!">Products</a></li>
+                                    <li><a href="/">home</a></li>
+                                    <li><a >Detail</a></li>
                                 </ol>
                             </div>
                         </div>
@@ -417,17 +416,20 @@ const Book_detail = () => {
                                                             onMouseLeave={handleMouseLeave}
                                                             onMouseEnter={handleMouseEnter} >{book.authorid.authorname}</a></span>
                                                         <span className="tg-addreviews"></span>
+                                                        <div class="tg-description">
+                                                            <p>{book.bookdescription}</p>
+                                                           
+                                                        </div>
                                                         <div className="tg-sectionhead">
                                                             <h2>Book Details</h2>
                                                         </div>
                                                         <ul className="tg-productinfo" style={{ boxShadow: 'rgb(216 207 207) 0px 4px 8px 0px' }}>
-                                                            <li><span>Format:</span><span>{book.pdetailid.format}</span></li>
                                                             <li><span>Pages:</span><span>{book.pdetailid.pages}</span></li>
                                                             <li><span>Dimensions:</span><span>{book.pdetailid.dimensions}</span></li>
                                                             <li><span>Publication Date:</span><span>{book.bookreleasedate}</span></li>
                                                             <li><span>Publisher:</span><span>{book.authorid.authorname}</span></li>
                                                             <li><span>Language:</span><span>{book.pdetailid.language}</span></li>
-                                                            <li><span>Illustrations note:</span><span>{book.pdetailid.illustrationsnote}</span></li>
+                                                            <li><span>Illustrations note:</span><span dangerouslySetInnerHTML={{ __html: book.pdetailid.illustrationsnote }}/></li>
                                                         </ul>
                                                         <div className="tg-alsoavailable">
                                                             <figure>

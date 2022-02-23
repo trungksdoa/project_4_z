@@ -10,10 +10,31 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Pagination from '../Pagination/pagination';
 import { toast } from 'react-toastify';
 
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 const Category = () => {
-	const [ category_list, setCategory_list ] = useState([]);
-	const [ SearchByName, setSearchByName ] = useState('');
-	const [ filtered, setFiltered ] = useState([]);
+
+	const [confirmDelete, setCobfirmDelete] = useState(false);
+	const [id, setId] = useState(0);
+
+	const handleClickOpen = (ids) => {
+		setCobfirmDelete(true);
+		setId(ids)
+	};
+
+	const handleClose = () => {
+		setCobfirmDelete(false);
+	};
+
+
+	const [category_list, setCategory_list] = useState([]);
+	const [SearchByName, setSearchByName] = useState('');
+	const [filtered, setFiltered] = useState([]);
 
 	const navigate = useNavigate();
 	useEffect(() => {
@@ -41,22 +62,20 @@ const Category = () => {
 				)
 			);
 		},
-		[ SearchByName, category_list ]
+		[SearchByName, category_list]
 	);
 
-	const handleDelete = async (catagoryid) => {
-		let newArr = [ ...category_list ]; // copying the old datas array
+	const handleDelete = async () => {
+		let newArr = [...category_list]; // copying the old datas array
 
-		const index = newArr.findIndex((value) => value.catagoryid === catagoryid);
-		await CategoryAPI.Delete(catagoryid).then((res) => {
-		    newArr.splice(index, 1);
-		    setCategory_list(newArr)
-		    toast(res.msg);
+		await CategoryAPI.Delete(id).then((res) => {
+			toast(res.msg);
+			handleClose();
 		});
 	};
 
 	function handleView(index) {
-		const newArray = [ ...category_list ];
+		const newArray = [...category_list];
 		const object = newArray.find((obj) => obj.catagoryid === index);
 		navigate('/admin/category/edit/' + object.catagoryid);
 	}
@@ -69,7 +88,7 @@ const Category = () => {
 	// // ---------------------------------
 	// /////////////////////////////////////
 	// // We start with an empty list of items.
-	const [ currentPage, setCurrentPage ] = useState(1);
+	const [currentPage, setCurrentPage] = useState(1);
 
 	const itemsPerPage = 5;
 
@@ -84,6 +103,27 @@ const Category = () => {
 
 	return (
 		<div className="container-fluid py-4">
+			<Dialog
+				open={confirmDelete}
+				onClose={handleClose}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">
+					{"Delete Confirm?"}
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						Are you sure you want to delete?
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleClose}>Disagree</Button>
+					<Button onClick={handleDelete} autoFocus>
+						Agree
+					</Button>
+				</DialogActions>
+			</Dialog>
 			<div className="row">
 				<div className="col-12">
 					<a style={{ cursor: 'pointer' }} onClick={GotoCreatePage}>
@@ -119,7 +159,7 @@ const Category = () => {
 								<Category_table
 									categorys={currentItem}
 									onViewDetail={handleView}
-									onDelete={handleDelete}
+									onDelete={handleClickOpen}
 								/>
 								<Pagination
 									PerPage={itemsPerPage}

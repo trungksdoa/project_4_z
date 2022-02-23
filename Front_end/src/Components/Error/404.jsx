@@ -10,7 +10,7 @@ const notfound = () => {
                             <div className="tg-innerbannercontent">
                                 <h1>404 Error</h1>
                                 <ol className="tg-breadcrumb">
-                                    <li><a href="javascript:void(0);">home</a></li>
+                                    <li><a href="/">home</a></li>
                                     <li className="tg-active">404 Error</li>
                                 </ol>
                             </div>
@@ -37,7 +37,7 @@ const notfound = () => {
                                         <h2>Ooops! Could Not Find It</h2>
                                         <span>404</span>
                                     </div>
-                                    <div className="tg-gobackhome" style={{float:"none",textAlign:"center",fontSize:18,fontFamily:"fantasy"}}>
+                                    <div className="tg-gobackhome" style={{ float: "none", textAlign: "center", fontSize: 18, fontFamily: "fantasy" }}>
                                         <a href='/' >Back to home</a>
                                     </div>
                                 </div>

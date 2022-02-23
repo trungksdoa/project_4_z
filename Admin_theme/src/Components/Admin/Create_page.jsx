@@ -73,8 +73,8 @@ const Create_form = () => {
             error.adminpassword = "Password is required";
         } else if (value.adminpassword.trim().length <= 0) {
             error.adminpassword = "Password can not be blank";
-        } else if (value.adminpassword.trim().length <= 10) {
-            error.adminpassword = "Password length needs to be at least 10 characters";
+        } else if (value.adminpassword.trim().length <= 6) {
+            error.adminpassword = "Password length needs to be at least 6 characters";
         }
         if (!value.roles) {
             error.roles = "Roles is required";

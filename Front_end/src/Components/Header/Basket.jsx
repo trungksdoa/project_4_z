@@ -55,7 +55,7 @@ export default function Basket(props) {
 							</figure>
 							<div className="tg-minicarproductdata">
 								<h5>
-									<a href="#!">{item.name}</a>
+									<a href={"/book/"+item.id}>{item.name}</a>
 								</h5>
 								<div>
 									${item.price.toFixed(2)}

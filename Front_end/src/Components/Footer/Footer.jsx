@@ -121,30 +121,13 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-            <div className="tg-newsletter">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <h4>Signup Newsletter!</h4>
-                            <h5>Consectetur adipisicing elit sed do eiusmod tempor incididunt.</h5>
-                        </div>
-                        <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <form className="tg-formtheme tg-formnewsletter">
-                                <fieldset>
-                                    <input type="email" name="email" className="form-control" placeholder="Enter Your Email ID" />
-                                    <button type="button"><i className="icon-envelope" /></button>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <div className="tg-footerbar">
                 <a id="tg-btnbacktotop" className="tg-btnbacktotop" href="#!"><i className="icon-chevron-up" /></a>
                 <div className="container">
                     <div className="row">
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <span className="tg-paymenttype"><img src="images/paymenticon.png" alt="image description" /></span>
+                            <span className="tg-paymenttype"></span>
                             <span className="tg-copyright">2017 All Rights Reserved By © Book Library</span>
                         </div>
                     </div>

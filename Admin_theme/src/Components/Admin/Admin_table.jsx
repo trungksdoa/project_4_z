@@ -26,6 +26,7 @@ const Admin_table = ({ data, onDelete }) => {
     }
     const handleEdit = (id) => {
         navigate("/owner/admin/" + id)
+        // console.log(id)
     }
     const handleDelete = (id) => {
         if (onDelete) {
@@ -54,6 +55,7 @@ const Admin_table = ({ data, onDelete }) => {
             <tbody>
                 {Listdata.length != 0 ? Listdata.map((item, index) => {
                     const { adminid, adminemail, adminpassword, admincreateddate, adminmodifieddate, roles } = item
+                    
                     return (
                         <tr key={index}>
                             <td>
@@ -85,9 +87,12 @@ const Admin_table = ({ data, onDelete }) => {
                                 </a>
                             </td>
                             <td className="align-middle">
-                                <a style={{ cursor: 'pointer' }} onClick={() => handleDelete(adminid)} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                                    <i className="fas fa-trash-alt fa-2x" />
-                                </a>
+                                {roles !== "owner" && (
+                                    <a style={{ cursor: 'pointer' }} onClick={() => handleDelete(adminid)} className="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                        <i className="fas fa-trash-alt fa-2x" />
+                                    </a>
+                                )}
+
                             </td>
                         </tr>
                     )

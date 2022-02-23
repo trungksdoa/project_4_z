@@ -12,6 +12,12 @@ import { toast } from 'react-toastify'
 import Pagination from '../Pagination/pagination';
 import VoucherAPI from '../../api/VoucherAPI';
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 export const currency = {
     formatToCurrency(amount) {
         return (amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
@@ -20,6 +26,18 @@ export const currency = {
 
 const Vouchers = () => {
 
+
+    const [confirmDelete, setCobfirmDelete] = useState(false);
+    const [id, setId] = useState(0);
+
+    const handleClickOpen = (ids) => {
+        setCobfirmDelete(true);
+        setId(ids)
+    };
+
+    const handleClose = () => {
+        setCobfirmDelete(false);
+    };
     //Start list
 
     const [Voucher_List, setVoucher_List] = useState([
@@ -107,6 +125,7 @@ const Vouchers = () => {
     // ----------------------
     const handleResetForm = () => {
         setFormData(initialValues)
+        setIsEdit(false);
         setFormErrors({})
     };
     // ----------------------
@@ -141,7 +160,7 @@ const Vouchers = () => {
                 }
             }
         } else {
-            setFormData({ ...formData, [name]: value });
+            setFormData({ ...formData, [name]: value.trim() });
         }
     }
     // ----------------------
@@ -186,7 +205,8 @@ const Vouchers = () => {
                         draggable: true,
                         progress: undefined,
                     });
-                    setIsSubmit(false);
+                    setFormData(initialValues)
+                    document.getElementById("voucherid").focus();
                 }).catch(error => {
                     toast.error(error.msg, {
                         position: "top-right",
@@ -237,34 +257,30 @@ const Vouchers = () => {
     // ----------------------
     //HandleDelete
     // ----------------------
-    const handleDelete = async (voucherId) => {
+    const handleDelete = async () => {
         // window.confirm returns a boolean, true or false, based on whether the user pressed 'Ok' (which will result in true) or 'Cancel' (which will result in false)
-        if (window.confirm("This is a dangerous action do you want to continue?")) {
-            await VoucherAPI.Deleted(voucherId).then(res => {
-                toast.success(res.msg, {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }).catch(e => {
-                toast.error(e.msg, {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            })
-
-        } else {
-            //
-        }
+        await VoucherAPI.Deleted(id).then(res => {
+            toast.success(res.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            handleClose();
+        }).catch(e => {
+            toast.error(e.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        })
     };
     // ----------------------
     //FetchData
@@ -315,6 +331,27 @@ const Vouchers = () => {
     // ----------------------
     return (
         <div className="col-12">
+            <Dialog
+                open={confirmDelete}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Delete Confirm?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleDelete} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <div className="card my-4">
                 <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
@@ -343,179 +380,179 @@ const Vouchers = () => {
                                 </div>
                             </div>
                         </div>
-                        <VoucherTable vouchers={currentItem} onDelete={handleDelete} onEdit={viewEdis} />
+                        <VoucherTable vouchers={currentItem} onDelete={handleClickOpen} onEdit={viewEdis} />
                         <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} />
+                    </div>
 
-                        <div className="container">
-                            <div className="col-12">
-                                <div className="container">
-                                    <div className="admin_card" style={{ maxWidth: 600, width: "auto", margin: "auto" }}>
-                                        <h3 className="text-center">{!isEdit ? "Create" : "Edit"} Voucher</h3>
-                                        <form onSubmit={handlePrevent} id="Voucher-form">
-                                            <Grid container spacing={2}>
-                                                {!isEdit && (
-                                                    <>
-                                                        <Grid item xs={12} sm={12} lg={12}>
-                                                            <TextField
-                                                                name="voucherid"
-                                                                fullWidth
-                                                                value={formData.voucherid}
-                                                                onChange={handleChange}
-                                                                id="voucherid"
-                                                                label="Voucher Id"
-                                                                autoFocus
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.voucherid}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12} lg={12}>
-                                                            <TextField
-                                                                name="vouchertitle"
-                                                                fullWidth
-                                                                value={formData.vouchertitle}
-                                                                onChange={handleChange}
-                                                                id="vouchertitle"
-                                                                label="Voucher title"
-                                                                autoFocus
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.vouchertitle}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12}>
-                                                            <TextField
-                                                                name="voucherdescription"
-                                                                fullWidth
-                                                                value={formData.voucherdescription}
-                                                                onChange={handleChange}
-                                                                id="voucherdescription"
-                                                                label="Banner description"
-                                                                autoFocus
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.voucherdescription}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12}>
-                                                            <TextField
-                                                                name="vouchervalue"
-                                                                fullWidth
-                                                                value={formData.vouchervalue}
-                                                                onChange={handleChange}
-                                                                id="vouchervalue"
-                                                                label="Value %"
-                                                                autoFocus
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.vouchervalue}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12}>
-                                                            <TextField
-                                                                name="voucherused"
-                                                                fullWidth
-                                                                value={formData.voucherused}
-                                                                onChange={handleChange}
-                                                                id="voucherused"
-                                                                label="Total used Max(100)"
-                                                                autoFocus
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.voucherused}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12}>
-                                                            <label>Expired date</label>
-                                                            <DatePicker
-                                                                dateFormat="yyyy/MM/dd HH:mm:ss"
-                                                                selected={new Date(formData.voucherto)}
-                                                                className={"form-control"}
-                                                                style={{ border: "1px solid" }}
-                                                                onChange={(date) => setFormData({ ...formData, voucherto: date })}
-                                                                withPortal
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.voucherto}</p>
-                                                        </Grid>
-                                                    </>
-                                                )}
+                    <div className="container">
+                        <div className="col-12">
+                            <div className="container">
+                                <div className="admin_card" style={{ maxWidth: 600, width: "auto", margin: "auto" }}>
+                                    <h3 className="text-center">{!isEdit ? "Create" : "Edit"} Voucher</h3>
+                                    <form onSubmit={handlePrevent} id="Voucher-form">
+                                        <Grid container spacing={2}>
+                                            {!isEdit && (
+                                                <>
+                                                    <Grid item xs={12} sm={12} lg={12}>
+                                                        <TextField
+                                                            name="voucherid"
+                                                            fullWidth
+                                                            value={formData.voucherid}
+                                                            onChange={handleChange}
+                                                            id="voucherid"
+                                                            label="Voucher Id"
+                                                            autoFocus
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.voucherid}</p>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm={12} lg={12}>
+                                                        <TextField
+                                                            name="vouchertitle"
+                                                            fullWidth
+                                                            value={formData.vouchertitle}
+                                                            onChange={handleChange}
+                                                            id="vouchertitle"
+                                                            label="Voucher title"
+                                                            autoFocus
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.vouchertitle}</p>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm={12}>
+                                                        <TextField
+                                                            name="voucherdescription"
+                                                            fullWidth
+                                                            value={formData.voucherdescription}
+                                                            onChange={handleChange}
+                                                            id="voucherdescription"
+                                                            label="Voucher description"
+                                                            autoFocus
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.voucherdescription}</p>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm={12}>
+                                                        <TextField
+                                                            name="vouchervalue"
+                                                            fullWidth
+                                                            value={formData.vouchervalue}
+                                                            onChange={handleChange}
+                                                            id="vouchervalue"
+                                                            label="Value %"
+                                                            autoFocus
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.vouchervalue}</p>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm={12}>
+                                                        <TextField
+                                                            name="voucherused"
+                                                            fullWidth
+                                                            value={formData.voucherused}
+                                                            onChange={handleChange}
+                                                            id="voucherused"
+                                                            label="Total used Max(100)"
+                                                            autoFocus
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.voucherused}</p>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm={12}>
+                                                        <label>Expired date</label>
+                                                        <DatePicker
+                                                            dateFormat="yyyy/MM/dd HH:mm:ss"
+                                                            selected={new Date(formData.voucherto)}
+                                                            className={"form-control"}
+                                                            style={{ border: "1px solid" }}
+                                                            onChange={(date) => setFormData({ ...formData, voucherto: date })}
+                                                            withPortal
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.voucherto}</p>
+                                                    </Grid>
+                                                </>
+                                            )}
 
-                                                {isEdit && (
-                                                    <>
-                                                        <Grid item xs={12} sm={12} lg={12}>
-                                                            <TextField
-                                                                name="voucherid"
-                                                                fullWidth
-                                                                disabled={true}
-                                                                value={formData.voucherid}
-                                                                onChange={handleChange}
-                                                                id="voucherid"
-                                                                label="Voucher Id"
-                                                                autoFocus
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.voucherid}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12} lg={12}>
-                                                            <TextField
-                                                                name="vouchertitle"
-                                                                fullWidth
-                                                                value={formData.vouchertitle}
-                                                                onChange={handleChange}
-                                                                id="vouchertitle"
-                                                                label="Voucher title"
-                                                                autoFocus
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.vouchertitle}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12}>
-                                                            <TextField
-                                                                name="voucherdescription"
-                                                                fullWidth
-                                                                value={formData.voucherdescription}
-                                                                onChange={handleChange}
-                                                                id="voucherdescription"
-                                                                label="Banner description"
-                                                                autoFocus
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.voucherdescription}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12}>
-                                                            <TextField
-                                                                name="vouchervalue"
-                                                                fullWidth
-                                                                value={formData.vouchervalue}
-                                                                onChange={handleChange}
-                                                                id="vouchervalue"
-                                                                label="Value %"
-                                                                autoFocus
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.vouchervalue}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12}>
-                                                            <TextField
-                                                                name="voucherused"
-                                                                fullWidth
-                                                                value={formData.voucherused}
-                                                                onChange={handleChange}
-                                                                id="voucherused"
-                                                                label="Total used Max(100)"
-                                                                autoFocus
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.voucherused}</p>
-                                                        </Grid>
-                                                        <Grid item xs={12} sm={12}>
-                                                            <label>Expired date</label>
-                                                            <DatePicker
-                                                                dateFormat="yyyy/MM/dd HH:mm:ss"
-                                                                selected={new Date(formData.voucherto)}
-                                                                className={"form-control"}
-                                                                style={{ border: "1px solid" }}
-                                                                onChange={(date) => setFormData({ ...formData, voucherto: date })}
-                                                                withPortal
-                                                            />
-                                                            <p style={{ color: "red" }}>{formError.voucherto}</p>
-                                                        </Grid>
-                                                    </>
-                                                )}
+                                            {isEdit && (
+                                                <>
+                                                    <Grid item xs={12} sm={12} lg={12}>
+                                                        <TextField
+                                                            name="voucherid"
+                                                            fullWidth
+                                                            disabled={true}
+                                                            value={formData.voucherid}
+                                                            onChange={handleChange}
+                                                            id="voucherid"
+                                                            label="Voucher Id"
+                                                            autoFocus
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.voucherid}</p>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm={12} lg={12}>
+                                                        <TextField
+                                                            name="vouchertitle"
+                                                            fullWidth
+                                                            value={formData.vouchertitle}
+                                                            onChange={handleChange}
+                                                            id="vouchertitle"
+                                                            label="Voucher title"
+                                                            autoFocus
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.vouchertitle}</p>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm={12}>
+                                                        <TextField
+                                                            name="voucherdescription"
+                                                            fullWidth
+                                                            value={formData.voucherdescription}
+                                                            onChange={handleChange}
+                                                            id="voucherdescription"
+                                                            label="Banner description"
+                                                            autoFocus
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.voucherdescription}</p>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm={12}>
+                                                        <TextField
+                                                            name="vouchervalue"
+                                                            fullWidth
+                                                            value={formData.vouchervalue}
+                                                            onChange={handleChange}
+                                                            id="vouchervalue"
+                                                            label="Value %"
+                                                            autoFocus
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.vouchervalue}</p>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm={12}>
+                                                        <TextField
+                                                            name="voucherused"
+                                                            fullWidth
+                                                            value={formData.voucherused}
+                                                            onChange={handleChange}
+                                                            id="voucherused"
+                                                            label="Total used Max(100)"
+                                                            autoFocus
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.voucherused}</p>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm={12}>
+                                                        <label>Expired date</label>
+                                                        <DatePicker
+                                                            dateFormat="yyyy/MM/dd HH:mm:ss"
+                                                            selected={new Date(formData.voucherto)}
+                                                            className={"form-control"}
+                                                            style={{ border: "1px solid" }}
+                                                            onChange={(date) => setFormData({ ...formData, voucherto: date })}
+                                                            withPortal
+                                                        />
+                                                        <p style={{ color: "red" }}>{formError.voucherto}</p>
+                                                    </Grid>
+                                                </>
+                                            )}
 
-                                            </Grid>
-                                            <div className="mb-3">
-                                                <button className="btn btn-primary" type="submit">Submit</button>
-                                                &nbsp;&nbsp;
-                                                <button className="btn btn-waring" onClick={handleResetForm} type="button">Reset</button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                        </Grid>
+                                        <div className="mb-3">
+                                            <button className="btn btn-primary" type="submit">Submit</button>
+                                            &nbsp;&nbsp;
+                                            <button className="btn btn-waring" onClick={handleResetForm} type="button">Reset</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

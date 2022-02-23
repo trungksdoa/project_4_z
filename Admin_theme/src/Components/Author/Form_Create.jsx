@@ -65,12 +65,12 @@ const Form_Create = (props) => {
                             <label htmlFor="avatar" style={{ color: "black", fontSize: 18, fontWeight: 400 }}>Select avartar author (PNG,JPEG only)</label>
                             <input type='file' ref={resetFile} id="avatar" style={{ display: "none" }} onChange={OnChange} name="authorImage" />
                         </div>
-                        <div style={{width:"30rem",height: "auto",margin:"auto"}}>
+                        <div style={{width:"12rem",height: "auto",margin:"auto"}}>
                             <img style={{
                                 width: "100%"
                             }} src={Image} />
                         </div>
-                      
+                        <p style={{ color: "red" }}>{Error.image}</p>
                     </Grid>
                 </Grid>
                 {/* <Button

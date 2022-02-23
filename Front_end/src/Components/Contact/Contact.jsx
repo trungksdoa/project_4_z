@@ -22,7 +22,7 @@ const Contacts = () => {
               <div className="tg-innerbannercontent">
                 <h1>Contact Us</h1>
                 <ol className="tg-breadcrumb">
-                  <li><a href="javascript:void(0);">home</a></li>
+                  <li><a href="/">home</a></li>
                   <li className="tg-active">Contact Us</li>
                 </ol>
               </div>
@@ -50,7 +50,9 @@ const Contacts = () => {
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                  <div id="tg-locationmap" className="tg-locationmap tg-map" />
+                  <div>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1903.8777577523906!2d106.66522760271698!3d10.785928515592083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752ed2182afb2b%3A0xec96c3592c1c2aa5!2zODc1IEPDoWNoIE3huqFuZyBUaMOhbmcgVMOhbQ!5e0!3m2!1sen!2s!4v1645632429505!5m2!1sen!2s" width={600} height={450} style={{ border: 0 }} allowFullScreen loading="lazy" />
+                  </div>
                 </div>
                 <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                   <div className="tg-contactdetail">

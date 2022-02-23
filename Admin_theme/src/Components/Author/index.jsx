@@ -10,7 +10,29 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Pagination from '../Pagination/pagination';
 import { toast } from 'react-toastify';
 
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 const Author = () => {
+
+    const [confirmDelete, setCobfirmDelete] = useState(false);
+    const [id, setId] = useState(0);
+
+    const handleClickOpen = (ids) => {
+        setCobfirmDelete(true);
+        setId(ids)
+    };
+
+    const handleClose = () => {
+        setCobfirmDelete(false);
+    };
+
+
+
     const [author_list, setAuthor_list] = useState([]);
     const [SearchByName, setSearchByName] = useState("");
     const [filtered, setFiltered] = useState([]);
@@ -37,14 +59,11 @@ const Author = () => {
             ))
     }, [SearchByName, author_list])
 
-    const handleDelete = async (authorsId) => {
-        if (window.confirm("Are you sure you want to delete")) {
-            await AuthorAPI.Delete(authorsId).then((res) => {
-                toast(res.msg);
-            }).then(err => console.log(err));
-        }else{
-
-        }
+    const handleDelete = async () => {
+        await AuthorAPI.Delete(id).then((res) => {
+            toast(res.msg);
+            handleClose()
+        }).then(err => console.log(err));
     };
 
     function handleView(index) {
@@ -76,6 +95,27 @@ const Author = () => {
 
     return (
         <div className="container-fluid py-4">
+            <Dialog
+                open={confirmDelete}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Delete Confirm?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleDelete} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <div className="row">
                 <div className="col-12">
                     <a style={{ cursor: 'pointer' }} onClick={GotoCreatePage}><AddCircleIcon fontSize="large" /></a>
@@ -108,7 +148,7 @@ const Author = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <Author_table authors={currentItem} onViewDetail={handleView} onDelete={handleDelete} />
+                                <Author_table authors={currentItem} onViewDetail={handleView} onDelete={handleClickOpen} />
                                 <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} />
                             </div>
                         </div>

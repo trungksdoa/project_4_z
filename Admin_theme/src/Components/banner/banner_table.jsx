@@ -62,7 +62,7 @@ const Banner_table = (props) => {
                                     </div>
                                 </td>
                                 <td>
-                                    <p className="text-xs font-weight-bold mb-0">{author.banner_content} books</p>
+                                    <p className="text-xs font-weight-bold mb-0">{author.banner_content}</p>
                                 </td>
                                 <td>
                                     {author.banner_createddate}

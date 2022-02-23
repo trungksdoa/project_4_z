@@ -10,7 +10,27 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Pagination from '../Pagination/pagination';
 import { toast } from 'react-toastify';
 
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 const Book = () => {
+    const [confirmDelete, setCobfirmDelete] = useState(false);
+    const [id, setId] = useState(0);
+
+    const handleClickOpen = (ids) => {
+        setCobfirmDelete(true);
+        setId(ids)
+    };
+
+
+    const handleClose = () => {
+        setCobfirmDelete(false);
+    };
+
     const [book_list, setBook_list] = useState([]);
     const [SearchByName, setSearchByName] = useState("");
     const [filtered, setFiltered] = useState([]);
@@ -38,15 +58,15 @@ const Book = () => {
             ))
     }, [SearchByName, book_list])
 
-    const handleDelete = async (index) => {
-        let newArr = [...book_list]; // copying the old datas array
-        const id = newArr[index].bookid;
-        await BookAPI.Delete(id).then((res) => {
-            newArr.splice(index, 1);
-            setBook_list(newArr)
-            toast(res.msg);
-        });
-    };
+    // const handleDelete = async () => {
+    //     let newArr = [...book_list]; // copying the old datas array
+    //     const id = newArr[index].bookid;
+    //     await BookAPI.Delete(id).then((res) => {
+    //         newArr.splice(index, 1);
+    //         setBook_list(newArr)
+    //         toast(res.msg);
+    //     });
+    // };
 
     function handleView(index) {
         const newArray = [...book_list];

@@ -25,14 +25,17 @@ const validate = (values) => {
     const errors = {};
     if (!values.reviewcontent) {
         errors.reviewcontent = "Content is required!";
-    }
-    else if (values.reviewcontent.trim().length <= 0) {
+    } else if (values.reviewcontent.trim().length <= 0) {
         errors.reviewcontent = "Content not be blank";
+    } else if (values.reviewcontent.trim().length >= 150) {
+        errors.reviewcontent = "Content length must be less than 150 characters";
     }
     if (!values.reviewtitle) {
         errors.reviewtitle = "Title is required!";
     } else if (values.reviewtitle.trim().length <= 0) {
         errors.reviewtitle = "Title not be blank";
+    } else if (values.reviewtitle.trim().length >= 30) {
+        errors.reviewtitle = "Title length must be less than 30 characters";
     }
     return errors;
 };
@@ -107,7 +110,6 @@ const Reviews = ({ customerId, bookId }) => {
                 </div>
                 <div className="form-group">
                     <TextField
-                        required
                         id="outlined-required"
                         label="Title"
                         name="reviewtitle"
@@ -116,6 +118,7 @@ const Reviews = ({ customerId, bookId }) => {
                         value={formValue.title}
                         onChange={handleChange}
                     />
+                    <p style={{ color: "red" }}>{formErrors.reviewtitle}</p>
                 </div>
                 <div className="form-group">
                     <TextareaAutosize
@@ -124,9 +127,10 @@ const Reviews = ({ customerId, bookId }) => {
                         name="reviewcontent"
                         value={formValue.content}
                         onChange={handleChange}
-                        style={{ width: "100%",height:100 }}
+                        style={{ width: "100%", height: 100 }}
                     />
                     <br></br>
+                    <p style={{ color: "red" }}>{formErrors.reviewcontent}</p>
                 </div>
 
                 <div className="form-group">
@@ -136,7 +140,7 @@ const Reviews = ({ customerId, bookId }) => {
         </div>
     );
 }
-const Reviews_edit = ({ customerId, bookId, data, onBack,changeView }) => {
+const Reviews_edit = ({ customerId, bookId, data, onBack, changeView }) => {
     const [formValue, setFormValue] = useState(data);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -225,6 +229,7 @@ const Reviews_edit = ({ customerId, bookId, data, onBack,changeView }) => {
                         value={formValue.reviewtitle}
                         onChange={handleChange}
                     />
+                    <p style={{ color: "red" }}>{formErrors.reviewtitle}</p>
                 </div>
                 <div className="form-group">
                     <TextareaAutosize
@@ -236,6 +241,7 @@ const Reviews_edit = ({ customerId, bookId, data, onBack,changeView }) => {
                         style={{ width: "100%" }}
                     />
                     <br></br>
+                    <p style={{ color: "red" }}>{formErrors.reviewcontent}</p>
                 </div>
 
                 <div className="form-group">
@@ -250,7 +256,7 @@ const Reviews_edit = ({ customerId, bookId, data, onBack,changeView }) => {
 
 
 const List_review = ({ data, customerId }) => {
-   
+
     return (
         <ul className="media-list">
             {data.map((review, index) => {
@@ -307,10 +313,10 @@ const Single_review = ({ data, OnEdit }) => {
                 </li>
             )}
             {active === 2 && (
-                <h3>Your review is pending</h3>
+                <h6>Your review is pending</h6>
             )}
             {active === 0 && (
-                <h3>Bạn chưa đánh giá</h3>
+                <h6>You have not rated</h6>
             )}
         </>
     )
@@ -343,7 +349,7 @@ Reviews_edit.propTypes = {
     bookId: PropTypes.string,
     onBack: PropTypes.func,
     data: PropTypes.object,
-    changeView:PropTypes.func
+    changeView: PropTypes.func
 };
 
 Reviews_edit.defaultProps = {
@@ -351,7 +357,7 @@ Reviews_edit.defaultProps = {
     onBack: null,
     data: {},
     customerId: "",
-    changeView:null
+    changeView: null
 };
 
 List_review.propTypes = {

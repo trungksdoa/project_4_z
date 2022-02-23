@@ -5,8 +5,30 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import BookAPI from '../../api/BookAPI';
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
+
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 const Book_table = (props) => {
+
+    const [confirmDelete, setCobfirmDelete] = useState(false);
+    const [id, setId] = useState(0);
+
+    const handleClickOpen = (ids) => {
+        setCobfirmDelete(true);
+        setId(ids)
+    };
+
+    const handleClose = () => {
+        setCobfirmDelete(false);
+    };
+
+
     const { books, onViewDetail, onDelete, onEdit } = props;
     // console.log(books)
     function OnViewDetail(index) {
@@ -14,8 +36,9 @@ const Book_table = (props) => {
             onViewDetail(index)
         }
     }
-    async  function OnDelete(boodId) {
-        await BookAPI.changeStatus(boodId, 2);
+    async function OnDelete() {
+        await BookAPI.changeStatus(id, 2);
+        handleClose();
         // console.log(boodId)
     }
     function OnEdit(index) {
@@ -24,13 +47,34 @@ const Book_table = (props) => {
         }
     }
 
-    const changeStatus = async (boodId,status) => {
+    const changeStatus = async (boodId, status) => {
         await BookAPI.changeStatus(boodId, status);
     }
 
     return (
-       <div className="container-fluid py-4">
-<table id="dtable" className="table align-items-center mb-0">
+        <div className="container-fluid py-4">
+            <Dialog
+                open={confirmDelete}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Delete Confirm?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={OnDelete} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <table id="dtable" className="table align-items-center mb-0">
                 <thead>
                     <tr>
                         {/* <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th> */}
@@ -93,15 +137,13 @@ const Book_table = (props) => {
                                     </span>
                                 </td>
                                 <td className="align-middle text-center">
-                                    <a style={{ cursor: 'pointer' }} onClick={() => OnDelete(book.booksid)}>
+                                    <a style={{ cursor: 'pointer' }} onClick={() => handleClickOpen(book.booksid)}>
                                         <span style={{ fontSize: "0.6em", color: "red" }}>
                                             <i className="fas fa-trash-alt fa-2x" />
                                         </span>
                                     </a>
                                 </td>
-                                <td className="align-middle" style={{ textAlign: 'left' }}>
-                                    <a style={{ cursor: 'pointer' }} onClick={() => OnViewDetail(book.booksid)}><i className="fa fa-eye" /></a>
-                                </td>
+
                             </tr>
                         )
                     }) : (
@@ -111,9 +153,9 @@ const Book_table = (props) => {
                     )}
                 </tbody>
             </table>
-       </div>
-            
-        
+        </div>
+
+
     )
 }
 Book_table.propTypes = {

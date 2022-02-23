@@ -92,8 +92,8 @@ const Edit_form = () => {
             error.adminpassword = "Password is required";
         } else if (value.adminpassword.trim().length <= 0) {
             error.adminpassword = "Password can not be blank";
-        } else if (value.adminpassword.trim().length <= 10) {
-            error.adminpassword = "Password length needs to be at least 10 characters";
+        } else if (value.adminpassword.trim().length <= 6) {
+            error.adminpassword = "Password length needs to be at least 6 characters";
         }
 
         if (!value.roles) {
@@ -147,25 +147,41 @@ const Edit_form = () => {
                                     <p style={{ color: "red" }}>{formError.adminpassword}</p>
                                 </Grid>
                             </Grid>
-                            <div className="mb-3">
-                                <FormControl variant="filled" style={{ marginTop: 30 }} sx={{ m: 0, minWidth: "100%" }}>
-                                    <InputLabel id="demo-simple-select-filled-label">Roles</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-filled-label"
-                                        id="demo-simple-select-filled"
-                                        value={formvalue.roles}
+                            {formvalue.roles == "owner" && (
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        name="role"
                                         fullWidth
-                                        onChange={handleChange}
-                                        name="roles"
-                                    >
-                                        {roles.map((item, index) => {
-                                            return <MenuItem key={index} value={item}>{item}</MenuItem>;
-                                        })}
-                                    </Select>
-                                </FormControl>
-                            </div>
+                                        disabled
+                                        id="role"
+                                        label="Roles"
+                                        value={formvalue.roles}
+                                        autoFocus
+                                    />
+                                </Grid>
+                            )}
+                            {formvalue.roles != "owner" && (
+                                <div className="mb-3">
+                                    {<FormControl variant="filled" style={{ marginTop: 30 }} sx={{ m: 0, minWidth: "100%" }}>
+                                        <InputLabel id="demo-simple-select-filled-label">Roles</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-filled-label"
+                                            id="demo-simple-select-filled"
+                                            value={formvalue.roles}
+                                            fullWidth
+                                            onChange={handleChange}
+                                            name="roles"
+                                        >
+                                            {roles.map((item, index) => {
+                                                return <MenuItem key={index} value={item}>{item}</MenuItem>;
+                                            })}
+                                        </Select>
+                                    </FormControl>}
+                                </div>
+                            )}
+
                             <div className="mb-3">
-                                <button className="btn btn-primary" type="submit">Submit</button>
+                                <button className="btn btn-primary" type="submit">Update</button>
                             </div>
                         </form>
                     </div>

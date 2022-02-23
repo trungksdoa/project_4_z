@@ -16,6 +16,9 @@ import Button from '@mui/material/Button';
 import CkEditor from '../Pagination/CK_Editor.jsx';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-toastify/dist/ReactToastify.css';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+
 // ----------------End Material---------------
 
 
@@ -83,13 +86,7 @@ const FormPage = () => {
                 ref.current.value = "";
             }
         } else if (name === "numberpublishedbooks") {
-            if (Only_number.test(value)) {
-                setFormValues({ ...formValues, [name]: removeLeadingZeros(value) });
-            }
-        } else if (name == "authorname") {
-            if (character_only.test(value.trim())) {
-                setFormValues({ ...formValues, [name]: value })
-            }
+            setFormValues({ ...formValues, [name]: removeLeadingZeros(value) });
         } else {
             setFormValues({ ...formValues, [name]: value });
         }
@@ -121,9 +118,11 @@ const FormPage = () => {
         else if (values.authorname.trim().length <= 0) {
             errors.authorname = "Author name not be blank";
             froms.step = 0;
-        } else if (values.authorname.trim().length <= 3) {
-            errors.authorname = "String lenght not less than 3";
+        } else if (values.authorname.trim().length < 3) {
+            errors.authorname = "String lenght not less than 3 characters";
             froms.step = 0;
+        }else if(values.authorname.trim().length > 50){
+            errors.authorname = "String lenght not more than 50 characters";
         }
         if (!values.numberpublishedbooks) {
             errors.numberpublishedbooks = "Number of pulished book is required!";
@@ -135,6 +134,10 @@ const FormPage = () => {
         } else if (values.authorinformation.trim().length <= 0) {
             errors.authorinformation = "Author information not be blank";
             froms.step = 1;
+        }
+
+        if (selectedFile === null) {
+            errors.image = "Image can't not null";
         }
 
         return { errors, froms };
@@ -213,69 +216,61 @@ const FormPage = () => {
                             </div>
                         </div>
                         <div className="card-body px-0 pb-2">
-                            <Container component="main" maxWidth="xl">
-                                <Box sx={{ width: '100%' }}>
-                                    <Stepper activeStep={activeStep}>
-                                        {steps.map((label, index) => {
-                                            const stepProps = {};
-                                            const labelProps = {};
-                                            if (isStepOptional(index)) {
-                                                labelProps.optional = (
-                                                    <Typography variant="caption">Optional</Typography>
-                                                );
-                                            }
-                                            if (isStepSkipped(index)) {
-                                                stepProps.completed = false;
-                                            }
-                                            return (
-                                                <Step key={label} {...stepProps}>
-                                                    <StepLabel {...labelProps}>{label}</StepLabel>
-                                                </Step>
-                                            );
-                                        })}
-                                    </Stepper>
-                                    <React.Fragment>
-                                        <Box component="form" onSubmit={handleSubmit}>
-                                            {activeStep === 0 ? (
-                                                <Create_Form
-                                                    OnKeyPress={handleChange}
-                                                    Error={formErrors}
-                                                    resetFile={ref}
-                                                    values={formValues}
-                                                    Image={imgData}
-                                                />
-                                            ) : <CkEditor
-                                                OnKeyPress={handleChangeCKEditor}
-                                                Error={formErrors}
-                                                values={formValues.authorinformation}
-                                            />}
-                                            {activeStep === steps.length ? (
-                                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                                                    <Box sx={{ flex: '1 1 auto' }} />
-                                                    <Button type="submit">
-                                                        Complete
-                                                    </Button>
-                                                </Box>
-                                            ) : (
-                                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                                                    <Button
-                                                        color="inherit"
-                                                        disabled={activeStep === 0}
-                                                        onClick={handleBack}
-                                                        sx={{ mr: 1 }}
-                                                    >
-                                                        Back
-                                                    </Button>
-                                                    <Box sx={{ flex: '1 1 auto' }} />
-                                                    <Button type="button" onClick={handleNext}>
-                                                        Next
-                                                    </Button>
-                                                </Box>
-                                            )}
-                                        </Box>
-                                    </React.Fragment>
-                                </Box>
-                            </Container>
+                            <div className="container">
+                                <form onSubmit={handleSubmit}>
+                                    <Grid item xs={12} sm={12}>
+                                        <TextField
+                                            name="authorname"
+                                            fullWidth
+                                            id="authorname"
+                                            value={formValues.authorname}
+                                            label="Author Name"
+                                            onChange={handleChange}
+                                            autoFocus
+                                        />
+                                        <p style={{ color: "red" }}>{formErrors.authorname}</p>
+                                    </Grid>
+                                    <Grid item xs={12} sm={12}>
+                                        <TextField
+                                            fullWidth
+                                            id="numberpublishedbooks"
+                                            value={formValues.numberpublishedbooks}
+                                            label="Number publish book"
+                                            type="number"
+                                            name="numberpublishedbooks"
+                                            onChange={handleChange}
+                                        />
+                                        <p style={{ color: "red" }}>{formErrors.numberpublishedbooks}</p>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <label>Information</label>
+                                        <CkEditor
+                                            OnKeyPress={handleChangeCKEditor}
+                                            Error={formErrors}
+                                            values={formValues.authorinformation}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <div className="mb-3">
+                                            <label htmlFor="avatar" style={{ color: "black", fontSize: 18, fontWeight: 400 }}>Select avartar author (PNG,JPEG only)</label>
+                                            <input type='file' ref={ref} id="avatar" style={{ display: "none" }} onChange={handleChange} name="authorImage" />
+                                        </div>
+                                        <div style={{ width: "12rem", height: "auto", margin: "auto" }}>
+                                            <img style={{
+                                                width: "100%"
+                                            }} src={imgData} />
+                                        </div>
+                                        <p style={{ color: "red" }}>{formErrors.image}</p>
+                                    </Grid>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2 }}
+                                    >
+                                        Submit
+                                    </Button>
+                                </form>
+                            </div>
 
                         </div>
                     </div>

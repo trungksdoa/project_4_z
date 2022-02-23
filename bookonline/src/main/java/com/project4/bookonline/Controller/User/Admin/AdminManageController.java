@@ -49,13 +49,13 @@ public class AdminManageController {
     public ResponseEntity<Message_Respones<Admins>> findOne(@PathVariable String id) {
 
         setMessage = new Message_Respones<Admins>();
-        boolean isRequestOwner = Integer.valueOf(id) == 1;
-        if (isRequestOwner) {
-            msg = "Not found";
-            setMessage.setMessage(msg);
-            setMessage.setCode(404);
-            return new ResponseEntity<Message_Respones<Admins>>(setMessage, HttpStatus.NOT_FOUND);
-        }
+//        boolean isRequestOwner = Integer.valueOf(id) == 1;
+//        if (isRequestOwner) {
+//            msg = "Not found";
+//            setMessage.setMessage(msg);
+//            setMessage.setCode(404);
+//            return new ResponseEntity<Message_Respones<Admins>>(setMessage, HttpStatus.NOT_FOUND);
+//        }
         Admins admin = adminServide.findOne(Integer.valueOf(id));
         if (admin == null) {
             msg = "Data not found";

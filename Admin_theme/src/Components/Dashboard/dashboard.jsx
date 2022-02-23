@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useLayoutEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import CustomerApi from '../../api/CustomerApi';
 import { Bar, Line } from 'react-chartjs-2';
 import rankAPI from "../../api/RankAPI";
@@ -6,9 +6,16 @@ import Bar_comp from './BarChart';
 import LineChar from './LineChar';
 import { UserData } from "./Data";
 import DashboardAPI from "../../api/DashboardAPI.js";
-
+import './dashboard.css'
 const Dashboard = () => {
 
+    function printData(params) {
+        var divToPrint = document.getElementById(params);
+        const newWin = window.open("/");
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.print();
+        newWin.close();
+    }
     //=----------------------------------
     const [countCustomer, setCounts] = useState(0);
     let body = document.getElementsByTagName("body")[0]
@@ -35,6 +42,16 @@ const Dashboard = () => {
             console.log('failed to fetch List_customer list', error);
         }
     }
+    const [objmounth, setobjMouth] = useState([]);
+    const fetchobjMouth = async () => {
+        try {
+            const response = await DashboardAPI.gettoporder();
+            console.log(response.data)
+            setobjMouth(response.data);
+        } catch (error) {
+            console.log('failed to fetch List_customer list', error);
+        }
+    }
     const [totalOrderBy, setTotalOrderBy] = useState("");
     const fetchTotalOrderByDate = async () => {
         try {
@@ -54,31 +71,31 @@ const Dashboard = () => {
             alert(error.msg)
         })
     }
-    const [monthly,setmonthly]= useState([]);
+    const [monthly, setmonthly] = useState([]);
     async function getData() {
-		await DashboardAPI.gettotalmonthly()
-			.then((res) => {
-				setmonthly(res.data);
+        await DashboardAPI.gettotalmonthly()
+            .then((res) => {
+                setmonthly(res.data);
                 // console.log(res)
-			})
-			.catch(res=>alert(res.msg));
-	}
-    
-const labels = [
-	'January',
-	'February',
-	'March',
-	'April',
-	'May',
-	'June',
-	'July',
-	'August',
-	'September',
-	'October',
-	'November',
-	'December'
-];
-  
+            })
+            .catch(res => alert(res.msg));
+    }
+
+    const labels = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ];
+
     const options = {
         responsive: true,
         plugins: {
@@ -91,22 +108,43 @@ const labels = [
             }
         }
     };
-    useLayoutEffect(() => {
+    useEffect(() => {
+        let controller = new AbortController();
         getData();
+        return () => controller?.abort();
+
     }, [])
-    useLayoutEffect(() => {
+    useEffect(() => {
+        let controller = new AbortController();
         fetchProductRank();
+        return () => controller?.abort();
+
     }, [])
-    useLayoutEffect(() => {
+    useEffect(() => {
+        let controller = new AbortController();
         fetchTotalOrderByDate();
+        return () => controller?.abort();
+
     }, [])
-    useLayoutEffect(() => {
+    useEffect(() => {
+        let controller = new AbortController();
         fetchCustomers();
+        return () => controller?.abort();
+
     }, [])
-    useLayoutEffect(() => {
+    useEffect(() => {
+        let controller = new AbortController();
         fetchMoneyMouth();
+        return () => controller?.abort();
+
     }, [])
-    useLayoutEffect(() => {
+    useEffect(() => {
+        let controller = new AbortController();
+        fetchobjMouth();
+        return () => controller?.abort();
+
+    }, [])
+    useEffect(() => {
         setUserData({
             labels: productData.map((data) => data.book_name),
             datasets: [
@@ -150,7 +188,7 @@ const labels = [
                                     <i className="material-icons opacity-10">person</i>
                                 </div>
                                 <div className="text-end pt-1">
-                                    <p className="text-sm mb-0 text-capitalize">Register customer</p>
+                                    <p className="text-sm mb-0 text-capitalize">Register customer by Day</p>
                                     <h4 className="mb-0">{countCustomer}</h4>
                                 </div>
                             </div>
@@ -163,16 +201,81 @@ const labels = [
                                     <i className="material-icons opacity-10">Order</i>
                                 </div>
                                 <div className="text-end pt-1">
-                                    <p className="text-sm mb-0 text-capitalize">Total By Date</p>
+                                    <p className="text-sm mb-0 text-capitalize">Total Order By Day</p>
                                     <h4 className="mb-0">{totalOrderBy}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="col-xl-12 col-sm-6">
-                        
-                            <Line options={options} data={productData}></Line>
-                        
+                    <div style={{ marginTop: 50 }}>
+                        <div className="card">
+                            <div className="card-header border-transparent">
+                                <h3 className="card-title">Revenue statistics by 12 months</h3>
+                                <button className="btn btn-outline-info" onClick={() => printData('total')}>Print</button>
+                            </div>
+                            <div className="card-body p-0" style={{ display: 'block' }}>
+                                <div className="table-responsive">
+                                    <table className="table m-0" id='total' style={{ border: '1px solid' }}>
+                                        <thead>
+                                            <tr>
+                                                {labels.map(label => {
+                                                    return (
+                                                        <th style={{ border: '1px solid' }} scope="col">{label}</th>
+                                                    )
+                                                })}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                {monthly.map(month => {
+                                                    return (
+                                                        <td style={{ textAlign: 'center', border: '1px solid' }} scope="row">{month}</td>
+                                                    )
+                                                })}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style={{ marginTop: 50 }}>
+                        <div className="card">
+                            <div className="card-header border-transparent">
+                                <h3 className="card-title">Best Selling Book Rank</h3>
+                                <button className="btn btn-outline-info" onClick={() => printData('tbbook')}>Print</button>
+                            </div>
+                            <div className="card-body p-0" style={{ display: 'block' }}>
+                                <div className="table-responsive">
+                                    <table className="table m-0" id='tbbook'>
+                                        <thead>
+                                            <tr>
+                                                <th style={{ textAlign: "center", border: '1px solid' }}>NO</th>
+                                                <th style={{ textAlign: "center", border: '1px solid' }}>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {objmounth.map((obj, index) => {
+                                                return (
+                                                    <tr>
+                                                        <td style={{ textAlign: "center", border: '1px solid' }}>{index + 1}</td>
+                                                        <td style={{ textAlign: "center", border: '1px solid' }}>{obj.bookname}</td>
+                                                    </tr>
+                                                )
+                                            })}
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {/* <div className="card-footer clearfix" style={{ display: 'block' }}>
+                                <a href="javascript:void(0)" className="btn btn-sm btn-info float-left">Place New Order</a>
+                                <a href="javascript:void(0)" className="btn btn-sm btn-secondary float-right">View All Orders</a>
+                            </div> */}
+                        </div>
                     </div>
                 </div>
             </div>

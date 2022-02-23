@@ -34,6 +34,7 @@ const sendEmail = (body) => {
 const Customers = () => {
     const [userID, setUserId] = useState("");
     const [open, setOpen] = useState(false);
+    const [isLoading, setLoading] = useState(false);
 
     const handleClickOpen = (userId) => {
         setUserId(userId);
@@ -85,7 +86,8 @@ const Customers = () => {
             const index = newCustomer.findIndex(item => item.userid === userID);
             const data = newCustomer[index];
             const body = {};
-            await CustomerApi.ban(userID,reason).then(res => {
+            setLoading(true)
+            await CustomerApi.ban(userID, reason).then(res => {
                 if (res.code !== 200) {
                     toast.error(res.msg, {
                         position: "top-right",
@@ -107,6 +109,7 @@ const Customers = () => {
                         draggable: true,
                         progress: undefined,
                     });
+                    setLoading(false)
                 }
             }).catch(err => {
                 toast.error(err.msg, {
@@ -235,31 +238,38 @@ const Customers = () => {
                                                         />
                                                     </FormControl>
                                                     <Dialog open={open} onClose={handleClose}>
-                                                        <DialogTitle>Ban Reason</DialogTitle>
-                                                        <DialogContent>
-                                                            <DialogContentText style={{ color: "red" }}>
-                                                                {error !== "" && (
-                                                                    error
-                                                                )}
-                                                            </DialogContentText>
-                                                            <FormControl fullWidth>
-                                                                <InputLabel id="demo-simple-select-label">Reason</InputLabel>
-                                                                <Select
-                                                                    labelId="demo-simple-select-label"
-                                                                    id="demo-simple-select"
-                                                                    value={reason}
-                                                                    label="Reason"
-                                                                    onChange={handleChange}
-                                                                >
-                                                                    <MenuItem value={"Spam"}>Spam</MenuItem>
-                                                                    <MenuItem value={"Negative behavior"}>Negative behavior</MenuItem>
-                                                                </Select>
-                                                            </FormControl>
-                                                        </DialogContent>
-                                                        <DialogActions>
-                                                            <Button onClick={handleClose}>Cancel</Button>
-                                                            <Button onClick={banAction}>BAN</Button>
-                                                        </DialogActions>
+                                                        {isLoading ? (
+                                                                <DialogTitle>On process</DialogTitle>
+                                                        ) : (
+                                                            <>
+                                                                <DialogTitle>Ban Reason</DialogTitle>
+                                                                <DialogContent>
+                                                                    <DialogContentText style={{ color: "red" }}>
+                                                                        {error !== "" && (
+                                                                            error
+                                                                        )}
+                                                                    </DialogContentText>
+                                                                    <FormControl fullWidth>
+                                                                        <InputLabel id="demo-simple-select-label">Reason</InputLabel>
+                                                                        <Select
+                                                                            labelId="demo-simple-select-label"
+                                                                            id="demo-simple-select"
+                                                                            value={reason}
+                                                                            label="Reason"
+                                                                            onChange={handleChange}
+                                                                        >
+                                                                            <MenuItem value={"Spam"}>Spam</MenuItem>
+                                                                            <MenuItem value={"Negative behavior"}>Negative behavior</MenuItem>
+                                                                        </Select>
+                                                                    </FormControl>
+                                                                </DialogContent>
+                                                                <DialogActions>
+                                                                    <Button onClick={handleClose}>Cancel</Button>
+                                                                    <Button onClick={banAction}>BAN</Button>
+                                                                </DialogActions>
+                                                            </>
+                                                        )}
+
                                                     </Dialog>
                                                 </div>
                                             </div>

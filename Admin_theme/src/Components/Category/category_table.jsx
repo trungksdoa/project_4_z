@@ -27,8 +27,6 @@ const Categorytable = (props) => {
                     <tr>
                         <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
                         <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Description
-                        </th>
                         <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Modifieddate</th>
                         <th className="text-center opacity-7" />
                         <th className="text-center opacity-7" />
@@ -48,9 +46,6 @@ const Categorytable = (props) => {
                                 </td>
                                 <td>
                                     <p className="text-xs font-weight-bold mb-0">{category.catagoryname}</p>
-                                </td>
-                                <td>
-                                    {category.catagorydescription}
                                 </td>
                                 <td>
                                     {category.catagorymodifieddate}

@@ -200,7 +200,7 @@ function RolesCustomersOutlet() {
   const auth = cookies.admin_loggin !== undefined ? cookies.admin_loggin.admin_loggin : false;
   let isAdminA;
   if (auth) {
-    const RoleA_Require_admin = ["Customers Management", "Reviews Management", "owner"];
+    const RoleA_Require_admin = ["Customers Management", "Reviews Management","Order Management", "owner"];
     isAdminA = findOne(RoleA_Require_admin, cookies.admin_loggin.roles);
   }
   if (isAdminA) {
@@ -226,6 +226,7 @@ function RolesReviewsOutlet() {
     return <PermissionError />;
   }
 }
+
 //Đặt trong   <div className="container-fluid py-4">nội dung</div> cho nó căn giữa
 ReactDOM.render(
   <React.StrictMode>

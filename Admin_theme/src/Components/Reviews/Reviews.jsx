@@ -13,7 +13,27 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import Pagination from '../Pagination/pagination';
 
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 const Reviews = () => {
+
+    const [confirmDelete, setCobfirmDelete] = useState(false);
+    const [id, setId] = useState(0);
+
+    const handleClickOpen = (ids) => {
+        setCobfirmDelete(true);
+        setId(ids)
+    };
+
+    const handleClose = () => {
+        setCobfirmDelete(false);
+    };
+
     const [Reviews_list, setReviews_list] = useState([
     ]);
     const [searchByBook, setSearchBook] = useState("");
@@ -22,7 +42,7 @@ const Reviews = () => {
     const [searchByRating, setSearchRating] = useState("");
     const [filtered, setFiltered] = useState([]);
     const navigate = useNavigate();
-    
+
     const handleChange = async (reviewId, value) => {
         let newArr = [...Reviews_list]; // copying the old datas array
         const index = newArr.findIndex(item => item.reviewid === reviewId);
@@ -31,17 +51,9 @@ const Reviews = () => {
         await ReviewAPI.ChangeStatus(reviewId, value);
     };
 
-    const handleDelete = async (reviewID) => {
-        const newReviews = [...Reviews_list];
-        const index = newReviews.findIndex(item => item.reviewid === reviewID);
-        // window.confirm returns a boolean, true or false, based on whether the user pressed 'Ok' (which will result in true) or 'Cancel' (which will result in false)
-        if (window.confirm("This is a dangerous action do you want to continue? Review:" + newReviews[index].reviewid)) {
-            await ReviewAPI.Delete(newReviews[index].reviewid);
-            newReviews.splice(index, 1);
-            setReviews_list(newReviews)
-        } else {
-            //
-        }
+    const handleDelete = async () => {
+        await ReviewAPI.Delete(id);
+        handleClose();
     };
 
     async function fetchData() {
@@ -88,10 +100,31 @@ const Reviews = () => {
         setCurrentPage(page)
     }
 
-    
+
     return (
 
         <div className="col-12">
+            <Dialog
+                open={confirmDelete}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Delete Confirm?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleDelete} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <div className="card my-4">
                 <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
@@ -174,7 +207,7 @@ const Reviews = () => {
                                 </div>
                             </div>
                         </div>
-                        <ReviewTable reviews={currentItem} onReply={(id) => gotoReply(id)} onChange={handleChange} onDelete={handleDelete} />
+                        <ReviewTable reviews={currentItem} onReply={(id) => gotoReply(id)} onChange={handleChange} onDelete={handleClickOpen} />
                         <Pagination PerPage={itemsPerPage} total={filtered.length} paginate={paginate} currenPages={currentPage} />
                     </div>
                 </div>
