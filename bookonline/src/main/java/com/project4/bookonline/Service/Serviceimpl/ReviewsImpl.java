@@ -57,12 +57,12 @@ public class ReviewsImpl implements ReviewsService {
     }
 
     @Override
-    public String Delete(int id) {
+    public boolean Delete(int id) {
         try {
             reviewService.Delete(id);
-            return "Success";
+            return true;
         }catch (Exception ex){
-            return ex.getMessage();
+            return false;
         }
     }
 

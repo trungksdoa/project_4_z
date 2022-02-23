@@ -121,6 +121,18 @@ const Book = {
     getSameBook: (array) =>{
         url ='/book/same/';
         return RequestSameBook(url,array);
+    },
+    gettoporder: () =>{
+        url ='/book/findtoporder';
+        return RequestAll(url);
+    },
+    gettopreleasedate: () =>{
+        url ='/book/topreleasedate';
+        return RequestAll(url);
+    },
+    gettopratting: () =>{
+        url ='/book/topratting';
+        return RequestAll(url);
     }
 }
 export default Book

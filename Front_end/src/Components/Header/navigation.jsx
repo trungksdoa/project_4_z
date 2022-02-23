@@ -30,7 +30,11 @@ const NavigationBar = () => {
                                 </button>
                             </div>
                             <div id="tg-navigation" className="collapse navbar-collapse tg-navigation">
-                                <ul className="web_navigation">
+                                <ul className="web_navigation" style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    flexWrap: "wrap"
+                                }}>
                                     <li>
                                         <a href="/">Home</a>
                                     </li>

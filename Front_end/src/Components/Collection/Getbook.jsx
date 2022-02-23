@@ -66,8 +66,8 @@ function Getbook({ bookList, onAdd, addWishlist }) {
 								width: "100%"
 							}}>
 								<div className="tg-bookimg">
-									<div className="tg-frontcover" style={{width:160 ,height:200}}><img src={"http://localhost:9999/image/" + post.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
-									<div className="tg-backcover" style={{width:160 ,height:200}}><img src={"http://localhost:9999/image/" + post.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
+									<div className="tg-frontcover" style={{ width: 160, height: 200 }}><img src={"http://localhost:9999/image/" + post.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
+									<div className="tg-backcover" style={{ width: 160, height: 200 }}><img src={"http://localhost:9999/image/" + post.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
 								</div>
 								{auth && (
 									wishlistArray.length !== 0 && (
@@ -111,7 +111,6 @@ function Getbook({ bookList, onAdd, addWishlist }) {
 									><a href={"/Book/" + post.booksid}>{post.bookname}</a></h3>
 								</div>
 								<span className="tg-bookwriter">By: <a href={"/author/" + post.authorid.authorid}>{post.authorid.authorname}</a></span>
-								<span className="tg-bookwriter">Release: {post.bookreleasedate}</span>
 								<span>
 									<Rating name="read-only" size="large" precision={0.5} value={caculator(post.reviews)} readOnly />
 								</span>
@@ -125,10 +124,17 @@ function Getbook({ bookList, onAdd, addWishlist }) {
 										<em >Out stock</em>
 									</a>
 								) : (
-									<a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(post)} style={{ cursor: 'pointer' }}>
-										<i className="fa fa-shopping-basket" />
-										<em >Add To Basket</em>
-									</a>
+									post.amounts !== 0 ? (
+										<a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(post)} style={{ cursor: 'pointer' }}>
+											<i className="fa fa-shopping-basket" />
+											<em >Add To Basket</em>
+										</a>
+									) : (
+										<a className="tg-btn tg-btnstyletwo">
+											<i className="fa fa-shopping-basket" />
+											<em >Out stock</em>
+										</a>
+									)
 								)}
 
 							</div>

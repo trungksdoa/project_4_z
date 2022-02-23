@@ -73,8 +73,8 @@ const Same_book = ({ data, onAdd, addWishlist }) => {
                                         <div className="tg-postbook">
                                             <figure className="tg-featureimg">
                                                 <div className="tg-bookimg">
-                                                    <div className="tg-frontcover"><img src="images/books/img-01.jpg" alt="image description" /></div>
-                                                    <div className="tg-backcover"><img src="images/books/img-01.jpg" alt="image description" /></div>
+                                                    <div className="tg-frontcover"><img src={"http://localhost:9999/image/" + item.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
+                                                    <div className="tg-backcover"><img src={"http://localhost:9999/image/" + item.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
                                                 </div>
                                                 {auth && (
                                                     wishlistArray.length !== 0 && (
@@ -130,10 +130,17 @@ const Same_book = ({ data, onAdd, addWishlist }) => {
                                                         <em>Out stock</em>
                                                     </a>
                                                 ) : (
-                                                    <a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(item)} style={{ cursor: 'pointer' }}>
-                                                        <i className="fa fa-shopping-basket" />
-                                                        <em>Add to basket</em>
-                                                    </a>
+                                                    item.amounts !== 0 ? (
+                                                        <a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(item)} style={{ cursor: 'pointer' }}>
+                                                            <i className="fa fa-shopping-basket" />
+                                                            <em>Add to basket</em>
+                                                        </a>
+                                                    ) : (
+                                                        <a className="tg-btn tg-btnstyletwo">
+                                                            <i className="fa fa-shopping-basket" />
+                                                            <em>Out stock</em>
+                                                        </a>
+                                                    )
                                                 )}
                                             </div>
                                         </div>

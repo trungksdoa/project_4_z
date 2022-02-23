@@ -164,14 +164,14 @@ public class ReviewsManageController {
     @RequestMapping(value = "/reviews/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Message_Respones<Reviews>> Delete(@PathVariable int id) {
         String msg = "Delete success";
-        String message = reviewServide.Delete(id);
+        boolean deleteted = reviewServide.Delete(id);
         Message_Respones<Reviews> setMessage = new Message_Respones<Reviews>();
-        if ("Success" == message) {
+        if (deleteted) {
             setMessage.setMessage(msg);
             setMessage.setCode(200);
             return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.OK);
         } else {
-            setMessage.setMessage(message);
+            setMessage.setMessage("Delete fail");
             setMessage.setCode(500);
             return new ResponseEntity<Message_Respones<Reviews>>(setMessage, HttpStatus.BAD_REQUEST);
         }

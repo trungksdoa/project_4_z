@@ -85,35 +85,9 @@ const Customers = () => {
             const index = newCustomer.findIndex(item => item.userid === userID);
             const data = newCustomer[index];
             const body = {};
-            body.to_name = data.firstName + " " + data.lastName;
-            body.to_emails = data.useremail
-            body.message = reason;
-            await sendEmail(body).then(async (res) => {
-                await CustomerApi.ban(userID).then(res => {
-                    if (res.code !== 200) {
-                        toast.error(res.msg, {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                        });
-                    } else {
-                        handleClose();
-                        toast.success(res.msg, {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                        });
-                    }
-                }).catch(err => {
-                    toast.error(err.msg, {
+            await CustomerApi.ban(userID,reason).then(res => {
+                if (res.code !== 200) {
+                    toast.error(res.msg, {
                         position: "top-right",
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -122,9 +96,28 @@ const Customers = () => {
                         draggable: true,
                         progress: undefined,
                     });
-                })
-            }).catch((error) => {
-                console.log(error);
+                } else {
+                    handleClose();
+                    toast.success(res.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            }).catch(err => {
+                toast.error(err.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
         }
 

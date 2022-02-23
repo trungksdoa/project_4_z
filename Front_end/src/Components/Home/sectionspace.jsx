@@ -44,7 +44,7 @@ const Sectionspace = () => {
 	};
 	const [BookList, setBookList] = useState([]);
 	async function BFetch() {
-		await BookAPI.FindAll()
+		await BookAPI.gettoporder()
 			.then((book) => {
 				setBookList(book.data);
 			})
@@ -128,12 +128,12 @@ const Sectionspace = () => {
 																margin: 0,
 																// width: "71%"
 															}}>
-																
-																	<div className="tg-bookimg">
-																		<div className="tg-frontcover"><img src={"http://localhost:9999/image/" + item.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image thumbnail" style={{height:246, width:"100%"}} /></div>
-																		<div className="tg-backcover"><img src={"http://localhost:9999/image/" + item.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image thumbnail" style={{height:246, width:"100%"}} /></div>
-																	</div>
-															
+
+																<div className="tg-bookimg">
+																	<div className="tg-frontcover"><img src={"http://localhost:9999/image/" + item.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image thumbnail" style={{ height: 246, width: "100%" }} /></div>
+																	<div className="tg-backcover"><img src={"http://localhost:9999/image/" + item.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image thumbnail" style={{ height: 246, width: "100%" }} /></div>
+																</div>
+
 
 																{auth && (
 																	wishlistArray.length !== 0 && (
@@ -190,10 +190,17 @@ const Sectionspace = () => {
 																		<em >Out stock</em>
 																	</a>
 																) : (
-																	<a className="tg-btn tg-btnstyletwo" onClick={() => onClick(item)} style={{ cursor: 'pointer' }}>
-																		<i className="fa fa-shopping-basket" />
-																		<em>Add To Basket</em>
-																	</a>
+																	item.amounts !== 0 ? (
+																		<a className="tg-btn tg-btnstyletwo" onClick={() => onClick(item)} style={{ cursor: 'pointer' }}>
+																			<i className="fa fa-shopping-basket" />
+																			<em>Add To Basket</em>
+																		</a>
+																	) : (
+																		<a className="tg-btn tg-btnstyletwo">
+																			<i className="fa fa-shopping-basket" />
+																			<em >Out stock</em>
+																		</a>
+																	)
 																)}
 
 															</div>
