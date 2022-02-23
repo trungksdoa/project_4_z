@@ -32,7 +32,7 @@ const Release = () => {
     const [BookList, setBookList] = useState([]);
     const { addItem } = useCart();
     async function BFetch() {
-        await BookAPI.FindAll()
+        await BookAPI.gettopreleasedate()
             .then((book) => {
                 setBookList(book.data);
             })
@@ -107,10 +107,10 @@ const Release = () => {
                         </div>
 
                         <div className="tg-description">
-                            <p>Consectetur adipisicing elit sed do eiusmod tempor incididunt labore toloregna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamcoiars nisiuip commodo consequat aute irure dolor in aprehenderit aveli esseati cillum dolor fugiat nulla pariatur cepteur sint occaecat cupidatat.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent malesuada scelerisque magna eu ullamcorper. Suspendisse gravida hendrerit diam, vitae aliquam ipsum luctus quis. Sed posuere tincidunt nibh, quis mollis leo pulvinar vel. Vestibulum eros erat, pharetra in augue id, varius dictum nisi. Etiam et odio quis augue iaculis vehicula. Morbi risus urna, vestibulum in pharetra ut, porttitor sed nunc. Aliquam pulvinar ac est ut gravida. Aenean ut lacus eget lorem viverra dictum. Ut bibendum ultrices quam, id bibendum mauris molestie vel. Morbi posuere risus eu pulvinar dictum. Maecenas finibus massa id nisl fringilla, ac congue ipsum finibus. Integer finibus.</p>
                         </div>
                         <div className="tg-btns">
-                            <a className="tg-btn tg-active" href="/Collection">View All</a>
+                            <a className="tg-btn tg-active" href="/Collection">Go to collection</a>
                         </div>
                     </div>
                     <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -137,12 +137,12 @@ const Release = () => {
                                         }
                                         if (index < 3) {
                                             return (
-                                                <div className="col-xs-4 col-sm-4 col-md-6 col-lg-4">
+                                                <div className="col-xs-4 col-sm-4 col-md-6 col-lg-4" key={index}>
                                                     <div className="tg-postbook">
                                                         <figure className="tg-featureimg">
                                                             <div className="tg-bookimg">
-                                                                <div className="tg-frontcover"><img src="images/books/img-10.jpg" alt="image description" /></div>
-                                                                <div className="tg-backcover"><img src="images/books/img-10.jpg" alt="image description" /></div>
+                                                                <div className="tg-frontcover"><img src={"http://localhost:9999/image/" + book.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
+                                                                <div className="tg-backcover"><img src={"http://localhost:9999/image/" + book.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
                                                             </div>
                                                             {auth && (
                                                                 wishlistArray.length !== 0 && (
@@ -186,6 +186,7 @@ const Release = () => {
                                                                 ><a href={"/Book/" + book.booksid}>{book.bookname}</a></h3>
                                                             </div>
                                                             <span className="tg-bookwriter">By: <a href={"/author/" + book.authorid.authorid}>{book.authorid.authorname}</a></span>
+                                                            <span className="tg-bookwriter">Release: {new Date(book.bookreleasedate).toDateString()}</span>
                                                             <span>
                                                                 <Rating name="read-only" size="large" precision={0.5} value={caculator(book.reviews)} readOnly />
                                                             </span>

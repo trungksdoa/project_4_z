@@ -56,8 +56,8 @@ const customApi = {
         const url = 'user/findAll';
         return RequestAll(url);
     },
-    ban: (id) => {
-        const url = 'ban/user/' + id;
+    ban: (id, reason) => {
+        const url = 'ban/user/' + id + '/' + reason;
         return RequestStatusCustomer(url);
     },
     Unban: (id) => {

@@ -29,7 +29,7 @@ const Pb_author = () => {
     const [BookList, setBookList] = useState([]);
     const { addItem } = useCart();
     async function BFetch() {
-        await BookAPI.FindAll()
+        await BookAPI.gettopratting()
             .then((book) => {
                 setBookList(book.data);
             })
@@ -131,7 +131,7 @@ const Pb_author = () => {
                                                 <div className="tg-postbook">
                                                     <figure className="tg-featureimg">
                                                         <div className="tg-bookimg">
-                                                            <div className="tg-frontcover"><img src="images/books/img-10.jpg" alt="image description" /></div>
+                                                            <div className="tg-frontcover"><img src={"http://localhost:9999/image/" + book.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
                                                         </div>
                                                         <div className="tg-hovercontent">
                                                             <div className="tg-description">
@@ -196,10 +196,18 @@ const Pb_author = () => {
                                                                 <em >Out stock</em>
                                                             </a>
                                                         ) : (
-                                                            <a className="tg-btn tg-btnstyletwo" onClick={() => handleCart(book)} style={{ cursor: 'pointer' }}>
-                                                                <i className="fa fa-shopping-basket" />
-                                                                <em >Add To Basket</em>
-                                                            </a>
+                                                            book.amounts !== 0 ? (
+                                                                <a className="tg-btn tg-btnstyletwo" onClick={() => handleCart(book)} style={{ cursor: 'pointer' }}>
+                                                                    <i className="fa fa-shopping-basket" />
+                                                                    <em >Add To Basket</em>
+                                                                </a>
+                                                            ) : (
+                                                                <a className="tg-btn tg-btnstyletwo">
+                                                                    <i className="fa fa-shopping-basket" />
+                                                                    <em >Out stock</em>
+                                                                </a>
+                                                            )
+
                                                         )}
                                                     </div>
                                                 </div>

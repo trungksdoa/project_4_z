@@ -152,7 +152,10 @@ const Page2 = () => {
                                                 </div>
                                             </div>
                                             <table className="table table-borderless" >
-                                                <tbody>
+                                                <tbody style={{
+                                                    height:100,
+                                                    overflowY: "scroll"
+                                                }}>
                                                     {modalValue.map((order, index) => {
 
                                                         // console.log(order)
@@ -212,10 +215,10 @@ const Page2 = () => {
                                             <hr />
                                             <h3 className="h6">Address</h3>
                                             <address>
-                                                <strong>John Doe</strong><br />
-                                                1355 Market St, Suite 900<br />
-                                                San Francisco, CA 94103<br />
-                                                <abbr title="Phone">P:</abbr> (123) 456-7890
+                                                <strong>{Orderds.current.userid.firstName + " " + Orderds.current.userid.lastName}</strong><br />
+                                                {Orderds.current.orderaddress}, {Orderds.current.orderdistrict}<br />
+                                                {Orderds.current.ordercity}<br />
+                                                <abbr title="Phone">P:</abbr> (+84){Orderds.current.userid.phone}
                                             </address>
                                         </div>
                                     </div>

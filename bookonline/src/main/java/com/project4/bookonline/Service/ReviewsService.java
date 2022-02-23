@@ -10,6 +10,6 @@ public interface ReviewsService {
     public List<Reviews> render_in_customer(String bookId);
     public List<Reviews> render_in_admin();
     public Reviews changeStatusReview(int id,int status);
-    public String Delete(int id);
+    public boolean Delete(int id);
     public String DeleteByBookId(String bookId);
 }

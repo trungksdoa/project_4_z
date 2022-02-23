@@ -115,8 +115,14 @@ const FeatureBook_Author = (props) => {
             <div className="tg-postbook">
                 <figure className="tg-featureimg">
                     <div className="tg-bookimg">
-                        <div className="tg-frontcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink + "?v" + new Date().getTime()} alt="image description" /></div>
-                        <div className="tg-backcover"><img src={"http://localhost:9999/image/" + pdetailid.imageLink + "?v" + new Date().getTime()} alt="image description" /></div>
+                        <div className="tg-frontcover" style={{
+                            width: "160px",
+                            height: "200px"
+                        }}><img src={"http://localhost:9999/image/" + pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
+                        <div className="tg-backcover" style={{
+                            width: "160px",
+                            height: "200px"
+                        }}><img src={"http://localhost:9999/image/" + pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></div>
                     </div>
                     {auth && (
                         wishlistArray.length !== 0 && (
@@ -133,6 +139,22 @@ const FeatureBook_Author = (props) => {
                     )}
                 </figure>
                 <div className="tg-postbookcontent">
+                    <ul className="tg-bookscategories">
+                        {props.groupdetail.length !== 0 && props.groupdetail.map((category, index) => {
+                            if (index < 2) {
+                                return (
+                                    <li key={index}>
+                                        <a href={"/Collection/" + category.catagoryid.catagoryid}>
+                                            <small>{category.catagoryid.catagoryname}</small>
+                                        </a>
+                                    </li>
+                                )
+                            }
+                        })}
+                        {props.groupdetail.length === 0 && (
+                            <li>On update</li>
+                        )}
+                    </ul>
                     <div className="tg-booktitle">
                         <h3
                             style={{
@@ -156,14 +178,21 @@ const FeatureBook_Author = (props) => {
                             <em >Out stock</em>
                         </a>
                     ) : (
-                        <a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(props)} style={{ cursor: 'pointer' }}>
-                            <i className="fa fa-shopping-basket" />
-                            <em >Add To Basket</em>
-                        </a>
+                        props.amounts !== 0 ? (
+                            <a className="tg-btn tg-btnstyletwo" onClick={() => handleAddToCart(props)} style={{ cursor: 'pointer' }}>
+                                <i className="fa fa-shopping-basket" />
+                                <em >Add To Basket</em>
+                            </a>
+                        ) : (
+                            <a className="tg-btn tg-btnstyletwo">
+                                <i className="fa fa-shopping-basket" />
+                                <em >Out stock</em>
+                            </a>
+                        )
                     )}
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 FeatureBook_Author.propTypes = {

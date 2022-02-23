@@ -2,9 +2,11 @@ package com.project4.bookonline.Repository;
 
 import com.project4.bookonline.Model.Reviews;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,9 +21,13 @@ public interface ReviewRepository extends JpaRepository<Reviews, Integer> {
     @Query(value = "SELECT * FROM Review WHERE Review_id = :reviewId", nativeQuery = true)
     Reviews findOne(@Param("reviewId") int reviewId);
 
+    @Modifying
+    @Transactional
     @Query(value = "DELETE FROM Review WHERE Review_id = :reviewId", nativeQuery = true)
     void Delete(@Param("reviewId") int reviewId);
 
+    @Modifying
+    @Transactional
     @Query(value = "DELETE FROM Review WHERE Book_id = :bookId", nativeQuery = true)
     void DeleteByBookId(@Param("bookId") String bookId);
 }

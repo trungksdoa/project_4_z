@@ -271,7 +271,7 @@ const Book_detail = () => {
                                                     <article className="tg-post">
                                                         <figure><a style={{
                                                             width: 120,
-                                                            
+
                                                         }}><img src={"http://localhost:9999/image/" + book_b.pdetailid.imageLink + "?v=" + new Date().getTime()} alt="image description" /></a></figure>
                                                         <div className="tg-postcontent">
                                                             <div className="tg-posttitle">
@@ -283,9 +283,13 @@ const Book_detail = () => {
                                                                     <Stack direction="row" spacing={2} style={{ margin: "auto" }}>
                                                                         <Item>
                                                                             {book_b.status === 3 ? (
-                                                                                <a style={{  fontSize: 15, padding: 15 }} >Out stock</a>
+                                                                                <a style={{ fontSize: 15, padding: 15 }} >Out stock</a>
                                                                             ) : (
-                                                                                <a style={{ cursor: 'pointer', fontSize: 15, padding: 15 }} onClick={() => onClick(book_b)} >Add To Basket</a>
+                                                                                book_b.amounts !== 0 ? (
+                                                                                    <a style={{ cursor: 'pointer', fontSize: 15, padding: 15 }} onClick={() => onClick(book_b)} >Add To Basket</a>
+                                                                                ) : (
+                                                                                    <a style={{ fontSize: 15, padding: 15 }} >Out stock</a>
+                                                                                )
                                                                             )}
                                                                         </Item>
                                                                         <Item>

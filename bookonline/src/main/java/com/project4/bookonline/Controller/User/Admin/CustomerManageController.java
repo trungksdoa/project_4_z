@@ -11,8 +11,12 @@ import com.project4.bookonline.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.List;
 
 /**
@@ -26,6 +30,9 @@ public class CustomerManageController {
     @Autowired
     UserService userServide;
 
+    @Autowired
+    public JavaMailSender emailSender;
+
     @RequestMapping(value = "/user/findAll", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<Users>> findAll() {
         List<Users> user = userServide.findAll();
@@ -37,8 +44,8 @@ public class CustomerManageController {
         return new ResponseEntity<Message_Respones<Users>>(setMessage, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/ban/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Message_Respones<String>> setBan(@PathVariable String id) {
+    @RequestMapping(value = "/ban/user/{id}/{reason}", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<String>> setBan(@PathVariable String id,@PathVariable String reason) {
         String msg = "";
         Users user = userServide.findOne(id);
         Message_Respones<String> message = new Message_Respones<String>();
@@ -58,6 +65,19 @@ public class CustomerManageController {
                 default:
                     respone = userServide.Ban(id);
                     msg = "Banned success customers with id: "+id;
+                    String htmlMsg = "" +
+                            "<p>Hello " + user.getUseremail() + ",</p>\n" +
+                            "\n" +
+                            "<p><strong>Your account have been locked by admin with reason:</strong></p>\n" +
+                            "\n" +
+                            "<blockquote>\n" +
+                            "<p><u><strong>"+reason+"</strong></u></p>" +
+                            "</blockquote>\n" +
+                            "\n" +
+                            "<p>Shop,<br />\n" +
+                            "BookStoreOnline</p>\n";
+                    SendEmail("Account locked", htmlMsg, user.getUseremail());
+
                     //Cái này tạm chưa biết nó trạng thái gì :v
                     message.setMessage(msg);
                     message.setCode(200);
@@ -65,6 +85,47 @@ public class CustomerManageController {
             }
         }
     }
+
+    public void SendEmail(String subject, String messages, String toEmails) {
+
+        MimeMessage message = emailSender.createMimeMessage();
+
+        //Send emails
+
+
+        boolean multipart = true;
+
+        MimeMessageHelper helper = null;
+        try {
+            helper = new MimeMessageHelper(message, multipart, "utf-8");
+        } catch (javax.mail.MessagingException e) {
+            e.printStackTrace();
+        }
+
+        String htmlMsg = messages;
+
+        try {
+            message.setContent(htmlMsg, "text/html");
+        } catch (javax.mail.MessagingException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            helper.setTo(toEmails);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            helper.setSubject(subject);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+
+        this.emailSender.send(message);
+    }
+
     @RequestMapping(value = "/Unban/user/{id}", method = RequestMethod.GET)
     public ResponseEntity<Message_Respones<String>> unBan(@PathVariable String id) {
         String msg = "";
