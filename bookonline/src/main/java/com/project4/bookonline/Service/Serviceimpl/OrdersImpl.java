@@ -89,4 +89,9 @@ public class OrdersImpl implements OrderService {
     public List<OrderDetail> loadtotalprice(int id) {
         return orderRepository.loadtotalprice(id);
     }
+
+    @Override
+    public List<Integer> totalmonthly() {
+        return orderRepository.totalmonthly();
+    }
 }

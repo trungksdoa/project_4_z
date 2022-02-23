@@ -1,7 +1,6 @@
 package com.project4.bookonline.Service;
 
 import com.project4.bookonline.Model.*;
-import org.springframework.data.repository.query.Param;
 
 
 import java.util.List;
@@ -30,5 +29,5 @@ public interface OrderService {
 
     public List<OrderDetail> loadtotalprice(int id);
 
-
+    public List<Integer> totalmonthly();
 }

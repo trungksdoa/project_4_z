@@ -1,4 +1,6 @@
 import React from 'react';
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -10,6 +12,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import DashboardAPI from '../../api/DashboardAPI';
 
 ChartJS.register(
     CategoryScale,
@@ -28,31 +31,36 @@ export const options = {
         },
         title: {
             display: true,
-            text: 'Chart.js Line Chart',
+            text: 'Revenue chart for the year',
         },
     },
 };
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'];
 
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'];
 export const data = {
+    
     labels,
     datasets: [{
-            label: 'Dataset 1',
-            data: [1000,2004],
+            label: 'Total amount of products sold by month',
+            data: [],
 
             borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
         {
             label: 'Dataset 2',
-            data: [1,25,3,75,5,6,7,85,99,610,511,12],
+            data: [],
 
             borderColor: 'rgb(53, 162, 235)',
             backgroundColor: 'rgba(53, 162, 235, 0.5)',
         },
     ],
 };
+
 export default function LineChar() {
+  async function Call(){
+    await DashboardAPI.gettotalmonthly()
+  }
     return <Line options = { options }
     data = { data }
     />;

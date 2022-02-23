@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:3006")
 @RestController
@@ -201,4 +199,14 @@ public class DBController {
         return new ResponseEntity<Message_Respones<Orders>>(setmessage, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/db/totalmonthly", method = RequestMethod.GET)
+    public ResponseEntity<Message_Respones<Integer>> totalmonthly() {
+        List<Integer> o = orderService.totalmonthly();
+        Message_Respones<Integer> setMessage = new Message_Respones<Integer>();
+        String msg = "Get data success";
+        setMessage.setMessage(msg);
+        setMessage.setList(o);
+        setMessage.setCode(200);
+        return new ResponseEntity<Message_Respones<Integer>>(setMessage, HttpStatus.OK);
+    }
 }

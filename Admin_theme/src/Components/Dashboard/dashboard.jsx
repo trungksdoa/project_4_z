@@ -7,37 +7,7 @@ import LineChar from './LineChar';
 import { UserData } from "./Data";
 import DashboardAPI from "../../api/DashboardAPI.js";
 
-export const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top',
-        },
-        title: {
-            display: true,
-            text: 'Chart.js Line Chart',
-        },
-    },
-};
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'];
-
-export const data = {
-    labels,
-    datasets: [{
-            label: 'Dataset 1',
-            data: [1,2,3,4,5,6,7,8,9,10,11,12],
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-        {
-            label: 'Dataset 2',
-            data: [1,2,3,4,5,6,7,8,9,10,11,12],
-
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        },
-    ],
-};
+console.log(DashboardAPI.gettotalmonthly());
 const Dashboard = () => {
 
     //=----------------------------------
@@ -58,14 +28,14 @@ const Dashboard = () => {
         }
     }
     const [moneyMouth, setMoneyMouth] = useState("");
-    const fetchMoneyMouth = async () => {
-        try {
-            const response = await DashboardAPI.gettotalpriceorderByMouth();
-            setMoneyMouth(response.msg);
-        } catch (error) {
-            console.log('failed to fetch List_customer list', error);
-        }
-    }
+    // const fetchMoneyMouth = async () => {
+    //     try {
+    //         const response = await DashboardAPI.gettotalpriceorderByMouth();
+    //         setMoneyMouth(response.msg);
+    //     } catch (error) {
+    //         console.log('failed to fetch List_customer list', error);
+    //     }
+    // }
     const [totalOrderBy, setTotalOrderBy] = useState("");
     const fetchTotalOrderByDate = async () => {
         try {
@@ -94,9 +64,9 @@ const Dashboard = () => {
     useLayoutEffect(() => {
         fetchCustomers();
     }, [])
-    useLayoutEffect(() => {
-        fetchMoneyMouth();
-    }, [])
+    // useLayoutEffect(() => {
+    //     fetchMoneyMouth();
+    // }, [])
     useLayoutEffect(() => {
         setUserData({
             labels: productData.map((data) => data.book_name),
@@ -162,7 +132,7 @@ const Dashboard = () => {
                     </div>
                     <div className="col-xl-12 col-sm-6">
                         {productData.length !== 0 && (
-                            <LineChar options={options} chartData={userData} />
+                            <LineChar />
                         )}
                     </div>
                 </div>
