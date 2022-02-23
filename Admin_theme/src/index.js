@@ -256,7 +256,7 @@ ReactDOM.render(
             </Route>
 
             <Route element={<RolesProductOutlet />}>
-              <Route path="/admin/book/pdetail/:id" element={<Form_Update_Pdetails />} />
+              <Route path="/admin/book/edit/:id" element={<Form_Update_Pdetails />} />
               <Route path="/admin/book/:id" element={<Form_Update_Books />} />
               <Route path="/admin/book" element={<Books />} />
               <Route path="/admin/book/create" element={<BookCreate />} />

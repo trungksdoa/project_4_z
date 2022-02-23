@@ -50,8 +50,9 @@ const Book = () => {
 
     function handleView(index) {
         const newArray = [...book_list];
-        const object = newArray.find(obj => obj.bookid === index);
-        navigate("/admin/book/edit/" + object.bookid)
+        console.log(book_list)
+        const object = newArray.find(obj => obj.booksid === index);
+        navigate("/admin/book/edit/" + object.booksid)
     }
 
     function GotoCreatePage() {

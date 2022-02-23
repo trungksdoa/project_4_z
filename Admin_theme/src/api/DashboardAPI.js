@@ -233,26 +233,24 @@ const RequesttotalpriceorderByYear = (url) => {
 }
 const Requesttotalmonthly = (url) => {
     const object_user = {};
-    return new Promise((resolve, reject) => {
-        axiosClient.get(url)
-            .then(response => {
-                object_user.code = response.code;
-                object_user.msg = response.msg;
-                object_user.data = response.data_array;
-                resolve(object_user)
-            })
-            .catch((error) => {
-                if (error.toJSON().message === 'Network Error') {
-                    object_user.status = 511;
-                    object_user.msg = "Network Authentication Required";
-                } else {
-                    object_user.status = error.response.status;
-                    console.log(error.response);
-                    object_user.msg = error.response.data.msg;
-                }
-                reject(object_user)
-            })
-    })
+    return axiosClient.get(url)
+        .then(response => {
+            object_user.code = response.code;
+            object_user.msg = response.msg;
+            object_user.data = response.data_array;
+            return object_user
+        })
+        .catch((error) => {
+            if (error.toJSON().message === 'Network Error') {
+                object_user.status = 511;
+                object_user.msg = "Network Authentication Required";
+            } else {
+                object_user.status = error.response.status;
+                console.log(error.response);
+                object_user.msg = error.response.data.msg;
+            }
+            return object_user
+        })
 }
 const DashboardAPI = {
     gettotaluserByDay: () => {

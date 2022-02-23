@@ -7,7 +7,6 @@ import LineChar from './LineChar';
 import { UserData } from "./Data";
 import DashboardAPI from "../../api/DashboardAPI.js";
 
-console.log(DashboardAPI.gettotalmonthly());
 const Dashboard = () => {
 
     //=----------------------------------
@@ -28,14 +27,14 @@ const Dashboard = () => {
         }
     }
     const [moneyMouth, setMoneyMouth] = useState("");
-    // const fetchMoneyMouth = async () => {
-    //     try {
-    //         const response = await DashboardAPI.gettotalpriceorderByMouth();
-    //         setMoneyMouth(response.msg);
-    //     } catch (error) {
-    //         console.log('failed to fetch List_customer list', error);
-    //     }
-    // }
+    const fetchMoneyMouth = async () => {
+        try {
+            const response = await DashboardAPI.gettotalpriceorderByMouth();
+            setMoneyMouth(response.msg);
+        } catch (error) {
+            console.log('failed to fetch List_customer list', error);
+        }
+    }
     const [totalOrderBy, setTotalOrderBy] = useState("");
     const fetchTotalOrderByDate = async () => {
         try {
@@ -55,6 +54,46 @@ const Dashboard = () => {
             alert(error.msg)
         })
     }
+    const [monthly,setmonthly]= useState([]);
+    async function getData() {
+		await DashboardAPI.gettotalmonthly()
+			.then((res) => {
+				setmonthly(res.data);
+                // console.log(res)
+			})
+			.catch(res=>alert(res.msg));
+	}
+    
+const labels = [
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December'
+];
+  
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top'
+            },
+            title: {
+                display: true,
+                text: 'Revenue chart for the year'
+            }
+        }
+    };
+    useLayoutEffect(() => {
+        getData();
+    }, [])
     useLayoutEffect(() => {
         fetchProductRank();
     }, [])
@@ -64,9 +103,9 @@ const Dashboard = () => {
     useLayoutEffect(() => {
         fetchCustomers();
     }, [])
-    // useLayoutEffect(() => {
-    //     fetchMoneyMouth();
-    // }, [])
+    useLayoutEffect(() => {
+        fetchMoneyMouth();
+    }, [])
     useLayoutEffect(() => {
         setUserData({
             labels: productData.map((data) => data.book_name),
@@ -111,7 +150,7 @@ const Dashboard = () => {
                                     <i className="material-icons opacity-10">person</i>
                                 </div>
                                 <div className="text-end pt-1">
-                                    <p className="text-sm mb-0 text-capitalize">Register customer today</p>
+                                    <p className="text-sm mb-0 text-capitalize">Register customer</p>
                                     <h4 className="mb-0">{countCustomer}</h4>
                                 </div>
                             </div>
@@ -131,9 +170,9 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className="col-xl-12 col-sm-6">
-                        {productData.length !== 0 && (
-                            <LineChar />
-                        )}
+                        
+                            <Line options={options} data={productData}></Line>
+                        
                     </div>
                 </div>
             </div>
